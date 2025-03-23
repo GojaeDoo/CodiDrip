@@ -6,7 +6,11 @@ import * as S from "./Header.styled";
 import { Menu, X } from "lucide-react";
 import { FC } from "react";
 
-const HeaderPresenter: FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
+const HeaderPresenter: FC<HeaderProps> = ({
+  isOpen,
+  setIsOpen,
+  onClickMoveLogin,
+}) => {
   return (
     <S.HeaderContainer>
       <S.BurgerButtonContainer>
@@ -27,7 +31,7 @@ const HeaderPresenter: FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
       </S.SearchInputContainer>
       <S.Title>DripDrop</S.Title>
       <S.Login_JoinContainer>
-        <S.Login>Login</S.Login>
+        <S.Login onClick={onClickMoveLogin}>Login</S.Login>
         <S.Join>Join</S.Join>
       </S.Login_JoinContainer>
     </S.HeaderContainer>
