@@ -1,7 +1,11 @@
+import * as S from "./Login.styled";
+
 const LoginPresenter: React.FC = () => {
   return (
     <>
-      <div>오오</div>
+      <S.Background>
+        <S.LoginWrapper></S.LoginWrapper>
+      </S.Background>
     </>
   );
 };

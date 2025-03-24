@@ -15,10 +15,11 @@
 } */
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0 !important;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* 스타일 초기 로드 시 투명하게 하고, 나중에 적용 */
 .loading {
   opacity: 0;
 }
