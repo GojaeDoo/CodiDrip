@@ -1,7 +1,7 @@
 "use client";
 import FooterPresenter from "./Footer.presenter";
 
-const FooterContainer: React.FC = () => {
+const FooterContainer = () => {
   return (
     <>
       <FooterPresenter />

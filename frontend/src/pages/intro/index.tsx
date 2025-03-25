@@ -1,7 +1,6 @@
 import IntroContainer from "@/component/features/intro/Intro.container";
-import { FC } from "react";
 
-const Intro: FC = () => {
+const Intro = () => {
   return <IntroContainer />;
 };
 

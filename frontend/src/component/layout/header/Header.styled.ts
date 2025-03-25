@@ -97,18 +97,18 @@ export const SearchInput = styled.input`
 
 // Header Title
 
-export const Title = styled.div`
-  margin: 0 auto;
-  width: auto;
-  height: 100%;
-  font-size: 2rem;
-  font-family: "Inter", sans-serif;
-  font-weight: 1000;
-  font-style: italic;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+// export const Title = styled.div`
+//   margin: 0 auto;
+//   width: auto;
+//   height: 100%;
+//   font-size: 2rem;
+//   font-family: "Inter", sans-serif;
+//   font-weight: 1000;
+//   font-style: italic;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
 // 로그인 , 회원가입
 

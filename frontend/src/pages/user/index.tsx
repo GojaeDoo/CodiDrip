@@ -1,8 +1,5 @@
-// pages/index.tsx
 import UserContainer from "../../component/features/user/User.container";
-import { FC } from "react";
-
-const HomePage: FC = () => {
+const HomePage = () => {
   return (
     <>
       <UserContainer />

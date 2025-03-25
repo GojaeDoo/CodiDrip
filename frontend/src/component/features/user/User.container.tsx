@@ -5,7 +5,7 @@ import { fetchUsers } from "./User.query";
 import HomePagePresenter from "./User.presenter";
 import { User } from "./User.types";
 
-const HomePageContainer: React.FC = () => {
+const HomePageContainer = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 

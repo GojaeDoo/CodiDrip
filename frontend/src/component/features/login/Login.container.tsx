@@ -2,7 +2,7 @@
 
 import LoginPresenter from "./Login.presenter";
 
-const LoginContainer: React.FC = () => {
+const LoginContainer = () => {
   return (
     <>
       <LoginPresenter />

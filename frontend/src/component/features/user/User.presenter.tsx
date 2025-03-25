@@ -1,11 +1,7 @@
-// HomePage.presenter.tsx
 import React from "react";
-import { HomePagePresenterProps } from "./User.types"; // types.ts에서 HomePagePresenterProps를 가져옴
+import { HomePagePresenterProps } from "./User.types";
 
-const HomePagePresenter: React.FC<HomePagePresenterProps> = ({
-  users,
-  loading,
-}) => {
+const HomePagePresenter = ({ users, loading }: HomePagePresenterProps) => {
   if (loading) return <div>Loading...</div>;
 
   return (

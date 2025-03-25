@@ -1,8 +1,7 @@
 "use client";
-import { FC } from "react";
 import * as S from "./Drips.styled";
 
-const DripsPresenter: FC = () => {
+const DripsPresenter = () => {
   return (
     <>
       <S.DripBoxContainer></S.DripBoxContainer>

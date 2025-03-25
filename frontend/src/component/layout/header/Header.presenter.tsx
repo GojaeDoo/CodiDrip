@@ -3,14 +3,15 @@
 import React from "react";
 import { HeaderProps } from "./Header.types";
 import * as S from "./Header.styled";
+import * as C from "../../commons/Commons.styled";
 import { Menu, X } from "lucide-react";
-import { FC } from "react";
 
-const HeaderPresenter: FC<HeaderProps> = ({
+const HeaderPresenter = ({
   isOpen,
   setIsOpen,
   onClickMoveLogin,
-}) => {
+  onClickMoveJoin,
+}: HeaderProps) => {
   return (
     <S.HeaderContainer>
       <S.BurgerButtonContainer>
@@ -29,10 +30,10 @@ const HeaderPresenter: FC<HeaderProps> = ({
       <S.SearchInputContainer>
         <S.SearchInput />
       </S.SearchInputContainer>
-      <S.Title>DripDrop</S.Title>
+      <C.Title>DripDrop</C.Title>
       <S.Login_JoinContainer>
         <S.Login onClick={onClickMoveLogin}>Login</S.Login>
-        <S.Join>Join</S.Join>
+        <S.Join onClick={onClickMoveJoin}>Join</S.Join>
       </S.Login_JoinContainer>
     </S.HeaderContainer>
   );

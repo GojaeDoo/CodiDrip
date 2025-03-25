@@ -2,7 +2,7 @@
 
 import * as S from "./Intro.styled";
 
-const IntroPresenter: React.FC = () => {
+const IntroPresenter = () => {
   return <S.IntroImage src="/images/intro/introImage.jpg" />;
 };
 

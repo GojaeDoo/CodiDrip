@@ -2,9 +2,7 @@
 
 import * as S from "./Footer.styled";
 
-const FooterPresenter: React.FC = () => {
-  console.log("Footer 렌더링됨"); // 콘솔에서 확인
-
+const FooterPresenter = () => {
   return (
     <>
       <S.FooterContainer>

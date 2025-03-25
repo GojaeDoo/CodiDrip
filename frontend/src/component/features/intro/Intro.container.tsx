@@ -1,8 +1,8 @@
 "use client";
-import { FC } from "react";
+
 import IntroPresenter from "./Intro.presenter";
 
-const IntroContainer: FC = () => {
+const IntroContainer = () => {
   return <IntroPresenter />;
 };
 
