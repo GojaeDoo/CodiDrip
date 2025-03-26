@@ -2,7 +2,7 @@ import * as S from "./Join.styled";
 import * as C from "../../commons/Commons.styled";
 import { JoinProps } from "./Join.types";
 
-const JoinPresenter = ({ onChangeId }: JoinProps) => {
+const JoinPresenter = (props: JoinProps) => {
   return (
     <>
       <S.Background>
@@ -10,20 +10,30 @@ const JoinPresenter = ({ onChangeId }: JoinProps) => {
         <S.JoinWrapper>
           <S.JoinTitle>회원가입</S.JoinTitle>
           <S.IdCheckWrapper>
-            <S.IdInput placeholder="아이디" onChange={onChangeId} />
-            <S.IdCheckBtn>중복확인</S.IdCheckBtn>
+            <S.IdInput placeholder="아이디" onChange={props.onChangeId} />
+            <S.IdCheckBtn onClick={props.onClickIdOverlapping}>
+              중복확인
+            </S.IdCheckBtn>
           </S.IdCheckWrapper>
           <S.PasswordWrapper>
-            <C.Input placeholder="비밀번호" />
+            <C.Input
+              type="password"
+              placeholder="비밀번호"
+              onChange={props.onChangePassword}
+            />
             <S.PasswordInfo>
               영문,숫자 특수문자(~!@#$%^&*)조합 8~15자리
             </S.PasswordInfo>
-            <C.Input placeholder="비밀번호 확인" />
+            <C.Input
+              type="password"
+              placeholder="비밀번호 확인"
+              onChange={props.onChangeRePassword}
+            />
           </S.PasswordWrapper>
           <S.EmailWrapper>
-            <S.Email placeholder="이메일" />
+            <S.Email placeholder="이메일" onChange={props.onChangeEmail} />
             <S.JoinText> @ </S.JoinText>
-            <S.EmailSelect>
+            <S.EmailSelect onChange={props.selectEmailDomain}>
               <option value="">직접입력</option>
               <option value="naver.com">naver.com</option>
             </S.EmailSelect>
@@ -46,7 +56,7 @@ const JoinPresenter = ({ onChangeId }: JoinProps) => {
               [선택] 마케팅 수신 동의
             </S.Label>
           </S.JoinInfoWrapper>
-          <C.Button>회원가입</C.Button>
+          <C.Button onClick={props.onClickJoin}>회원가입</C.Button>
         </S.JoinWrapper>
       </S.Background>
     </>
