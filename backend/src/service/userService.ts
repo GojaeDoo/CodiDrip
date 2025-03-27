@@ -16,12 +16,12 @@ export const getAllUsers = async () => {
   }
 };
 
-export const idOverlappingCheck = async (id: IdCheckType) => {
+export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
   try {
-    const idCheck = await idOverlappingCheckDB(id);
+    const idCheck = await idOverlappingCheckDB(user_id); // user_id만 전달
     return idCheck;
   } catch (error) {
-    console.error("아이디 중복 체크 서비스 에러");
+    console.error("아이디 중복 체크 서비스 에러", error);
   }
 };
 

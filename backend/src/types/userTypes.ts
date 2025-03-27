@@ -5,6 +5,5 @@ export interface User {
 }
 
 export interface IdCheckType {
-  id: string;
   user_id: string;
 }

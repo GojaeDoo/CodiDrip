@@ -21,13 +21,22 @@ export const getIdOverlappingCheck = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const { id } = req.body;
-    // user_id가 없을 경우 빈 문자열 처리
-    const idCheck = await idOverlappingCheck(id); // IdCheckType 형식으로 객체 전달
+    const { user_id } = req.query;
 
-    res.json(idCheck);
+    if (!user_id || typeof user_id !== "string") {
+      res.status(400).json({ error: "유효하지 않은 user_id" });
+      return;
+    }
+
+    const idCheck: any = await idOverlappingCheck({
+      user_id: user_id as string,
+    });
+
+    const OverlappingCheck: string = idCheck.length;
+
+    res.json({ exists: OverlappingCheck });
   } catch (error) {
     res.status(500).json({ error: "아이디 중복 체크 컨트롤러 에러" });
   }

@@ -11,15 +11,17 @@ export const getUsersFromDB = async () => {
   }
 };
 
-export const idOverlappingCheckDB = async (id: IdCheckType) => {
+export const idOverlappingCheckDB = async (user_id: string) => {
   try {
-    const values = [id];
+    const values = [user_id];
     const result = await pool.query(
       `SELECT user_id FROM users WHERE user_id = $1;`,
       values
     );
     return result.rows;
-  } catch (error) {}
+  } catch (error) {
+    console.error("DB 조회 실패", error);
+  }
 };
 
 export const joinUserDB = async (user: User) => {

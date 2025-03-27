@@ -38,6 +38,11 @@ const JoinContainer = () => {
 
       const response = await overlappingCheck(id);
       console.log("성공 : " + JSON.stringify(response, null, 2));
+      if (response.exists == "0") {
+        alert("중복된 아이디입니다.");
+      } else {
+        alert("사용가능한 아이디입니다.");
+      }
     } catch (error) {
       console.error(error);
     }
