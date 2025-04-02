@@ -29,6 +29,7 @@ const JoinPresenter = (props: JoinProps) => {
               placeholder="비밀번호 확인"
               onChange={props.onChangeRePassword}
             />
+            <S.PasswordInfo>{props.setPasswordTrue}</S.PasswordInfo>
           </S.PasswordWrapper>
           <S.EmailWrapper>
             <S.Email placeholder="이메일" onChange={props.onChangeEmail} />

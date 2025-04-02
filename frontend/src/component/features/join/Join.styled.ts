@@ -70,6 +70,7 @@ export const IdCheckBtn = styled.button`
     background-color: #262a2d;
   }
 `;
+
 export const PasswordWrapper = styled.div`
   width: 21.2vw;
   display: flex;

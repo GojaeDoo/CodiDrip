@@ -48,7 +48,7 @@ export const postUserJoin = async (
   next: NextFunction
 ) => {
   try {
-    console.log("📌 요청된 데이터:", req.body); // 추가
+    console.log("회원가입 데이터:", req.body);
 
     const { user_id, user_password, user_email } = req.body;
 
@@ -56,7 +56,7 @@ export const postUserJoin = async (
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.error("❌ 회원가입 실패:", error);
+    console.error("회원가입 실패:", error);
     next(error);
   }
 };
