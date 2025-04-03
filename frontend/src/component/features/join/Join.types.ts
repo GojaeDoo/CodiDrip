@@ -9,4 +9,15 @@ export interface JoinProps {
   setPasswordTrue: string;
   isIdChecked: boolean;
   isJoinButtonDisabled: boolean;
+  isAllChecked: boolean;
+  isServiceChecked: boolean;
+  isPrivacyChecked: boolean;
+  isMarketingChecked: boolean;
+  onAllCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onServiceCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onPrivacyCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onMarketingCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isCustomDomain: boolean;
+  onChangeCustomDomain: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  customDomain: string;
 }

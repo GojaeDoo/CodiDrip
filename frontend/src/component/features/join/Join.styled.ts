@@ -105,6 +105,17 @@ export const JoinText = styled.span`
   text-align: center;
 `;
 
+export const EmailInput = styled.input`
+  width: 7.83vw;
+  height: 5vh;
+  outline: none;
+  font-size: 1rem;
+  border: 1px solid rgba(217, 217, 217, 0.9);
+  background-color: rgba(217, 217, 217, 0.9);
+  border-radius: 5px;
+  padding-left: 1vw;
+`;
+
 export const EmailSelect = styled.select`
   width: 9.08vw;
   height: 5vh;

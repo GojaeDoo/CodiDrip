@@ -27,7 +27,7 @@ export const overlappingCheck = async (id: string) => {
     const response = await axios.get(
       "http://localhost:3002/api/users/check-id",
       {
-        params: { user_id: id }, // 쿼리 파라미터로 user_id 전달
+        params: { user_id: id },
         headers: {
           "Content-Type": "application/json",
         },
@@ -36,5 +36,24 @@ export const overlappingCheck = async (id: string) => {
     return response.data;
   } catch (error) {
     console.error("아이디 중복 찾기 실행 실패", error);
+    throw error;
+  }
+};
+
+export const emailOverlappingCheck = async (email: string) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:3002/api/users/check-email",
+      {
+        params: { user_email: email },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("이메일 중복 찾기 실행 실패", error);
+    throw error;
   }
 };
