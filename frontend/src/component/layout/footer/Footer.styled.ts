@@ -12,7 +12,6 @@ export const FooterContainer = styled.div`
 export const FooterContainerLeft = styled.div`
   width: 50%;
   height: 100%;
-  border-top: 1px solid black;
   padding: 10px 0px;
   display: flex;
   flex-direction: column;
@@ -37,7 +36,6 @@ export const FooterBrand = styled.span`
 export const FooterContainerRight = styled.div`
   width: 50%;
   height: 100%;
-  border-top: 1px solid black;
   padding: 10px 0px;
   display: flex;
   flex-direction: column;

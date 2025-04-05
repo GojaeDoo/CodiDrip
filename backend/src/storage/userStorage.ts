@@ -20,7 +20,20 @@ export const idOverlappingCheckDB = async (user_id: string) => {
     );
     return result.rows;
   } catch (error) {
-    console.error("DB 조회 실패", error);
+    console.error("DB 조회 실패 아이디 중복 체크", error);
+  }
+};
+
+export const emailOverlappingCheckDB = async (user_email: string) => {
+  try {
+    const values = [user_email];
+    const result = await pool.query(
+      `SELECT user_email FROM users WHERE user_email = $1;`,
+      values
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("DB 조회 실패 이메일 중복 체크", error);
   }
 };
 

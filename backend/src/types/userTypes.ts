@@ -7,3 +7,6 @@ export interface User {
 export interface IdCheckType {
   user_id: string;
 }
+export interface EmailCheckType {
+  user_email: string;
+}

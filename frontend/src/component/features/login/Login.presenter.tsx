@@ -1,7 +1,7 @@
 import * as S from "./Login.styled";
 import * as C from "../../commons/Commons.styled";
-
-const LoginPresenter = () => {
+import { LoginProps } from "./Login.types";
+const LoginPresenter = (props: LoginProps) => {
   return (
     <>
       <S.Background>
@@ -16,7 +16,7 @@ const LoginPresenter = () => {
             <S.LoginText> | </S.LoginText>
             <S.Link>비밀번호 찾기</S.Link>
             <S.LoginText> | </S.LoginText>
-            <S.Link>회원가입</S.Link>
+            <S.Link onClick={props.onClickMoveJoin}>회원가입</S.Link>
           </S.MoveWrapper>
         </S.LoginWrapper>
       </S.Background>

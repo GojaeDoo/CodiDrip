@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-  position: absolute; /* ✅ body 위에 배경을 덮지 않고 위치 조정 */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(217, 217, 217, 0.9);
+  background-color: rgba(217, 217, 218, 0.9);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,6 +32,9 @@ export const LoginWrapper = styled.div`
 export const LoginTitle = styled.div`
   font-size: 2rem;
   font-weight: 1000;
+`;
+
+export const Divider = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

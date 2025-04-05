@@ -22,7 +22,7 @@ export const userJoin = async (userData: {
   }
 };
 
-export const overlappingCheck = async (id: string) => {
+export const idOverlappingCheck = async (id: string) => {
   try {
     const response = await axios.get(
       "http://localhost:3002/api/users/check-id",

@@ -6,9 +6,11 @@ export interface JoinProps {
   selectEmailDomain: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onClickJoin: () => void;
   onClickIdOverlapping: () => void;
-  setPasswordTrue: string;
+  onClickEmailOverlapping: () => void;
   isIdChecked: boolean;
+  isEmailChecked: boolean;
   isJoinButtonDisabled: boolean;
+  setPasswordTrue: string;
   isAllChecked: boolean;
   isServiceChecked: boolean;
   isPrivacyChecked: boolean;

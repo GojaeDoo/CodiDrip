@@ -4,7 +4,7 @@ import { useState } from "react";
 import JoinPresenter from "./Join.presenter";
 import { JoinProps } from "./Join.types";
 import {
-  overlappingCheck,
+  idOverlappingCheck,
   userJoin,
   emailOverlappingCheck,
 } from "./Join.query";
@@ -20,6 +20,7 @@ const JoinContainer = () => {
   const [email, setEmail] = useState<string>("");
   const [emailDomain, setEmailDomain] = useState<string>("");
   const [isIdChecked, setIsIdChecked] = useState<boolean>(false);
+  const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
   const [isJoinButtonDisabled, setIsJoinButtonDisabled] =
     useState<boolean>(true);
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -43,6 +44,7 @@ const JoinContainer = () => {
 
     return (
       isIdChecked &&
+      isEmailChecked &&
       isPasswordValid &&
       isEmailValid &&
       isRequiredAgreementsChecked
@@ -96,7 +98,8 @@ const JoinContainer = () => {
 
   const onChangeEmail: JoinProps["onChangeEmail"] = (event) => {
     setEmail(event.target.value);
-    setIsJoinButtonDisabled(!validateForm());
+    setIsEmailChecked(false);
+    setIsJoinButtonDisabled(true);
   };
 
   const selectEmailDomain: JoinProps["selectEmailDomain"] = (event) => {
@@ -108,15 +111,47 @@ const JoinContainer = () => {
       setIsCustomDomain(false);
       setEmailDomain("@" + value);
     }
-    setIsJoinButtonDisabled(!validateForm());
+    setIsEmailChecked(false);
+    setIsJoinButtonDisabled(true);
   };
 
   const onChangeCustomDomain: JoinProps["onChangeCustomDomain"] = (event) => {
     const value = event.target.value;
     setCustomDomain(value);
     setEmailDomain(value ? "@" + value : "");
-    setIsJoinButtonDisabled(!validateForm());
+    setIsEmailChecked(false);
+    setIsJoinButtonDisabled(true);
   };
+
+  const onClickEmailOverlapping: JoinProps["onClickEmailOverlapping"] =
+    async () => {
+      if (
+        !email ||
+        (!isCustomDomain && !emailDomain) ||
+        (isCustomDomain && !customDomain)
+      ) {
+        alert("이메일을 입력해주세요.");
+        return;
+      }
+      const fullEmail =
+        email + (isCustomDomain ? "@" + customDomain : emailDomain);
+      try {
+        const response = await emailOverlappingCheck(fullEmail);
+        if (response.exists === 1) {
+          alert("중복된 이메일입니다.");
+          setIsEmailChecked(false);
+          setIsJoinButtonDisabled(true);
+        } else {
+          alert("사용가능한 이메일입니다.");
+          setIsEmailChecked(true);
+          setIsJoinButtonDisabled(!validateForm());
+        }
+      } catch (error) {
+        console.error("이메일 중복 확인 실패:", error);
+        setIsEmailChecked(false);
+        setIsJoinButtonDisabled(true);
+      }
+    };
 
   const onAllCheckChange: JoinProps["onAllCheckChange"] = (event) => {
     const checked = event.target.checked;
@@ -153,9 +188,7 @@ const JoinContainer = () => {
   const onClickIdOverlapping: JoinProps["onClickIdOverlapping"] = async () => {
     try {
       console.log("id : " + id);
-
-      const response = await overlappingCheck(id);
-      console.log("성공 : " + JSON.stringify(response, null, 2));
+      const response = await idOverlappingCheck(id);
       if (response.exists == "1") {
         alert("중복된 아이디입니다.");
         setIsIdChecked(false);
@@ -175,6 +208,11 @@ const JoinContainer = () => {
   const onClickJoin: JoinProps["onClickJoin"] = async () => {
     if (!isIdChecked) {
       alert("아이디 중복확인을 해주세요.");
+      return;
+    }
+
+    if (!isEmailChecked) {
+      alert("이메일 중복확인을 해주세요.");
       return;
     }
 
@@ -208,12 +246,6 @@ const JoinContainer = () => {
       email + (isCustomDomain ? "@" + customDomain : emailDomain);
 
     try {
-      const emailCheck = await emailOverlappingCheck(fullEmail);
-      if (emailCheck.exists === "1") {
-        alert("이미 사용 중인 이메일입니다.");
-        return;
-      }
-
       const userData = {
         user_id: id,
         user_password: password,
@@ -225,6 +257,7 @@ const JoinContainer = () => {
       router.push("/login");
     } catch (error) {
       console.log("회원가입 실패 : " + error);
+      alert("회원가입 중 오류가 발생했습니다.");
     }
   };
 
@@ -237,7 +270,9 @@ const JoinContainer = () => {
       selectEmailDomain={selectEmailDomain}
       onClickJoin={onClickJoin}
       onClickIdOverlapping={onClickIdOverlapping}
+      onClickEmailOverlapping={onClickEmailOverlapping}
       isIdChecked={isIdChecked}
+      isEmailChecked={isEmailChecked}
       isJoinButtonDisabled={isJoinButtonDisabled}
       setPasswordTrue={passwordTrue}
       isAllChecked={isAllChecked}

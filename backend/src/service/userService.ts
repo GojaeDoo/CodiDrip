@@ -3,8 +3,9 @@ import {
   getUsersFromDB,
   idOverlappingCheckDB,
   joinUserDB,
+  emailOverlappingCheckDB,
 } from "../storage/userStorage";
-import { IdCheckType, User } from "../types/userTypes";
+import { IdCheckType, User, EmailCheckType } from "../types/userTypes";
 import { hashPassword } from "../utils/hashUtil";
 
 export const getAllUsers = async () => {
@@ -22,6 +23,15 @@ export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
     return idCheck;
   } catch (error) {
     console.error("아이디 중복 체크 서비스 에러", error);
+  }
+};
+
+export const emailOverlappingCheck = async ({ user_email }: EmailCheckType) => {
+  try {
+    const emailCheck = await emailOverlappingCheckDB(user_email); // user_email만 전달
+    return emailCheck;
+  } catch (error) {
+    console.error("이메일 중복 체크 서비스 에러", error);
   }
 };
 

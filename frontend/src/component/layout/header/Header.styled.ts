@@ -11,9 +11,6 @@ export const HeaderContainer = styled.div`
   flex-direction: row;
 `;
 
-// Header 햄버거 버튼 시작
-
-// 햄버거 버튼 누르면 옆에 사이드바 나오게 하기
 export const SideMenuContainer = styled.div<{ open: boolean }>`
   position: fixed;
   top: 0;
@@ -69,10 +66,6 @@ export const MenuItem = styled.a`
   }
 `;
 
-// Header 햄버거 버튼 끝
-
-// Header Search창 시작
-
 export const SearchInputContainer = styled.div`
   min-width: 8vw;
   height: 100%;
@@ -92,25 +85,6 @@ export const SearchInput = styled.input`
   outline: none;
   padding-left: 1vw;
 `;
-
-// Header Search창 끝
-
-// Header Title
-
-// export const Title = styled.div`
-//   margin: 0 auto;
-//   width: auto;
-//   height: 100%;
-//   font-size: 2rem;
-//   font-family: "Inter", sans-serif;
-//   font-weight: 1000;
-//   font-style: italic;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// 로그인 , 회원가입
 
 export const Login_JoinContainer = styled.div`
   width: auto;

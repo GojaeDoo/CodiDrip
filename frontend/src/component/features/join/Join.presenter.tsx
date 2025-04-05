@@ -52,6 +52,9 @@ const JoinPresenter = (props: JoinProps) => {
                 <option value="hotmail.com">hotmail.com</option>
               </S.EmailSelect>
             )}
+            <S.EmailCheckBtn onClick={props.onClickEmailOverlapping}>
+              중복확인
+            </S.EmailCheckBtn>
           </S.EmailWrapper>
           <S.JoinInfoWrapper>
             <S.Label>
