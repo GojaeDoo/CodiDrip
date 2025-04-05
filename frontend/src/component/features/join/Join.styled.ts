@@ -6,7 +6,7 @@ export const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(217, 217, 218, 0.9);
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +20,6 @@ export const JoinWrapper = styled.div`
   margin-top: 2vh;
   width: 30vw;
   height: 65vh;
-  background-color: #ffffff;
   border-radius: 5px;
 
   display: flex;
@@ -35,6 +34,7 @@ export const JoinTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
 `;
 
 export const IdCheckWrapper = styled.div`
@@ -103,6 +103,7 @@ export const JoinText = styled.span`
   font-size: 2rem;
   font-weight: 1000;
   text-align: center;
+  color: #ffffff;
 `;
 
 export const EmailInput = styled.input`
@@ -137,6 +138,7 @@ export const JoinInfoWrapper = styled.div`
 export const Label = styled.span`
   width: 22vw;
   font-size: 0.9rem;
+  color: #ffffff;
 `;
 
 export const JoinInfo = styled.input`
@@ -152,10 +154,10 @@ export const JoinTextSm = styled.span`
 
 export const EmailCheckBtn = styled.button`
   position: absolute;
-  top: 0.1vh;
+  top: -0.001vh;
   right: 0;
   width: 5vw;
-  height: 5.5vh;
+  height: 5.6vh;
   outline: none;
   border: 1px solid #919497;
   border-radius: 5px;

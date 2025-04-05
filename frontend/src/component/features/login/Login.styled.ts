@@ -6,7 +6,7 @@ export const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(217, 217, 218, 0.9);
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,7 +19,7 @@ export const LoginWrapper = styled.div`
   margin-top: 2vh;
   width: 30vw;
   height: 45vh;
-  background-color: #ffffff;
+  background-color: #1a1a1a;
   border-radius: 5px;
   padding: 5vh 5vw 5vh 5vw;
 
@@ -32,6 +32,7 @@ export const LoginWrapper = styled.div`
 export const LoginTitle = styled.div`
   font-size: 2rem;
   font-weight: 1000;
+  color: #ffffff;
 `;
 
 export const Divider = styled.div`
@@ -51,8 +52,10 @@ export const MoveWrapper = styled.div`
 export const Link = styled.span`
   font-size: 1rem;
   cursor: pointer;
+  color: #ffffff;
 `;
 
 export const LoginText = styled.span`
   font-size: 1rem;
+  color: #ffffff;
 `;

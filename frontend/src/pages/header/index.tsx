@@ -1,9 +1,7 @@
 "use client";
 
 import HeaderContainer from "@/component/layout/header/Header.container";
-import { FC } from "react";
-
-const Header: FC = () => {
+const Header = () => {
   return <HeaderContainer />;
 };
 

@@ -289,6 +289,82 @@ export const SecondaryButton = styled(Button)`
   }
 `;
 
+export const Features = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin-top: 4rem;
+  animation: ${slideUp} 0.8s ease-out;
+  animation-delay: 0.8s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+`;
+
+export const Feature = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(10px);
+  }
+`;
+
+export const FeatureIcon = styled.div`
+  font-size: 1.8rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  animation: ${float} 3s ease-in-out infinite;
+
+  ${Feature}:hover & {
+    transform: scale(1.1) rotate(5deg);
+    background: #ffffff;
+    color: #1a1a1a;
+  }
+`;
+
+export const FeatureContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FeatureTitle = styled.h3`
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+  transition: transform 0.3s ease;
+
+  ${Feature}:hover & {
+    transform: translateX(5px);
+  }
+`;
+
+export const FeatureDescription = styled.p`
+  font-size: 0.9rem;
+  color: #ffffff;
+  line-height: 1.5;
+  transition: opacity 0.3s ease;
+
+  ${Feature}:hover & {
+    opacity: 0.8;
+  }
+`;
+
 export const RightSection = styled.div`
   flex: 1;
   position: relative;

@@ -12,6 +12,7 @@ export const Title = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #ffffff;
 `;
 
 export const SpareTitle = styled.div`
@@ -24,6 +25,7 @@ export const SpareTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
 `;
 
 export const Input = styled.input`

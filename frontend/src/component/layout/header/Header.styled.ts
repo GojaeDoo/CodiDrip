@@ -5,10 +5,76 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: #ffffff;
-  border-bottom: 1px solid gray;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333;
   display: flex;
   flex-direction: row;
+`;
+
+export const Logo = styled.div`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #666666;
+  }
+`;
+
+export const Nav = styled.nav`
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+`;
+
+export const NavItem = styled.div`
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #666666;
+  }
+`;
+
+export const AuthButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+export const Button = styled.button`
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+`;
+
+export const LoginButton = styled(Button)`
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+
+  &:hover {
+    background-color: #ffffff;
+    color: #1a1a1a;
+  }
+`;
+
+export const SignupButton = styled(Button)`
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: none;
+
+  &:hover {
+    background-color: #666666;
+    color: #ffffff;
+  }
 `;
 
 export const SideMenuContainer = styled.div<{ open: boolean }>`
@@ -17,8 +83,8 @@ export const SideMenuContainer = styled.div<{ open: boolean }>`
   left: 0;
   height: 100%;
   width: 15%;
-  background: white;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  background: #1a1a1a;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transform: translateX(${({ open }) => (open ? "0" : "-100%")});
   transition: transform 0.3s ease;
   z-index: 10;
@@ -41,6 +107,12 @@ export const BurgerButton = styled.button`
   padding: 10px;
   display: flex;
   align-items: center;
+  color: #ffffff;
+  background: transparent;
+
+  &:hover {
+    color: #666666;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -50,9 +122,10 @@ export const CloseButton = styled.button`
   padding: 10px;
   display: flex;
   justify-content: flex-end;
+  color: #ffffff;
 
   &:hover {
-    opacity: 0.7;
+    color: #666666;
   }
 `;
 
@@ -60,9 +133,10 @@ export const MenuItem = styled.a`
   display: block;
   padding: 10px;
   text-decoration: none;
-  color: black;
+  color: #ffffff;
   &:hover {
-    background: #f4f4f4;
+    background: #333;
+    color: #666666;
   }
 `;
 
@@ -80,10 +154,16 @@ export const SearchInputContainer = styled.div`
 export const SearchInput = styled.input`
   min-width: 8vw;
   height: 4vh;
-  background-color: #d9d9d9;
+  background-color: #333;
   border-radius: 5px;
   outline: none;
   padding-left: 1vw;
+  color: #ffffff;
+  border: 1px solid #666666;
+
+  &::placeholder {
+    color: #666666;
+  }
 `;
 
 export const Login_JoinContainer = styled.div`
@@ -100,12 +180,16 @@ export const Login = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 2vw 0 5vw;
   cursor: pointer;
+
+  &:hover {
+    color: #666666;
+  }
 `;
 
 export const Join = styled.div`
@@ -115,10 +199,14 @@ export const Join = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 2vw;
   cursor: pointer;
+
+  &:hover {
+    color: #666666;
+  }
 `;

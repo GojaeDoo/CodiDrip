@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Header from "@/pages/header";
-import Footer from "@/pages/footer";
+// import Header from "@/pages/header";
+// import Footer from "@/pages/footer";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -14,9 +14,9 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main>{children}</main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
