@@ -7,12 +7,12 @@ import IntroPresenter from "./Intro.presenter";
 const IntroContainer = () => {
   const router = useRouter();
 
-  const onClickLogin = () => {
+  const onClickMoveLogin = () => {
     router.push("/login");
   };
 
-  const onClickJoin = () => {
-    router.push("/join");
+  const onClickMoveDrips = () => {
+    router.push("/drips");
   };
 
   const brandName = "DripDrop";
@@ -29,8 +29,8 @@ const IntroContainer = () => {
 
   return (
     <IntroPresenter
-      onClickLogin={onClickLogin}
-      onClickJoin={onClickJoin}
+      onClickMoveLogin={onClickMoveLogin}
+      onClickMoveDrips={onClickMoveDrips}
       brandName={brandName}
       scatterDirections={scatterDirections}
     />

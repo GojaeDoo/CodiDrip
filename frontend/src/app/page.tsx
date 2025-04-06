@@ -1,4 +1,4 @@
-import Intro from "@/pages/intro";
+import Intro from "@/app/intro/page";
 
 const Home = () => {
   return (

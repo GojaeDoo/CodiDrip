@@ -1,6 +1,6 @@
 export interface IntroProps {
-  onClickLogin: () => void;
-  onClickJoin: () => void;
+  onClickMoveLogin: () => void;
+  onClickMoveDrips: () => void;
   brandName: string;
   scatterDirections: Array<{
     tx: string;

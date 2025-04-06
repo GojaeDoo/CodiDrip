@@ -5,8 +5,8 @@ import * as S from "./Intro.styled";
 import { IntroProps } from "./Intro.types";
 
 const IntroPresenter = ({
-  onClickLogin,
-  onClickJoin,
+  onClickMoveLogin,
+  onClickMoveDrips,
   brandName,
   scatterDirections,
 }: IntroProps) => {
@@ -39,8 +39,12 @@ const IntroPresenter = ({
             스타일을 공유하고 새로운 영감을 얻어보세요.
           </S.Description>
           <S.ButtonWrapper>
-            <S.PrimaryButton onClick={onClickJoin}>시작하기</S.PrimaryButton>
-            <S.SecondaryButton onClick={onClickLogin}>로그인</S.SecondaryButton>
+            <S.PrimaryButton onClick={onClickMoveDrips}>
+              시작하기
+            </S.PrimaryButton>
+            <S.SecondaryButton onClick={onClickMoveLogin}>
+              로그인
+            </S.SecondaryButton>
           </S.ButtonWrapper>
         </S.LeftSection>
         <S.RightSection>
