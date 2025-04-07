@@ -40,7 +40,7 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  width: 21.3vw;
+  width: 20vw;
   height: 5vh;
   background-color: rgba(217, 217, 217, 0.9);
   outline: none;

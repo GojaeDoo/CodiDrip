@@ -39,11 +39,11 @@ export const JoinTitle = styled.div`
 
 export const IdCheckWrapper = styled.div`
   position: relative;
-  width: 21.2vw;
+  width: 20vw;
 `;
 
 export const IdInput = styled.input`
-  width: 19vw;
+  width: 20vw;
   height: 5vh;
   font-size: 1rem;
   background-color: rgba(217, 217, 217, 0.9);
@@ -57,8 +57,9 @@ export const IdCheckBtn = styled.button`
   position: absolute;
   top: 0;
   right: 0;
-  width: 5vw;
-  height: 5.5vh;
+  width: 4vw;
+  font-size: 0.9rem;
+  height: 5vh;
   outline: none;
   border: 1px solid #919497;
   border-radius: 5px;
@@ -72,7 +73,7 @@ export const IdCheckBtn = styled.button`
 `;
 
 export const PasswordWrapper = styled.div`
-  width: 21.2vw;
+  width: 20vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,16 +81,17 @@ export const PasswordWrapper = styled.div`
 `;
 
 export const PasswordInfo = styled.div`
-  font-size: 1rem;
+  font-size: 0.9rem;
+  color: #ffffff;
 `;
 
 export const EmailWrapper = styled.div`
   position: relative;
-  width: 21.2vw;
+  width: 20vw;
 `;
 
 export const Email = styled.input`
-  width: 5vw;
+  width: 7vw;
   height: 5vh;
   outline: none;
   font-size: 1rem;
@@ -100,14 +102,14 @@ export const Email = styled.input`
 `;
 
 export const JoinText = styled.span`
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 1000;
   text-align: center;
   color: #ffffff;
 `;
 
 export const EmailInput = styled.input`
-  width: 7.83vw;
+  width: 6.83vw;
   height: 5vh;
   outline: none;
   font-size: 1rem;
@@ -118,8 +120,8 @@ export const EmailInput = styled.input`
 `;
 
 export const EmailSelect = styled.select`
-  width: 9.08vw;
-  height: 5.5vh;
+  width: 9.95vw;
+  height: 5vh;
   outline: none;
   font-size: 1rem;
   border: 1px solid rgba(217, 217, 217, 0.9);
@@ -129,7 +131,7 @@ export const EmailSelect = styled.select`
 `;
 
 export const JoinInfoWrapper = styled.div`
-  width: 22vw;
+  width: 20vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -154,11 +156,12 @@ export const JoinTextSm = styled.span`
 
 export const EmailCheckBtn = styled.button`
   position: absolute;
-  top: -0.001vh;
+  top: 0;
   right: 0;
-  width: 5vw;
-  height: 5.6vh;
+  width: 4vw;
+  height: 5vh;
   outline: none;
+  font-size: 0.9rem;
   border: 1px solid #919497;
   border-radius: 5px;
   background-color: #919497;
