@@ -1,6 +1,6 @@
 "use client";
 
-import DripPostContainer from "../../component/features/dripProfile/DripPost.container";
+import DripPostContainer from "../../component/features/dripPost/DripPost.container";
 
 const DripProfile = () => {
   return (
