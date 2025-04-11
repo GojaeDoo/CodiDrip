@@ -1,7 +1,7 @@
 import pool from "../db";
 import { Profile } from "../types/profile";
 
-export const findAllProfileDB = async (): Promise<Profile[]> => {
+export const getFindAllProfileDB = async (): Promise<Profile[]> => {
   const result = await pool.query(
     `SELECT 
       profile_id,
@@ -17,7 +17,7 @@ export const findAllProfileDB = async (): Promise<Profile[]> => {
   return result.rows;
 };
 
-export const findByIdProfileDB = async (
+export const getFindByIdProfileDB = async (
   id: string
 ): Promise<Profile | null> => {
   const result = await pool.query(
