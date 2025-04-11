@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const DripPostContainer = styled.div`
-  width: 20vw;
-  height: 50vh;
+  width: 18vw;
+  height: 45vh;
   border-radius: 1vw;
   overflow: hidden;
   box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.15);

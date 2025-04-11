@@ -2,40 +2,46 @@
 
 import React from "react";
 import { Heart } from "lucide-react";
-import { DripPostPresenterProps } from "./DripPost.types";
 import * as S from "./DripPost.styled";
+import { DripPostPresenterProps } from "./DripPost.types";
 
 const DripPostPresenter: React.FC<DripPostPresenterProps> = ({
-  imageUrl,
-  profileImageUrl,
-  name,
-  height,
-  weight,
-  cardNumber = 1,
+  profiles,
+  likedProfiles,
+  onLike,
 }) => {
-  const [isLiked, setIsLiked] = React.useState(false);
-
   return (
-    <S.DripPostContainer>
-      <S.CardNumber>{cardNumber}</S.CardNumber>
-      <S.LikeButton onClick={() => setIsLiked(!isLiked)}>
-        <S.HeartIcon $isLiked={isLiked}>
-          <Heart />
-        </S.HeartIcon>
-      </S.LikeButton>
-      <S.PostImage src={imageUrl} alt={name} />
-      <S.PostInfo>
-        <S.ProfileDetailsContainer>
-          <S.ProfileImage src={profileImageUrl} alt={`${name}'s profile`} />
-          <S.ProfileInfo>
-            <S.ProfileName>{name}</S.ProfileName>
-            <S.ProfileDetail>
-              {height}cm • {weight}kg
-            </S.ProfileDetail>
-          </S.ProfileInfo>
-        </S.ProfileDetailsContainer>
-      </S.PostInfo>
-    </S.DripPostContainer>
+    <S.Container>
+      {profiles.map((profile, index) => (
+        <S.DripPostContainer key={profile.profile_id}>
+          <S.CardNumber>{String(index + 1)}</S.CardNumber>
+          <S.LikeButton onClick={() => onLike(profile.profile_id)}>
+            <S.HeartIcon $isLiked={likedProfiles.has(profile.profile_id)}>
+              <Heart />
+            </S.HeartIcon>
+          </S.LikeButton>
+          <S.PostImage
+            src={profile.profile_image || ""}
+            alt={profile.profile_nickname}
+          />
+          <S.PostInfo>
+            <S.ProfileDetailsContainer>
+              <S.ProfileImage
+                src={profile.profile_image || ""}
+                alt={`${profile.profile_nickname}'s profile`}
+              />
+              <S.ProfileInfo>
+                <S.ProfileName>{profile.profile_nickname}</S.ProfileName>
+                <S.ProfileDetail>
+                  {profile.profile_height}cm • {profile.profile_weight}kg •{" "}
+                  {profile.profile_gender}
+                </S.ProfileDetail>
+              </S.ProfileInfo>
+            </S.ProfileDetailsContainer>
+          </S.PostInfo>
+        </S.DripPostContainer>
+      ))}
+    </S.Container>
   );
 };
 

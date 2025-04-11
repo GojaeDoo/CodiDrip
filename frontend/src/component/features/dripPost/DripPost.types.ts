@@ -1,17 +1,7 @@
-export interface Profile {
-  id: string;
-  name: string;
-  height: number;
-  weight: number;
-  image_url: string;
-  profile_image_url: string;
-}
+import { Profile } from "@/types/profile";
 
 export interface DripPostPresenterProps {
-  imageUrl: string;
-  profileImageUrl: string;
-  name: string;
-  height: number;
-  weight: number;
-  cardNumber?: number;
+  profiles: Profile[];
+  likedProfiles: Set<number>;
+  onLike: (id: number) => void;
 }

@@ -1,5 +1,6 @@
 "use client";
 import * as S from "./Drips.styled";
+import DripPost from "../../../app/dripPost/page";
 
 const DripsPresenter = () => {
   return (
@@ -17,6 +18,7 @@ const DripsPresenter = () => {
             <S.DripsSelectBtn>WOMEN</S.DripsSelectBtn>
           </S.DripsSelectWrapperBottom>
         </S.DripsSelectWrapper>
+        <DripPost />
       </S.Background>
     </>
   );

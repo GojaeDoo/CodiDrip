@@ -7,7 +7,7 @@ export const userJoin = async (userData: {
 }) => {
   try {
     const response = await axios.post(
-      "http://localhost:3002/api/users",
+      "http://localhost:3005/api/users",
       userData,
       {
         headers: {
@@ -25,7 +25,7 @@ export const userJoin = async (userData: {
 export const idOverlappingCheck = async (id: string) => {
   try {
     const response = await axios.get(
-      "http://localhost:3002/api/users/check-id",
+      "http://localhost:3005/api/users/check-id",
       {
         params: { user_id: id },
         headers: {
@@ -43,7 +43,7 @@ export const idOverlappingCheck = async (id: string) => {
 export const emailOverlappingCheck = async (email: string) => {
   try {
     const response = await axios.get(
-      "http://localhost:3002/api/users/check-email",
+      "http://localhost:3005/api/users/check-email",
       {
         params: { user_email: email },
         headers: {

@@ -1,13 +1,9 @@
 "use client";
 
-import DripPostContainer from "../../component/features/dripPost/DripPost.container";
+import DripPostContainer from "@/component/features/dripPost/DripPost.container";
 
-const DripProfile = () => {
-  return (
-    <>
-      <DripPostContainer />
-    </>
-  );
+const DripPostPage = () => {
+  return <DripPostContainer />;
 };
 
-export default DripProfile;
+export default DripPostPage;

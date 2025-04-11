@@ -19,7 +19,7 @@ export const getAllUsers = async () => {
 
 export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
   try {
-    const idCheck = await idOverlappingCheckDB(user_id); // user_id만 전달
+    const idCheck = await idOverlappingCheckDB(user_id);
     return idCheck;
   } catch (error) {
     console.error("아이디 중복 체크 서비스 에러", error);
@@ -28,7 +28,7 @@ export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
 
 export const emailOverlappingCheck = async ({ user_email }: EmailCheckType) => {
   try {
-    const emailCheck = await emailOverlappingCheckDB(user_email); // user_email만 전달
+    const emailCheck = await emailOverlappingCheckDB(user_email);
     return emailCheck;
   } catch (error) {
     console.error("이메일 중복 체크 서비스 에러", error);
