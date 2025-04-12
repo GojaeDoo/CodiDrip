@@ -5,6 +5,7 @@ import {
   getUsers,
   postUserJoin,
   getEmailOverlappingCheck,
+  loginUserController,
 } from "../controller/userController";
 
 const router = Router();
@@ -14,5 +15,6 @@ router.get("/check-id", getIdOverlappingCheck); // 아이디 중복 체크
 router.get("/check-email", getEmailOverlappingCheck); // 이메일 중복 체크
 
 router.post("/", postUserJoin); // 사용자 회원가입
+router.post("/login", loginUserController); // 로그인
 
 export default router;

@@ -52,3 +52,19 @@ export const joinUserDB = async (user: User) => {
     throw err;
   }
 };
+
+export const findUserByCredentialsDB = async (user_id: string) => {
+  try {
+    const query = `
+      SELECT user_id, user_password, user_email 
+      FROM users 
+      WHERE user_id = $1
+    `;
+    const values = [user_id];
+    const result = await pool.query(query, values);
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error("로그인 DB 조회 실패:", error);
+    throw error;
+  }
+};

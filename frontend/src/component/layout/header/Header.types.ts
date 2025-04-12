@@ -3,4 +3,6 @@ export interface HeaderProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onClickMoveLogin: () => void;
   onClickMoveJoin: () => void;
+  onClickLogout?: () => void;
+  isLoggedIn: boolean;
 }

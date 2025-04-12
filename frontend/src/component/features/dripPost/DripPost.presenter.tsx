@@ -1,22 +1,17 @@
 "use client";
 
-import React from "react";
 import { Heart } from "lucide-react";
 import * as S from "./DripPost.styled";
 import { DripPostPresenterProps } from "./DripPost.types";
 
-const DripPostPresenter: React.FC<DripPostPresenterProps> = ({
-  profiles,
-  likedProfiles,
-  onLike,
-}) => {
+const DripPostPresenter = (props: DripPostPresenterProps) => {
   return (
     <S.Container>
-      {profiles.map((profile, index) => (
+      {props.profiles.map((profile, index) => (
         <S.DripPostContainer key={profile.profile_id}>
           <S.CardNumber>{String(index + 1)}</S.CardNumber>
-          <S.LikeButton onClick={() => onLike(profile.profile_id)}>
-            <S.HeartIcon $isLiked={likedProfiles.has(profile.profile_id)}>
+          <S.LikeButton onClick={() => props.onLike(profile.profile_id)}>
+            <S.HeartIcon $isLiked={props.likedProfiles.has(profile.profile_id)}>
               <Heart />
             </S.HeartIcon>
           </S.LikeButton>

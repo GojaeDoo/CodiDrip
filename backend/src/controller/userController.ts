@@ -7,12 +7,13 @@ import {
   getAllUsers,
   idOverlappingCheck,
   emailOverlappingCheck,
+  loginUser,
 } from "../service/userService";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const user = await getAllUsers();
-    res.json(user); // 성공적으로 데이터를 반환
+    res.json(user); //
   } catch (err) {
     res.status(500).json({ error: "유저 찾는거 컨트롤러 에러" });
   }
@@ -86,5 +87,30 @@ export const postUserJoin = async (
       console.error("회원가입 실패:", error);
       res.status(500).json({ error: "회원가입 중 오류가 발생했습니다." });
     }
+  }
+};
+
+export const loginUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { user_id, user_password } = req.body;
+
+    if (!user_id || !user_password) {
+      res.status(400).json({ error: "아이디와 비밀번호를 모두 입력해주세요." });
+      return;
+    }
+
+    const result = await loginUser(user_id, user_password);
+    res.status(200).json({
+      message: "로그인 성공",
+      user: result.user,
+      token: result.token,
+    });
+  } catch (error: any) {
+    console.error("로그인 컨트롤러 에러:", error);
+    res.status(401).json({ error: error.message });
   }
 };

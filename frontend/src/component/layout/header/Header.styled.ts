@@ -12,8 +12,14 @@ export const HeaderContainer = styled.div`
 `;
 
 export const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.3rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 1000;
+  font-style: italic;
   color: #ffffff;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -209,4 +215,51 @@ export const Join = styled.div`
   &:hover {
     color: #666666;
   }
+`;
+
+export const UserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 2vw;
+`;
+
+export const ProfileImage = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #333;
+  overflow: hidden;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const Logout = styled(Button)`
+  width: auto;
+  height: 100%;
+  font-size: 1.4rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 1000;
+  font-style: italic;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2vw;
+  cursor: pointer;
+
+  &:hover {
+    color: #666666;
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-right: 2vw;
 `;

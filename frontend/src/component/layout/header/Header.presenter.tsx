@@ -3,7 +3,6 @@
 import React from "react";
 import { HeaderProps } from "./Header.types";
 import * as S from "./Header.styled";
-import * as C from "../../commons/Commons.styled";
 import { Menu, X } from "lucide-react";
 
 const HeaderPresenter = ({
@@ -11,6 +10,8 @@ const HeaderPresenter = ({
   setIsOpen,
   onClickMoveLogin,
   onClickMoveJoin,
+  onClickLogout,
+  isLoggedIn,
 }: HeaderProps) => {
   return (
     <S.HeaderContainer>
@@ -30,11 +31,21 @@ const HeaderPresenter = ({
       <S.SearchInputContainer>
         <S.SearchInput />
       </S.SearchInputContainer>
-      <C.Title>DripDrop</C.Title>
-      <S.Login_JoinContainer>
-        <S.Login onClick={onClickMoveLogin}>Login</S.Login>
-        <S.Join onClick={onClickMoveJoin}>Join</S.Join>
-      </S.Login_JoinContainer>
+      <S.Logo>DripDrop</S.Logo>
+      {isLoggedIn ? (
+        <S.UserContainer>
+          <S.ProfileImage>
+            {/* 임시로 기본 프로필 이미지 사용 */}
+            <img src="/images/default-profile.png" alt="프로필" />
+          </S.ProfileImage>
+          <S.Logout onClick={onClickLogout}>Logout</S.Logout>
+        </S.UserContainer>
+      ) : (
+        <S.ButtonContainer>
+          <S.Login onClick={onClickMoveLogin}>Login</S.Login>
+          <S.Join onClick={onClickMoveJoin}>Join</S.Join>
+        </S.ButtonContainer>
+      )}
     </S.HeaderContainer>
   );
 };
