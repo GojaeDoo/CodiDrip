@@ -1,22 +1,29 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Header from "@/app/header/page";
 import Footer from "@/app/footer/page";
+import { useAuth } from "@/context/AuthContext";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isReady, setIsReady] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    console.log("현재 경로 pathname:", pathname); // ✅ 이거 이제 뜰 거야!
+    console.log("현재 경로 pathname:", pathname);
     setIsReady(true);
     document.body.style.boxSizing = "border-box";
-  }, [pathname]); // ✅ pathname이 바뀔 때마다 실행됨
+
+    if (isLoggedIn && (pathname === "/login" || pathname === "/join")) {
+      router.push("/drips");
+    }
+  }, [pathname, isLoggedIn, router]);
 
   if (!isReady) return null;
 
-  const hiddenRoutes = ["/", "/login", "/join"]; // ✅ "/"는 intro 페이지
+  const hiddenRoutes = ["/", "/login", "/join"]; //
   const isHidden = hiddenRoutes.includes(pathname || "");
 
   return (

@@ -1,11 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import IntroPresenter from "./Intro.presenter";
+import { useAuth } from "@/context/AuthContext";
 
 const IntroContainer = () => {
   const router = useRouter();
+  const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/drips");
+    }
+  }, [isLoggedIn, router]);
 
   const onClickMoveLogin = () => {
     router.push("/login");
@@ -16,16 +24,10 @@ const IntroContainer = () => {
   };
 
   const brandName = "DripDrop";
-  const scatterDirections = [
-    { tx: "-100px", ty: "-50px" },
-    { tx: "100px", ty: "-30px" },
-    { tx: "-80px", ty: "40px" },
-    { tx: "70px", ty: "-20px" },
-    { tx: "-60px", ty: "60px" },
-    { tx: "90px", ty: "30px" },
-    { tx: "-70px", ty: "-40px" },
-    { tx: "80px", ty: "-60px" },
-  ];
+  const scatterDirections = brandName.split("").map(() => ({
+    tx: `${Math.random() * 200 - 100}px`,
+    ty: `${Math.random() * 200 - 100}px`,
+  }));
 
   return (
     <IntroPresenter

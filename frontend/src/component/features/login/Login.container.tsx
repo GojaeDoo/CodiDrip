@@ -5,11 +5,13 @@ import LoginPresenter from "./Login.presenter";
 import { LoginProps } from "./Login.types";
 import { useState } from "react";
 import { loginUser } from "./Login.query";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginContainer = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const router = useRouter();
+  const { login } = useAuth();
 
   const onClickMoveJoin: LoginProps["onClickMoveJoin"] = () => {
     router.push("/join");
@@ -26,8 +28,7 @@ const LoginContainer = () => {
   const onClickLogin: LoginProps["onClickLogin"] = async () => {
     try {
       const response = await loginUser(userId, userPassword);
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("userId", response.user.user_id);
+      login(response.token, response.user.user_id);
       router.push("/drips");
     } catch (error) {
       if (error instanceof Error) {

@@ -1,8 +1,16 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2vw;
+  padding: 2vw;
+  justify-content: center;
+`;
+
 export const DripPostContainer = styled.div`
-  width: 18vw;
-  height: 45vh;
+  width: 14vw;
+  height: 42vh;
   border-radius: 1vw;
   overflow: hidden;
   box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.15);
@@ -10,6 +18,11 @@ export const DripPostContainer = styled.div`
   position: relative;
   min-width: 250px;
   max-width: 350px;
+
+  &:hover {
+    scale: 1.05;
+    transition: scale 0.2s ease;
+  }
 `;
 
 export const PostImage = styled.img`
@@ -123,11 +136,42 @@ export const HeartIcon = styled.div<{ $isLiked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: ${({ $isLiked }) =>
+      $isLiked ? "rgba(255, 75, 75, 0.2)" : "rgba(0, 0, 0, 0.1)"};
+    transform: scale(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::before {
+    transform: scale(1.5);
+  }
 
   svg {
     width: 100%;
     height: 100%;
     color: ${({ $isLiked }) => ($isLiked ? "#ff4b4b" : "#000")};
     fill: ${({ $isLiked }) => ($isLiked ? "#ff4b4b" : "none")};
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+    color: ${({ $isLiked }) => ($isLiked ? "#ff1a1a" : "#ff4b4b")};
   }
 `;

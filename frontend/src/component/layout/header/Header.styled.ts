@@ -220,8 +220,7 @@ export const Join = styled.div`
 export const UserContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-right: 2vw;
+  gap: 0.5vw;
 `;
 
 export const ProfileImage = styled.div`
@@ -261,5 +260,4 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  margin-right: 2vw;
 `;

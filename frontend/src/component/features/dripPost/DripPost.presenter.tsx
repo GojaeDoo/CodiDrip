@@ -7,9 +7,8 @@ import { DripPostPresenterProps } from "./DripPost.types";
 const DripPostPresenter = (props: DripPostPresenterProps) => {
   return (
     <S.Container>
-      {props.profiles.map((profile, index) => (
+      {props.profiles.map((profile) => (
         <S.DripPostContainer key={profile.profile_id}>
-          <S.CardNumber>{String(index + 1)}</S.CardNumber>
           <S.LikeButton onClick={() => props.onLike(profile.profile_id)}>
             <S.HeartIcon $isLiked={props.likedProfiles.has(profile.profile_id)}>
               <Heart />
@@ -28,8 +27,7 @@ const DripPostPresenter = (props: DripPostPresenterProps) => {
               <S.ProfileInfo>
                 <S.ProfileName>{profile.profile_nickname}</S.ProfileName>
                 <S.ProfileDetail>
-                  {profile.profile_height}cm • {profile.profile_weight}kg •{" "}
-                  {profile.profile_gender}
+                  {profile.profile_height}cm • {profile.profile_weight}kg
                 </S.ProfileDetail>
               </S.ProfileInfo>
             </S.ProfileDetailsContainer>

@@ -2,19 +2,33 @@
 import React, { useEffect, useState } from "react";
 import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
+import { fetchUserProfile } from "./Header.query";
+import { Profile } from "@/types/profile";
+import { useAuth } from "@/context/AuthContext";
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const router = useRouter();
+  const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const storedUserId = localStorage.getItem("userId");
-    setIsLoggedIn(!!token);
-    setUserId(storedUserId);
-  }, []);
+    if (storedUserId && isLoggedIn) {
+      const loadUserProfile = async () => {
+        try {
+          const profile = await fetchUserProfile(storedUserId);
+          setUserProfile(profile);
+        } catch (error) {
+          console.error("Error loading user profile:", error);
+          setUserProfile(null);
+        }
+      };
+      loadUserProfile();
+    } else {
+      setUserProfile(null);
+    }
+  }, [isLoggedIn]);
 
   const onClickMoveLogin = () => {
     router.push("/login");
@@ -25,11 +39,7 @@ const HeaderContainer = () => {
   };
 
   const onClickLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    setIsLoggedIn(false);
-    setUserId(null);
-    router.push("/");
+    logout();
   };
 
   return (
@@ -40,6 +50,7 @@ const HeaderContainer = () => {
       onClickMoveJoin={onClickMoveJoin}
       onClickLogout={onClickLogout}
       isLoggedIn={isLoggedIn}
+      userProfile={userProfile}
     />
   );
 };

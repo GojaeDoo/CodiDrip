@@ -12,11 +12,12 @@ const HeaderPresenter = ({
   onClickMoveJoin,
   onClickLogout,
   isLoggedIn,
+  userProfile,
 }: HeaderProps) => {
   return (
     <S.HeaderContainer>
       <S.BurgerButtonContainer>
-        <S.BurgerButton onClick={() => setIsOpen((prev) => !prev)}>
+        <S.BurgerButton onClick={() => setIsOpen((prev: boolean) => !prev)}>
           {isOpen ? <X size={36} /> : <Menu size={36} />}
         </S.BurgerButton>
       </S.BurgerButtonContainer>
@@ -24,8 +25,10 @@ const HeaderPresenter = ({
         <S.CloseButton onClick={() => setIsOpen(false)}>
           <X size={36} />
         </S.CloseButton>
-        <S.MenuItem href="#">Drips</S.MenuItem>
-        <S.MenuItem href="#">Drip users</S.MenuItem>
+        <S.MenuItem href="#">Drip 게시글</S.MenuItem>
+        <S.MenuItem href="#">Drip 유저</S.MenuItem>
+        <S.MenuItem href="#">자유게시판</S.MenuItem>
+        <S.MenuItem href="#">마이페이지</S.MenuItem>
         <S.MenuItem href="#">건의사항/신고</S.MenuItem>
       </S.SideMenuContainer>
       <S.SearchInputContainer>
@@ -33,18 +36,21 @@ const HeaderPresenter = ({
       </S.SearchInputContainer>
       <S.Logo>DripDrop</S.Logo>
       {isLoggedIn ? (
-        <S.UserContainer>
-          <S.ProfileImage>
-            {/* 임시로 기본 프로필 이미지 사용 */}
-            <img src="/images/default-profile.png" alt="프로필" />
-          </S.ProfileImage>
-          <S.Logout onClick={onClickLogout}>Logout</S.Logout>
-        </S.UserContainer>
-      ) : (
         <S.ButtonContainer>
+          <S.UserContainer>
+            <S.ProfileImage>
+              {userProfile?.profile_image && (
+                <img src={userProfile.profile_image} alt="Profile" />
+              )}
+            </S.ProfileImage>
+            <S.Logout onClick={onClickLogout}>Logout</S.Logout>
+          </S.UserContainer>
+        </S.ButtonContainer>
+      ) : (
+        <S.Login_JoinContainer>
           <S.Login onClick={onClickMoveLogin}>Login</S.Login>
           <S.Join onClick={onClickMoveJoin}>Join</S.Join>
-        </S.ButtonContainer>
+        </S.Login_JoinContainer>
       )}
     </S.HeaderContainer>
   );

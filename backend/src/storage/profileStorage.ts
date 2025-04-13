@@ -10,7 +10,8 @@ export const getFindAllProfileDB = async (): Promise<Profile[]> => {
       profile_weight,
       profile_image,
       profile_gender,
-      profile_follow
+      profile_follow,
+      user_id
     FROM profile
     ORDER BY profile_id DESC`
   );
@@ -24,13 +25,10 @@ export const getFindByIdProfileDB = async (
     `SELECT 
       profile_id,
       profile_nickname,
-      profile_height,
-      profile_weight,
       profile_image,
-      profile_gender,
-      profile_follow
-    FROM profiles
-    WHERE profile_id = $1`,
+      user_id
+    FROM profile
+    WHERE user_id = $1`,
     [id]
   );
   return result.rows[0] || null;

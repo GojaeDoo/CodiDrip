@@ -1,4 +1,4 @@
-"ues client";
+"use client";
 
 import * as S from "./Footer.styled";
 
