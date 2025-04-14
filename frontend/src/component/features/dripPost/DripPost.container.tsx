@@ -2,28 +2,40 @@
 
 import React, { useEffect, useState } from "react";
 import DripPostPresenter from "./DripPost.presenter";
-import { fetchProfiles } from "./DripPost.query";
 import { Profile } from "../../../types/profile";
 
-const DripPostContainer = () => {
+interface DripPostContainerProps {
+  genderSelect: string;
+}
+
+const DripPostContainer = ({ genderSelect }: DripPostContainerProps) => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [likedProfiles, setLikedProfiles] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    const loadProfiles = async () => {
+    const fetchProfiles = async () => {
       try {
-        const data = await fetchProfiles();
-        setProfiles(data);
+        const response = await fetch("http://localhost:3005/api/profiles");
+        const data = await response.json();
+        // genderSelect에 따라 프로필 필터링
+        const filteredProfiles =
+          genderSelect === "all"
+            ? data
+            : data.filter(
+                (profile: Profile) => profile.gender === genderSelect
+              );
+        setProfiles(filteredProfiles);
       } catch (error) {
-        setError(error as Error);
+        console.error("프로필을 불러오는 중 오류가 발생했습니다:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    loadProfiles();
-  }, []);
+
+    fetchProfiles();
+  }, [genderSelect]);
 
   const handleLike = (id: number) => {
     setLikedProfiles((prev) => {

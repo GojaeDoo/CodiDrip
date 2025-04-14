@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const handleUserActivity = () => {
-      console.log("사용자 활동 감지됨");
       localStorage.setItem("lastActivityTime", Date.now().toString());
     };
 
@@ -44,8 +43,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
       const currentTime = Date.now();
       const timeDiff = currentTime - lastActivity;
-
-      console.log("마지막 활동으로부터 경과 시간:", timeDiff, "ms");
 
       if (timeDiff > TIMEOUT_DURATION) {
         console.log("타임아웃 발생!");

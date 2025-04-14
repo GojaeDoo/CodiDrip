@@ -25,7 +25,7 @@ const DripsPresenter = (props: DripsProps) => {
             </S.DripsSelectBtn>
           </S.DripsSelectWrapperBottom>
         </S.DripsSelectWrapper>
-        <DripPost />
+        <DripPost genderSelect={props.genderSelect} />
       </S.Background>
     </>
   );

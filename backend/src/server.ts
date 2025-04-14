@@ -16,6 +16,10 @@ app.use(express.json());
 
 // 정적 파일 서빙 설정임
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads/profiles",
+  express.static(path.join(__dirname, "uploads/profiles"))
+);
 
 // 라우터 설정 하는 곳
 app.use("/api/users", userRouter);

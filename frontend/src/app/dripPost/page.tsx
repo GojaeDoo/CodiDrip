@@ -2,8 +2,12 @@
 
 import DripPostContainer from "@/component/features/dripPost/DripPost.container";
 
-const DripPostPage = () => {
-  return <DripPostContainer />;
+interface DripPostProps {
+  genderSelect: string;
+}
+
+const DripPostPage = ({ genderSelect }: DripPostProps) => {
+  return <DripPostContainer genderSelect={genderSelect} />;
 };
 
 export default DripPostPage;
