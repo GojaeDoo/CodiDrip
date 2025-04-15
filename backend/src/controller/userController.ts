@@ -7,6 +7,7 @@ import {
   getAllUsers,
   idOverlappingCheck,
   emailOverlappingCheck,
+  findIdCheck,
   loginUser,
 } from "../service/userService";
 
@@ -66,6 +67,21 @@ export const getEmailOverlappingCheck = async (
     res.json({ exists: OverlappingCheck });
   } catch (error) {
     res.status(500).json({ error: "이메일 중복 체크 컨트롤러 에러" });
+  }
+};
+
+export const getFindId = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+
+    const findId = await findIdCheck({
+      user_email: email as string,
+    });
+
+    res.json({ findId });
+  } catch (error) {
+    console.error("아이디 찾기 실패:", error);
+    res.status(500).json({ error: "아이디 찾기 중 오류가 발생했습니다." });
   }
 };
 

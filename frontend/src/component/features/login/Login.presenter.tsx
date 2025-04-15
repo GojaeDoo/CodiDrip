@@ -13,10 +13,11 @@ const LoginPresenter = (props: LoginProps) => {
             placeholder="비밀번호"
             onChange={props.onChangeUserPassword}
             type="password"
+            onKeyDown={props.handleKeyDown}
           />
           <C.Button onClick={props.onClickLogin}>로그인</C.Button>
           <S.MoveWrapper>
-            <S.Link>아이디 찾기</S.Link>
+            <S.Link onClick={props.onClickMoveIdFind}>아이디 찾기</S.Link>
             <S.LoginText> | </S.LoginText>
             <S.Link>비밀번호 찾기</S.Link>
             <S.LoginText> | </S.LoginText>

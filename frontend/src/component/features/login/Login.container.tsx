@@ -17,12 +17,24 @@ const LoginContainer = () => {
     router.push("/join");
   };
 
+  const onClickMoveIdFind: LoginProps["onClickMoveIdFind"] = () => {
+    router.push("/idFind");
+  };
+
   const onChangeUserId: LoginProps["onChangeUserId"] = (event) => {
     setUserId(event.target.value);
   };
 
   const onChangeUserPassword: LoginProps["onChangeUserPassword"] = (event) => {
     setUserPassword(event.target.value);
+  };
+
+  const handleKeyDown: LoginProps["handleKeyDown"] = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      onClickLogin();
+    }
   };
 
   const onClickLogin: LoginProps["onClickLogin"] = async () => {
@@ -42,9 +54,12 @@ const LoginContainer = () => {
     <>
       <LoginPresenter
         onClickMoveJoin={onClickMoveJoin}
+        onClickMoveIdFind={onClickMoveIdFind}
         onChangeUserId={onChangeUserId}
         onChangeUserPassword={onChangeUserPassword}
+        handleKeyDown={handleKeyDown}
         onClickLogin={onClickLogin}
+        profiles={[]}
       />
     </>
   );

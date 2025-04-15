@@ -13,7 +13,7 @@ export const Background = styled.div`
   margin: 0;
 `;
 
-export const LoginWrapper = styled.div`
+export const IdFindWrapper = styled.div`
   box-sizing: border-box;
   margin-top: 2vh;
   width: 30vw;
@@ -28,33 +28,14 @@ export const LoginWrapper = styled.div`
   justify-content: space-around;
 `;
 
-export const LoginTitle = styled.div`
+export const IdFindTitle = styled.div`
   font-size: 2rem;
   font-weight: 1000;
   color: #ffffff;
 `;
 
-export const Divider = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const MoveWrapper = styled.div`
-  width: 21.3vw;
-  height: 1rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-`;
-
-export const Link = styled.span`
+export const IdInputText = styled.div`
   font-size: 1rem;
-  cursor: pointer;
-  color: #ffffff;
-`;
-
-export const LoginText = styled.span`
-  font-size: 1rem;
+  font-weight: 1000;
   color: #ffffff;
 `;

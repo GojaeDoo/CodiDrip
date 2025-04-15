@@ -37,6 +37,19 @@ export const emailOverlappingCheckDB = async (user_email: string) => {
   }
 };
 
+export const findIdCheckDB = async (user_email: string) => {
+  try {
+    const values = [user_email];
+    const result = await pool.query(
+      `SELECT user_id FROM users WHERE user_email = $1;`,
+      values
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("DB 조회 실패 아이디 찾기", error);
+  }
+};
+
 export const joinUserDB = async (user: User) => {
   try {
     const query = `

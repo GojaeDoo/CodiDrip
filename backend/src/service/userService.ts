@@ -5,6 +5,7 @@ import {
   joinUserDB,
   emailOverlappingCheckDB,
   findUserByCredentialsDB,
+  findIdCheckDB,
 } from "../storage/userStorage";
 import { IdCheckType, User, EmailCheckType } from "../types/userTypes";
 import { hashPassword, comparePassword } from "../utils/hashUtil";
@@ -34,6 +35,15 @@ export const emailOverlappingCheck = async ({ user_email }: EmailCheckType) => {
     return emailCheck;
   } catch (error) {
     console.error("이메일 중복 체크 서비스 에러", error);
+  }
+};
+
+export const findIdCheck = async ({ user_email }: EmailCheckType) => {
+  try {
+    const findId = await findIdCheckDB(user_email);
+    return findId;
+  } catch (error) {
+    console.error("아이디 찾기 서비스 에러", error);
   }
 };
 
