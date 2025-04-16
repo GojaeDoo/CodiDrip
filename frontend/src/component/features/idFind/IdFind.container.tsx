@@ -22,8 +22,9 @@ export const IdFindContainer = () => {
       const response = await IdFindUser(email);
       console.log(response);
       if (response.findId[0].user_id) {
-        setFindId(response.findId[0].user_id);
-        router.push(`/login?findId=${findId}`);
+        const userId = response.findId[0].user_id;
+        setFindId(userId);
+        router.push(`/idFindSuccess?id=${userId}`);
       } else {
         alert("존재하지 않는 이메일입니다.");
       }
