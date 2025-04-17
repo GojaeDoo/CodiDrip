@@ -1,8 +1,8 @@
-import * as S from "./IdFindSuccess.styled";
-import * as C from "../../../component/commons/Commons.styled";
-import { IdFindSuccessProps } from "./IdFindSuccess.types";
+import * as S from "./IdFindResult.styled";
+import * as C from "../../commons/Commons.styled";
+import { IdFindResultProps } from "./IdFindResult.types";
 
-export const IdFindSuccessPresenter = (props: IdFindSuccessProps) => {
+export const IdFindResultPresenter = (props: IdFindResultProps) => {
   return (
     <S.Background>
       <S.IdFindSuccessWrapper>
@@ -17,4 +17,4 @@ export const IdFindSuccessPresenter = (props: IdFindSuccessProps) => {
   );
 };
 
-export default IdFindSuccessPresenter;
+export default IdFindResultPresenter;

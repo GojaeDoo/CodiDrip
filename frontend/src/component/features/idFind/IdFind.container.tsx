@@ -21,12 +21,18 @@ export const IdFindContainer = () => {
     try {
       const response = await IdFindUser(email);
       console.log(response);
-      if (response.findId[0].user_id) {
+      if (
+        response.findId &&
+        response.findId.length > 0 &&
+        response.findId[0].user_id
+      ) {
         const userId = response.findId[0].user_id;
+        const result = true;
         setFindId(userId);
-        router.push(`/idFindSuccess?id=${userId}`);
+        router.push(`/idFindResult?id=${userId}&result=${result}`);
       } else {
-        alert("존재하지 않는 이메일입니다.");
+        const result = false;
+        router.push(`/idFindResult?result=${result}`);
       }
     } catch (error) {
       console.log(error);
