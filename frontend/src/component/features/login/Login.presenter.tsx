@@ -19,7 +19,9 @@ const LoginPresenter = (props: LoginProps) => {
           <S.MoveWrapper>
             <S.Link onClick={props.onClickMoveIdFind}>아이디 찾기</S.Link>
             <S.LoginText> | </S.LoginText>
-            <S.Link>비밀번호 찾기</S.Link>
+            <S.Link onClick={props.onClickMovePasswordFind}>
+              비밀번호 찾기
+            </S.Link>
             <S.LoginText> | </S.LoginText>
             <S.Link onClick={props.onClickMoveJoin}>회원가입</S.Link>
           </S.MoveWrapper>

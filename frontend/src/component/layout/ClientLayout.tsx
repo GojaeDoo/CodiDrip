@@ -23,7 +23,14 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (!isReady) return null;
 
-  const hiddenRoutes = ["/", "/login", "/join", "/idFind", "/idFindResult"];
+  const hiddenRoutes = [
+    "/",
+    "/login",
+    "/join",
+    "/idFind",
+    "/idFindResult",
+    "/passwordFind",
+  ];
   const isHidden = hiddenRoutes.includes(pathname || "");
 
   return (

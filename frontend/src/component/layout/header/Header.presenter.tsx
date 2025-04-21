@@ -39,9 +39,9 @@ const HeaderPresenter = ({
         <S.ButtonContainer>
           <S.UserContainer>
             <S.ProfileImage>
-              {userProfile?.profile_image && (
+              {userProfile?.profile_image ? (
                 <img src={userProfile.profile_image} alt="Profile" />
-              )}
+              ) : null}
             </S.ProfileImage>
             <S.Logout onClick={onClickLogout}>Logout</S.Logout>
           </S.UserContainer>

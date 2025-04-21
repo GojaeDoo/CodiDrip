@@ -21,6 +21,10 @@ const LoginContainer = () => {
     router.push("/idFind");
   };
 
+  const onClickMovePasswordFind: LoginProps["onClickMovePasswordFind"] = () => {
+    router.push("/passwordFind");
+  };
+
   const onChangeUserId: LoginProps["onChangeUserId"] = (event) => {
     setUserId(event.target.value);
   };
@@ -55,6 +59,7 @@ const LoginContainer = () => {
       <LoginPresenter
         onClickMoveJoin={onClickMoveJoin}
         onClickMoveIdFind={onClickMoveIdFind}
+        onClickMovePasswordFind={onClickMovePasswordFind}
         onChangeUserId={onChangeUserId}
         onChangeUserPassword={onChangeUserPassword}
         handleKeyDown={handleKeyDown}
