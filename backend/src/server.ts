@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "../src/router/userRouter";
-import profileRouter from "../src/router/profileRouter";
+import userRouter from "./routes/userRoutes";
 import path from "path";
 
 dotenv.config();
@@ -10,8 +9,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3005;
 
-// 미들웨어 설정 하는 곳
-app.use(cors({ origin: ["http://localhost:3000", "http://localhost:3004"] }));
+// CORS 설정
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 프론트엔드 URL
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // 정적 파일 서빙 설정임
@@ -23,8 +28,6 @@ app.use(
 
 // 라우터 설정 하는 곳
 app.use("/api/users", userRouter);
-
-app.use("/api/profiles", profileRouter);
 
 // 서버 실행 하는 곳
 app.listen(port, () => {

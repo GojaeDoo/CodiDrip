@@ -50,6 +50,22 @@ export const findIdCheckDB = async (user_email: string) => {
   }
 };
 
+export const findPasswordCheckDB = async (
+  user_id: string,
+  user_email: string
+) => {
+  try {
+    const values = [user_id, user_email];
+    const result = await pool.query(
+      `SELECT user_password FROM users WHERE user_id = $1 AND user_email = $2;`,
+      values
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("DB 조회 실패 비밀번호 찾기", error);
+  }
+};
+
 export const joinUserDB = async (user: User) => {
   try {
     const query = `

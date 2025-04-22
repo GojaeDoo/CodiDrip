@@ -1,6 +1,11 @@
 // src/controller/userController.ts
 import { Request, Response, NextFunction } from "express";
-import { IdCheckType, User, EmailCheckType } from "../types/userTypes";
+import {
+  IdCheckType,
+  User,
+  EmailCheckType,
+  PasswordFindType,
+} from "../types/userTypes";
 
 import {
   createUser,
@@ -9,6 +14,8 @@ import {
   emailOverlappingCheck,
   findIdCheck,
   loginUser,
+  findPasswordCheck,
+  verifyPasswordCode,
 } from "../service/userService";
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -85,6 +92,22 @@ export const getFindId = async (req: Request, res: Response) => {
   }
 };
 
+export const getFindPassword = async (req: Request, res: Response) => {
+  try {
+    const { id, email } = req.query;
+
+    const findPassword = await findPasswordCheck({
+      user_id: id as string,
+      user_email: email as string,
+    });
+
+    res.json({ findPassword });
+  } catch (error) {
+    console.error("비밀번호 찾기 실패:", error);
+    res.status(500).json({ error: "비밀번호 찾기 중 오류가 발생했습니다." });
+  }
+};
+
 export const postUserJoin = async (
   req: Request,
   res: Response,
@@ -128,5 +151,25 @@ export const loginUserController = async (
   } catch (error: any) {
     console.error("로그인 컨트롤러 에러:", error);
     res.status(401).json({ error: error.message });
+  }
+};
+
+export const verifyPasswordCodeController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+      res.status(400).json({ error: "이메일과 인증번호를 모두 입력해주세요." });
+      return;
+    }
+
+    const result = await verifyPasswordCode(email, code);
+    res.json(result);
+  } catch (error) {
+    console.error("인증번호 검증 실패:", error);
+    res.status(500).json({ error: "인증번호 검증 중 오류가 발생했습니다." });
   }
 };

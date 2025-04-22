@@ -6,10 +6,22 @@ import {
   emailOverlappingCheckDB,
   findUserByCredentialsDB,
   findIdCheckDB,
+  findPasswordCheckDB,
 } from "../storage/userStorage";
-import { IdCheckType, User, EmailCheckType } from "../types/userTypes";
+import {
+  IdCheckType,
+  User,
+  EmailCheckType,
+  PasswordFindType,
+} from "../types/userTypes";
 import { hashPassword, comparePassword } from "../utils/hashUtil";
 import { generateToken } from "../utils/jwtUtil";
+import {
+  generateVerificationCode,
+  sendVerificationEmail,
+} from "../utils/emailUtil";
+import { createVerificationCode } from "./verificationService";
+import { verifyCode } from "./verificationService";
 
 export const getAllUsers = async () => {
   try {
@@ -47,6 +59,37 @@ export const findIdCheck = async ({ user_email }: EmailCheckType) => {
   }
 };
 
+export const findPasswordCheck = async ({
+  user_id,
+  user_email,
+}: PasswordFindType) => {
+  try {
+    const findPassword = await findPasswordCheckDB(user_id, user_email);
+
+    // DB에서 일치하는 사용자가 있는지 확인
+    if (findPassword && findPassword.length > 0) {
+      // 인증번호 생성 및 저장
+      const verificationCode = createVerificationCode(user_email);
+
+      // 이메일 발송
+      await sendVerificationEmail(user_email, verificationCode);
+
+      return {
+        success: true,
+        message: "인증번호가 이메일로 발송되었습니다.",
+      };
+    }
+
+    return {
+      success: false,
+      message: "일치하는 사용자 정보가 없습니다.",
+    };
+  } catch (error) {
+    console.error("비밀번호 찾기 서비스 에러", error);
+    throw error;
+  }
+};
+
 export const createUser = async (user: User) => {
   if (!user.user_password) {
     throw new Error("비밀번호 해싱 서비스 에러");
@@ -80,6 +123,28 @@ export const loginUser = async (user_id: string, user_password: string) => {
     };
   } catch (error) {
     console.error("로그인 서비스 에러:", error);
+    throw error;
+  }
+};
+
+// 인증번호 검증 서비스
+export const verifyPasswordCode = async (email: string, code: string) => {
+  try {
+    const isValid = verifyCode(email, code);
+
+    if (isValid) {
+      return {
+        success: true,
+        message: "인증이 완료되었습니다.",
+      };
+    }
+
+    return {
+      success: false,
+      message: "인증번호가 일치하지 않거나 만료되었습니다.",
+    };
+  } catch (error) {
+    console.error("인증번호 검증 서비스 에러", error);
     throw error;
   }
 };
