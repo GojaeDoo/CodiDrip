@@ -17,20 +17,36 @@ export const PasswordFindWrapper = styled.div`
   box-sizing: border-box;
   margin-top: 2vh;
   width: 50vw;
-  height: 45vh;
+  height: 40vh;
   background-color: #1a1a1a;
   border-radius: 5px;
   padding: 5vh 5vw 5vh 5vw;
-
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 export const PasswordFindTitle = styled.div`
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 1000;
   color: #ffffff;
+`;
+
+export const PasswordFindText = styled.div`
+  font-size: 1rem;
+  font-weight: 1000;
+  color: #ffffff;
+  margin-top: 5vh;
+`;
+
+export const PasswordFindInputWrapper = styled.div`
+  margin-top: 2.5vh;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1vh;
 `;
 
 export const PasswordFindButton = styled.button`
