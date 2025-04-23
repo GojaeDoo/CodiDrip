@@ -4,9 +4,7 @@ export const FindUserEmail = async (id: string) => {
   const response = await axios.get(
     `http://localhost:3005/api/users/select_user`,
     {
-      params: {
-        id,
-      },
+      params: { id },
     }
   );
   return response.data;
