@@ -31,6 +31,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     "/idFindResult",
     "/passwordFind",
     "/passwordFindResult",
+    "/passwordReset",
   ];
   const isHidden = hiddenRoutes.includes(pathname || "");
 

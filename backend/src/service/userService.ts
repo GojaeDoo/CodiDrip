@@ -7,6 +7,7 @@ import {
   findUserByCredentialsDB,
   findIdCheckDB,
   findPasswordCheckDB,
+  selectUserStorage,
 } from "../storage/userStorage";
 import {
   IdCheckType,
@@ -29,6 +30,19 @@ export const getAllUsers = async () => {
     return user;
   } catch (error) {
     console.error("유저 찾기 서비스 에러");
+  }
+};
+
+export const selectUserService = async ({ user_id }: IdCheckType) => {
+  try {
+    const selectUser = await selectUserStorage(user_id);
+    if (!selectUser) {
+      throw new Error("사용자를 찾을 수 없습니다.");
+    }
+    return selectUser;
+  } catch (error) {
+    console.error("사용자 조회 서비스 에러:", error);
+    throw error;
   }
 };
 

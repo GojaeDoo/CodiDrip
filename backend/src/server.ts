@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "./routes/userRoutes";
+import userRouter from "./router/userRouter";
+import profileRouter from "./router/profileRouter";
 import path from "path";
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(
 
 // 라우터 설정 하는 곳
 app.use("/api/users", userRouter);
+app.use("/api/profiles", profileRouter);
 
 // 서버 실행 하는 곳
 app.listen(port, () => {

@@ -16,14 +16,32 @@ import {
   loginUser,
   findPasswordCheck,
   verifyPasswordCode,
+  selectUserService,
 } from "../service/userService";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const user = await getAllUsers();
-    res.json(user); //
+    res.json(user);
   } catch (err) {
     res.status(500).json({ error: "유저 찾는거 컨트롤러 에러" });
+  }
+};
+
+export const getSelectUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.query;
+    if (!id) {
+      res.status(400).json({ error: "id가 필요합니다." });
+      return;
+    }
+    const SelectUser = await selectUserService({
+      user_id: id as string,
+    });
+    res.json(SelectUser);
+  } catch (error) {
+    console.error("사용자 조회 실패:", error);
+    res.status(500).json({ error: "사용자 조회 중 오류가 발생했습니다." });
   }
 };
 

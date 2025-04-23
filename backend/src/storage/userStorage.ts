@@ -11,6 +11,19 @@ export const getUsersFromDB = async () => {
   }
 };
 
+export const selectUserStorage = async (user_id: string) => {
+  try {
+    const values = [user_id];
+    const result = await pool.query(
+      `select user_email FROM users where user_id = $1`,
+      values
+    );
+    return result.rows;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const idOverlappingCheckDB = async (user_id: string) => {
   try {
     const values = [user_id];
