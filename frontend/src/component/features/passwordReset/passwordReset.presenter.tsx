@@ -23,6 +23,7 @@ export const PasswordResetPresenter = (props: PasswordResetProps) => {
             type="password"
             placeholder="신규 비밀번호 확인"
             onChange={props.onChangePasswordCheck}
+            onKeyDown={props.handleKeyDown}
           />
           {props.error && <S.ErrorMessage>{props.error}</S.ErrorMessage>}
         </S.PasswordResetWrapper>

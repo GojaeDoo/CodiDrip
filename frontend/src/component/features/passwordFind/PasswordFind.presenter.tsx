@@ -14,7 +14,11 @@ export const PasswordFindPresenter = (props: PasswordFindProps) => {
           </S.PasswordFindText>
           <S.PasswordFindInputWrapper>
             <C.Input placeholder="아이디" onChange={props.onChangeId} />
-            <C.Input placeholder="이메일" onChange={props.onChangeEmail} />
+            <C.Input
+              placeholder="이메일"
+              onChange={props.onChangeEmail}
+              onKeyDown={props.handleKeyDown}
+            />
           </S.PasswordFindInputWrapper>
         </S.PasswordFindWrapper>
         <C.Button onClick={props.onClickFindPassword}>비밀번호 찾기</C.Button>

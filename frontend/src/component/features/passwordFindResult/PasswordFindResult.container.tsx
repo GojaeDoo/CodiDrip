@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { PasswordFindResultPresenter } from "./PasswordFindResult.presenter";
 import { PasswordFindResultProps } from "./passwordFindResult.types";
 import { verifyPasswordCode } from "./PasswordFindResult.query";
@@ -19,6 +19,14 @@ export const PasswordFindResultContainer = () => {
       setAuthenticationNumber(event.target.value);
       setError("");
     };
+
+  const handleKeyDown: PasswordFindResultProps["handleKeyDown"] = (
+    event: KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      onClickSend();
+    }
+  };
 
   const onClickSend: PasswordFindResultProps["onClickSend"] = async () => {
     if (!email) {
@@ -43,6 +51,7 @@ export const PasswordFindResultContainer = () => {
     <>
       <PasswordFindResultPresenter
         onChangeAuthenticationNumber={onChangeAuthenticationNumber}
+        handleKeyDown={handleKeyDown}
         onClickSend={onClickSend}
         error={error}
       />

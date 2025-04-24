@@ -1,6 +1,6 @@
 "use client";
-import { ChangeEvent, useState } from "react";
-import { UserSelectPresenter } from "./UserSelect.presenter";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
+import UserSelectPresenter from "./UserSelect.presenter";
 import { UserSelectProps } from "./UserSelect.types";
 import { FindUserEmail } from "./UserSelect.query";
 
@@ -13,8 +13,14 @@ export const UserSelectContainer = () => {
     setId(event.target.value);
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onClickSend();
+    }
+  };
+
   const onClickSend: UserSelectProps["onClickSend"] = async () => {
-    console.log("id : " + id);
+    console.log("id: " + id);
     try {
       const response = await FindUserEmail(id);
       console.log(response);
@@ -25,7 +31,11 @@ export const UserSelectContainer = () => {
 
   return (
     <>
-      <UserSelectPresenter onChangeId={onChangeId} onClickSend={onClickSend} />
+      <UserSelectPresenter
+        onChangeId={onChangeId}
+        onClickSend={onClickSend}
+        handleKeyDown={handleKeyDown}
+      />
     </>
   );
 };

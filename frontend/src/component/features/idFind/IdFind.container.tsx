@@ -17,6 +17,14 @@ export const IdFindContainer = () => {
     setEmail(event.target.value);
   };
 
+  const handleKeyDown: IdFindProps["handleKeyDown"] = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      onClickIdFind();
+    }
+  };
+
   const onClickIdFind: IdFindProps["onClickIdFind"] = async () => {
     try {
       const response = await IdFindUser(email);
@@ -43,6 +51,7 @@ export const IdFindContainer = () => {
     <IdFindPresenter
       onChangeEmail={onChangeEmail}
       onClickIdFind={onClickIdFind}
+      handleKeyDown={handleKeyDown}
     />
   );
 };

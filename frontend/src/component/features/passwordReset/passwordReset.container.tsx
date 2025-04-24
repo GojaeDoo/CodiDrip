@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { PasswordResetPresenter } from "./passwordReset.presenter";
 import { PasswordResetProps } from "./passwordReset.types";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -28,6 +28,12 @@ export const PasswordResetContainer = () => {
   ) => {
     setPasswordCheck(event.target.value);
     setError("");
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onClickResetPassword();
+    }
   };
 
   const onClickResetPassword: PasswordResetProps["onClickResetPassword"] =
@@ -76,6 +82,7 @@ export const PasswordResetContainer = () => {
       <PasswordResetPresenter
         onChangePassword={onChangePassword}
         onChangePasswordCheck={onChangePasswordCheck}
+        handleKeyDown={handleKeyDown}
         onClickResetPassword={onClickResetPassword}
         error={error}
       />

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { PasswordFindPresenter } from "./PasswordFind.presenter";
 import { PasswordFindProps } from "./PasswordFind.types";
 import { PasswordFindUser } from "./PasswordFind.query";
@@ -26,6 +26,14 @@ export const PasswordFindContainer = () => {
     setError("");
   };
 
+  const handleKeyDown: PasswordFindProps["handleKeyDown"] = (
+    event: KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      onClickFindPassword();
+    }
+  };
+
   const onClickFindPassword: PasswordFindProps["onClickFindPassword"] =
     async () => {
       try {
@@ -47,6 +55,7 @@ export const PasswordFindContainer = () => {
       <PasswordFindPresenter
         onChangeId={onChangeId}
         onChangeEmail={onChangeEmail}
+        handleKeyDown={handleKeyDown}
         onClickFindPassword={onClickFindPassword}
         error={error}
       />

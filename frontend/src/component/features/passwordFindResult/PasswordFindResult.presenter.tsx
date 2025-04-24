@@ -2,11 +2,7 @@ import * as S from "./PasswordFindResult.styled";
 import * as C from "../../commons/Commons.styled";
 import { PasswordFindResultProps } from "./passwordFindResult.types";
 
-export const PasswordFindResultPresenter = ({
-  onChangeAuthenticationNumber,
-  onClickSend,
-  error,
-}: PasswordFindResultProps) => {
+export const PasswordFindResultPresenter = (props: PasswordFindResultProps) => {
   return (
     <>
       <S.Background>
@@ -18,10 +14,11 @@ export const PasswordFindResultPresenter = ({
           <S.PasswordFindInputResultWrapper>
             <C.Input
               placeholder="인증번호"
-              onChange={onChangeAuthenticationNumber}
+              onChange={props.onChangeAuthenticationNumber}
+              onKeyDown={props.handleKeyDown}
             />
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <C.Button onClick={onClickSend}>확인</C.Button>
+            {props.error && <p style={{ color: "red" }}>{props.error}</p>}
+            <C.Button onClick={props.onClickSend}>확인</C.Button>
           </S.PasswordFindInputResultWrapper>
         </S.PasswordFindResultWrapper>
       </S.Background>

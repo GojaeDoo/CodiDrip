@@ -10,7 +10,11 @@ export const IdFindPresenter = (props: IdFindProps) => {
         <S.IdFindWrapper>
           <S.IdFindTitle>아이디 찾기</S.IdFindTitle>
           <S.IdInputText>가입 시 등록한 이메일을 입력해주세요.</S.IdInputText>
-          <C.Input placeholder="이메일" onChange={props.onChangeEmail} />
+          <C.Input
+            placeholder="이메일"
+            onChange={props.onChangeEmail}
+            onKeyDown={props.handleKeyDown}
+          />
           <C.Button onClick={props.onClickIdFind}>아이디 찾기</C.Button>
         </S.IdFindWrapper>
       </S.Background>
