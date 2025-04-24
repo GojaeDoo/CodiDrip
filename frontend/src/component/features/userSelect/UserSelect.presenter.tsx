@@ -9,5 +9,3 @@ export const UserSelectPresenter = (props: UserSelectProps) => {
     </>
   );
 };
-
-export default UserSelectPresenter;

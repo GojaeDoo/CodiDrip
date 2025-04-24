@@ -1,6 +1,12 @@
 import * as S from "./PasswordFindResult.styled";
 import * as C from "../../commons/Commons.styled";
-export const PasswordFindResultPresenter = () => {
+import { PasswordFindResultProps } from "./passwordFindResult.types";
+
+export const PasswordFindResultPresenter = ({
+  onChangeAuthenticationNumber,
+  onClickSend,
+  error,
+}: PasswordFindResultProps) => {
   return (
     <>
       <S.Background>
@@ -10,8 +16,12 @@ export const PasswordFindResultPresenter = () => {
             메일로 전송된 인증번호를 입력해주세요
           </S.PasswordFindResultText>
           <S.PasswordFindInputResultWrapper>
-            <C.Input placeholder="인증번호" />
-            <C.Button>확인</C.Button>
+            <C.Input
+              placeholder="인증번호"
+              onChange={onChangeAuthenticationNumber}
+            />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <C.Button onClick={onClickSend}>확인</C.Button>
           </S.PasswordFindInputResultWrapper>
         </S.PasswordFindResultWrapper>
       </S.Background>

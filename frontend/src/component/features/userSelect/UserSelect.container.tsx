@@ -1,7 +1,6 @@
 "use client";
-
 import { ChangeEvent, useState } from "react";
-import UserSelectPresenter from "./UserSelect.presenter";
+import { UserSelectPresenter } from "./UserSelect.presenter";
 import { UserSelectProps } from "./UserSelect.types";
 import { FindUserEmail } from "./UserSelect.query";
 

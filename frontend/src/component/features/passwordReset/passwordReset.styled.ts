@@ -44,3 +44,9 @@ export const PasswordResetSubText = styled.div`
   font-weight: 1000;
   color: #ffffff;
 `;
+
+export const ErrorMessage = styled.div`
+  color: #ff0000;
+  font-size: 0.8rem;
+  font-weight: 1000;
+`;

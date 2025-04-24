@@ -1,6 +1,6 @@
 import { VerificationCode } from "../types/userTypes";
 
-// 인증번호 저장소 (실제 프로덕션에서는 Redis나 DB를 사용하는 것이 좋습니다)
+// 인증번호 저장소
 const verificationCodes: Map<string, VerificationCode> = new Map();
 
 // 인증번호 생성 및 저장

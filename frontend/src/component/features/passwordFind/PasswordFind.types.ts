@@ -1,7 +1,8 @@
 import { ChangeEvent } from "react";
 
 export interface PasswordFindProps {
-  onChangeId: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeEmail: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeId: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClickFindPassword: () => void;
+  error: string;
 }

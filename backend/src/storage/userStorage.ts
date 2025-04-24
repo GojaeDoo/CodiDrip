@@ -6,7 +6,7 @@ export const getUsersFromDB = async () => {
     const result = await pool.query("SELECT * FROM users");
     return result.rows;
   } catch (err) {
-    console.error("Database query error:", err);
+    console.error("getUsersFromDB error - userStorage");
     throw err;
   }
 };
@@ -33,7 +33,7 @@ export const idOverlappingCheckDB = async (user_id: string) => {
     );
     return result.rows;
   } catch (error) {
-    console.error("DB 조회 실패 아이디 중복 체크", error);
+    console.error("idOverlappingCheckDB error - userStorage");
   }
 };
 
@@ -46,7 +46,7 @@ export const emailOverlappingCheckDB = async (user_email: string) => {
     );
     return result.rows;
   } catch (error) {
-    console.error("DB 조회 실패 이메일 중복 체크", error);
+    console.error("emailOverlappingCheckDB error - userStorage");
   }
 };
 
@@ -59,7 +59,7 @@ export const findIdCheckDB = async (user_email: string) => {
     );
     return result.rows;
   } catch (error) {
-    console.error("DB 조회 실패 아이디 찾기", error);
+    console.error("findIdCheckDB error - userStorage");
   }
 };
 
@@ -75,7 +75,7 @@ export const findPasswordCheckDB = async (
     );
     return result.rows;
   } catch (error) {
-    console.error("DB 조회 실패 비밀번호 찾기", error);
+    console.error("findPasswordCheckDB error - userStorage");
   }
 };
 
@@ -90,7 +90,7 @@ export const joinUserDB = async (user: User) => {
     const result = await pool.query(query, values);
     return result.rows[0]; // 저장된 사용자 데이터 반환
   } catch (err) {
-    console.error("Database insert error:", err);
+    console.error("joinUserDB error - userStorage");
     throw err;
   }
 };
@@ -106,7 +106,43 @@ export const findUserByCredentialsDB = async (user_id: string) => {
     const result = await pool.query(query, values);
     return result.rows[0] || null;
   } catch (error) {
-    console.error("로그인 DB 조회 실패:", error);
+    console.error("findUserByCredentialsDB error - userStorage");
+    throw error;
+  }
+};
+
+export const findUserByEmailDB = async (user_email: string) => {
+  try {
+    const query = `
+      SELECT user_id, user_password, user_email 
+      FROM users 
+      WHERE user_email = $1
+    `;
+    const values = [user_email];
+    const result = await pool.query(query, values);
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error("findUserByEmailDB error - userStorage");
+    throw error;
+  }
+};
+
+export const updateUserPasswordDB = async (
+  user_email: string,
+  user_password: string
+) => {
+  try {
+    const query = `
+      UPDATE users 
+      SET user_password = $2 
+      WHERE user_email = $1 
+      RETURNING *
+    `;
+    const values = [user_email, user_password];
+    const result = await pool.query(query, values);
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error("updateUserPasswordDB error - userStorage");
     throw error;
   }
 };

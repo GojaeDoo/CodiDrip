@@ -8,6 +8,8 @@ import {
   findIdCheckDB,
   findPasswordCheckDB,
   selectUserStorage,
+  findUserByEmailDB,
+  updateUserPasswordDB,
 } from "../storage/userStorage";
 import {
   IdCheckType,
@@ -23,13 +25,14 @@ import {
 } from "../utils/emailUtil";
 import { createVerificationCode } from "./verificationService";
 import { verifyCode } from "./verificationService";
+import bcrypt from "bcrypt";
 
 export const getAllUsers = async () => {
   try {
     const user = await getUsersFromDB();
     return user;
   } catch (error) {
-    console.error("유저 찾기 서비스 에러");
+    console.error("getAllUsers error - userService");
   }
 };
 
@@ -41,7 +44,7 @@ export const selectUserService = async ({ user_id }: IdCheckType) => {
     }
     return selectUser;
   } catch (error) {
-    console.error("사용자 조회 서비스 에러:", error);
+    console.error("selectUserService error - userService");
     throw error;
   }
 };
@@ -51,7 +54,7 @@ export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
     const idCheck = await idOverlappingCheckDB(user_id);
     return idCheck;
   } catch (error) {
-    console.error("아이디 중복 체크 서비스 에러", error);
+    console.error("idOverlappingCheck error - userService");
   }
 };
 
@@ -60,7 +63,7 @@ export const emailOverlappingCheck = async ({ user_email }: EmailCheckType) => {
     const emailCheck = await emailOverlappingCheckDB(user_email);
     return emailCheck;
   } catch (error) {
-    console.error("이메일 중복 체크 서비스 에러", error);
+    console.error("emailOverlappingCheck error - userService");
   }
 };
 
@@ -69,7 +72,7 @@ export const findIdCheck = async ({ user_email }: EmailCheckType) => {
     const findId = await findIdCheckDB(user_email);
     return findId;
   } catch (error) {
-    console.error("아이디 찾기 서비스 에러", error);
+    console.error("findIdCheck error - userService");
   }
 };
 
@@ -82,7 +85,7 @@ export const findPasswordCheck = async ({
 
     // DB에서 일치하는 사용자가 있는지 확인
     if (findPassword && findPassword.length > 0) {
-      // 인증번호 생성 및 저장
+      // 인증번호 생성
       const verificationCode = createVerificationCode(user_email);
 
       // 이메일 발송
@@ -99,7 +102,7 @@ export const findPasswordCheck = async ({
       message: "일치하는 사용자 정보가 없습니다.",
     };
   } catch (error) {
-    console.error("비밀번호 찾기 서비스 에러", error);
+    console.error("findPasswordCheck error - userService");
     throw error;
   }
 };
@@ -136,7 +139,7 @@ export const loginUser = async (user_id: string, user_password: string) => {
       token,
     };
   } catch (error) {
-    console.error("로그인 서비스 에러:", error);
+    console.error("loginUser error - userService");
     throw error;
   }
 };
@@ -158,7 +161,23 @@ export const verifyPasswordCode = async (email: string, code: string) => {
       message: "인증번호가 일치하지 않거나 만료되었습니다.",
     };
   } catch (error) {
-    console.error("인증번호 검증 서비스 에러", error);
+    console.error("verifyPasswordCode error - userService");
+    throw error;
+  }
+};
+
+export const resetPasswordService = async (email: string, password: string) => {
+  try {
+    const user = await findUserByEmailDB(email);
+    if (!user) {
+      throw new Error("존재하지 않는 이메일입니다.");
+    }
+
+    const hashedPassword = await hashPassword(password);
+    await updateUserPasswordDB(email, hashedPassword);
+
+    return { success: true, message: "비밀번호가 재설정되었습니다." };
+  } catch (error) {
     throw error;
   }
 };

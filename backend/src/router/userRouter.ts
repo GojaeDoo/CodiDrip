@@ -1,5 +1,5 @@
 // src/router/userRouter.ts
-import { Router } from "express";
+import express from "express";
 import {
   getIdOverlappingCheck,
   getUsers,
@@ -10,9 +10,10 @@ import {
   getFindPassword,
   verifyPasswordCodeController,
   getSelectUser,
+  postUserResetPassword,
 } from "../controller/userController";
 
-const router = Router();
+const router = express.Router();
 
 // 사용자 관련 라우트
 router.get("/", getUsers); // 사용자 목록 가져오기
@@ -25,5 +26,6 @@ router.get("/select_user", getSelectUser); // 사용자 선택
 router.post("/login", loginUserController); // 로그인
 router.post("/", postUserJoin); // 사용자 회원가입
 router.post("/verify-password-code", verifyPasswordCodeController); // 비밀번호 코드 검증
+router.post("/reset-password", postUserResetPassword); // 비밀번호 재설정
 
 export default router;

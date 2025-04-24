@@ -10,7 +10,7 @@ export const getProfiles = async (
     const profiles = await getAllProfiles();
     res.json(profiles);
   } catch (error) {
-    res.status(500).json({ error: "프로필 찾는거 컨트롤러 에러" });
+    res.status(500).json({ error: "getProfiles 500error - profileController" });
   }
 };
 
@@ -23,13 +23,15 @@ export const getProfile = async (
     const { id } = req.params;
 
     if (!id || typeof id !== "string") {
-      res.status(400).json({ error: "유효하지 않은 profile_id" });
+      res
+        .status(400)
+        .json({ error: "getProfile 400error - profileController" });
       return;
     }
 
     const profile = await getProfileById(id);
     res.json(profile);
   } catch (error) {
-    res.status(500).json({ error: "프로필 찾는거 컨트롤러 에러" });
+    res.status(500).json({ error: "getProfile 500error - profileController" });
   }
 };
