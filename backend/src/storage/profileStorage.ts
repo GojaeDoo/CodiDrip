@@ -1,5 +1,5 @@
 import pool from "../db";
-import { Profile } from "../types/profile";
+import { Profile } from "../types/profileTypes";
 
 export const getFindAllProfileDB = async (): Promise<Profile[]> => {
   const result = await pool.query(
@@ -31,5 +31,14 @@ export const getFindByIdProfileDB = async (
     WHERE user_id = $1`,
     [id]
   );
+  return result.rows[0] || null;
+};
+
+export const getUserProfileByIdDB = async (
+  id: string
+): Promise<Profile | null> => {
+  const result = await pool.query(`SELECT * FROM profile WHERE user_id = $1`, [
+    id,
+  ]);
   return result.rows[0] || null;
 };

@@ -1,5 +1,5 @@
 import * as S from "./IdFindResult.styled";
-import * as C from "../../commons/Commons.styled";
+import * as C from "../../../commons/Commons.styled";
 import { IdFindResultProps } from "./IdFindResult.types";
 
 export const IdFindResultPresenter = (props: IdFindResultProps) => {

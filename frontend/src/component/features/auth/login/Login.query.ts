@@ -19,3 +19,15 @@ export const loginUser = async (
     throw new Error(loginError.response?.data?.error || loginError.message);
   }
 };
+
+export const profileCheck = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/profiles/user/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+};

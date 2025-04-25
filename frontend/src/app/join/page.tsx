@@ -1,4 +1,4 @@
-import JoinContainer from "@/component/features/join/Join.container";
+import JoinContainer from "@/component/features/auth/join/Join.container";
 
 const Join = () => {
   return (

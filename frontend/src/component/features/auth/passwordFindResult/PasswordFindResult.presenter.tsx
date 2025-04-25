@@ -1,5 +1,5 @@
 import * as S from "./PasswordFindResult.styled";
-import * as C from "../../commons/Commons.styled";
+import * as C from "../../../commons/Commons.styled";
 import { PasswordFindResultProps } from "./passwordFindResult.types";
 
 export const PasswordFindResultPresenter = (props: PasswordFindResultProps) => {

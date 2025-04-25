@@ -1,5 +1,5 @@
 import * as S from "./Login.styled";
-import * as C from "../../commons/Commons.styled";
+import * as C from "../../../commons/Commons.styled";
 import { LoginProps } from "./Login.types";
 const LoginPresenter = (props: LoginProps) => {
   return (

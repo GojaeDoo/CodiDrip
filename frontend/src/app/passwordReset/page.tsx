@@ -1,4 +1,4 @@
-import PasswordResetContainer from "@/component/features/passwordReset/passwordReset.container";
+import PasswordResetContainer from "@/component/features/auth/passwordReset/passwordReset.container";
 
 export const PasswordReset = () => {
   return (

@@ -1,4 +1,4 @@
-import IdFindContainer from "@/component/features/idFind/IdFind.container";
+import IdFindContainer from "@/component/features/auth/idFind/IdFind.container";
 
 export const IdFind = () => {
   return <IdFindContainer />;

@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 import LoginPresenter from "./Login.presenter";
 import { LoginProps } from "./Login.types";
 import { useState } from "react";
-import { loginUser } from "./Login.query";
+import { loginUser, profileCheck } from "./Login.query";
 import { useAuth } from "@/context/AuthContext";
 
 const LoginContainer = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [id, setId] = useState("");
   const router = useRouter();
   const { login } = useAuth();
 
@@ -44,8 +45,18 @@ const LoginContainer = () => {
   const onClickLogin: LoginProps["onClickLogin"] = async () => {
     try {
       const response = await loginUser(userId, userPassword);
-      login(response.token, response.user.user_id);
+      const currentUserId = response.user.user_id;
+      login(response.token, currentUserId);
+      console.log("User ID:", currentUserId);
+      const responseProfile = await profileCheck(currentUserId);
+      console.log("responseProfile : ", responseProfile);
+      setId(currentUserId);
       router.push("/drips");
+      if (responseProfile) {
+        router.push("/drips");
+      } else {
+        router.push("/profileEdit");
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error("로그인 실패:", error.message);

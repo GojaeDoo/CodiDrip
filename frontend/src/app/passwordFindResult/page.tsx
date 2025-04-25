@@ -1,4 +1,4 @@
-import PasswordFindResultContainer from "@/component/features/passwordFindResult/PasswordFindResult.container";
+import PasswordFindResultContainer from "@/component/features/auth/passwordFindResult/PasswordFindResult.container";
 
 export const PasswordFindResult = () => {
   return (
