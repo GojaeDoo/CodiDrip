@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   getAllProfiles,
   getProfileById,
   getUserProfileById,
+  getCreateProfileService,
 } from "../service/profileService";
 
 // 모든 프로필 가져오기
@@ -58,5 +59,30 @@ export const getUserProfile = async (
     res
       .status(500)
       .json({ error: "getUserProfile 500error - profileController" });
+  }
+};
+
+export const getCreateProfileController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId, height, weight, gender, nickname } = req.body;
+    const profileImage = req.file
+      ? `/images/profile/${req.file.filename}`
+      : null;
+
+    const profile = await getCreateProfileService(
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+      userId
+    );
+    res.status(200).json(profile);
+  } catch (error) {
+    next(error);
   }
 };

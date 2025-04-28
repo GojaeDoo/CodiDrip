@@ -2,6 +2,7 @@ import {
   getFindAllProfileDB,
   getFindByIdProfileDB,
   getUserProfileByIdDB,
+  getCreateProfileDB,
 } from "../storage/profileStorage";
 import { Profile } from "../types/profileTypes";
 
@@ -31,5 +32,38 @@ export const getUserProfileById = async (
   } catch (error) {
     console.error("getUserProfileById error - profileService");
     throw new Error("프로필을 가져오는 중 오류가 발생했습니다.");
+  }
+};
+
+export const getCreateProfileService = async (
+  height: number,
+  weight: number,
+  gender: string,
+  nickname: string,
+  profileImage: string | null,
+  userId: string
+): Promise<Profile | null> => {
+  try {
+    console.log("파라미터 확인:", {
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+      userId,
+    });
+    const result = await getCreateProfileDB(
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+      userId
+    );
+    console.log("결과:", result);
+    return result;
+  } catch (error) {
+    console.error("createProfile error - profileService:", error);
+    throw new Error("프로필을 생성하는 중 오류가 발생했습니다.");
   }
 };

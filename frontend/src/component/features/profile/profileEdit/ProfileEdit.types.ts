@@ -10,3 +10,12 @@ export interface ProfileEditPresenterProps {
   previewUrl?: string | null;
   gender: string;
 }
+
+export interface ProfileCreateParams {
+  height: number;
+  weight: number;
+  gender: string;
+  nickname: string;
+  profileImage: string;
+  userId: string | null;
+}

@@ -42,3 +42,29 @@ export const getUserProfileByIdDB = async (
   ]);
   return result.rows[0] || null;
 };
+
+export const getCreateProfileDB = async (
+  height: number,
+  weight: number,
+  gender: string,
+  nickname: string,
+  profileImage: string | null,
+  userId: string
+): Promise<Profile | null> => {
+  try {
+    const query = `
+      INSERT INTO profiles (height, weight, gender, nickname, profile_image, user_id)
+      SELECT $1, $2, $3, $4, $5, $6
+      WHERE NOT EXISTS (
+        SELECT 1 FROM profiles WHERE user_id = $6
+      )
+      RETURNING *;
+    `;
+    const values = [height, weight, gender, nickname, profileImage, userId];
+    const result = await pool.query(query, values);
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error("createProfile error - profileStorage:", error);
+    throw error;
+  }
+};

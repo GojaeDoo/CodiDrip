@@ -34,7 +34,7 @@ const HeaderPresenter = ({
       <S.SearchInputContainer>
         <S.SearchInput />
       </S.SearchInputContainer>
-      <S.Logo>DripDrop</S.Logo>
+      <S.Logo>CodiTide</S.Logo>
       {isLoggedIn ? (
         <S.ButtonContainer>
           <S.UserContainer>
