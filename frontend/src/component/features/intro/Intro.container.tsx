@@ -23,7 +23,7 @@ const IntroContainer = () => {
     router.push("/drips");
   };
 
-  const brandName = "DripDrop";
+  const brandName = "CODIDRIP";
   const scatterDirections = brandName.split("").map(() => ({
     tx: `${Math.random() * 200 - 100}px`,
     ty: `${Math.random() * 200 - 100}px`,

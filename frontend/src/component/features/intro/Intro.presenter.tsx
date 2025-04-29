@@ -13,7 +13,7 @@ const IntroPresenter = ({
   return (
     <S.IntroWrapper>
       <S.SplashScreen>
-        <S.SplashText>당신의 스타일을 공유하세요</S.SplashText>
+        <S.SplashText>Drop It. Flex It. Own It.</S.SplashText>
         <S.BrandName>
           {brandName.split("").map((letter, index) => (
             <S.BrandLetter
@@ -33,9 +33,9 @@ const IntroPresenter = ({
       </S.SplashScreen>
       <S.MainContent>
         <S.LeftSection>
-          <S.Title>DripDrop</S.Title>
+          <S.Title>CODIDRIP</S.Title>
           <S.Description>
-            패션을 사랑하는 모든 이들을 위한 공간, DripDrop에서 당신만의
+            패션을 사랑하는 모든 이들을 위한 공간, CODIDRIP에서 당신만의
             스타일을 공유하고 새로운 영감을 얻어보세요.
           </S.Description>
           <S.ButtonWrapper>

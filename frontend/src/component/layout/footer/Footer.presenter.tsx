@@ -9,7 +9,7 @@ const FooterPresenter = () => {
         <S.FooterContainerLeft>
           <S.FooterInnerLeft>
             <S.FooterText>상호명 : </S.FooterText>
-            <S.FooterBrand>DripDrop</S.FooterBrand>
+            <S.FooterBrand>CODIDRIP</S.FooterBrand>
             <S.FooterText> | </S.FooterText>
             <S.FooterText>주소 : </S.FooterText>
             <S.FooterText>서울특별시 마포구 동교로</S.FooterText>
