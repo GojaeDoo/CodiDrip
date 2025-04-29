@@ -68,10 +68,19 @@ export const getCreateProfileController = async (
   next: NextFunction
 ) => {
   try {
-    const { userId, height, weight, gender, nickname } = req.body;
-    const profileImage = req.file
-      ? `/images/profile/${req.file.filename}`
-      : null;
+    const { userId, height, weight, gender, nickname, profileImage } = req.body;
+    console.log("프로필 생성 요청 데이터:", {
+      userId,
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+    });
+
+    if (!profileImage) {
+      return res.status(400).json({ error: "프로필 이미지가 필요합니다." });
+    }
 
     const profile = await getCreateProfileService(
       height,

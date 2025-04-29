@@ -52,12 +52,21 @@ export const getCreateProfileDB = async (
   userId: string
 ): Promise<Profile | null> => {
   try {
+    if (!profileImage) {
+      throw new Error("프로필 이미지가 필요합니다.");
+    }
+
     const query = `
-      INSERT INTO profiles (height, weight, gender, nickname, profile_image, user_id)
-      SELECT $1, $2, $3, $4, $5, $6
-      WHERE NOT EXISTS (
-        SELECT 1 FROM profiles WHERE user_id = $6
+      INSERT INTO profile (
+        profile_height, 
+        profile_weight, 
+        profile_gender, 
+        profile_nickname, 
+        profile_image, 
+        user_id,
+        profile_follow
       )
+      VALUES ($1, $2, $3, $4, $5, $6, 0)
       RETURNING *;
     `;
     const values = [height, weight, gender, nickname, profileImage, userId];

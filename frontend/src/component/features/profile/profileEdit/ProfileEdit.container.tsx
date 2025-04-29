@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import ProfileEditPresenter from "./ProfileEdit.presenter";
 import { ProfileCreate } from "./profileEdit.query";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export const ProfileEditContainer = () => {
   const [height, setHeight] = useState<number | null>(null);
   const [weight, setWeight] = useState<number | null>(null);
   const [gender, setGender] = useState("");
   const [nickname, setNickname] = useState("");
-  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(
+    null
+  );
 
   const router = useRouter();
 
@@ -23,8 +26,11 @@ export const ProfileEditContainer = () => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
+    } else {
+      console.error("userId가 없습니다. 로그인이 필요합니다.");
+      router.push("/login");
     }
-  }, []);
+  }, [router]);
 
   const onChangeHeight = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setHeight(Number(event.target.value));
@@ -42,7 +48,9 @@ export const ProfileEditContainer = () => {
     setNickname(event.target.value);
   };
 
-  const onChangeProfileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeProfileImage = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // 이미지 크기 제한
@@ -51,27 +59,66 @@ export const ProfileEditContainer = () => {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result as string);
-        setPreviewUrl(URL.createObjectURL(file));
-      };
-      reader.readAsDataURL(file);
+      try {
+        // FormData 생성
+        const formData = new FormData();
+        formData.append("profileImage", file);
+
+        // 이미지 업로드 API 호출
+        const response = await axios.post(
+          "http://localhost:3005/api/profiles/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.data.imagePath) {
+          setUploadedImagePath(response.data.imagePath);
+          setPreviewUrl(URL.createObjectURL(file));
+          console.log("이미지 업로드 성공:", response.data.imagePath);
+        }
+      } catch (error) {
+        console.error("이미지 업로드 중 오류 발생:", error);
+        alert("이미지 업로드에 실패했습니다.");
+      }
     }
   };
 
   const onClickCreateProfile = async () => {
     try {
-      if (height && weight && gender && nickname && profileImage && userId) {
+      if (!userId) {
+        alert("로그인이 필요합니다.");
+        router.push("/login");
+        return;
+      }
+
+      console.log("프로필 생성 시도:", {
+        height,
+        weight,
+        gender,
+        nickname,
+        uploadedImagePath,
+        userId,
+      });
+
+      if (!uploadedImagePath) {
+        alert("프로필 이미지를 업로드해주세요.");
+        return;
+      }
+
+      if (height && weight && gender && nickname) {
         const response = await ProfileCreate({
           userId,
           height: Number(height),
           weight: Number(weight),
           gender,
           nickname,
-          profileImage,
+          profileImage: uploadedImagePath,
         });
-        console.log(response);
+        console.log("프로필 생성 응답:", response);
         router.push("/drips");
       } else {
         alert("모든 항목을 입력해주세요.");

@@ -17,5 +17,5 @@ export interface ProfileCreateParams {
   gender: string;
   nickname: string;
   profileImage: string;
-  userId: string | null;
+  userId: string;
 }
