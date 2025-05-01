@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import DripPostPresenter from "./DripPost.presenter";
-import { Profile } from "../../../types/profile";
+import { Profile } from "../../../../types/profile";
 
 interface DripPostContainerProps {
   genderSelect: string;

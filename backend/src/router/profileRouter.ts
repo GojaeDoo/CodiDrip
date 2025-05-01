@@ -4,6 +4,7 @@ import {
   getProfile,
   getUserProfile,
   getCreateProfileController,
+  getUpdateProfileController,
 } from "../controller/profileController";
 import multer from "multer";
 import path from "path";
@@ -22,6 +23,12 @@ router.get("/user/:id", getUserProfile as RequestHandler);
 
 // 프로필 생성
 router.post("/createProfile", getCreateProfileController as RequestHandler);
+
+// 프로필 수정
+router.put(
+  "/updateProfile/:userId",
+  getUpdateProfileController as RequestHandler
+);
 
 // 이미지 업로드
 const uploadDir = path.join(__dirname, "../../uploads/profiles");

@@ -1,6 +1,6 @@
 "use client";
 import * as S from "./Drips.styled";
-import DripPost from "../../../app/dripPost/page";
+import DripPost from "../../../../app/dripPost/page";
 import { DripsProps } from "./Drips.types";
 
 const DripsPresenter = (props: DripsProps) => {

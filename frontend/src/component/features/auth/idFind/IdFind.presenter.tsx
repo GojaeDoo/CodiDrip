@@ -6,7 +6,7 @@ export const IdFindPresenter = (props: IdFindProps) => {
   return (
     <>
       <S.Background>
-        <C.SpareTitle>DripDrop</C.SpareTitle>
+        <C.SpareTitle>CODIDRIP</C.SpareTitle>
         <S.IdFindWrapper>
           <S.IdFindTitle>아이디 찾기</S.IdFindTitle>
           <S.IdInputText>가입 시 등록한 이메일을 입력해주세요.</S.IdInputText>

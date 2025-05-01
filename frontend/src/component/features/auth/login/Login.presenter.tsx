@@ -5,7 +5,7 @@ const LoginPresenter = (props: LoginProps) => {
   return (
     <>
       <S.Background>
-        <C.SpareTitle>DripDrop</C.SpareTitle>
+        <C.SpareTitle>CODIDRIP</C.SpareTitle>
         <S.LoginWrapper>
           <S.LoginTitle>로그인</S.LoginTitle>
           <C.Input placeholder="아이디" onChange={props.onChangeUserId} />

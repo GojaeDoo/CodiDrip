@@ -6,7 +6,9 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
   return (
     <>
       <S.Background>
-        <S.ProfileEditTitle>프로필 생성</S.ProfileEditTitle>
+        <S.ProfileEditTitle>
+          {props.isEditMode ? "프로필 수정" : "프로필 생성"}
+        </S.ProfileEditTitle>
         <S.ProfileEditWrapper>
           <S.ProfileEditWrapperLeft>
             <S.ProfileEditImage
@@ -19,13 +21,14 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
             <C.Input
               placeholder="닉네임을 입력해주세요."
               onChange={props.onChangeNickname}
+              value={props.nickname || ""}
             />
             <S.ProfileEditText>프로필 사진</S.ProfileEditText>
             <C.Input type="file" onChange={props.onChangeProfileImage} />
             <S.ProfileEditText>키</S.ProfileEditText>
             <S.ProfileEditSelect
               onChange={props.onChangeHeight}
-              defaultValue=""
+              value={props.height ?? ""}
             >
               <option value="" disabled>
                 키를 선택해주세요
@@ -40,7 +43,7 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
             <S.ProfileEditText>몸무게</S.ProfileEditText>
             <S.ProfileEditSelect
               onChange={props.onChangeWeight}
-              defaultValue=""
+              value={props.weight ?? ""}
             >
               <option value="" disabled>
                 몸무게를 선택해주세요
@@ -53,7 +56,7 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
             </S.ProfileEditSelect>
             <S.ProfileEditText>성별</S.ProfileEditText>
             <S.ProfileEditSelect
-              value={props.gender}
+              value={props.gender || ""}
               onChange={props.onChangeGender}
             >
               <option value="" disabled>
@@ -64,7 +67,9 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
             </S.ProfileEditSelect>
           </S.ProfileEditWrapperRight>
         </S.ProfileEditWrapper>
-        <C.Button onClick={props.onClickCreateProfile}>프로필 생성</C.Button>
+        <C.Button onClick={props.onClickCreateProfile}>
+          {props.isEditMode ? "프로필 수정" : "프로필 생성"}
+        </C.Button>
       </S.Background>
     </>
   );

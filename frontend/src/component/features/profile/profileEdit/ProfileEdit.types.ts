@@ -3,12 +3,16 @@ export interface ProfileEditPresenterProps {
   weightOptions: number[];
   onChangeHeight: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeWeight: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  gender: string;
   onChangeGender: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeNickname: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClickCreateProfile: () => void;
-  previewUrl?: string | null;
-  gender: string;
+  previewUrl: string | null;
+  isEditMode: boolean;
+  height: number | null;
+  weight: number | null;
+  nickname: string;
 }
 
 export interface ProfileCreateParams {

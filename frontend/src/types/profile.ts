@@ -6,4 +6,5 @@ export interface Profile {
   profile_image: string | null;
   profile_gender: string;
   profile_follow: number;
+  profile_about: string | null;
 }

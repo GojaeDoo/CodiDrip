@@ -1,3 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model profile {
+  profile_id      Int      @id @default(autoincrement())
+  profile_nickname String
+  profile_image   String?
+  user_id         String   @unique
+  profile_about   String?
+  profile_height  Int?
+  profile_weight  Int?
+  profile_gender  String?
+  profile_follow  Int      @default(0)
+}
+
 model Verification {
   id        String   @id @default(uuid())
   email     String

@@ -6,7 +6,7 @@ const JoinPresenter = (props: JoinProps) => {
   return (
     <>
       <S.Background>
-        <C.SpareTitle>DripDrop</C.SpareTitle>
+        <C.SpareTitle>CODIDRIP</C.SpareTitle>
         <S.JoinWrapper>
           <S.JoinTitle>회원가입</S.JoinTitle>
           <S.IdCheckWrapper>

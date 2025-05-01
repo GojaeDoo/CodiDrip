@@ -3,8 +3,12 @@ import {
   getFindByIdProfileDB,
   getUserProfileByIdDB,
   getCreateProfileDB,
+  updateProfile,
 } from "../storage/profileStorage";
 import { Profile } from "../types/profileTypes";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export const getAllProfiles = async (): Promise<Profile[]> => {
   try {
@@ -65,5 +69,33 @@ export const getCreateProfileService = async (
   } catch (error) {
     console.error("createProfile error - profileService:", error);
     throw new Error("프로필을 생성하는 중 오류가 발생했습니다.");
+  }
+};
+
+export const getUpdateProfileService = async (
+  height: number,
+  weight: number,
+  gender: string,
+  nickname: string,
+  profileImage: string,
+  userId: string
+) => {
+  try {
+    const updatedProfile = await updateProfile(
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+      userId
+    );
+
+    return {
+      success: true,
+      data: updatedProfile,
+    };
+  } catch (error) {
+    console.error("프로필 수정 중 오류 발생:", error);
+    throw error;
   }
 };

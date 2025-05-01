@@ -1,4 +1,4 @@
-import DripsContainer from "@/component/features/drips/Drips.container";
+import DripsContainer from "@/component/features/drip/drips/Drips.container";
 
 const Drips = () => {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import DripPostContainer from "@/component/features/dripPost/DripPost.container";
+import DripPostContainer from "@/component/features/drip/dripPost/DripPost.container";
 
 interface DripPostProps {
   genderSelect: string;

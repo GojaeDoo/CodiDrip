@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import ProfileEditPresenter from "./ProfileEdit.presenter";
-import { ProfileCreate } from "./profileEdit.query";
-import { useRouter } from "next/navigation";
+import {
+  ProfileCreate,
+  getProfileQuery,
+  ProfileUpdate,
+} from "./profileEdit.query";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
 export const ProfileEditContainer = () => {
@@ -16,7 +20,10 @@ export const ProfileEditContainer = () => {
   const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(
     null
   );
+  const [isEditMode, setIsEditMode] = useState(false);
 
+  const searchParams = useSearchParams();
+  const Status = searchParams.get("Status");
   const router = useRouter();
 
   const heightOptions = Array.from({ length: 61 }, (_, i) => 140 + i); // 140~200
@@ -26,11 +33,40 @@ export const ProfileEditContainer = () => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
+      // Status가 true면 수정 모드
+      if (Status === "true") {
+        setIsEditMode(true);
+        // 기존 프로필 정보 불러오기
+        fetchProfile(storedUserId);
+      }
     } else {
       console.error("userId가 없습니다. 로그인이 필요합니다.");
       router.push("/login");
     }
-  }, [router]);
+  }, [Status, router]);
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const response = await getProfileQuery(userId);
+      console.log("컨테이너에서 받은 프로필 데이터:", response);
+      if (response) {
+        setHeight(response.profile_height);
+        setWeight(response.profile_weight);
+        setGender(response.profile_gender?.toLowerCase() || ""); // 성별 값을 소문자로 변환
+        setNickname(response.profile_nickname);
+        if (response.profile_image) {
+          const imageUrl = `http://localhost:3005/uploads/profiles/${response.profile_image}`;
+          console.log("이미지 URL:", imageUrl);
+          setPreviewUrl(imageUrl);
+          setUploadedImagePath(response.profile_image);
+        } else {
+          console.log("프로필 이미지가 없습니다.");
+        }
+      }
+    } catch (error) {
+      console.error("프로필 정보 불러오기 실패:", error);
+    }
+  };
 
   const onChangeHeight = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setHeight(Number(event.target.value));
@@ -53,18 +89,15 @@ export const ProfileEditContainer = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 이미지 크기 제한
       if (file.size > 5 * 1024 * 1024) {
         alert("이미지 크기는 5MB 이하여야 합니다.");
         return;
       }
 
       try {
-        // FormData 생성
         const formData = new FormData();
         formData.append("profileImage", file);
 
-        // 이미지 업로드 API 호출
         const response = await axios.post(
           "http://localhost:3005/api/profiles/upload",
           formData,
@@ -95,33 +128,41 @@ export const ProfileEditContainer = () => {
         return;
       }
 
-      console.log("프로필 생성 시도:", {
-        height,
-        weight,
-        gender,
-        nickname,
-        uploadedImagePath,
-        userId,
-      });
-
       if (!uploadedImagePath) {
         alert("프로필 이미지를 업로드해주세요.");
         return;
       }
 
-      if (height && weight && gender && nickname) {
-        const response = await ProfileCreate({
-          userId,
-          height: Number(height),
-          weight: Number(weight),
-          gender,
-          nickname,
-          profileImage: uploadedImagePath,
-        });
-        console.log("프로필 생성 응답:", response);
-        router.push("/drips");
+      if (Status === "true") {
+        if (height && weight && gender && nickname) {
+          const response = await ProfileUpdate({
+            userId,
+            height: Number(height),
+            weight: Number(weight),
+            gender,
+            nickname,
+            profileImage: uploadedImagePath,
+          });
+          console.log("프로필 생성 응답:", response);
+          router.push("/myPage");
+        } else {
+          alert("모든 항목을 입력해주세요.");
+        }
       } else {
-        alert("모든 항목을 입력해주세요.");
+        if (height && weight && gender && nickname) {
+          const response = await ProfileCreate({
+            userId,
+            height: Number(height),
+            weight: Number(weight),
+            gender,
+            nickname,
+            profileImage: uploadedImagePath,
+          });
+          console.log("프로필 생성 응답:", response);
+          router.push("/drips");
+        } else {
+          alert("모든 항목을 입력해주세요.");
+        }
       }
     } catch (error) {
       console.error("프로필 생성 중 오류 발생:", error);
@@ -142,6 +183,10 @@ export const ProfileEditContainer = () => {
         onChangeProfileImage={onChangeProfileImage}
         onClickCreateProfile={onClickCreateProfile}
         previewUrl={previewUrl}
+        isEditMode={isEditMode}
+        height={height}
+        weight={weight}
+        nickname={nickname}
       />
     </>
   );

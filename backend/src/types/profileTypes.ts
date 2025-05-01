@@ -7,4 +7,5 @@ export interface Profile {
   profile_gender: string;
   profile_follow: number;
   user_id: string;
+  profile_about: string;
 }

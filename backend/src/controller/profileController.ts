@@ -4,7 +4,11 @@ import {
   getProfileById,
   getUserProfileById,
   getCreateProfileService,
+  getUpdateProfileService,
 } from "../service/profileService";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 // 모든 프로필 가져오기
 export const getProfiles = async (
@@ -92,6 +96,38 @@ export const getCreateProfileController = async (
     );
     res.status(200).json(profile);
   } catch (error) {
+    next(error);
+  }
+};
+
+export const getUpdateProfileController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.params;
+    const { height, weight, gender, nickname, profileImage } = req.body;
+    console.log("프로필 수정 요청 데이터:", {
+      userId,
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+    });
+
+    const profile = await getUpdateProfileService(
+      height,
+      weight,
+      gender,
+      nickname,
+      profileImage,
+      userId
+    );
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error("프로필 수정 중 오류 발생:", error);
     next(error);
   }
 };
