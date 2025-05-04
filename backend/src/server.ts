@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./router/userRouter";
 import profileRouter from "./router/profileRouter";
+import dripRouter from "./router/dripRouter";
 import path from "path";
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(
 // 라우터 설정
 app.use("/api/users", userRouter);
 app.use("/api/profiles", profileRouter);
+app.use("/api/drip", dripRouter);
 
 // 서버 실행
 app.listen(port, () => {

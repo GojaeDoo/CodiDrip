@@ -1,127 +1,166 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-  width: 100%;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  padding: 2rem;
 `;
 
 export const DripPostEditWrapper = styled.div`
-  width: 40vw;
-  min-height: 60vh;
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #2d2d2d;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 export const DripPostEditTitle = styled.h1`
-  font-size: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
   color: #ffffff;
-  margin-bottom: 24px;
-  font-weight: 600;
 `;
 
 export const DripPostEditContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2rem;
 `;
 
 export const ImageUploadSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 `;
 
 export const ImageUploadButton = styled.button`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: #2a2a2a;
-  border: 2px dashed #3a3a3a;
-  border-radius: 8px;
-  color: #ffffff;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #1d1d1d;
+  color: white;
+  border-radius: 4px;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s;
 
   &:hover {
-    background: #3a3a3a;
-    border-color: #4a4a4a;
-  }
-
-  span {
-    font-size: 14px;
-    font-weight: 500;
+    background-color: #2563eb;
   }
 `;
 
 export const ImagePreview = styled.div`
+  position: relative;
   width: 100%;
-  aspect-ratio: 1;
-  background: #2a2a2a;
-  border-radius: 8px;
+  height: 400px;
+  border: 2px dashed #404040;
+  border-radius: 4px;
   overflow: hidden;
+  background-color: #1a1a1a;
+`;
+
+export const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const NavigationButton = styled.button<{ position: "left" | "right" }>`
+  position: absolute;
+  top: 50%;
+  ${({ position }) => (position === "left" ? "left: 1rem;" : "right: 1rem;")}
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+`;
+
+export const PlaceholderText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666666;
+  font-size: 1.125rem;
 `;
 
 export const TagSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 `;
 
-export const TagInputWrapper = styled.div`
+export const TagInputWrapper = styled.form`
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: #2a2a2a;
-  border-radius: 8px;
-  border: 1px solid #3a3a3a;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  background-color: #1a1a1a;
 `;
 
 export const TagInput = styled.input`
   flex: 1;
-  background: transparent;
   border: none;
-  color: #ffffff;
-  font-size: 14px;
   outline: none;
+  font-size: 1rem;
+  background-color: transparent;
+  color: #ffffff;
 
   &::placeholder {
-    color: #666;
+    color: #666666;
   }
 `;
 
 export const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
+`;
+
+export const TagItem = styled.span`
+  background-color: #404040;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  color: #ffffff;
 `;
 
 export const SubmitButton = styled.button`
-  width: 100%;
-  height: 4vh;
-  background-color: rgba(217, 217, 217, 0.9);
-  outline: none;
-  border: 1px solid rgba(217, 217, 217, 0.9);
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 20px;
+  padding: 0.75rem 1.5rem;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s;
 
-  &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+  &:hover:not(:disabled) {
+    background-color: #059669;
+  }
+
+  &:disabled {
+    background-color: #404040;
+    cursor: not-allowed;
   }
 `;
