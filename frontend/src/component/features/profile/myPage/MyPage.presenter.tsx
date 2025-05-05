@@ -9,7 +9,10 @@ export const MyPagePresenter = (props: MyPageProps) => {
         <S.MyPageWrapper>
           <S.ProfileHeader>
             <S.ProfileImage
-              src={props.userProfile?.profile_image || "/default-profile.png"}
+              src={
+                props.userProfile?.profile_image ||
+                "/images/profile/default-profile.png"
+              }
               alt="프로필 이미지"
             />
             <S.ProfileInfo>

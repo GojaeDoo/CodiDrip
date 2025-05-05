@@ -1,4 +1,8 @@
-import { uploadDripImage, createDripDB } from "../storage/dripStorage";
+import {
+  uploadDripImage,
+  createDripDB,
+  getUserDripDB,
+} from "../storage/dripStorage";
 
 export const dripService = {
   createDrip: async (images: string[], tags: string[], userId: string) => {
@@ -15,5 +19,18 @@ export const dripService = {
       })
     );
     return await createDripDB(uploadedImages, tags, userId);
+  },
+
+  getUserDrip: async (userId: string) => {
+    try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+      const drips = await getUserDripDB(userId);
+      return drips;
+    } catch (error) {
+      console.error("getUserDrip error - dripService:", error);
+      throw error;
+    }
   },
 };

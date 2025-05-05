@@ -1,4 +1,4 @@
-import { MyPageContainer } from "../../component/features/myPage/MyPage.container";
+import { MyPageContainer } from "../../component/features/profile/myPage/MyPage.container";
 export const MyPage = () => {
   return (
     <>

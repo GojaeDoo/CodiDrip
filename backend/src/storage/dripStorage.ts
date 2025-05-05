@@ -44,3 +44,16 @@ export const createDripDB = async (
     throw error;
   }
 };
+
+export const getUserDripDB = async (id: string) => {
+  try {
+    const result = await pool.query(
+      `SELECT user_id , post_image ,post_tag FROM drip_post WHERE user_id = $1;`,
+      [id]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("getUserDripDB error - dripStorage:", error);
+    throw error;
+  }
+};

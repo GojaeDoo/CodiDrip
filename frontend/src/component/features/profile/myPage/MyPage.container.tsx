@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import MyPagePresenter from "./MyPage.presenter";
 import { getMyPageProfileQuery } from "./MyPage.query";
-import { Profile } from "@/types/profile";
+import { Profile } from "./MyPage.types";
 import { useRouter } from "next/navigation";
 
 export const MyPageContainer = () => {
@@ -15,16 +15,17 @@ export const MyPageContainer = () => {
     if (storedUserId) {
       const dripUserProfile = async () => {
         try {
-          const response = await getMyPageProfileQuery(storedUserId);
-          console.log("response : ", response);
+          const ProfileResponse = await getMyPageProfileQuery(storedUserId);
 
-          setUserProfile(response);
+          console.log("ProfileResponse : ", ProfileResponse);
+          setUserProfile(ProfileResponse);
         } catch (error) {
           console.log(error);
         }
       };
       dripUserProfile();
     } else {
+      alert("로그인 후 이용해주세요.");
     }
   }, []);
 
