@@ -1,7 +1,7 @@
 import {
   uploadDripImage,
   createDripDB,
-  getUserDripDB,
+  getUserDripPost,
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -21,16 +21,22 @@ export const dripService = {
     return await createDripDB(uploadedImages, tags, userId);
   },
 
-  getUserDrip: async (userId: string) => {
+  getUserDrip: async (userId?: string) => {
     try {
-      if (!userId) {
-        throw new Error("User ID is required");
-      }
-      const drips = await getUserDripDB(userId);
+      const drips = await getUserDripPost(userId);
       return drips;
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);
       throw error;
     }
   },
+};
+
+export const getUserDripPostService = async (userId?: string) => {
+  try {
+    return await getUserDripPost(userId);
+  } catch (error) {
+    console.error("Error in getUserDripPostService:", error);
+    throw error;
+  }
 };

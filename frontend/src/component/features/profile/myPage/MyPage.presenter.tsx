@@ -1,3 +1,4 @@
+import { DripPostContainer } from "../../drip/dripPost/DripPost.container";
 import * as S from "./MyPage.styled";
 import { MyPageProps } from "./MyPage.types";
 import { Plus, Bookmark, Tag, LogOut, Edit } from "lucide-react";
@@ -70,7 +71,12 @@ export const MyPagePresenter = (props: MyPageProps) => {
                 <S.CardHeader>
                   <S.CardTitle>내 DRIP</S.CardTitle>
                 </S.CardHeader>
-                <S.CardContent>여기에 DRIP 목록이 표시됩니다.</S.CardContent>
+                <S.CardContent>
+                  <DripPostContainer
+                    isMyPage={true}
+                    userId={props.userProfile?.user_id}
+                  />
+                </S.CardContent>
               </S.ContentCard>
 
               <S.ContentCard>

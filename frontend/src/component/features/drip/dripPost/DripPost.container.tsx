@@ -1,63 +1,54 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import DripPostPresenter from "./DripPost.presenter";
-import { Profile } from "../../../../types/profile";
+import { useEffect, useState } from "react";
+import { DripPostPresenter } from "./DripPost.presenter";
+import { DripPostContainerProps, DripPostType } from "./DripPost.types";
+import { getUserDripPostQuery } from "./DripPost.query";
 
-interface DripPostContainerProps {
-  genderSelect: string;
-}
-
-const DripPostContainer = ({ genderSelect }: DripPostContainerProps) => {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [likedProfiles, setLikedProfiles] = useState<Set<number>>(new Set());
+export const DripPostContainer = ({
+  isMyPage = false,
+  userId,
+}: DripPostContainerProps) => {
+  const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
+  const [currentImageIndexes, setCurrentImageIndexes] = useState<{
+    [key: number]: number;
+  }>({});
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchDripPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3005/api/profiles");
-        const data = await response.json();
-        // genderSelect에 따라 프로필 필터링
-        const filteredProfiles =
-          genderSelect === "all"
-            ? data
-            : data.filter(
-                (profile: Profile) => profile.gender === genderSelect
-              );
-        setProfiles(filteredProfiles);
+        const response = await getUserDripPostQuery(userId);
+        setDripPostData(response);
       } catch (error) {
-        console.error("프로필을 불러오는 중 오류가 발생했습니다:", error);
-      } finally {
-        setIsLoading(false);
+        console.error("Error fetching drip posts:", error);
       }
     };
 
-    fetchProfiles();
-  }, [genderSelect]);
+    fetchDripPosts();
+  }, [userId]);
 
-  const handleLike = (id: number) => {
-    setLikedProfiles((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
+  const onPrevImage = (postNo: number, imageCount: number) => {
+    setCurrentImageIndexes((prev) => {
+      const currentIndex = prev[postNo] || 0;
+      const newIndex = (currentIndex - 1 + imageCount) % imageCount;
+      return { ...prev, [postNo]: newIndex };
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading profiles</div>;
-  if (!profiles?.length) return <div>No profiles found</div>;
+  const onNextImage = (postNo: number, imageCount: number) => {
+    setCurrentImageIndexes((prev) => {
+      const currentIndex = prev[postNo] || 0;
+      const newIndex = (currentIndex + 1) % imageCount;
+      return { ...prev, [postNo]: newIndex };
+    });
+  };
 
   return (
     <DripPostPresenter
-      profiles={profiles}
-      likedProfiles={likedProfiles}
-      onLike={handleLike}
+      dripPostData={dripPostData}
+      currentImageIndexes={currentImageIndexes}
+      onPrevImage={onPrevImage}
+      onNextImage={onNextImage}
     />
   );
 };

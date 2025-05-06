@@ -1,10 +1,12 @@
 export interface MyPageProps {
-  userProfile: Profile | null;
-  onClickMoveProfileEdit: () => void;
-  onClickMoveDripPostEdit: () => void;
+  userId?: string;
+  userProfile?: Profile | null;
+  onClickMoveProfileEdit?: () => void;
+  onClickMoveDripPostEdit?: () => void;
 }
 
 export interface Profile {
+  user_id: string;
   profile_id: number;
   profile_nickname: string;
   profile_height: number;

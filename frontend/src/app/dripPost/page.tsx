@@ -1,13 +1,7 @@
-"use client";
+import { DripPostContainer } from "../../component/features/drip/dripPost/DripPost.container";
 
-import DripPostContainer from "@/component/features/drip/dripPost/DripPost.container";
-
-interface DripPostProps {
-  genderSelect: string;
-}
-
-const DripPostPage = ({ genderSelect }: DripPostProps) => {
-  return <DripPostContainer genderSelect={genderSelect} />;
+export const DripPost = () => {
+  return <DripPostContainer isMyPage={false} />;
 };
 
-export default DripPostPage;
+export default DripPost;

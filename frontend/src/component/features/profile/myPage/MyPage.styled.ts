@@ -153,6 +153,10 @@ export const CardTitle = styled.h3`
 `;
 
 export const CardContent = styled.div`
-  color: #a0a0a0;
-  line-height: 1.5;
+  display: flex;
+  overflow-x: auto;
+  height: 320px;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-bottom: 8px;
 `;

@@ -1,177 +1,275 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Background = styled.div`
+  width: 100%;
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2vw;
-  padding: 2vw;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 12px 0;
+
+  @media (max-width: 768px) {
+    padding: 6px 0;
+  }
 `;
 
-export const DripPostContainer = styled.div`
-  width: 14vw;
-  height: 42vh;
-  border-radius: 1vw;
+export const UserDripPostWrapper = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  padding: 0 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+    padding: 0 6px;
+  }
+`;
+
+export const PostCard = styled.div`
+  background: #1e1e1e;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.15);
-  background-color: white;
-  position: relative;
-  min-width: 250px;
-  max-width: 350px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  width: 280px;
+  max-height: 420px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
 
   &:hover {
-    scale: 1.05;
-    transition: scale 0.2s ease;
+    transform: translateY(-2px);
   }
+
+  @media (max-width: 768px) {
+    width: 280px;
+    border-radius: 8px;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+export const PostHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2d2d2d;
+  background: #1e1e1e;
+
+  @media (max-width: 768px) {
+    padding: 6px 8px;
+  }
+`;
+
+export const UserProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+  }
+`;
+
+export const ProfileImage = styled.img`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #2d2d2d;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+export const Username = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  color: #e4e6eb;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  overflow: hidden;
 `;
 
 export const PostImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+export const NavigationButton = styled.button<{ $position: "left" | "right" }>`
+  position: absolute;
+  top: 50%;
+  ${(props) => (props.$position === "left" ? "left: 8px;" : "right: 8px;")}
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+    ${(props) => (props.$position === "left" ? "left: 6px;" : "right: 6px;")}
+
+    &:hover {
+      transform: translateY(-50%);
+    }
+  }
+`;
+
+export const ImageCounter = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+
+  @media (max-width: 768px) {
+    top: 6px;
+    right: 6px;
+    padding: 2px 4px;
+    font-size: 10px;
+    border-radius: 8px;
+  }
+`;
+
+export const PostActions = styled.div`
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #2d2d2d;
+  background: #1e1e1e;
+
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+`;
+
+export const ActionButton = styled.button`
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #e4e6eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #b0b3b8;
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 3px;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 export const PostInfo = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.2vw;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: white;
-`;
+  padding: 8px 12px;
+  background: #1e1e1e;
 
-export const ProfileImage = styled.img`
-  width: 3.2vw;
-  height: 3.2vw;
-  min-width: 40px;
-  min-height: 40px;
-  border-radius: 50%;
-  border: 2px solid white;
-  object-fit: cover;
-`;
-
-export const ProfileDetailsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8vw;
-`;
-
-export const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.3vw;
-`;
-
-export const ProfileName = styled.h2`
-  font-size: 1.4vw;
-  font-weight: 600;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.6vw;
-  min-font-size: 18px;
-
-  &:after {
-    content: attr(data-age);
-    font-size: 1.2vw;
-    font-weight: 400;
+  @media (max-width: 768px) {
+    padding: 6px 8px;
   }
 `;
 
-export const ProfileDetail = styled.p`
-  font-size: 1vw;
-  margin: 0;
-  opacity: 0.9;
-  min-font-size: 14px;
+export const PostTags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+
+  @media (max-width: 768px) {
+    gap: 3px;
+    margin-top: 3px;
+  }
 `;
 
-export const CardNumber = styled.div`
-  position: absolute;
-  top: 1.2vw;
-  left: 1.2vw;
-  width: 2.4vw;
-  height: 2.4vw;
-  min-width: 28px;
-  min-height: 28px;
-  background-color: rgba(255, 216, 0, 0.9);
-  border-radius: 0.4vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2vw;
-  font-weight: bold;
-  color: black;
-  z-index: 2;
-`;
-
-export const LikeButton = styled.div`
-  position: absolute;
-  top: 1.2vw;
-  right: 1.2vw;
-  width: 2.4vw;
-  height: 2.4vw;
-  min-width: 28px;
-  min-height: 28px;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const Tag = styled.span`
+  color: #8ab4f8;
+  font-size: 11px;
   cursor: pointer;
-  box-shadow: 0 0.15vw 0.6vw rgba(0, 0, 0, 0.1);
-  z-index: 2;
+  transition: all 0.3s ease;
+  padding: 2px 6px;
+  background: #2d2d2d;
+  border-radius: 6px;
 
   &:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
-  }
-`;
-
-export const HeartIcon = styled.div<{ $isLiked: boolean }>`
-  width: 1.2vw;
-  height: 1.2vw;
-  min-width: 18px;
-  min-height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  position: relative;
-
-  &:hover {
-    transform: scale(1.2);
+    background: #3d3d3d;
+    transform: translateY(-1px);
   }
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: ${({ $isLiked }) =>
-      $isLiked ? "rgba(255, 75, 75, 0.2)" : "rgba(0, 0, 0, 0.1)"};
-    transform: scale(0);
-    transition: transform 0.3s ease;
-  }
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
 
-  &:hover::before {
-    transform: scale(1.5);
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-    color: ${({ $isLiked }) => ($isLiked ? "#ff4b4b" : "#000")};
-    fill: ${({ $isLiked }) => ($isLiked ? "#ff4b4b" : "none")};
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  &:hover svg {
-    transform: scale(1.1);
-    color: ${({ $isLiked }) => ($isLiked ? "#ff1a1a" : "#ff4b4b")};
+    &:hover {
+      transform: none;
+    }
   }
 `;

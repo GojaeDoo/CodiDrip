@@ -1,18 +1,28 @@
-import axios from "axios";
-import { Profile } from "@/types/profile";
+import { DripPostType } from "./DripPost.types";
 
-export const fetchProfiles = async (): Promise<Profile[]> => {
+export const getUserDripPostQuery = async (
+  userId?: string
+): Promise<DripPostType[]> => {
   try {
-    const response = await axios.get("http://localhost:3005/api/profiles");
-    const profiles = response.data.map((profile: Profile) => ({
-      ...profile,
-      profile_image: profile.profile_image
-        ? `http://localhost:3005/uploads/profiles/${profile.profile_image}`
-        : null,
+    const response = await fetch(
+      `http://localhost:3005/api/drip${userId ? `?userId=${userId}` : ""}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch drip posts");
+    }
+    const data = await response.json();
+
+    // 데이터 변환
+    return data.map((post: any) => ({
+      post_no: post.게시글번호,
+      post_image: JSON.parse(post.게시글이미지 || "[]"),
+      post_tag: JSON.parse(post.태그 || "[]"),
+      user_id: post.user_id,
+      profile_image: post.프로필이미지,
+      profile_nickname: post.닉네임,
     }));
-    return profiles;
   } catch (error) {
-    console.error("Error fetching profiles:", error);
+    console.error("Error fetching drip posts:", error);
     throw error;
   }
 };

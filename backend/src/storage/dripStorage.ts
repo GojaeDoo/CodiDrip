@@ -45,15 +45,31 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripDB = async (id: string) => {
+export const getUserDripPost = async (userId?: string) => {
   try {
-    const result = await pool.query(
-      `SELECT user_id , post_image ,post_tag FROM drip_post WHERE user_id = $1;`,
-      [id]
-    );
+    let query = `
+      SELECT 
+        p.post_no AS 게시글번호,
+        p.post_image AS 게시글이미지,
+        p.post_tag AS 태그,
+        p.user_id,
+        pr.profile_image AS 프로필이미지,
+        pr.profile_nickname AS 닉네임
+      FROM drip_post p
+      JOIN profile pr ON p.user_id = pr.user_id
+    `;
+
+    // userId가 있으면 해당 사용자의 게시물만 가져오고, 없으면 모든 게시물을 가져옴
+    if (userId) {
+      query += ` WHERE p.user_id = $1`;
+    }
+
+    query += ` ORDER BY p.post_no DESC`;
+
+    const result = await pool.query(query, userId ? [userId] : []);
     return result.rows;
   } catch (error) {
-    console.error("getUserDripDB error - dripStorage:", error);
+    console.error("Error in getUserDripPost:", error);
     throw error;
   }
 };

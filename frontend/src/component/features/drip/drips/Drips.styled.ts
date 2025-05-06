@@ -49,3 +49,19 @@ export const DripsSelectBtn = styled.button`
     background-color: #000000;
   }
 `;
+
+export const DripPostWrapper = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0 12px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+    padding: 0 6px;
+  }
+`;

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { fetchUserProfile } from "./Header.query";
 import { Profile } from "@/types/profile";
 import { useAuth } from "@/context/AuthContext";
+import { HeaderProps } from "./Header.types";
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,6 +31,16 @@ const HeaderContainer = () => {
     }
   }, [isLoggedIn]);
 
+  const onClickMoveMyPage: HeaderProps["onClickMoveMyPage"] = () => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      router.push("/myPage");
+    } else {
+      alert("로그인 후 이용해주세요.");
+      router.push("/login");
+    }
+  };
+
   const onClickMoveLogin = () => {
     router.push("/login");
   };
@@ -50,6 +61,7 @@ const HeaderContainer = () => {
     <HeaderPresenter
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      onClickMoveMyPage={onClickMoveMyPage}
       onClickMoveLogin={onClickMoveLogin}
       onClickMoveJoin={onClickMoveJoin}
       onClickLogout={onClickLogout}

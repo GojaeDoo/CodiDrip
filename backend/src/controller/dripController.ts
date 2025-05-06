@@ -17,11 +17,8 @@ export const createDrip = async (req: Request, res: Response) => {
 
 export const getUserDrip = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ message: "User ID is required" });
-    }
-    const drips = await dripService.getUserDrip(id);
+    const userId = req.query.userId as string | undefined;
+    const drips = await dripService.getUserDrip(userId);
     res.status(200).json(drips);
   } catch (error) {
     console.error("getUserDrip error - dripController:", error);

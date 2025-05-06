@@ -19,11 +19,11 @@ const HeaderPresenter = (props: HeaderProps) => {
         <S.CloseButton onClick={() => props.setIsOpen(false)}>
           <X size={36} />
         </S.CloseButton>
-        <S.MenuItem href="#">DRIP 공유</S.MenuItem>
-        <S.MenuItem href="#">DRIP 유저</S.MenuItem>
-        <S.MenuItem href="#">자유게시판</S.MenuItem>
-        <S.MenuItem href="/myPage">마이페이지</S.MenuItem>
-        <S.MenuItem href="#">건의사항/신고</S.MenuItem>
+        <S.MenuItem>DRIP 공유</S.MenuItem>
+        <S.MenuItem>DRIP 유저</S.MenuItem>
+        <S.MenuItem>자유게시판</S.MenuItem>
+        <S.MenuItem onClick={props.onClickMoveMyPage}>마이페이지</S.MenuItem>
+        <S.MenuItem>건의사항/신고</S.MenuItem>
       </S.SideMenuContainer>
       <S.SearchInputContainer>
         <S.SearchInput />
