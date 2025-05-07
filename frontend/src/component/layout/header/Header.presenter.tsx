@@ -34,7 +34,11 @@ const HeaderPresenter = (props: HeaderProps) => {
           <S.UserContainer>
             <S.ProfileImage>
               {props.userProfile?.profile_image ? (
-                <img src={props.userProfile.profile_image} alt="Profile" />
+                <img
+                  src={props.userProfile.profile_image}
+                  alt="Profile"
+                  onClick={props.onClickMoveMyPage}
+                />
               ) : null}
             </S.ProfileImage>
             <S.Logout onClick={props.onClickLogout}>Logout</S.Logout>

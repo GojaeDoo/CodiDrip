@@ -273,3 +273,53 @@ export const Tag = styled.span`
     }
   }
 `;
+
+export const MenuButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e4e6eb;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: color 0.2s;
+  &:hover {
+    color: #b0b3b8;
+  }
+`;
+
+export const Menu = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #232323;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 8px 0;
+  z-index: 10;
+  min-width: 120px;
+  margin-top: 4px;
+`;
+
+export const MenuItem = styled.button`
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: #e4e6eb;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #333;
+  }
+`;
+
+export const MenuWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+`;

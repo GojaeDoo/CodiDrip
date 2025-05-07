@@ -7,6 +7,7 @@ import {
   MessageCircle,
   Bookmark,
   Share2,
+  MoreVertical,
 } from "lucide-react";
 
 export const DripPostPresenter = (props: DripPostProps) => {
@@ -21,6 +22,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
               const images = post.post_image || [];
               const tags = post.post_tag || [];
               const currentIndex = props.currentImageIndexes[post.post_no] || 0;
+              const isOwner = post.user_id === props.currentUserId;
 
               if (images.length === 0) {
                 return null;
@@ -36,6 +38,36 @@ export const DripPostPresenter = (props: DripPostProps) => {
                       />
                       <S.Username>{post.profile_nickname}</S.Username>
                     </S.UserProfile>
+                    <S.MenuWrapper>
+                      <S.MenuButton
+                        onClick={() => props.onMenuClick?.(post.post_no)}
+                      >
+                        <MoreVertical size={20} />
+                      </S.MenuButton>
+                      {props.activeMenu === post.post_no && (
+                        <S.Menu>
+                          <S.MenuItem
+                            onClick={() => props.onHidePost(post.post_no)}
+                          >
+                            숨김
+                          </S.MenuItem>
+                          {isOwner && (
+                            <>
+                              <S.MenuItem
+                                onClick={() => props.onEditPost(post.post_no)}
+                              >
+                                수정
+                              </S.MenuItem>
+                              <S.MenuItem
+                                onClick={() => props.onDeletePost(post.post_no)}
+                              >
+                                삭제
+                              </S.MenuItem>
+                            </>
+                          )}
+                        </S.Menu>
+                      )}
+                    </S.MenuWrapper>
                   </S.PostHeader>
 
                   <S.ImageContainer>

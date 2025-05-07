@@ -5,14 +5,18 @@ import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
 import { getUserDripPostQuery } from "./DripPost.query";
 
-export const DripPostContainer = ({
-  isMyPage = false,
-  userId,
-}: DripPostContainerProps) => {
+export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
     [key: number]: number;
   }>({});
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) setCurrentUserId(storedUserId);
+  }, []);
 
   useEffect(() => {
     const fetchDripPosts = async () => {
@@ -43,12 +47,32 @@ export const DripPostContainer = ({
     });
   };
 
+  const onHidePost = (postNo: number) => {
+    alert(`게시글 ${postNo} 숨김`);
+  };
+  const onEditPost = (postNo: number) => {
+    alert(`게시글 ${postNo} 수정`);
+  };
+  const onDeletePost = (postNo: number) => {
+    alert(`게시글 ${postNo} 삭제`);
+  };
+
+  const onMenuClick = (postNo: number) => {
+    setActiveMenu(activeMenu === postNo ? null : postNo);
+  };
+
   return (
     <DripPostPresenter
-      dripPostData={dripPostData}
+      dripPostData={dripPostData ?? []}
       currentImageIndexes={currentImageIndexes}
+      currentUserId={currentUserId}
       onPrevImage={onPrevImage}
       onNextImage={onNextImage}
+      onHidePost={onHidePost}
+      onEditPost={onEditPost}
+      onDeletePost={onDeletePost}
+      onMenuClick={onMenuClick}
+      activeMenu={activeMenu}
     />
   );
 };

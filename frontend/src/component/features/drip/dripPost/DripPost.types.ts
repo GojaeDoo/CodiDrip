@@ -10,6 +10,23 @@ export interface DripPostType {
 export interface DripPostProps {
   isMyPage?: boolean;
   userId?: string;
+  dripPostData: Array<{
+    post_no: number;
+    user_id: string;
+    profile_image: string;
+    profile_nickname: string;
+    post_image: string[];
+    post_tag: string[];
+  }>;
+  currentImageIndexes: Record<number, number>;
+  currentUserId: string;
+  onHidePost: (postNo: number) => void;
+  onEditPost: (postNo: number) => void;
+  onDeletePost: (postNo: number) => void;
+  onPrevImage: (postNo: number, totalImages: number) => void;
+  onNextImage: (postNo: number, totalImages: number) => void;
+  onMenuClick?: (postNo: number) => void;
+  activeMenu?: number | null;
 }
 
 export interface DripPostContainerProps extends DripPostProps {}
