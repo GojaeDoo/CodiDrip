@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import DripPostEditPresenter from "./DripPostEdit.presenter";
 import { DripPostEditPresenterProps } from "./DripPostEdit.types";
-import { postDrip } from "./DripPostEdit.query";
+import { fetchDripPostQuery, postDrip } from "./DripPostEdit.query";
+import { useSearchParams } from "next/navigation";
 
 export const DripPostEditContainer = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -11,6 +12,30 @@ export const DripPostEditContainer = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const searchParams = useSearchParams();
+
+  const postNo = searchParams.get("postNo");
+  const statusParam = searchParams.get("status");
+  const status: boolean | null =
+    statusParam === "true" ? true : statusParam === "false" ? false : null;
+
+  console.log("postNo : " + postNo);
+  console.log("status : " + status);
+
+  useEffect(() => {
+    if (status && postNo) {
+      const fetchDripPost = async () => {
+        console.log("들어오지?");
+        const response = await fetchDripPostQuery(postNo);
+        console.log(response);
+      };
+      fetchDripPost();
+    } else {
+      console.log("게시");
+      return;
+    }
+  }, [status, postNo]);
 
   const handleImageUpload: DripPostEditPresenterProps["onImageUpload"] = async (
     e
@@ -104,6 +129,8 @@ export const DripPostEditContainer = () => {
       onNextImage={handleNextImage}
       onTagInputChange={handleTagInputChange}
       onSubmit={handleSubmit}
+      postNo={postNo}
+      status={status}
     />
   );
 };

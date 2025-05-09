@@ -1,11 +1,8 @@
 import axios from "axios";
 
-export const FindUserEmail = async (id: string) => {
+export const UserSelectQuery = async (id: string) => {
   const response = await axios.get(
-    `http://localhost:3005/api/users/select_user`,
-    {
-      params: { id },
-    }
+    `http://localhost:3005/api/users/select_user?id=${id}`
   );
   return response.data;
 };

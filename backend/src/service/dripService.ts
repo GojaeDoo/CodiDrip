@@ -2,6 +2,7 @@ import {
   uploadDripImage,
   createDripDB,
   getUserDripPost,
+  getPostNoDripPost,
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -28,6 +29,15 @@ export const dripService = {
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);
       throw error;
+    }
+  },
+
+  getPostNoDrip: async (postNo?: string) => {
+    try {
+      const drip = await getPostNoDripPost(postNo);
+      return drip;
+    } catch (error) {
+      console.error("getPostNoDrip error - dripService:", error);
     }
   },
 };

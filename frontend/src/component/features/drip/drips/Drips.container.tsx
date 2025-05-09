@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import DripsPresenter from "./Drips.presenter";
-import DripPost from "../../../../app/profileCard/page";
 import { DripsProps } from "./Drips.types";
 
 const DripsContainer = () => {

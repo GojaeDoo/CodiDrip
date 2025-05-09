@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
 import { getUserDripPostQuery } from "./DripPost.query";
+import { useRouter } from "next/navigation";
 
 export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
@@ -12,6 +13,7 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
   }>({});
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -51,7 +53,8 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
     alert(`게시글 ${postNo} 숨김`);
   };
   const onEditPost = (postNo: number) => {
-    alert(`게시글 ${postNo} 수정`);
+    const status = true;
+    router.push(`/dripPostEdit?postNo=${postNo}&status=${status}`);
   };
   const onDeletePost = (postNo: number) => {
     alert(`게시글 ${postNo} 삭제`);

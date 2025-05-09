@@ -1,7 +1,7 @@
 "use client";
 import * as S from "./Drips.styled";
 import { DripsProps } from "./Drips.types";
-import { DripPostContainer } from "../dripPost/DripPost.container";
+import { DripPost } from "@/app/dripPost/page";
 
 const DripsPresenter = (props: DripsProps) => {
   return (
@@ -26,7 +26,7 @@ const DripsPresenter = (props: DripsProps) => {
           </S.DripsSelectWrapperBottom>
         </S.DripsSelectWrapper>
         <S.DripPostWrapper>
-          <DripPostContainer />
+          <DripPost />
         </S.DripPostWrapper>
       </S.Background>
     </>

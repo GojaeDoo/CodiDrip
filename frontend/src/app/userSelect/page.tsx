@@ -1,7 +1,11 @@
 import UserSelectContainer from "@/component/features/userSelect/UserSelect.container";
 
 export const UserSelect = () => {
-  return <UserSelectContainer />;
+  return (
+    <>
+      <UserSelectContainer />
+    </>
+  );
 };
 
 export default UserSelect;

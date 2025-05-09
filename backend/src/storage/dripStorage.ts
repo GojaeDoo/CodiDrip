@@ -73,3 +73,29 @@ export const getUserDripPost = async (userId?: string) => {
     throw error;
   }
 };
+
+export const getPostNoDripPost = async (postNo?: string) => {
+  try {
+    console.log("Searching for post_no:", postNo);
+    const result = await pool.query(
+      `
+      SELECT 
+        p.post_no AS 게시글번호,
+        p.post_image AS 게시글이미지,
+        p.post_tag AS 태그,
+        p.user_id,
+        pr.profile_image AS 프로필이미지,
+        pr.profile_nickname AS 닉네임
+      FROM drip_post p
+      JOIN profile pr ON p.user_id = pr.user_id
+      WHERE post_no = $1
+    `,
+      [postNo]
+    );
+    console.log("Query result rows:", result.rows); // 디버깅용 로그
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in getPostNoDripPost:", error);
+    throw error;
+  }
+};

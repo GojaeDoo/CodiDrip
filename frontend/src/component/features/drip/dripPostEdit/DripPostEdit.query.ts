@@ -19,3 +19,11 @@ export const postDrip = async (data: PostDripData) => {
     throw error;
   }
 };
+
+export const fetchDripPostQuery = async (postNo: string) => {
+  if (!postNo) {
+    throw new Error("Post number is required");
+  }
+  const response = await axios.get(`http://localhost:3005/api/drip/${postNo}`);
+  return response.data;
+};

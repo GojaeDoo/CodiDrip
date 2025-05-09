@@ -7,7 +7,9 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
   return (
     <S.Background>
       <S.DripPostEditWrapper>
-        <S.DripPostEditTitle>DRIP 작성</S.DripPostEditTitle>
+        <S.DripPostEditTitle>
+          DRIP {props.status === true ? "수정" : "작성"}
+        </S.DripPostEditTitle>
         <S.DripPostEditContent>
           <S.ImageUploadSection>
             <S.ImageUploadButton
@@ -73,7 +75,7 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
             onClick={props.onSubmit}
             disabled={props.images.length === 0}
           >
-            게시하기
+            {props.status == true ? "수정" : "게시"}하기
           </S.SubmitButton>
         </S.DripPostEditContent>
       </S.DripPostEditWrapper>

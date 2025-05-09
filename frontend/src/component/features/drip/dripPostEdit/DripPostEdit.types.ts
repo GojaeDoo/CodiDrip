@@ -17,4 +17,6 @@ export interface DripPostEditPresenterProps {
   tagInput: string;
   onTagInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
+  postNo: string | null;
+  status: boolean | null;
 }

@@ -25,3 +25,14 @@ export const getUserDrip = async (req: Request, res: Response) => {
     res.status(500).json({ error: "getUserDrip 500error - dripController" });
   }
 };
+
+export const getPostNoDrip = async (req: Request, res: Response) => {
+  try {
+    const postNo = req.params.postNo;
+    const drip = await dripService.getPostNoDrip(postNo);
+    res.status(200).json(drip);
+  } catch (error) {
+    console.error("getPostNoDrip error - dripController:", error);
+    res.status(500).json({ error: "getPostNoDrip 500error - dripController" });
+  }
+};
