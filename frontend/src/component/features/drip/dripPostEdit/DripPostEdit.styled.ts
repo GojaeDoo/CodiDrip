@@ -59,16 +59,33 @@ export const ImagePreview = styled.div`
   position: relative;
   width: 100%;
   height: 400px;
-  border: 2px dashed #404040;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: #1a1a1a;
+  background: #222;
+  border-radius: 8px;
 `;
 
-export const PreviewImage = styled.img`
+export const MainImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const NavigationButton = styled.button<{ position: "left" | "right" }>`
@@ -163,4 +180,13 @@ export const SubmitButton = styled.button`
     background-color: #404040;
     cursor: not-allowed;
   }
+`;
+
+export const TagDeleteButton = styled.button`
+  margin-left: 4px;
+  background: transparent;
+  border: none;
+  color: #ff3b30;
+  cursor: pointer;
+  font-weight: bold;
 `;

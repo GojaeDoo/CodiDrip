@@ -99,3 +99,64 @@ export const getPostNoDripPost = async (postNo?: string) => {
     throw error;
   }
 };
+
+export const updateDripPost = async (
+  postNo: string,
+  images: string[],
+  tags: string[],
+  userId: string
+) => {
+  try {
+    // 기존 이미지 목록 조회
+    const prevResult = await pool.query(
+      `SELECT post_image FROM drip_post WHERE post_no = $1 AND user_id = $2`,
+      [postNo, userId]
+    );
+    let prevImages: string[] = [];
+    if (prevResult.rows.length > 0) {
+      try {
+        prevImages = JSON.parse(prevResult.rows[0].post_image);
+      } catch (e) {
+        prevImages = [];
+      }
+    }
+
+    // 삭제 대상 이미지 추출
+    const imagesToDelete = prevImages.filter(
+      (img) =>
+        !images.includes(img) &&
+        typeof img === "string" &&
+        !img.startsWith("data:")
+    );
+    // 파일 시스템에서 삭제
+    for (const img of imagesToDelete) {
+      const filePath = path.join(
+        process.cwd(),
+        "uploads/drip",
+        img.replace(/^\//, "")
+      );
+      fs.promises.unlink(filePath).catch((err) => {
+        // 파일이 없거나 삭제 실패해도 무시
+        console.error("이미지 파일 삭제 실패:", filePath, err.message);
+      });
+    }
+
+    // DB 업데이트
+    const result = await pool.query(
+      `UPDATE drip_post 
+       SET post_image = $1, post_tag = $2
+       WHERE post_no = $3 AND user_id = $4
+       RETURNING *`,
+      [JSON.stringify(images), JSON.stringify(tags), postNo, userId]
+    );
+
+    if (result.rows.length === 0) {
+      throw new Error("게시물을 찾을 수 없거나 수정 권한이 없습니다.");
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error("updateDripPost error - dripStorage:", error);
+    throw error;
+  }
+};

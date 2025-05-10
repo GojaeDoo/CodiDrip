@@ -36,3 +36,25 @@ export const getPostNoDrip = async (req: Request, res: Response) => {
     res.status(500).json({ error: "getPostNoDrip 500error - dripController" });
   }
 };
+
+export const updateDrip = async (req: Request, res: Response) => {
+  try {
+    const postNo = req.params.postNo;
+    const { images, tags, userId } = req.body;
+
+    if (!postNo || !images || !tags || !userId) {
+      return res.status(400).json({ error: "필수 정보가 누락되었습니다." });
+    }
+
+    const updatedDrip = await dripService.updateDrip(
+      postNo,
+      images,
+      tags,
+      userId
+    );
+    res.status(200).json(updatedDrip);
+  } catch (error) {
+    console.error("updateDrip error - dripController:", error);
+    res.status(500).json({ error: "게시물 수정 중 오류가 발생했습니다." });
+  }
+};

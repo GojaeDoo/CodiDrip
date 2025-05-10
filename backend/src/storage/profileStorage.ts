@@ -1,6 +1,8 @@
 import pool from "../db";
 import { Profile } from "../types/profileTypes";
 import { PrismaClient } from "@prisma/client";
+import fs from "fs";
+import path from "path";
 
 const prisma = new PrismaClient();
 
@@ -95,6 +97,38 @@ export const updateProfile = async (
   userId: string
 ) => {
   try {
+    // 기존 프로필 이미지 조회
+    const prevResult = await pool.query(
+      `SELECT profile_image FROM profile WHERE user_id = $1`,
+      [userId]
+    );
+    let prevImage: string | null = null;
+    if (prevResult.rows.length > 0) {
+      prevImage = prevResult.rows[0].profile_image;
+    }
+    // 기존 이미지와 새 이미지가 다르고, 기존 이미지가 존재하면 삭제
+    if (
+      prevImage &&
+      prevImage !== profileImage &&
+      typeof prevImage === "string" &&
+      !prevImage.startsWith("data:")
+    ) {
+      const filePath = path.join(
+        process.cwd(),
+        "uploads/profiles",
+        prevImage.trim()
+      );
+      console.log("프로필 이미지 삭제 시도:", filePath);
+      fs.promises
+        .unlink(filePath)
+        .then(() => {
+          console.log("프로필 이미지 파일 삭제 성공:", filePath);
+        })
+        .catch((err) => {
+          console.error("프로필 이미지 파일 삭제 실패:", filePath, err.message);
+        });
+    }
+
     const query = `
       UPDATE profile 
       SET 

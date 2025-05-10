@@ -27,13 +27,19 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
               style={{ display: "none" }}
             />
             <S.ImagePreview>
-              {props.images.length > 0 ? (
+              {props.imageSrcList.length > 0 ? (
                 <>
-                  <S.PreviewImage
-                    src={props.images[props.currentImageIndex]}
-                    alt="업로드된 이미지"
+                  <S.MainImage
+                    src={props.imageSrcList[props.currentImageIndex]}
+                    alt="drip 이미지"
                   />
-                  {props.images.length > 1 && (
+                  <S.DeleteButton
+                    onClick={() => props.onDeleteImage(props.currentImageIndex)}
+                    type="button"
+                  >
+                    ×
+                  </S.DeleteButton>
+                  {props.imageSrcList.length > 1 && (
                     <>
                       <S.NavigationButton
                         onClick={props.onPrevImage}
@@ -67,15 +73,23 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
             </S.TagInputWrapper>
             <S.TagList>
               {props.tags.map((tag, index) => (
-                <S.TagItem key={index}>{tag}</S.TagItem>
+                <S.TagItem key={index}>
+                  {tag}
+                  <S.TagDeleteButton
+                    onClick={() => props.onDeleteTag(index)}
+                    type="button"
+                  >
+                    ×
+                  </S.TagDeleteButton>
+                </S.TagItem>
               ))}
             </S.TagList>
           </S.TagSection>
           <S.SubmitButton
-            onClick={props.onSubmit}
-            disabled={props.images.length === 0}
+            onClick={props.status === true ? props.onUpdate : props.onSubmit}
+            disabled={props.imageSrcList.length === 0}
           >
-            {props.status == true ? "수정" : "게시"}하기
+            {props.status === true ? "수정" : "게시"}하기
           </S.SubmitButton>
         </S.DripPostEditContent>
       </S.DripPostEditWrapper>

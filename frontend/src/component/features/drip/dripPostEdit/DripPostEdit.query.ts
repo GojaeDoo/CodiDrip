@@ -20,6 +20,31 @@ export const postDrip = async (data: PostDripData) => {
   }
 };
 
+export const updateDrip = async (
+  data: PostDripData & { postNo: string | null }
+) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3005/api/drip/${data.postNo}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("Response headers:", error.response?.headers);
+      console.log("Response data:", error.response?.data);
+    }
+    console.error("Error updating drip:", error);
+    throw error;
+  }
+};
+
 export const fetchDripPostQuery = async (postNo: string) => {
   if (!postNo) {
     throw new Error("Post number is required");

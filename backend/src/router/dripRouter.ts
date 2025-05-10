@@ -3,6 +3,7 @@ import {
   createDrip,
   getPostNoDrip,
   getUserDrip,
+  updateDrip,
 } from "../controller/dripController";
 
 const router = express.Router();
@@ -14,5 +15,8 @@ router.post("/", createDrip as RequestHandler);
 router.get("/", getUserDrip as RequestHandler);
 
 router.get("/:postNo", getPostNoDrip);
+
+// Drip 수정
+router.put("/:postNo", updateDrip as RequestHandler);
 
 export default router;
