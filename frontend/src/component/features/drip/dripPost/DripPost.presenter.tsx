@@ -29,7 +29,10 @@ export const DripPostPresenter = (props: DripPostProps) => {
               }
 
               return (
-                <S.PostCard key={`post-${post.post_no}`}>
+                <S.PostCard
+                  key={`post-${post.post_no}`}
+                  onClick={() => props.onClickMoveDetail?.(post.post_no)}
+                >
                   <S.PostHeader>
                     <S.UserProfile>
                       <S.ProfileImage

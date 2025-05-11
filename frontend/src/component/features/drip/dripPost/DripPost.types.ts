@@ -23,6 +23,7 @@ export interface DripPostProps {
   onHidePost: (postNo: number) => void;
   onEditPost: (postNo: number) => void;
   onDeletePost: (postNo: number) => void;
+  onClickMoveDetail: (postNo: number) => void;
   onPrevImage: (postNo: number, totalImages: number) => void;
   onNextImage: (postNo: number, totalImages: number) => void;
   onMenuClick?: (postNo: number) => void;

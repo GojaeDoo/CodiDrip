@@ -64,6 +64,10 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
     setActiveMenu(activeMenu === postNo ? null : postNo);
   };
 
+  const onClickMoveDetail = (postNo: number) => {
+    router.push(`/dripPostDetail?postNo=${postNo}`);
+  };
+
   return (
     <DripPostPresenter
       dripPostData={dripPostData ?? []}
@@ -76,6 +80,7 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
       onDeletePost={onDeletePost}
       onMenuClick={onMenuClick}
       activeMenu={activeMenu}
+      onClickMoveDetail={onClickMoveDetail}
     />
   );
 };
