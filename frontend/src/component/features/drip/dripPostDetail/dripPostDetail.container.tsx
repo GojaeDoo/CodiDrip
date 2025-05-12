@@ -8,6 +8,7 @@ import { fetchDripPostQuery } from "./dripPostDetail.query";
 
 export const DripPostDetailContainer = () => {
   const [dripPost, setDripPost] = useState<DripPostDetailResponse>();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const params = useSearchParams();
 
   useEffect(() => {
@@ -31,11 +32,22 @@ export const DripPostDetailContainer = () => {
     : [];
   const postTags = dripPost?.태그 ? JSON.parse(dripPost.태그) : [];
 
+  const onPrevImage = (totalImages: number) => {
+    setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
+  };
+
+  const onNextImage = (totalImages: number) => {
+    setCurrentImageIndex((prev) => (prev + 1) % totalImages);
+  };
+
   return (
     <DripPostDetailPresenter
       dripPost={dripPost}
       postImages={postImages}
       postTags={postTags}
+      currentImageIndex={currentImageIndex}
+      onPrevImage={onPrevImage}
+      onNextImage={onNextImage}
     />
   );
 };

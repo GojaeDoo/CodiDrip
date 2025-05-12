@@ -12,20 +12,33 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
           <S.ImageSection>
             <S.MainImage
               src={
-                props.postImages[0]
-                  ? `http://localhost:3005/uploads/drip/${props.postImages[0]}`
+                props.postImages[props.currentImageIndex]
+                  ? `http://localhost:3005/uploads/drip/${
+                      props.postImages[props.currentImageIndex]
+                    }`
                   : undefined
               }
               alt="Drip post image"
             />
-            <S.ImageNavigation>
-              <S.NavButton>
-                <S.StyledChevronLeft size={24} />
-              </S.NavButton>
-              <S.NavButton>
-                <S.StyledChevronRight size={24} />
-              </S.NavButton>
-            </S.ImageNavigation>
+            {props.postImages.length > 1 && (
+              <>
+                <S.ImageNavigation>
+                  <S.NavButton
+                    onClick={() => props.onPrevImage(props.postImages.length)}
+                  >
+                    <S.StyledChevronLeft size={24} />
+                  </S.NavButton>
+                  <S.NavButton
+                    onClick={() => props.onNextImage(props.postImages.length)}
+                  >
+                    <S.StyledChevronRight size={24} />
+                  </S.NavButton>
+                </S.ImageNavigation>
+                <S.ImageCounter>
+                  {props.currentImageIndex + 1} / {props.postImages.length}
+                </S.ImageCounter>
+              </>
+            )}
           </S.ImageSection>
 
           <S.ContentSection>
@@ -35,6 +48,11 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
                 alt="User profile"
               />
               <S.UserName>{props.dripPost?.닉네임 || "사용자"}</S.UserName>
+              {props.dripPost?.키 && props.dripPost?.몸무게 && (
+                <S.UserStats>
+                  {props.dripPost.키}cm / {props.dripPost.몸무게}kg
+                </S.UserStats>
+              )}
             </S.UserInfo>
 
             <S.InteractionSection>

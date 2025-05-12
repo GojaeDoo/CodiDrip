@@ -20,6 +20,8 @@ export const getUserDripPostQuery = async (
       user_id: post.user_id,
       profile_image: post.프로필이미지,
       profile_nickname: post.닉네임,
+      profile_height: post.키,
+      profile_weight: post.몸무게,
     }));
   } catch (error) {
     console.error("Error fetching drip posts:", error);

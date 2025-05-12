@@ -11,6 +11,8 @@ export interface DripPostDetailResponse {
   user_id: string;
   프로필이미지: string;
   닉네임: string;
+  키: number;
+  몸무게: number;
   comments?: {
     profile_image: string;
     profile_nickname: string;
@@ -19,7 +21,15 @@ export interface DripPostDetailResponse {
 }
 
 export interface DripPostDetailProps {
-  dripPost?: DripPostDetailResponse;
+  dripPost?: {
+    프로필이미지: string;
+    닉네임: string;
+    키: number;
+    몸무게: number;
+  };
   postImages: string[];
   postTags: string[];
+  currentImageIndex: number;
+  onPrevImage: (totalImages: number) => void;
+  onNextImage: (totalImages: number) => void;
 }

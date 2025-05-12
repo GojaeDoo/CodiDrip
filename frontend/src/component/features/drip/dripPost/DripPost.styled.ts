@@ -323,3 +323,17 @@ export const MenuWrapper = styled.div`
   align-items: center;
   margin-left: auto;
 `;
+
+export const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const UserStats = styled.span`
+  font-size: 0.8rem;
+  color: #888;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 12px;
+`;

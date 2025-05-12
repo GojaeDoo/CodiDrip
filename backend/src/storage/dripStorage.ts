@@ -54,7 +54,9 @@ export const getUserDripPost = async (userId?: string) => {
         p.post_tag AS 태그,
         p.user_id,
         pr.profile_image AS 프로필이미지,
-        pr.profile_nickname AS 닉네임
+        pr.profile_nickname AS 닉네임,
+        pr.profile_height AS 키,
+        pr.profile_weight AS 몸무게
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
     `;
@@ -85,7 +87,9 @@ export const getPostNoDripPost = async (postNo?: string) => {
         p.post_tag AS 태그,
         p.user_id,
         pr.profile_image AS 프로필이미지,
-        pr.profile_nickname AS 닉네임
+        pr.profile_nickname AS 닉네임,
+        pr.profile_height AS 키,
+        pr.profile_weight AS 몸무게
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
       WHERE post_no = $1

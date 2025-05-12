@@ -12,18 +12,6 @@ const fadeIn = keyframes`
   }
 `;
 
-const pulse = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-`;
-
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -58,6 +46,8 @@ export const DripPostDetailWrapper = styled.div`
 
 export const PostContainer = styled.div`
   width: 100%;
+  max-width: 1200px;
+  height: 800px;
   display: flex;
   gap: 2rem;
   background: #1e1e1e;
@@ -66,6 +56,7 @@ export const PostContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    height: auto;
     padding: 1rem;
   }
 `;
@@ -73,13 +64,19 @@ export const PostContainer = styled.div`
 export const ImageSection = styled.div`
   flex: 1;
   position: relative;
-  min-height: 400px;
+  height: 100%;
+  min-height: 600px;
+  max-height: 700px;
   background: #333;
   border-radius: 12px;
-  transition: transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  &:hover {
-    transform: scale(1.01);
+  @media (max-width: 768px) {
+    min-height: 400px;
+    max-height: 500px;
   }
 `;
 
@@ -88,11 +85,6 @@ export const MainImage = styled.img`
   height: 100%;
   object-fit: contain;
   background: #333;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
 `;
 
 export const ImageNavigation = styled.div`
@@ -331,4 +323,24 @@ export const CommentText = styled.p`
   color: #ddd;
   margin: 0;
   line-height: 1.4;
+`;
+
+export const ImageCounter = styled.div`
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+`;
+
+export const UserStats = styled.span`
+  font-size: 0.9rem;
+  color: #888;
+  margin-left: auto;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
 `;

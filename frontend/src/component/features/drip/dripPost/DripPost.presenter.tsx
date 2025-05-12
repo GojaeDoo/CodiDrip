@@ -5,8 +5,6 @@ import {
   ChevronRight,
   Heart,
   MessageCircle,
-  Bookmark,
-  Share2,
   MoreVertical,
 } from "lucide-react";
 
@@ -39,7 +37,14 @@ export const DripPostPresenter = (props: DripPostProps) => {
                         src={`http://localhost:3005/uploads/profiles/${post.profile_image}`}
                         alt="profile"
                       />
-                      <S.Username>{post.profile_nickname}</S.Username>
+                      <S.UserInfo>
+                        <S.Username>{post.profile_nickname}</S.Username>
+                        {post.profile_height && post.profile_weight && (
+                          <S.UserStats>
+                            {post.profile_height}cm / {post.profile_weight}kg
+                          </S.UserStats>
+                        )}
+                      </S.UserInfo>
                     </S.UserProfile>
                     <S.MenuWrapper>
                       <S.MenuButton
@@ -81,17 +86,19 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     {images.length > 1 && (
                       <>
                         <S.NavigationButton
-                          onClick={() =>
-                            props.onPrevImage(post.post_no, images.length)
-                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            props.onPrevImage(post.post_no, images.length);
+                          }}
                           $position="left"
                         >
                           <ChevronLeft size={20} />
                         </S.NavigationButton>
                         <S.NavigationButton
-                          onClick={() =>
-                            props.onNextImage(post.post_no, images.length)
-                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            props.onNextImage(post.post_no, images.length);
+                          }}
                           $position="right"
                         >
                           <ChevronRight size={20} />
@@ -110,13 +117,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     <S.ActionButton>
                       <MessageCircle size={24} />
                     </S.ActionButton>
-                    <S.ActionButton>
-                      <Share2 size={24} />
-                    </S.ActionButton>
                     <div style={{ flex: 1 }} />
-                    <S.ActionButton>
-                      <Bookmark size={24} />
-                    </S.ActionButton>
                   </S.PostActions>
 
                   <S.PostInfo>

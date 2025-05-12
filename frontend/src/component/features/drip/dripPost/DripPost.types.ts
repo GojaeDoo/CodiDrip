@@ -5,6 +5,8 @@ export interface DripPostType {
   user_id: string;
   profile_image: string;
   profile_nickname: string;
+  profile_height: number;
+  profile_weight: number;
 }
 
 export interface DripPostProps {
@@ -15,6 +17,8 @@ export interface DripPostProps {
     user_id: string;
     profile_image: string;
     profile_nickname: string;
+    profile_height: number;
+    profile_weight: number;
     post_image: string[];
     post_tag: string[];
   }>;

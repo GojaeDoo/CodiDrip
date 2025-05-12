@@ -25,6 +25,7 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
       try {
         const response = await getUserDripPostQuery(userId);
         setDripPostData(response);
+        console.log(response);
       } catch (error) {
         console.error("Error fetching drip posts:", error);
       }
