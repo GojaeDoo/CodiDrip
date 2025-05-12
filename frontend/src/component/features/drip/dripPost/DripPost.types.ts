@@ -1,3 +1,14 @@
+export interface DripPostResponse {
+  게시글번호: number;
+  게시글이미지: string;
+  태그: string;
+  user_id: string;
+  프로필이미지: string;
+  닉네임: string;
+  키: number;
+  몸무게: number;
+}
+
 export interface DripPostType {
   post_no: number;
   post_image: string[];
@@ -33,8 +44,6 @@ export interface DripPostProps {
   onMenuClick?: (postNo: number) => void;
   activeMenu?: number | null;
 }
-
-export interface DripPostContainerProps extends DripPostProps {}
 
 export interface DripPostPresenterProps {
   dripPostData: DripPostType[] | null;

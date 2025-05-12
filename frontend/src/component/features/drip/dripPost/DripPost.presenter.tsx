@@ -48,7 +48,10 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     </S.UserProfile>
                     <S.MenuWrapper>
                       <S.MenuButton
-                        onClick={() => props.onMenuClick?.(post.post_no)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          props.onMenuClick?.(post.post_no);
+                        }}
                       >
                         <MoreVertical size={20} />
                       </S.MenuButton>
@@ -112,10 +115,20 @@ export const DripPostPresenter = (props: DripPostProps) => {
 
                   <S.PostActions>
                     <S.ActionButton>
-                      <Heart size={24} />
+                      <Heart
+                        size={24}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      />
                     </S.ActionButton>
                     <S.ActionButton>
-                      <MessageCircle size={24} />
+                      <MessageCircle
+                        size={24}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      />
                     </S.ActionButton>
                     <div style={{ flex: 1 }} />
                   </S.PostActions>
