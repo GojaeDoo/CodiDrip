@@ -9,6 +9,7 @@ import { fetchDripPostQuery } from "./dripPostDetail.query";
 export const DripPostDetailContainer = () => {
   const [dripPost, setDripPost] = useState<DripPostDetailResponse>();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [postno, setPostNo] = useState<string>("");
   const params = useSearchParams();
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export const DripPostDetailContainer = () => {
         const postNo = params.get("postNo");
         if (postNo) {
           const response = await fetchDripPostQuery(postNo);
+          setPostNo(postNo);
           setDripPost(response);
         }
       } catch (error) {
@@ -48,6 +50,7 @@ export const DripPostDetailContainer = () => {
       currentImageIndex={currentImageIndex}
       onPrevImage={onPrevImage}
       onNextImage={onNextImage}
+      postno={postno}
     />
   );
 };

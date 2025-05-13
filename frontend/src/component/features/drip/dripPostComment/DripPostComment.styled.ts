@@ -53,12 +53,25 @@ export const CommentContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  flex: 1;
+`;
+
+export const CommentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 `;
 
 export const CommentUserName = styled.span`
   font-weight: 600;
   color: white;
   font-size: 0.9rem;
+`;
+
+export const CommentTime = styled.span`
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
 `;
 
 export const CommentText = styled.p`

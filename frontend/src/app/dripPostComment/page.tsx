@@ -1,9 +1,10 @@
 import DripPostCommentContainer from "@/component/features/drip/dripPostComment/DripPostComment.container";
+import { DripPostCommentProps } from "@/component/features/drip/dripPostComment/DripPostComment.types";
 
-export const DripPostComment = () => {
+export const DripPostComment = (props: DripPostCommentProps) => {
   return (
     <>
-      <DripPostCommentContainer />
+      <DripPostCommentContainer postno={props.postno} />
     </>
   );
 };

@@ -32,4 +32,5 @@ export interface DripPostDetailProps {
   currentImageIndex: number;
   onPrevImage: (totalImages: number) => void;
   onNextImage: (totalImages: number) => void;
+  postno: string;
 }

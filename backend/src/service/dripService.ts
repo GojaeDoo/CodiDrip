@@ -4,6 +4,7 @@ import {
   getUserDripPost,
   getPostNoDripPost,
   updateDripPost,
+  getDripPostCommentStorage,
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -70,6 +71,15 @@ export const dripService = {
     } catch (error) {
       console.error("updateDrip error - dripService:", error);
       throw error;
+    }
+  },
+
+  getDripPostCommentService: async (postNo: number) => {
+    try {
+      const drip = await getDripPostCommentStorage(postNo);
+      return drip;
+    } catch (error) {
+      console.log(error + "getDripPostCommentService error");
     }
   },
 };

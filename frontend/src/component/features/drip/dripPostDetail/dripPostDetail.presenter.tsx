@@ -79,7 +79,7 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
               </S.TagList>
             </S.TagSection>
 
-            <DripPostComment />
+            <DripPostComment postno={props.postno} />
           </S.ContentSection>
         </S.PostContainer>
       </S.DripPostDetailWrapper>

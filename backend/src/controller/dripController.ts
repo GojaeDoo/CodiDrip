@@ -58,3 +58,22 @@ export const updateDrip = async (req: Request, res: Response) => {
     res.status(500).json({ error: "게시물 수정 중 오류가 발생했습니다." });
   }
 };
+
+export const getDripPostCommentController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const postNo = parseInt(req.params.postNo, 10);
+    if (isNaN(postNo)) {
+      return res
+        .status(400)
+        .json({ error: "유효하지 않은 게시물 번호입니다." });
+    }
+    const dripPostComment = await dripService.getDripPostCommentService(postNo);
+    res.json(dripPostComment);
+  } catch (error) {
+    console.error("getDripPostCommentController - error:", error);
+    res.status(500).json({ error: "댓글을 불러오는데 실패했습니다." });
+  }
+};

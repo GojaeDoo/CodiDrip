@@ -104,6 +104,27 @@ export const getPostNoDripPost = async (postNo?: string) => {
   }
 };
 
+export const getDripPostCommentStorage = async (postNo: number) => {
+  try {
+    const result = await pool.query(
+      `
+        select 
+          p.profile_nickname as 닉네임,
+          dpc.content as 댓글내용,
+          dpc.created_at as 작성시간,
+          p.profile_image as 프로필이미지
+          from drip_post_comment dpc
+          JOIN profile p ON p.user_id = dpc.user_id
+          where dpc.post_id = $1;
+      `,
+      [postNo]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log(error + " getDripPostCommentStorage");
+  }
+};
+
 export const updateDripPost = async (
   postNo: string,
   images: string[],
