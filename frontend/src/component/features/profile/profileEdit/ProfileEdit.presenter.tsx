@@ -4,27 +4,48 @@ import { ProfileEditPresenterProps } from "./ProfileEdit.types";
 
 export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
   return (
-    <>
-      <S.Background>
-        <S.ProfileEditTitle>
-          {props.isEditMode ? "프로필 수정" : "프로필 생성"}
-        </S.ProfileEditTitle>
-        <S.ProfileEditWrapper>
-          <S.ProfileEditWrapperLeft>
-            <S.ProfileEditImage
-              src={props.previewUrl || "/images/profile/default-profile.png"}
-              alt="프로필 미리보기"
+    <S.Background>
+      <S.ProfileEditTitle>
+        {props.isEditMode ? "프로필 수정" : "프로필 생성"}
+      </S.ProfileEditTitle>
+      <S.ProfileEditWrapper>
+        <S.ProfileEditWrapperLeft>
+          <S.ProfileEditImage
+            src={props.previewUrl || "/images/profile/default-profile.png"}
+            alt="프로필 미리보기"
+          />
+          <S.FileInputLabel htmlFor="profile-image">
+            프로필 사진 변경
+            <S.HiddenFileInput
+              id="profile-image"
+              type="file"
+              onChange={props.onChangeProfileImage}
+              accept="image/*"
             />
-          </S.ProfileEditWrapperLeft>
-          <S.ProfileEditWrapperRight>
+          </S.FileInputLabel>
+        </S.ProfileEditWrapperLeft>
+        <S.ProfileEditWrapperRight>
+          <S.InputGroup>
             <S.ProfileEditText>닉네임</S.ProfileEditText>
-            <C.Input
+            <input
+              type="text"
               placeholder="닉네임을 입력해주세요."
               onChange={props.onChangeNickname}
               value={props.nickname || ""}
+              style={{
+                width: "100%",
+                height: "45px",
+                fontSize: "1rem",
+                backgroundColor: "rgba(217, 217, 217, 0.9)",
+                outline: "none",
+                border: "1px solid rgba(217, 217, 217, 0.9)",
+                borderRadius: "5px",
+                padding: "0 1rem",
+              }}
             />
-            <S.ProfileEditText>프로필 사진</S.ProfileEditText>
-            <C.Input type="file" onChange={props.onChangeProfileImage} />
+          </S.InputGroup>
+
+          <S.InputGroup>
             <S.ProfileEditText>키</S.ProfileEditText>
             <S.ProfileEditSelect
               onChange={props.onChangeHeight}
@@ -39,7 +60,9 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
                 </option>
               ))}
             </S.ProfileEditSelect>
+          </S.InputGroup>
 
+          <S.InputGroup>
             <S.ProfileEditText>몸무게</S.ProfileEditText>
             <S.ProfileEditSelect
               onChange={props.onChangeWeight}
@@ -54,6 +77,9 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
                 </option>
               ))}
             </S.ProfileEditSelect>
+          </S.InputGroup>
+
+          <S.InputGroup>
             <S.ProfileEditText>성별</S.ProfileEditText>
             <S.ProfileEditSelect
               value={props.gender || ""}
@@ -65,13 +91,13 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
               <option value="male">남자</option>
               <option value="female">여자</option>
             </S.ProfileEditSelect>
-          </S.ProfileEditWrapperRight>
-        </S.ProfileEditWrapper>
-        <C.Button onClick={props.onClickCreateProfile}>
-          {props.isEditMode ? "프로필 수정" : "프로필 생성"}
-        </C.Button>
-      </S.Background>
-    </>
+          </S.InputGroup>
+        </S.ProfileEditWrapperRight>
+      </S.ProfileEditWrapper>
+      <S.SubmitButton onClick={props.onClickCreateProfile}>
+        {props.isEditMode ? "프로필 수정" : "프로필 생성"}
+      </S.SubmitButton>
+    </S.Background>
   );
 };
 

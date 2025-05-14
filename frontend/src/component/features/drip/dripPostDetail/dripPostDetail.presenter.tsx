@@ -25,11 +25,13 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
                 <S.ImageNavigation>
                   <S.NavButton
                     onClick={() => props.onPrevImage(props.postImages.length)}
+                    aria-label="이전 이미지"
                   >
                     <S.StyledChevronLeft size={24} />
                   </S.NavButton>
                   <S.NavButton
                     onClick={() => props.onNextImage(props.postImages.length)}
+                    aria-label="다음 이미지"
                   >
                     <S.StyledChevronRight size={24} />
                   </S.NavButton>
@@ -45,27 +47,29 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
             <S.UserInfo>
               <S.ProfileImage
                 src={`http://localhost:3005/uploads/profiles/${props.dripPost?.프로필이미지}`}
-                alt="User profile"
+                alt={`${props.dripPost?.닉네임 || "사용자"}의 프로필`}
               />
-              <S.UserName>{props.dripPost?.닉네임 || "사용자"}</S.UserName>
-              {props.dripPost?.키 && props.dripPost?.몸무게 && (
-                <S.UserStats>
-                  {props.dripPost.키}cm / {props.dripPost.몸무게}kg
-                </S.UserStats>
-              )}
+              <div>
+                <S.UserName>{props.dripPost?.닉네임 || "사용자"}</S.UserName>
+                {props.dripPost?.키 && props.dripPost?.몸무게 && (
+                  <S.UserStats>
+                    {props.dripPost.키}cm / {props.dripPost.몸무게}kg
+                  </S.UserStats>
+                )}
+              </div>
             </S.UserInfo>
 
             <S.InteractionSection>
-              <S.InteractionButton>
-                <Heart size={24} />
+              <S.InteractionButton aria-label="좋아요">
+                <Heart size={22} />
                 <span>좋아요</span>
               </S.InteractionButton>
-              <S.InteractionButton>
-                <MessageCircle size={24} />
+              <S.InteractionButton aria-label="댓글">
+                <MessageCircle size={22} />
                 <span>댓글</span>
               </S.InteractionButton>
-              <S.InteractionButton>
-                <Share2 size={24} />
+              <S.InteractionButton aria-label="공유">
+                <Share2 size={22} />
                 <span>공유</span>
               </S.InteractionButton>
             </S.InteractionSection>
@@ -73,13 +77,17 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
             <S.TagSection>
               <Hash size={20} />
               <S.TagList>
-                {props.postTags.map((tag: string, index: number) => (
-                  <S.Tag key={index}>{tag}</S.Tag>
-                )) || <S.Tag>#태그 없음</S.Tag>}
+                {props.postTags.length > 0 ? (
+                  props.postTags.map((tag: string, index: number) => (
+                    <S.Tag key={index}>#{tag}</S.Tag>
+                  ))
+                ) : (
+                  <S.Tag>#태그 없음</S.Tag>
+                )}
               </S.TagList>
             </S.TagSection>
 
-            <DripPostComment postno={props.postno} />
+            <DripPostComment postno={Number(props.postno)} />
           </S.ContentSection>
         </S.PostContainer>
       </S.DripPostDetailWrapper>

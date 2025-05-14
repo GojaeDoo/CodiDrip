@@ -1,69 +1,99 @@
 import styled from "styled-components";
 
-export const FooterContainer = styled.div`
+export const FooterContainer = styled.footer`
   width: 100%;
-  height: 100px;
-  box-sizing: border-box;
-  padding: 0 50px;
-  display: flex;
-  flex-direction: row;
   background-color: #1a1a1a;
-  color: #ffffff;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2rem;
+    gap: 2rem;
+  }
 `;
 
 export const FooterContainerLeft = styled.div`
-  width: 50%;
-  height: 100%;
-  padding: 10px 0px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  gap: 0.75rem;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 export const FooterInnerLeft = styled.div`
-  width: 100%;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
-`;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
 
-export const FooterText = styled.span`
-  font-size: 1rem;
-  color: #ffffff;
-`;
-
-export const FooterBrand = styled.span`
-  font-size: 1rem;
-  font-family: "Inter", sans-serif;
-  font-weight: 1000;
-  color: #ffffff;
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+    gap: 0.75rem;
+  }
 `;
 
 export const FooterContainerRight = styled.div`
-  width: 50%;
-  height: 100%;
-  padding: 10px 0px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+
+  @media (min-width: 768px) {
+    border-top: none;
+    padding-top: 0;
+    align-items: flex-end;
+  }
 `;
 
 export const FooterInterRight = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+  }
+`;
+
+export const FooterText = styled.span`
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+`;
+
+export const FooterBrand = styled.span`
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  white-space: nowrap;
+
+  @media (min-width: 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const FooterBigText = styled.span`
-  font-size: 1.2rem;
-  font-weight: 1000;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  white-space: nowrap;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 
   &:hover {
-    color: #666666;
+    color: white;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
   }
 `;

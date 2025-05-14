@@ -1,99 +1,162 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin: 0;
-`;
-
-export const ProfileEditWrapper = styled.div`
+  padding: 2rem 1rem;
   box-sizing: border-box;
-  margin-top: 2vh;
-  width: 50vw;
-  height: 50vh;
-  background-color: #1a1a1a;
-  border-radius: 5px;
-  padding: 5vh 5vw 5vh 5vw;
 
-  display: flex;
-  flex-direction: row;
-`;
-
-export const ProfileEditWrapperLeft = styled.div`
-  width: 50%;
-  height: 100%;
-  background-color: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const ProfileEditImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  border-radius: 50%;
-`;
-
-export const ProfileEditWrapperRight = styled.div`
-  width: 50%;
-  height: 100%;
-  background-color: #1a1a1a;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @media (min-width: 768px) {
+    padding: 3rem 2rem;
+  }
 `;
 
 export const ProfileEditTitle = styled.div`
   font-size: 2rem;
   font-weight: 1000;
   color: #ffffff;
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+  }
+`;
+
+export const ProfileEditWrapper = styled.div`
+  width: 100%;
+  max-width: 800px;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    padding: 3rem;
+    gap: 4rem;
+  }
+`;
+
+export const ProfileEditWrapperLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    width: 40%;
+  }
+`;
+
+export const ProfileEditImage = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  @media (min-width: 768px) {
+    width: 200px;
+    height: 200px;
+  }
+`;
+
+export const ProfileEditWrapperRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    width: 60%;
+  }
 `;
 
 export const ProfileEditText = styled.div`
   font-size: 1rem;
   font-weight: 1000;
   color: #ffffff;
-  text-align: left;
-  width: 100%;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 export const ProfileEditSelect = styled.select`
-  width: 20vw;
-  height: 5vh;
+  width: 100%;
+  height: 45px;
   font-size: 1rem;
   background-color: rgba(217, 217, 217, 0.9);
   outline: none;
   border: 1px solid rgba(217, 217, 217, 0.9);
   border-radius: 5px;
-  padding-left: 1vw;
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    height: 50px;
+    font-size: 1.1rem;
+  }
 `;
 
-// ProfileEdit.styled.ts
 export const FileInputLabel = styled.label`
   display: inline-block;
   padding: 0.7em 1.5em;
-  background: #6c63ff;
+  background: #333;
   color: #fff;
   border-radius: 7px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
   margin-bottom: 1rem;
+  text-align: center;
+  width: 100%;
+
   &:hover {
-    background: #5548c8;
+    background: #444;
+  }
+
+  @media (min-width: 768px) {
+    width: auto;
   }
 `;
 
 export const HiddenFileInput = styled.input`
   display: none;
+`;
+
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+`;
+
+export const SubmitButton = styled.button`
+  width: 100%;
+  max-width: 800px;
+  height: 50px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 2rem;
+
+  &:hover {
+    background: #444;
+  }
+
+  @media (min-width: 768px) {
+    height: 55px;
+    font-size: 1.2rem;
+  }
 `;

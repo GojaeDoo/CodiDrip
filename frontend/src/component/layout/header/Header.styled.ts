@@ -9,6 +9,8 @@ export const HeaderContainer = styled.div`
   border-bottom: 1px solid #333;
   display: flex;
   flex-direction: row;
+  position: relative;
+  z-index: 1000;
 `;
 
 export const Logo = styled.div`
@@ -27,59 +29,9 @@ export const Logo = styled.div`
   &:hover {
     color: #666666;
   }
-`;
 
-export const Nav = styled.nav`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-`;
-
-export const NavItem = styled.div`
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #666666;
-  }
-`;
-
-export const AuthButtons = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-`;
-
-export const Button = styled.button`
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-`;
-
-export const LoginButton = styled(Button)`
-  background-color: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff;
-
-  &:hover {
-    background-color: #ffffff;
-    color: #1a1a1a;
-  }
-`;
-
-export const SignupButton = styled(Button)`
-  background-color: #ffffff;
-  color: #1a1a1a;
-  border: none;
-
-  &:hover {
-    background-color: #666666;
-    color: #ffffff;
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
   }
 `;
 
@@ -93,7 +45,11 @@ export const SideMenuContainer = styled.div<{ open: boolean }>`
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transform: translateX(${({ open }) => (open ? "0" : "-100%")});
   transition: transform 0.3s ease;
-  z-index: 10;
+  z-index: 1001;
+
+  @media (max-width: 768px) {
+    width: 70%;
+  }
 `;
 
 export const BurgerButtonContainer = styled.div`
@@ -102,8 +58,9 @@ export const BurgerButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   @media (max-width: 768px) {
-    margin-left: 2vw;
+    width: 15vw;
   }
 `;
 
@@ -140,6 +97,7 @@ export const MenuItem = styled.a`
   padding: 10px;
   text-decoration: none;
   color: #ffffff;
+
   &:hover {
     background: #333;
     color: #666666;
@@ -152,8 +110,9 @@ export const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-items: center;
+
   @media (max-width: 768px) {
-    margin: 0 2vw 0 5vw;
+    min-width: 20vw;
   }
 `;
 
@@ -169,6 +128,10 @@ export const SearchInput = styled.input`
 
   &::placeholder {
     color: #666666;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 20vw;
   }
 `;
 
@@ -196,6 +159,11 @@ export const Login = styled.div`
   &:hover {
     color: #666666;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin: 0 1vw 0 2vw;
+  }
 `;
 
 export const Join = styled.div`
@@ -215,12 +183,21 @@ export const Join = styled.div`
   &:hover {
     color: #666666;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-right: 1vw;
+  }
 `;
 
 export const UserContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5vw;
+
+  @media (max-width: 768px) {
+    gap: 1vw;
+  }
 `;
 
 export const ProfileImage = styled.div`
@@ -230,14 +207,20 @@ export const ProfileImage = styled.div`
   background-color: #333;
   overflow: hidden;
   cursor: pointer;
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
-export const Logout = styled(Button)`
+export const Logout = styled.div`
   width: auto;
   height: 100%;
   font-size: 1.4rem;
@@ -253,6 +236,11 @@ export const Logout = styled(Button)`
 
   &:hover {
     color: #666666;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-right: 1vw;
   }
 `;
 

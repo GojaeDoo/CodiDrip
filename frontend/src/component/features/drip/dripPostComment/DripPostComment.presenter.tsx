@@ -1,18 +1,18 @@
 import React from "react";
 import * as S from "./DripPostComment.styled";
 import { DripPostCommentPresenterProps } from "./DripPostComment.types";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
-export const DripPostCommentPresenter = ({
-  comments,
-  formattedComments,
-}: DripPostCommentPresenterProps) => {
+export const DripPostCommentPresenter = (
+  props: DripPostCommentPresenterProps
+) => {
   return (
     <S.CommentSection>
       <S.CommentInput placeholder="댓글을 입력하세요..." />
 
       <S.CommentList>
-        {comments && comments.length > 0 ? (
-          comments.map((comment, index) => (
+        {props.comments && props.comments.length > 0 ? (
+          props.comments.map((comment, index) => (
             <S.Comment key={index}>
               <S.CommentUserImage
                 src={`http://localhost:3005/uploads/profiles/${comment.프로필이미지}`}
@@ -21,9 +21,19 @@ export const DripPostCommentPresenter = ({
               <S.CommentContent>
                 <S.CommentHeader>
                   <S.CommentUserName>{comment.닉네임}</S.CommentUserName>
-                  <S.CommentTime>{formattedComments[index]}</S.CommentTime>
+                  <S.CommentTime>
+                    {props.formattedComments[index]}
+                  </S.CommentTime>
                 </S.CommentHeader>
                 <S.CommentText>{comment.댓글내용}</S.CommentText>
+                <S.CommentActions>
+                  <S.ActionButton>
+                    <FaThumbsUp />
+                  </S.ActionButton>
+                  <S.ActionButton className="dislike">
+                    <FaThumbsDown />
+                  </S.ActionButton>
+                </S.CommentActions>
               </S.CommentContent>
             </S.Comment>
           ))
