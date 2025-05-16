@@ -11,3 +11,23 @@ export const fetchDripPostCommentQuery = async (postNo: number) => {
     throw error;
   }
 };
+
+export const postCommentQuery = async (
+  userId: string,
+  postComment: string,
+  postNo: number
+) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3005/api/drip/${postNo}/comments`,
+      {
+        userId,
+        content: postComment,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("댓글 작성 API 요청 실패:", error);
+    throw error;
+  }
+};

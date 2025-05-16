@@ -77,3 +77,27 @@ export const getDripPostCommentController = async (
     res.status(500).json({ error: "댓글을 불러오는데 실패했습니다." });
   }
 };
+
+export const postDripPostCommentController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { userId, content } = req.body;
+    const { postNo } = req.params;
+
+    console.log("Request params:", req.params);
+    console.log("Request body:", req.body);
+    console.log("PostNo from params:", postNo);
+
+    const result = await dripService.postDripPostCommentService(
+      userId,
+      content,
+      postNo
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("postDripPostCommentController - error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

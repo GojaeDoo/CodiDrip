@@ -185,3 +185,22 @@ export const updateDripPost = async (
     throw error;
   }
 };
+
+export const postDripPostCommentStorage = async (
+  userId: string,
+  postComment: string,
+  postId: string
+) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO drip_post_comment (user_id, post_id, content)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [userId, postId, postComment]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in postDripPostCommentStorage:", error);
+    throw error;
+  }
+};

@@ -48,29 +48,30 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     </S.UserProfile>
                     <S.MenuWrapper>
                       <S.MenuButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          props.onMenuClick?.(post.post_no);
-                        }}
+                        onClick={(e) => props.onMenuClick(e, post.post_no)}
                       >
                         <MoreVertical size={20} />
                       </S.MenuButton>
                       {props.activeMenu === post.post_no && (
                         <S.Menu>
                           <S.MenuItem
-                            onClick={() => props.onHidePost(post.post_no)}
+                            onClick={(e) => props.onHidePost(e, post.post_no)}
                           >
                             숨김
                           </S.MenuItem>
                           {isOwner && (
                             <>
                               <S.MenuItem
-                                onClick={() => props.onEditPost(post.post_no)}
+                                onClick={(e) =>
+                                  props.onEditPost(e, post.post_no)
+                                }
                               >
                                 수정
                               </S.MenuItem>
                               <S.MenuItem
-                                onClick={() => props.onDeletePost(post.post_no)}
+                                onClick={(e) =>
+                                  props.onDeletePost(e, post.post_no)
+                                }
                               >
                                 삭제
                               </S.MenuItem>
@@ -89,19 +90,17 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     {images.length > 1 && (
                       <>
                         <S.NavigationButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            props.onPrevImage(post.post_no, images.length);
-                          }}
+                          onClick={(e) =>
+                            props.onPrevImage(e, post.post_no, images.length)
+                          }
                           $position="left"
                         >
                           <ChevronLeft size={20} />
                         </S.NavigationButton>
                         <S.NavigationButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            props.onNextImage(post.post_no, images.length);
-                          }}
+                          onClick={(e) =>
+                            props.onNextImage(e, post.post_no, images.length)
+                          }
                           $position="right"
                         >
                           <ChevronRight size={20} />
@@ -117,17 +116,13 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     <S.ActionButton>
                       <Heart
                         size={24}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
+                        onClick={(e) => props.onLikeClick(e, post.post_no)}
                       />
                     </S.ActionButton>
                     <S.ActionButton>
                       <MessageCircle
                         size={24}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
+                        onClick={(e) => props.onCommentClick(e, post.post_no)}
                       />
                     </S.ActionButton>
                     <div style={{ flex: 1 }} />

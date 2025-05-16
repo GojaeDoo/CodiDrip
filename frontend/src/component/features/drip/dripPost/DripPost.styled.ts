@@ -81,8 +81,8 @@ export const UserProfile = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #2d2d2d;
@@ -316,7 +316,6 @@ export const MenuItem = styled.button`
     background: #333;
   }
 `;
-
 export const MenuWrapper = styled.div`
   position: relative;
   display: flex;

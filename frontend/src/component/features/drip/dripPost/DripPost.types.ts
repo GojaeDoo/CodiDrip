@@ -28,21 +28,34 @@ export interface DripPostProps {
     user_id: string;
     profile_image: string;
     profile_nickname: string;
-    profile_height: number;
-    profile_weight: number;
+    profile_height?: number;
+    profile_weight?: number;
     post_image: string[];
     post_tag: string[];
   }>;
-  currentImageIndexes: Record<number, number>;
+  currentImageIndexes: { [key: number]: number };
   currentUserId: string;
-  onHidePost: (postNo: number) => void;
-  onEditPost: (postNo: number) => void;
-  onDeletePost: (postNo: number) => void;
-  onClickMoveDetail: (postNo: number) => void;
-  onPrevImage: (postNo: number, totalImages: number) => void;
-  onNextImage: (postNo: number, totalImages: number) => void;
-  onMenuClick?: (postNo: number) => void;
-  activeMenu?: number | null;
+  activeMenu: number | null;
+  onClickMoveDetail?: (postNo: number) => void;
+  onMenuClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onHidePost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onEditPost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onDeletePost: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  onPrevImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
+  onNextImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
+  onLikeClick: (e: React.MouseEvent<SVGSVGElement>, postNo: number) => void;
+  onCommentClick: (e: React.MouseEvent<SVGSVGElement>, postNo: number) => void;
 }
 
 export interface DripPostPresenterProps {
