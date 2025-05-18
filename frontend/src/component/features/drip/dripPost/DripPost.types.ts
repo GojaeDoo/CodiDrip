@@ -1,3 +1,8 @@
+export interface DripPostAppProps {
+  gender: string;
+  isMyPage?: boolean;
+}
+
 export interface DripPostResponse {
   게시글번호: number;
   게시글이미지: string;
@@ -11,13 +16,13 @@ export interface DripPostResponse {
 
 export interface DripPostType {
   post_no: number;
-  post_image: string[];
-  post_tag: string[];
   user_id: string;
   profile_image: string;
   profile_nickname: string;
-  profile_height: number;
-  profile_weight: number;
+  profile_height?: number;
+  profile_weight?: number;
+  post_image: string[];
+  post_tag: string[];
 }
 
 export interface DripPostProps {
@@ -58,11 +63,33 @@ export interface DripPostProps {
   onCommentClick: (e: React.MouseEvent<SVGSVGElement>, postNo: number) => void;
 }
 
+export interface DripPostContainerProps {
+  gender: string;
+  userId?: string;
+  isMyPage?: boolean;
+}
+
 export interface DripPostPresenterProps {
-  dripPostData: DripPostType[] | null;
-  currentImageIndexes: {
-    [key: number]: number;
-  };
-  onPrevImage: (postNo: number, imageCount: number) => void;
-  onNextImage: (postNo: number, imageCount: number) => void;
+  dripPostData: DripPostType[];
+  currentImageIndexes: { [key: number]: number };
+  currentUserId: string;
+  activeMenu: number | null;
+  onPrevImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
+  onNextImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
+  onHidePost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onEditPost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onDeletePost: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  onMenuClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onClickMoveDetail: (postNo: number) => void;
 }

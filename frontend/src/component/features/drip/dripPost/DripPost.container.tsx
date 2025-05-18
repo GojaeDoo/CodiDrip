@@ -6,7 +6,10 @@ import { DripPostContainerProps, DripPostType } from "./DripPost.types";
 import { getUserDripPostQuery } from "./DripPost.query";
 import { useRouter } from "next/navigation";
 
-export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
+export const DripPostContainer = ({
+  gender,
+  userId,
+}: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
     [key: number]: number;
@@ -15,6 +18,7 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const router = useRouter();
 
+  console.log("drip에서 온 성별 : " + gender);
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) setCurrentUserId(storedUserId);
@@ -34,30 +38,54 @@ export const DripPostContainer = ({ userId }: DripPostContainerProps) => {
     fetchDripPosts();
   }, [userId]);
 
-  const onPrevImage = (postNo: number, imageCount: number) => {
+  const onPrevImage = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => {
+    e.preventDefault();
     setCurrentImageIndexes((prev) => {
       const currentIndex = prev[postNo] || 0;
-      const newIndex = (currentIndex - 1 + imageCount) % imageCount;
+      const newIndex = (currentIndex - 1 + totalImages) % totalImages;
       return { ...prev, [postNo]: newIndex };
     });
   };
 
-  const onNextImage = (postNo: number, imageCount: number) => {
+  const onNextImage = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => {
+    e.preventDefault();
     setCurrentImageIndexes((prev) => {
       const currentIndex = prev[postNo] || 0;
-      const newIndex = (currentIndex + 1) % imageCount;
+      const newIndex = (currentIndex + 1) % totalImages;
       return { ...prev, [postNo]: newIndex };
     });
   };
 
-  const onHidePost = (postNo: number) => {
+  const onHidePost = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => {
+    e.preventDefault();
     alert(`게시글 ${postNo} 숨김`);
   };
-  const onEditPost = (postNo: number) => {
+
+  const onEditPost = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => {
+    e.preventDefault();
     const status = true;
     router.push(`/dripPostEdit?postNo=${postNo}&status=${status}`);
   };
-  const onDeletePost = (postNo: number) => {
+
+  const onDeletePost = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => {
+    e.preventDefault();
     alert(`게시글 ${postNo} 삭제`);
   };
 

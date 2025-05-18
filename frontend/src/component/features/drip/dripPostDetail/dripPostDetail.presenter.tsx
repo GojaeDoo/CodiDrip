@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./dripPostDetail.styled";
-import { Heart, MessageCircle, Share2, Hash } from "lucide-react";
+import { Heart, MessageCircle, Bookmark, Hash } from "lucide-react";
 import { DripPostDetailProps } from "./dripPostDetail.types";
 import DripPostComment from "@/app/dripPostComment/page";
 
@@ -68,9 +68,9 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
                 <MessageCircle size={22} />
                 <span>댓글</span>
               </S.InteractionButton>
-              <S.InteractionButton aria-label="공유">
-                <Share2 size={22} />
-                <span>공유</span>
+              <S.InteractionButton aria-label="저장">
+                <Bookmark size={22} />
+                <span>저장</span>
               </S.InteractionButton>
             </S.InteractionSection>
 

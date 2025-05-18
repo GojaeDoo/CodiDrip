@@ -45,7 +45,6 @@ export const DripPostCommentPresenter = (
           ))
         ) : (
           <S.Comment>
-            <S.CommentUserImage src={undefined} alt="Comment user" />
             <S.CommentContent>
               <S.CommentHeader>
                 <S.CommentUserName>댓글이 없습니다</S.CommentUserName>
