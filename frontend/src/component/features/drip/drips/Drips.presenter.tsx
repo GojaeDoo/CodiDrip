@@ -2,6 +2,7 @@
 import * as S from "./Drips.styled";
 import { DripsProps } from "./Drips.types";
 import { DripPost } from "@/app/dripPost/page";
+import { DripUser } from "@/app/dripUser/page";
 
 const DripsPresenter = (props: DripsProps) => {
   return (
@@ -26,7 +27,11 @@ const DripsPresenter = (props: DripsProps) => {
           </S.DripsSelectWrapperBottom>
         </S.DripsSelectWrapper>
         <S.DripPostWrapper>
-          <DripPost gender={props.genderSelect} />
+          {props.isDripUser ? (
+            <DripUser />
+          ) : (
+            <DripPost gender={props.genderSelect} />
+          )}
         </S.DripPostWrapper>
       </S.Background>
     </>

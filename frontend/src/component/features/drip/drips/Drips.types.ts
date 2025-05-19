@@ -3,4 +3,5 @@ export interface DripsProps {
   onClickSelectMen: () => void;
   onClickSelectWomen: () => void;
   genderSelect: string;
+  isDripUser: boolean;
 }

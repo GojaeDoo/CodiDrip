@@ -25,9 +25,9 @@ export const dripService = {
     return await createDripDB(uploadedImages, tags, userId);
   },
 
-  getUserDrip: async (userId?: string) => {
+  getUserDrip: async (userId?: string, gender?: string) => {
     try {
-      const drips = await getUserDripPost(userId);
+      const drips = await getUserDripPost(userId, gender);
       return drips;
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);

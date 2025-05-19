@@ -16,130 +16,125 @@ export const DripPostPresenter = (props: DripPostProps) => {
           {!props.dripPostData || props.dripPostData.length === 0 ? (
             <div>게시물이 없습니다.</div>
           ) : (
-            props.dripPostData.map((post) => {
-              const images = post.post_image || [];
-              const tags = post.post_tag || [];
-              const currentIndex = props.currentImageIndexes[post.post_no] || 0;
-              const isOwner = post.user_id === props.currentUserId;
-
-              if (images.length === 0) {
-                return null;
-              }
-
-              return (
-                <S.PostCard
-                  key={`post-${post.post_no}`}
-                  onClick={() => props.onClickMoveDetail?.(post.post_no)}
-                >
-                  <S.PostHeader>
-                    <S.UserProfile>
-                      <S.ProfileImage
-                        src={`http://localhost:3005/uploads/profiles/${post.profile_image}`}
-                        alt="profile"
-                      />
-                      <S.UserInfo>
-                        <S.Username>{post.profile_nickname}</S.Username>
-                        {post.profile_height && post.profile_weight && (
-                          <S.UserStats>
-                            {post.profile_height}cm / {post.profile_weight}kg
-                          </S.UserStats>
-                        )}
-                      </S.UserInfo>
-                    </S.UserProfile>
-                    <S.MenuWrapper>
-                      <S.MenuButton
-                        onClick={(e) => props.onMenuClick(e, post.post_no)}
-                      >
-                        <MoreVertical size={20} />
-                      </S.MenuButton>
-                      {props.activeMenu === post.post_no && (
-                        <S.Menu>
-                          <S.MenuItem
-                            onClick={(e) => props.onHidePost(e, post.post_no)}
-                          >
-                            숨김
-                          </S.MenuItem>
-                          {isOwner && (
-                            <>
-                              <S.MenuItem
-                                onClick={(e) =>
-                                  props.onEditPost(e, post.post_no)
-                                }
-                              >
-                                수정
-                              </S.MenuItem>
-                              <S.MenuItem
-                                onClick={(e) =>
-                                  props.onDeletePost(e, post.post_no)
-                                }
-                              >
-                                삭제
-                              </S.MenuItem>
-                            </>
-                          )}
-                        </S.Menu>
-                      )}
-                    </S.MenuWrapper>
-                  </S.PostHeader>
-
-                  <S.ImageContainer>
-                    <S.PostImage
-                      src={`http://localhost:3005/uploads/drip${images[currentIndex]}`}
-                      alt="drip post"
+            props.dripPostData.map((post) => (
+              <S.PostCard
+                key={`post-${post.post_no}`}
+                onClick={() => props.onClickMoveDetail?.(post.post_no)}
+              >
+                <S.PostHeader>
+                  <S.UserProfile>
+                    <S.ProfileImage
+                      src={`http://localhost:3005/uploads/profiles/${post.profile_image}`}
+                      alt="profile"
                     />
-                    {images.length > 1 && (
-                      <>
-                        <S.NavigationButton
-                          onClick={(e) =>
-                            props.onPrevImage(e, post.post_no, images.length)
-                          }
-                          $position="left"
+                    <S.UserInfo>
+                      <S.Username>{post.profile_nickname}</S.Username>
+                      {post.profile_height && post.profile_weight && (
+                        <S.UserStats>
+                          {post.profile_height}cm / {post.profile_weight}kg
+                        </S.UserStats>
+                      )}
+                    </S.UserInfo>
+                  </S.UserProfile>
+                  <S.MenuWrapper>
+                    <S.MenuButton
+                      onClick={(e) => props.onMenuClick(e, post.post_no)}
+                    >
+                      <MoreVertical size={20} />
+                    </S.MenuButton>
+                    {props.activeMenu === post.post_no && (
+                      <S.Menu>
+                        <S.MenuItem
+                          onClick={(e) => props.onHidePost(e, post.post_no)}
                         >
-                          <ChevronLeft size={20} />
-                        </S.NavigationButton>
-                        <S.NavigationButton
-                          onClick={(e) =>
-                            props.onNextImage(e, post.post_no, images.length)
-                          }
-                          $position="right"
-                        >
-                          <ChevronRight size={20} />
-                        </S.NavigationButton>
-                        <S.ImageCounter>
-                          {currentIndex + 1} / {images.length}
-                        </S.ImageCounter>
-                      </>
+                          숨김
+                        </S.MenuItem>
+                        {post.isOwner && (
+                          <>
+                            <S.MenuItem
+                              onClick={(e) => props.onEditPost(e, post.post_no)}
+                            >
+                              수정
+                            </S.MenuItem>
+                            <S.MenuItem
+                              onClick={(e) =>
+                                props.onDeletePost(e, post.post_no)
+                              }
+                            >
+                              삭제
+                            </S.MenuItem>
+                          </>
+                        )}
+                      </S.Menu>
                     )}
-                  </S.ImageContainer>
+                  </S.MenuWrapper>
+                </S.PostHeader>
 
-                  <S.PostActions>
-                    <S.ActionButton>
-                      <Heart
-                        size={24}
-                        onClick={(e) => props.onLikeClick(e, post.post_no)}
-                      />
-                    </S.ActionButton>
-                    <S.ActionButton>
-                      <MessageCircle
-                        size={24}
-                        onClick={(e) => props.onCommentClick(e, post.post_no)}
-                      />
-                    </S.ActionButton>
-                    <div style={{ flex: 1 }} />
-                  </S.PostActions>
+                <S.ImageContainer>
+                  <S.PostImage
+                    src={`http://localhost:3005/uploads/drip${
+                      post.post_image[post.currentImageIndex]
+                    }`}
+                    alt="drip post"
+                  />
+                  {post.post_image.length > 1 && (
+                    <>
+                      <S.NavigationButton
+                        onClick={(e) =>
+                          props.onPrevImage(
+                            e,
+                            post.post_no,
+                            post.post_image.length
+                          )
+                        }
+                        $position="left"
+                      >
+                        <ChevronLeft size={20} />
+                      </S.NavigationButton>
+                      <S.NavigationButton
+                        onClick={(e) =>
+                          props.onNextImage(
+                            e,
+                            post.post_no,
+                            post.post_image.length
+                          )
+                        }
+                        $position="right"
+                      >
+                        <ChevronRight size={20} />
+                      </S.NavigationButton>
+                      <S.ImageCounter>
+                        {post.currentImageIndex + 1} / {post.post_image.length}
+                      </S.ImageCounter>
+                    </>
+                  )}
+                </S.ImageContainer>
 
-                  <S.PostInfo>
-                    <S.PostTags>
-                      {tags.map((tag: string, index: number) => (
-                        <S.Tag key={`tag-${post.post_no}-${index}`}>
-                          #{tag}
-                        </S.Tag>
-                      ))}
-                    </S.PostTags>
-                  </S.PostInfo>
-                </S.PostCard>
-              );
-            })
+                <S.PostActions>
+                  <S.ActionButton>
+                    <Heart
+                      size={24}
+                      onClick={(e) => props.onLikeClick(e, post.post_no)}
+                    />
+                  </S.ActionButton>
+                  <S.ActionButton>
+                    <MessageCircle
+                      size={24}
+                      onClick={(e) => props.onCommentClick(e, post.post_no)}
+                    />
+                  </S.ActionButton>
+                  <div style={{ flex: 1 }} />
+                </S.PostActions>
+
+                <S.PostInfo>
+                  <S.PostTags>
+                    {post.post_tag.map((tag: string, index: number) => (
+                      <S.Tag key={`tag-${post.post_no}-${index}`}>#{tag}</S.Tag>
+                    ))}
+                  </S.PostTags>
+                </S.PostInfo>
+              </S.PostCard>
+            ))
           )}
         </S.UserDripPostWrapper>
       </S.Background>

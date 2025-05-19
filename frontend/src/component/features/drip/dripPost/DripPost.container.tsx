@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
 import { getUserDripPostQuery } from "./DripPost.query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const DripPostContainer = ({
   gender,
@@ -17,8 +17,11 @@ export const DripPostContainer = ({
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isDripUser = searchParams.get("dripUser") === "true";
 
   console.log("drip에서 온 성별 : " + gender);
+
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) setCurrentUserId(storedUserId);
@@ -27,7 +30,10 @@ export const DripPostContainer = ({
   useEffect(() => {
     const fetchDripPosts = async () => {
       try {
-        const response = await getUserDripPostQuery(userId);
+        const response = await getUserDripPostQuery(
+          userId,
+          gender !== "all" ? gender : undefined
+        );
         setDripPostData(response);
         console.log(response);
       } catch (error) {
@@ -36,7 +42,7 @@ export const DripPostContainer = ({
     };
 
     fetchDripPosts();
-  }, [userId]);
+  }, [userId, gender]);
 
   const onPrevImage = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -89,7 +95,24 @@ export const DripPostContainer = ({
     alert(`게시글 ${postNo} 삭제`);
   };
 
-  const onMenuClick = (postNo: number) => {
+  const onLikeClick = (e: React.MouseEvent<SVGSVGElement>, postNo: number) => {
+    e.preventDefault();
+    alert(`게시글 ${postNo} 좋아요`);
+  };
+
+  const onCommentClick = (
+    e: React.MouseEvent<SVGSVGElement>,
+    postNo: number
+  ) => {
+    e.preventDefault();
+    alert(`게시글 ${postNo} 댓글`);
+  };
+
+  const onMenuClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => {
+    e.preventDefault();
     setActiveMenu(activeMenu === postNo ? null : postNo);
   };
 
@@ -97,9 +120,28 @@ export const DripPostContainer = ({
     router.push(`/dripPostDetail?postNo=${postNo}`);
   };
 
-  return (
+  return isDripUser ? null : (
     <DripPostPresenter
-      dripPostData={dripPostData ?? []}
+      dripPostData={
+        dripPostData
+          ?.map((post) => {
+            const images = post.post_image || [];
+            const tags = post.post_tag || [];
+
+            if (images.length === 0) {
+              return null;
+            }
+
+            return {
+              ...post,
+              isOwner: post.user_id === currentUserId,
+              currentImageIndex: currentImageIndexes[post.post_no] || 0,
+              post_image: images,
+              post_tag: tags,
+            };
+          })
+          .filter((post): post is DripPostType => post !== null) ?? []
+      }
       currentImageIndexes={currentImageIndexes}
       currentUserId={currentUserId}
       onPrevImage={onPrevImage}
@@ -107,6 +149,8 @@ export const DripPostContainer = ({
       onHidePost={onHidePost}
       onEditPost={onEditPost}
       onDeletePost={onDeletePost}
+      onLikeClick={onLikeClick}
+      onCommentClick={onCommentClick}
       onMenuClick={onMenuClick}
       activeMenu={activeMenu}
       onClickMoveDetail={onClickMoveDetail}

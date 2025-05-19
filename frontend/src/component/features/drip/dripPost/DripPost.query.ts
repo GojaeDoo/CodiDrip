@@ -10,6 +10,8 @@ const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   profile_nickname: post.닉네임,
   profile_height: post.키,
   profile_weight: post.몸무게,
+  isOwner: false,
+  currentImageIndex: 0,
 });
 
 // 특정 사용자의 게시물을 가져오는 함수
@@ -32,9 +34,14 @@ export const getUserSpecificDripPosts = async (
 };
 
 // 모든 게시물을 가져오는 함수
-export const getAllDripPosts = async (): Promise<DripPostType[]> => {
+export const getAllDripPosts = async (
+  gender?: string
+): Promise<DripPostType[]> => {
   try {
-    const response = await fetch("http://localhost:3005/api/drip");
+    const url = gender
+      ? `http://localhost:3005/api/drip?gender=${gender}`
+      : "http://localhost:3005/api/drip";
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Failed to fetch all drip posts");
     }
@@ -48,10 +55,11 @@ export const getAllDripPosts = async (): Promise<DripPostType[]> => {
 
 // 기존 함수는 새로운 함수들을 사용하도록 수정
 export const getUserDripPostQuery = async (
-  userId?: string
+  userId?: string,
+  gender?: string
 ): Promise<DripPostType[]> => {
   if (userId) {
     return getUserSpecificDripPosts(userId);
   }
-  return getAllDripPosts();
+  return getAllDripPosts(gender);
 };

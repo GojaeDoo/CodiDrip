@@ -20,7 +20,7 @@ const HeaderPresenter = (props: HeaderProps) => {
           <X size={36} />
         </S.CloseButton>
         <S.MenuItem>DRIP 공유</S.MenuItem>
-        <S.MenuItem>DRIP 유저</S.MenuItem>
+        <S.MenuItem onClick={props.onClickMoveDripUser}>DRIP 유저</S.MenuItem>
         <S.MenuItem>자유게시판</S.MenuItem>
         <S.MenuItem onClick={props.onClickMoveMyPage}>마이페이지</S.MenuItem>
         <S.MenuItem>건의사항/신고</S.MenuItem>

@@ -1,32 +1,32 @@
 "use client";
 import React, { useState } from "react";
 import DripsPresenter from "./Drips.presenter";
-import { DripsProps } from "./Drips.types";
+import { useSearchParams } from "next/navigation";
 
-const DripsContainer = () => {
+export const DripsContainer = () => {
   const [genderSelect, setGenderSelect] = useState<string>("all");
+  const searchParams = useSearchParams();
+  const isDripUser = searchParams.get("dripUser") === "true";
 
-  const onClickSelectAll: DripsProps["onClickSelectAll"] = () => {
-    console.log("전체 선택");
+  const onClickSelectAll = () => {
     setGenderSelect("all");
   };
 
-  const onClickSelectMen: DripsProps["onClickSelectMen"] = () => {
-    console.log("남자 선택");
+  const onClickSelectMen = () => {
     setGenderSelect("male");
   };
 
-  const onClickSelectWomen: DripsProps["onClickSelectWomen"] = () => {
-    console.log("여자 선택");
+  const onClickSelectWomen = () => {
     setGenderSelect("female");
   };
 
   return (
     <DripsPresenter
+      genderSelect={genderSelect}
       onClickSelectAll={onClickSelectAll}
       onClickSelectMen={onClickSelectMen}
       onClickSelectWomen={onClickSelectWomen}
-      genderSelect={genderSelect}
+      isDripUser={isDripUser}
     />
   );
 };

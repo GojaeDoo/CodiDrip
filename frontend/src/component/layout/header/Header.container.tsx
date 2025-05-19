@@ -53,6 +53,10 @@ const HeaderContainer = () => {
     router.push("/drips");
   };
 
+  const onClickMoveDripUser = () => {
+    router.push("/drips?dripUser=true");
+  };
+
   const onClickLogout = () => {
     logout();
   };
@@ -66,6 +70,7 @@ const HeaderContainer = () => {
       onClickMoveJoin={onClickMoveJoin}
       onClickLogout={onClickLogout}
       onClickMain={onClickMain}
+      onClickMoveDripUser={onClickMoveDripUser}
       isLoggedIn={isLoggedIn}
       userProfile={userProfile}
     />

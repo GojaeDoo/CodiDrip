@@ -23,21 +23,14 @@ export interface DripPostType {
   profile_weight?: number;
   post_image: string[];
   post_tag: string[];
+  isOwner: boolean;
+  currentImageIndex: number;
 }
 
 export interface DripPostProps {
   isMyPage?: boolean;
   userId?: string;
-  dripPostData: Array<{
-    post_no: number;
-    user_id: string;
-    profile_image: string;
-    profile_nickname: string;
-    profile_height?: number;
-    profile_weight?: number;
-    post_image: string[];
-    post_tag: string[];
-  }>;
+  dripPostData: DripPostType[];
   currentImageIndexes: { [key: number]: number };
   currentUserId: string;
   activeMenu: number | null;

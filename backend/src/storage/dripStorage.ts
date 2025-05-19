@@ -45,30 +45,42 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string) => {
+export const getUserDripPost = async (userId?: string, gender?: string) => {
   try {
     let query = `
       SELECT 
-        p.post_no AS 게시글번호,
-        p.post_image AS 게시글이미지,
-        p.post_tag AS 태그,
+        p.post_no as "게시글번호",
+        p.post_image as "게시글이미지",
+        p.post_tag as "태그",
         p.user_id,
-        pr.profile_image AS 프로필이미지,
-        pr.profile_nickname AS 닉네임,
-        pr.profile_height AS 키,
-        pr.profile_weight AS 몸무게
+        pr.profile_image as "프로필이미지",
+        pr.profile_nickname as "닉네임",
+        pr.profile_height as "키",
+        pr.profile_weight as "몸무게"
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
     `;
 
-    // userId가 있으면 해당 사용자의 게시물만 가져오고, 없으면 모든 게시물을 가져옴
+    const params: any[] = [];
+    const conditions: string[] = [];
+
     if (userId) {
-      query += ` WHERE p.user_id = $1`;
+      conditions.push("p.user_id = $" + (params.length + 1));
+      params.push(userId);
     }
 
-    query += ` ORDER BY p.post_no DESC`;
+    if (gender) {
+      conditions.push("pr.profile_gender = $" + (params.length + 1));
+      params.push(gender);
+    }
 
-    const result = await pool.query(query, userId ? [userId] : []);
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    query += " ORDER BY p.post_no DESC";
+
+    const result = await pool.query(query, params);
     return result.rows;
   } catch (error) {
     console.error("Error in getUserDripPost:", error);
