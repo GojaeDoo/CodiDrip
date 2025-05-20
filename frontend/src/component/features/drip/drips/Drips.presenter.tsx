@@ -11,7 +11,7 @@ const DripsPresenter = (props: DripsProps) => {
         <S.DripsSelectWrapper>
           <S.DripsSelectWrapperTop>
             <S.DripsSelectWrapperTopTitle>
-              Drip Rank
+              {props.isDripUser === true ? "Drip 사용자" : "Drip 게시글"}
             </S.DripsSelectWrapperTopTitle>
           </S.DripsSelectWrapperTop>
           <S.DripsSelectWrapperBottom>
@@ -28,7 +28,7 @@ const DripsPresenter = (props: DripsProps) => {
         </S.DripsSelectWrapper>
         <S.DripPostWrapper>
           {props.isDripUser ? (
-            <DripUser />
+            <DripUser gender={props.genderSelect} />
           ) : (
             <DripPost gender={props.genderSelect} />
           )}

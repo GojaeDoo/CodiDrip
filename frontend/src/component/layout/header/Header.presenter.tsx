@@ -19,8 +19,9 @@ const HeaderPresenter = (props: HeaderProps) => {
         <S.CloseButton onClick={() => props.setIsOpen(false)}>
           <X size={36} />
         </S.CloseButton>
-        <S.MenuItem>DRIP 공유</S.MenuItem>
-        <S.MenuItem onClick={props.onClickMoveDripUser}>DRIP 유저</S.MenuItem>
+        <S.MenuLogo>CODIDRIP</S.MenuLogo>
+        <S.MenuItem onClick={props.onClickMoveDrips}>DRIP 게시글</S.MenuItem>
+        <S.MenuItem onClick={props.onClickMoveDripUser}>DRIP 사용자</S.MenuItem>
         <S.MenuItem>자유게시판</S.MenuItem>
         <S.MenuItem onClick={props.onClickMoveMyPage}>마이페이지</S.MenuItem>
         <S.MenuItem>건의사항/신고</S.MenuItem>

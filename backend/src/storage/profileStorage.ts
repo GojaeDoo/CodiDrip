@@ -6,22 +6,44 @@ import path from "path";
 
 const prisma = new PrismaClient();
 
-export const getFindAllProfileDB = async (): Promise<Profile[]> => {
-  const result = await pool.query(
-    `SELECT 
-      profile_id,
-      profile_nickname,
-      profile_height,
-      profile_weight,
-      profile_image,
-      profile_gender,
-      profile_follow,
-      user_id,
-      profile_about
-    FROM profile
-    ORDER BY profile_id DESC`
-  );
-  return result.rows;
+export const getFindAllProfileDB = async (
+  gender?: string
+): Promise<Profile[]> => {
+  try {
+    let query = `
+      SELECT 
+        p.profile_id,
+        p.profile_nickname,
+        p.profile_height,
+        p.profile_weight,
+        p.profile_image,
+        p.profile_gender,
+        p.profile_follow,
+        p.user_id,
+        p.profile_about
+      FROM profile p
+    `;
+
+    const params: any[] = [];
+    const conditions: string[] = [];
+
+    if (gender) {
+      conditions.push("p.profile_gender = $" + (params.length + 1));
+      params.push(gender);
+    }
+
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    query += " ORDER BY p.profile_id DESC";
+
+    const result = await pool.query(query, params);
+    return result.rows;
+  } catch (error) {
+    console.error("Error in getFindAllProfileDB:", error);
+    throw error;
+  }
 };
 
 export const getFindByIdProfileDB = async (

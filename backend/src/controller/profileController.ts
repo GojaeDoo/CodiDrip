@@ -16,7 +16,8 @@ export const getProfiles = async (
   res: Response
 ): Promise<void> => {
   try {
-    const profiles = await getAllProfiles();
+    const gender = req.query.gender as string;
+    const profiles = await getAllProfiles(gender);
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ error: "getProfiles 500error - profileController" });

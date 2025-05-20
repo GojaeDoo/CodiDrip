@@ -1,39 +1,22 @@
 import * as S from "./DripUser.styled";
+import { DripUserPresenterProps } from "./DripUser.types";
 
-export const DripUserPresenter = () => {
-  // 임시 데이터
-  const users = [
-    {
-      id: 1,
-      nickname: "스타일리시한 남자",
-      profileImage: "/default-profile.png",
-      height: 180,
-      weight: 75,
-    },
-    {
-      id: 2,
-      nickname: "패션 여왕",
-      profileImage: "/default-profile.png",
-      height: 165,
-      weight: 50,
-    },
-  ];
-
+export const DripUserPresenter = (props: DripUserPresenterProps) => {
   return (
     <S.Background>
       <S.UserDripWrapper>
-        {users.map((user) => (
-          <S.UserCard key={user.id}>
+        {props.users.map((user) => (
+          <S.UserCard key={user.profile_id}>
             <S.ProfileImageWrapper>
               <S.ProfileImage
-                src={`http://localhost:3005/uploads/profiles/${user.profileImage}`}
-                alt={user.nickname}
+                src={`http://localhost:3005/uploads/profiles/${user.profile_image}`}
+                alt={user.profile_nickname}
               />
             </S.ProfileImageWrapper>
             <S.UserInfo>
-              <S.Nickname>{user.nickname}</S.Nickname>
+              <S.Nickname>{user.profile_nickname}</S.Nickname>
               <S.UserStats>
-                {user.height}cm / {user.weight}kg
+                {user.profile_height}cm / {user.profile_weight}kg
               </S.UserStats>
             </S.UserInfo>
           </S.UserCard>

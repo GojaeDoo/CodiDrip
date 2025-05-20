@@ -92,11 +92,27 @@ export const CloseButton = styled.button`
   }
 `;
 
+export const MenuLogo = styled.div`
+  margin: 2vh 0vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.3rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 1000;
+  font-style: italic;
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+`;
+
 export const MenuItem = styled.a`
   display: block;
   padding: 10px;
   text-decoration: none;
   color: #ffffff;
+  cursor: pointer;
 
   &:hover {
     background: #333;

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { DripPostType, DripPostResponse } from "./DripPost.types";
 
 // 공통으로 사용되는 데이터 변환 함수
@@ -19,16 +20,12 @@ export const getUserSpecificDripPosts = async (
   userId: string
 ): Promise<DripPostType[]> => {
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `http://localhost:3005/api/drip?userId=${userId}`
     );
-    if (!response.ok) {
-      throw new Error("Failed to fetch user drip posts");
-    }
-    const data = await response.json();
-    return data.map(transformDripPostData);
+    return response.data.map(transformDripPostData);
   } catch (error) {
-    console.error("Error fetching user drip posts:", error);
+    console.error("사용자 게시물 조회 중 에러 발생:", error);
     throw error;
   }
 };
@@ -41,14 +38,10 @@ export const getAllDripPosts = async (
     const url = gender
       ? `http://localhost:3005/api/drip?gender=${gender}`
       : "http://localhost:3005/api/drip";
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Failed to fetch all drip posts");
-    }
-    const data = await response.json();
-    return data.map(transformDripPostData);
+    const response = await axios.get(url);
+    return response.data.map(transformDripPostData);
   } catch (error) {
-    console.error("Error fetching all drip posts:", error);
+    console.error("게시물 조회 중 에러 발생:", error);
     throw error;
   }
 };

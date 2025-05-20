@@ -10,9 +10,9 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getAllProfiles = async (): Promise<Profile[]> => {
+export const getAllProfiles = async (gender?: string): Promise<Profile[]> => {
   try {
-    return await getFindAllProfileDB();
+    return await getFindAllProfileDB(gender);
   } catch (error) {
     console.error("getAllProfiles error - profileService");
     throw new Error("프로필 목록을 가져오는 중 오류가 발생했습니다.");

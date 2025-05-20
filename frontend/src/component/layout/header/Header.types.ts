@@ -9,6 +9,7 @@ export interface HeaderProps {
   onClickMain: () => void;
   onClickMoveMyPage: () => void;
   onClickMoveDripUser: () => void;
+  onClickMoveDrips: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
 }

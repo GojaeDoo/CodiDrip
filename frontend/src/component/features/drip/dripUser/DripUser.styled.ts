@@ -82,7 +82,6 @@ export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: linear-gradient(to bottom, #1e1e1e, #2d2d2d);
 `;
 
 export const Nickname = styled.h3`

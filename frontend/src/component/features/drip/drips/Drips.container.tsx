@@ -1,23 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import DripsPresenter from "./Drips.presenter";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export const DripsContainer = () => {
-  const [genderSelect, setGenderSelect] = useState<string>("all");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const isDripUser = searchParams.get("dripUser") === "true";
+  const genderSelect = searchParams.get("gender") || "all";
 
   const onClickSelectAll = () => {
-    setGenderSelect("all");
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("gender", "all");
+    router.push(`?${params.toString()}`);
   };
 
   const onClickSelectMen = () => {
-    setGenderSelect("male");
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("gender", "male");
+    router.push(`?${params.toString()}`);
   };
 
   const onClickSelectWomen = () => {
-    setGenderSelect("female");
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("gender", "female");
+    router.push(`?${params.toString()}`);
   };
 
   return (
