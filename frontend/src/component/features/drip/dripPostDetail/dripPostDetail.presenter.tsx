@@ -1,43 +1,47 @@
 import React from "react";
-import * as S from "./dripPostDetail.styled";
-import { Heart, MessageCircle, Bookmark, Hash } from "lucide-react";
-import { DripPostDetailProps } from "./dripPostDetail.types";
+import * as S from "./DripPostDetail.styled";
+import { DripPostDetailProps, Pin } from "./DripPostDetail.types";
+import { Heart, MessageCircle, Hash, Share2 } from "lucide-react";
 import DripPostComment from "@/app/dripPostComment/page";
 
-export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
+const DripPostDetailPresenter: React.FC<DripPostDetailProps> = ({
+  dripPost,
+  images,
+  currentImageIndex,
+  onPrevImage,
+  onNextImage,
+  getImageUrl,
+  postTags,
+  pins,
+  postno,
+}) => {
   return (
     <S.Background>
       <S.DripPostDetailWrapper>
         <S.PostContainer>
           <S.ImageSection>
             <S.MainImage
-              src={
-                props.postImages[props.currentImageIndex]
-                  ? `http://localhost:3005/uploads/drip/${
-                      props.postImages[props.currentImageIndex]
-                    }`
-                  : undefined
-              }
-              alt="Drip post image"
+              src={getImageUrl(images[currentImageIndex])}
+              alt={`Post image ${currentImageIndex + 1}`}
             />
-            {props.postImages.length > 1 && (
+            {pins?.map((pin: Pin) => (
+              <S.PinContainer key={pin.id} x={pin.x} y={pin.y}>
+                <S.PinMarker></S.PinMarker>
+                <S.PinDescription>{pin.description}</S.PinDescription>
+              </S.PinContainer>
+            ))}
+            {images.length > 1 && (
               <>
                 <S.ImageNavigation>
-                  <S.NavButton
-                    onClick={() => props.onPrevImage(props.postImages.length)}
-                    aria-label="이전 이미지"
-                  >
-                    <S.StyledChevronLeft size={24} />
+                  <S.NavButton onClick={onPrevImage}>
+                    <S.StyledChevronLeft />
                   </S.NavButton>
-                  <S.NavButton
-                    onClick={() => props.onNextImage(props.postImages.length)}
-                    aria-label="다음 이미지"
-                  >
-                    <S.StyledChevronRight size={24} />
+                  <S.NavButton onClick={onNextImage}>
+                    <S.StyledChevronRight />
                   </S.NavButton>
                 </S.ImageNavigation>
                 <S.ImageCounter>
-                  {props.currentImageIndex + 1} / {props.postImages.length}
+                  {currentImageIndex + 1} / {images.length}
                 </S.ImageCounter>
               </>
             )}
@@ -46,14 +50,14 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
           <S.ContentSection>
             <S.UserInfo>
               <S.ProfileImage
-                src={`http://localhost:3005/uploads/profiles/${props.dripPost?.프로필이미지}`}
-                alt={`${props.dripPost?.닉네임 || "사용자"}의 프로필`}
+                src={`http://localhost:3005/uploads/profiles/${dripPost.프로필이미지}`}
+                alt={`${dripPost.닉네임 || "사용자"}의 프로필`}
               />
               <div>
-                <S.UserName>{props.dripPost?.닉네임 || "사용자"}</S.UserName>
-                {props.dripPost?.키 && props.dripPost?.몸무게 && (
+                <S.UserName>{dripPost.닉네임 || "사용자"}</S.UserName>
+                {dripPost.키 && dripPost.몸무게 && (
                   <S.UserStats>
-                    {props.dripPost.키}cm / {props.dripPost.몸무게}kg
+                    {dripPost.키}cm / {dripPost.몸무게}kg
                   </S.UserStats>
                 )}
               </div>
@@ -68,26 +72,22 @@ export const DripPostDetailPresenter = (props: DripPostDetailProps) => {
                 <MessageCircle size={22} />
                 <span>댓글</span>
               </S.InteractionButton>
-              <S.InteractionButton aria-label="저장">
-                <Bookmark size={22} />
-                <span>저장</span>
+              <S.InteractionButton aria-label="공유">
+                <Share2 size={22} />
+                <span>공유</span>
               </S.InteractionButton>
             </S.InteractionSection>
 
             <S.TagSection>
               <Hash size={20} />
               <S.TagList>
-                {props.postTags.length > 0 ? (
-                  props.postTags.map((tag: string, index: number) => (
-                    <S.Tag key={index}>#{tag}</S.Tag>
-                  ))
-                ) : (
-                  <S.Tag>#태그 없음</S.Tag>
-                )}
+                {postTags.map((tag: string, index: number) => (
+                  <S.Tag key={index}>#{tag.trim()}</S.Tag>
+                ))}
               </S.TagList>
             </S.TagSection>
 
-            <DripPostComment postno={Number(props.postno)} />
+            <DripPostComment postno={postno} />
           </S.ContentSection>
         </S.PostContainer>
       </S.DripPostDetailWrapper>

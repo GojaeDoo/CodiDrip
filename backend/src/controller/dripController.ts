@@ -3,15 +3,17 @@ import { dripService } from "../service/dripService";
 
 export const createDrip = async (req: Request, res: Response) => {
   try {
-    console.log("Request body:", req.body);
-    const { images, tags, userId } = req.body;
+    const { images, tags, userId, pins } = req.body;
+
     if (!userId) {
-      return res.status(400).json({ message: "User ID is required" });
+      return res.status(400).json({ error: "userId is required" });
     }
-    const drip = await dripService.createDrip(images, tags, userId);
-    res.status(201).json(drip);
+
+    const result = await dripService.createDrip(images, tags, userId, pins);
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ error: "createDrip 500error - dripController" });
+    console.error("createDrip error - dripController:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -29,7 +31,12 @@ export const getUserDrip = async (req: Request, res: Response) => {
 
 export const getPostNoDrip = async (req: Request, res: Response) => {
   try {
-    const postNo = req.params.postNo;
+    const postNo = parseInt(req.params.postNo, 10);
+    if (isNaN(postNo)) {
+      return res
+        .status(400)
+        .json({ error: "유효하지 않은 게시물 번호입니다." });
+    }
     const drip = await dripService.getPostNoDrip(postNo);
     res.status(200).json(drip);
   } catch (error) {

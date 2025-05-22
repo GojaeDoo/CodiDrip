@@ -1,17 +1,21 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import DripPostEditPresenter from "./DripPostEdit.presenter";
-import { DripPostEditPresenterProps } from "./DripPostEdit.types";
+import { Pin } from "./DripPostEdit.types";
 import { fetchDripPostQuery, postDrip, updateDrip } from "./DripPostEdit.query";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 export const DripPostEditContainer = () => {
+  const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [pins, setPins] = useState<Pin[]>([]);
+  const [isAddingPin, setIsAddingPin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editData, setEditData] = useState<{
     post_image: string[];
@@ -19,7 +23,6 @@ export const DripPostEditContainer = () => {
   } | null>(null);
 
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const postNo = searchParams.get("postNo");
   const statusParam = searchParams.get("status");
@@ -51,205 +54,167 @@ export const DripPostEditContainer = () => {
     fetchDripPost();
   }, [status, postNo]);
 
-  const handleImageUpload: DripPostEditPresenterProps["onImageUpload"] = async (
-    e
-  ) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
-      try {
-        const newImages = await Promise.all(
-          Array.from(files).map((file) => {
-            return new Promise<string>((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                if (typeof reader.result === "string") {
-                  resolve(reader.result);
-                } else {
-                  reject(new Error("이미지 변환에 실패했습니다."));
-                }
-              };
-              reader.onerror = () =>
-                reject(new Error("이미지 읽기에 실패했습니다."));
-              reader.readAsDataURL(file);
-            });
-          })
-        );
+    if (!files) return;
 
-        setImages((prev) => {
-          const updatedImages = [...prev, ...newImages];
-          // 현재 이미지 인덱스가 유효한 범위 내에 있는지 확인
-          if (currentImageIndex >= updatedImages.length) {
-            setCurrentImageIndex(updatedImages.length - 1);
+    const newImages: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          newImages.push(e.target.result as string);
+          if (newImages.length === files.length) {
+            setImages((prev) => [...prev, ...newImages]);
           }
-          return updatedImages;
-        });
-      } catch (error) {
-        console.error("이미지 업로드 중 오류 발생:", error);
-        alert("이미지 업로드에 실패했습니다.");
+        }
+      };
+      reader.readAsDataURL(files[i]);
+    }
+  };
+
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTagInput(value);
+
+    // 엔터키나 쉼표로 태그 추가
+    if (value.endsWith(",") || value.endsWith(" ")) {
+      const newTag = value.slice(0, -1).trim();
+      if (newTag && !tags.includes(newTag)) {
+        setTags((prev) => [...prev, newTag]);
+        setTagInput("");
       }
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const trimmedInput = tagInput.trim();
+      if (trimmedInput && !tags.includes(trimmedInput)) {
+        setTags((prev) => [...prev, trimmedInput]);
+        setTagInput("");
+      }
+    }
+  };
+
+  const handleDeleteTag = (index: number) => {
+    setTags((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAddPin = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!isAddingPin) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    const newPin: Pin = {
+      id: Math.random().toString(36).substr(2, 9),
+      x,
+      y,
+      description: "",
+    };
+
+    setPins((prev) => [...prev, newPin]);
+    setSelectedPinId(newPin.id);
+    setIsModalOpen(true);
+    setIsAddingPin(false);
+  };
+
+  const handlePinClick = (pinId: string) => {
+    setSelectedPinId(pinId);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedPinId(null);
+  };
+
+  const handleModalSubmit = (description: string) => {
+    if (selectedPinId) {
+      setPins((prev) =>
+        prev.map((pin) =>
+          pin.id === selectedPinId ? { ...pin, description } : pin
+        )
+      );
+    }
+    handleModalClose();
+  };
+
+  const handleTogglePinMode = () => {
+    setIsAddingPin(!isAddingPin);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    try {
+      if (status) {
+        await updateDrip({
+          postNo,
+          images,
+          tags,
+          userId,
+          pins,
+        });
+      } else {
+        await postDrip({
+          images,
+          tags,
+          userId,
+          pins,
+        });
+      }
+      router.push("/drips");
+    } catch (error) {
+      console.error("Error posting drip:", error);
     }
   };
 
   const handlePrevImage = () => {
-    if (images.length === 0) return;
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentImageIndex((prev) => Math.max(0, prev - 1));
   };
 
   const handleNextImage = () => {
-    if (images.length === 0) return;
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setCurrentImageIndex((prev) => Math.min(images.length - 1, prev + 1));
   };
-
-  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTagInput(e.target.value);
-  };
-
-  const handleDeleteImage = (idx: number) => {
-    setImages((prev) => {
-      const newArr = prev.filter((_, i) => i !== idx);
-      // 삭제 후 currentImageIndex가 범위를 벗어나면 조정
-      if (currentImageIndex >= newArr.length) {
-        setCurrentImageIndex(Math.max(0, newArr.length - 1));
-      }
-      return newArr;
-    });
-  };
-
-  const handleDeleteTag = (idx: number) => {
-    setTags((prev) => prev.filter((_, i) => i !== idx));
-  };
-
-  const handleSelectImage = (idx: number) => {
-    setCurrentImageIndex(idx);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-        throw new Error("로그인이 필요합니다.");
-      }
-
-      const trimmedInput = tagInput.trim();
-      let finalTags = [...tags];
-
-      if (trimmedInput) {
-        const newTags = trimmedInput
-          .split(/#/)
-          .map((tag) => tag.trim())
-          .filter((tag) => tag.length > 0)
-          .map((tag) => `#${tag}`);
-
-        finalTags = [...new Set([...finalTags, ...newTags])];
-      }
-
-      if (finalTags.length === 0) {
-        throw new Error("최소 하나의 태그를 입력해주세요.");
-      }
-
-      const postData = {
-        images,
-        tags: finalTags,
-        userId,
-      };
-
-      await postDrip(postData);
-      router.push("/myPage");
-    } catch (error) {
-      console.error("Error submitting drip:", error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "게시글 작성 중 오류가 발생했습니다."
-      );
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-        throw new Error("로그인이 필요합니다.");
-      }
-
-      const trimmedInput = tagInput.trim();
-      let finalTags = [...tags];
-
-      if (trimmedInput) {
-        const newTags = trimmedInput
-          .split(/#/)
-          .map((tag) => tag.trim())
-          .filter((tag) => tag.length > 0)
-          .map((tag) => `#${tag}`);
-
-        finalTags = [...new Set([...finalTags, ...newTags])];
-      }
-
-      if (finalTags.length === 0) {
-        throw new Error("최소 하나의 태그를 입력해주세요.");
-      }
-
-      const postData = {
-        postNo,
-        images,
-        tags: finalTags,
-        userId,
-      };
-
-      await updateDrip(postData);
-      router.push("/myPage");
-    } catch (error) {
-      console.error("Error updating drip:", error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "게시글 수정 중 오류가 발생했습니다."
-      );
-    }
-  };
-
-  // 이미지 src 처리 함수 (Presenter에서 옮김)
-  const getImageSrc = (img: string) => {
-    if (!img) return "";
-    if (typeof img === "string" && img.startsWith("[") && img.endsWith("]")) {
-      try {
-        const arr = JSON.parse(img);
-        if (Array.isArray(arr) && arr.length > 0) return getImageSrc(arr[0]);
-      } catch {
-        // 에러 무시
-      }
-      return "";
-    }
-    if (img.startsWith("dripdata:")) return img.replace("dripdata:", "data:");
-    if (img.startsWith("data:image")) return img;
-    if (img.startsWith("/uploads/drip/")) return `http://localhost:3005${img}`;
-    if (img.startsWith("/")) return `http://localhost:3005/uploads/drip${img}`;
-    return `http://localhost:3005/uploads/drip/${img.trim()}`;
-  };
-
-  // imageSrcList 생성
-  const imageSrcList = images.map(getImageSrc);
 
   return (
     <DripPostEditPresenter
       images={images}
-      imageSrcList={imageSrcList}
+      imageSrcList={images}
       currentImageIndex={currentImageIndex}
       fileInputRef={fileInputRef}
       onImageUpload={handleImageUpload}
       onPrevImage={handlePrevImage}
       onNextImage={handleNextImage}
-      onSelectImage={handleSelectImage}
-      onDeleteImage={handleDeleteImage}
+      onSelectImage={() => {}}
+      onDeleteImage={() => {}}
       tags={tags}
       tagInput={tagInput}
       onTagInputChange={handleTagInputChange}
+      onKeyPress={handleKeyPress}
       onDeleteTag={handleDeleteTag}
       onSubmit={handleSubmit}
-      onUpdate={handleUpdate}
-      postNo={postNo}
-      status={status}
-      editData={editData}
+      onUpdate={handleSubmit}
+      postNo={postNo ? parseInt(postNo) : undefined}
+      status={status ?? undefined}
+      editData={editData ?? undefined}
+      pins={pins}
+      onAddPin={handleAddPin}
+      onUpdatePin={() => {}}
+      onDeletePin={() => {}}
+      isAddingPin={isAddingPin}
+      onTogglePinMode={handleTogglePinMode}
+      isModalOpen={isModalOpen}
+      selectedPinId={selectedPinId}
+      onPinClick={handlePinClick}
+      onModalClose={handleModalClose}
+      onModalSubmit={handleModalSubmit}
     />
   );
 };

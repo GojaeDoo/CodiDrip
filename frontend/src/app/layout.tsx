@@ -3,8 +3,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../app/globals.css";
 import ClientLayout from "@/component/layout/ClientLayout";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/context/AuthContext";
+import { useState } from "react";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -12,14 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// React Query 클라이언트 인스턴스 생성
-const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <html lang="en">
       <body

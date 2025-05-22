@@ -30,6 +30,7 @@ export const DripPostCommentContainer = (props: DripPostCommentProps) => {
   const [postComment, setPostComment] = useState("");
   const [formattedComments, setFormattedComments] = useState<string[]>([]);
   const isSubmitting = useRef(false);
+  console.log("props.postno:", props.postno);
 
   useEffect(() => {
     const fetchDripPostComment = async () => {
@@ -67,13 +68,17 @@ export const DripPostCommentContainer = (props: DripPostCommentProps) => {
         isSubmitting.current = true;
 
         try {
-          console.log("Enter key pressed");
           const userId = localStorage.getItem("userId");
+          console.log("userId:", userId);
+          console.log("postno:", props.postno);
           if (!userId) {
             console.error("사용자 ID가 없습니다.");
             return;
           }
-          console.log(userId);
+          if (!props.postno || isNaN(Number(props.postno))) {
+            console.error("postNo가 올바르지 않습니다:", props.postno);
+            return;
+          }
 
           await postCommentQuery(userId, postComment, props.postno);
           // 댓글 작성 성공 후 댓글 목록 새로고침

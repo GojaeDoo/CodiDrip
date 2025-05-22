@@ -29,19 +29,42 @@ export const uploadDripImage = async (
 export const createDripDB = async (
   images: string[],
   tags: string[],
-  userId: string
+  userId: string,
+  pins: { id: string; x: number; y: number; description: string }[]
 ) => {
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
-      `INSERT INTO drip_post (post_image, post_tag, user_id)
-       VALUES ($1, $2, $3)
-       RETURNING *`,
+    await client.query("BEGIN");
+
+    const result = await client.query(
+      `INSERT INTO drip_post (post_image, post_tag, user_id) 
+       VALUES ($1, $2, $3) 
+       RETURNING post_no`,
       [JSON.stringify(images), JSON.stringify(tags), userId]
     );
+
+    const postNo = result.rows[0].post_no;
+
+    // 핀 정보 저장
+    if (pins && pins.length > 0) {
+      for (const pin of pins) {
+        console.log("Inserting pin:", pin);
+        await client.query(
+          `INSERT INTO drip_post_pin (post_no, x_position, y_position, description) 
+           VALUES ($1, $2, $3, $4)`,
+          [postNo, pin.x, pin.y, pin.description]
+        );
+      }
+    }
+
+    await client.query("COMMIT");
+
     return result.rows[0];
   } catch (error) {
-    console.error("createDrip error - dripStorage:", error);
+    await client.query("ROLLBACK");
     throw error;
+  } finally {
+    client.release();
   }
 };
 
@@ -88,7 +111,7 @@ export const getUserDripPost = async (userId?: string, gender?: string) => {
   }
 };
 
-export const getPostNoDripPost = async (postNo?: string) => {
+export const getPostNoDripPost = async (postNo: number) => {
   try {
     console.log("Searching for post_no:", postNo);
     const result = await pool.query(
@@ -101,7 +124,19 @@ export const getPostNoDripPost = async (postNo?: string) => {
         pr.profile_image AS 프로필이미지,
         pr.profile_nickname AS 닉네임,
         pr.profile_height AS 키,
-        pr.profile_weight AS 몸무게
+        pr.profile_weight AS 몸무게,
+        (
+          SELECT json_agg(
+            json_build_object(
+              'id', pin_id,
+              'x', x_position,
+              'y', y_position,
+              'description', description
+            )
+          )
+          FROM drip_post_pin
+          WHERE post_no = p.post_no
+        ) AS 핀
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
       WHERE post_no = $1
@@ -214,5 +249,46 @@ export const postDripPostCommentStorage = async (
   } catch (error) {
     console.error("Error in postDripPostCommentStorage:", error);
     throw error;
+  }
+};
+
+export const getDripPostDetail = async (postNo: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    const postResult = await client.query(
+      `SELECT p.*, u.nickname 
+       FROM drip_post p 
+       LEFT JOIN user u ON p.user_id = u.user_id 
+       WHERE p.post_no = $1`,
+      [postNo]
+    );
+
+    if (!postResult.rows || postResult.rows.length === 0) {
+      throw new Error("Post not found");
+    }
+
+    const post = postResult.rows[0];
+
+    // 핀 정보 가져오기
+    const pinResult = await client.query(
+      `SELECT pin_id, x_position as x, y_position as y, description 
+       FROM drip_post_pin 
+       WHERE post_no = $1`,
+      [postNo]
+    );
+
+    await client.query("COMMIT");
+
+    return {
+      ...post,
+      pins: pinResult.rows || [],
+    };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
   }
 };

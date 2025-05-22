@@ -1,54 +1,221 @@
 import styled from "styled-components";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const Background = styled.div`
+  width: 100%;
   min-height: 100vh;
-  background: #1a1a1a;
-  padding: 1rem 0;
-
-  @media (min-width: 768px) {
-    padding: 2rem 0;
-  }
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 `;
 
 export const DripPostDetailWrapper = styled.div`
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  width: 100%;
+  max-width: 1200px;
+  background-color: #242424;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 `;
 
 export const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #1e1e1e;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `;
 
 export const ImageSection = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
-  background: #333;
+  height: 600px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
   overflow: hidden;
-
-  @media (min-width: 768px) {
-    width: 50%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const MainImage = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  background-color: #1a1a1a;
+`;
+
+export const PinContainer = styled.div<{ x: number; y: number }>`
+  position: absolute;
+  left: ${(props) => props.x}%;
+  top: ${(props) => props.y}%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+`;
+
+export const PinMarker = styled.div`
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 0.2s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  ${PinContainer}:hover & {
+    transform: rotate(-45deg) scale(1.1);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  }
+`;
+
+export const PinDescription = styled.div`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+
+  ${PinContainer}:hover & {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid rgba(0, 0, 0, 0.8);
+  }
+`;
+
+export const ContentSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: #242424;
+  border-radius: 8px;
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #333;
+`;
+
+export const ProfileImage = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+`;
+
+export const UserName = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+`;
+
+export const UserStats = styled.p`
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0.25rem 0 0;
+`;
+
+export const InteractionSection = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
+`;
+
+export const InteractionButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  svg {
+    color: #fff;
+  }
+`;
+
+export const TagSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
+`;
+
+export const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
+export const Tag = styled.span`
+  background-color: #333;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
 `;
 
 export const ImageNavigation = styled.div`
@@ -59,245 +226,52 @@ export const ImageNavigation = styled.div`
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   pointer-events: none;
-
-  @media (min-width: 768px) {
-    padding: 0 1rem;
-  }
 `;
 
 export const NavButton = styled.button`
-  background: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   border: none;
-  width: 36px;
-  height: 36px;
+  color: white;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: white;
-  transition: all 0.2s ease;
   pointer-events: auto;
-  backdrop-filter: blur(4px);
-
-  @media (min-width: 768px) {
-    width: 44px;
-    height: 44px;
-  }
+  transition: background-color 0.2s;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
+    background-color: rgba(0, 0, 0, 0.7);
   }
 `;
 
-export const StyledChevronLeft = styled(ChevronLeft)`
-  color: white;
-  width: 20px;
-  height: 20px;
-
-  @media (min-width: 768px) {
-    width: 24px;
-    height: 24px;
-  }
+export const StyledChevronLeft = styled.div`
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  transform: rotate(-45deg);
 `;
 
-export const StyledChevronRight = styled(ChevronRight)`
-  color: white;
-  width: 20px;
-  height: 20px;
-
-  @media (min-width: 768px) {
-    width: 24px;
-    height: 24px;
-  }
+export const StyledChevronRight = styled.div`
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  transform: rotate(45deg);
 `;
 
 export const ImageCounter = styled.div`
   position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  background: rgba(0, 0, 0, 0.7);
+  bottom: 1rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 16px;
-  font-size: 0.8rem;
-  backdrop-filter: blur(4px);
-
-  @media (min-width: 768px) {
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-`;
-
-export const ContentSection = styled.div`
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  background: #1e1e1e;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    padding: 2rem;
-    gap: 2rem;
-    width: 50%;
-  }
-`;
-
-export const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-  @media (min-width: 768px) {
-    gap: 1rem;
-    padding-bottom: 1.5rem;
-  }
-`;
-
-export const ProfileImage = styled.img`
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #333;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-
-  @media (min-width: 768px) {
-    width: 52px;
-    height: 52px;
-  }
-`;
-
-export const UserName = styled.span`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: white;
-  display: block;
-  margin-bottom: 0.2rem;
-
-  @media (min-width: 768px) {
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-  }
-`;
-
-export const UserStats = styled.span`
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
-
-  @media (min-width: 768px) {
-    font-size: 0.9rem;
-  }
-`;
-
-export const InteractionSection = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-  @media (min-width: 768px) {
-    gap: 2rem;
-    padding: 1rem 0;
-  }
-`;
-
-export const InteractionButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   font-size: 0.9rem;
-  cursor: pointer;
-  padding: 0.5rem 0.75rem;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-
-  @media (min-width: 768px) {
-    gap: 0.6rem;
-    font-size: 1rem;
-    padding: 0.6rem 1rem;
-    border-radius: 12px;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-
-    @media (min-width: 768px) {
-      width: 22px;
-      height: 22px;
-    }
-  }
-`;
-
-export const TagSection = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-  @media (min-width: 768px) {
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-`;
-
-export const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-
-  @media (min-width: 768px) {
-    gap: 0.6rem;
-  }
-`;
-
-export const Tag = styled.span`
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
-  padding: 0.4rem 0.8rem;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-
-  @media (min-width: 768px) {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    border-radius: 20px;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;

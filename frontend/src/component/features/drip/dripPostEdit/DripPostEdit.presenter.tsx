@@ -1,64 +1,89 @@
-import React from "react";
+import React, { RefObject } from "react";
 import * as S from "./DripPostEdit.styled";
 import { ImagePlus, Hash, ChevronLeft, ChevronRight } from "lucide-react";
 import { DripPostEditPresenterProps } from "./DripPostEdit.types";
+import PinDescriptionModal from "./PinDescriptionModal";
 
 const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
+  const {
+    imageSrcList,
+    currentImageIndex,
+    fileInputRef,
+    onImageUpload,
+    onPrevImage,
+    onNextImage,
+    tags,
+    tagInput,
+    onTagInputChange,
+    onKeyPress,
+    onDeleteTag,
+    onSubmit,
+    onUpdate,
+    status,
+    pins,
+    onAddPin,
+    isAddingPin,
+    onTogglePinMode,
+    isModalOpen,
+    selectedPinId,
+    onPinClick,
+    onModalClose,
+    onModalSubmit,
+  } = props;
+
   return (
     <S.Background>
       <S.DripPostEditWrapper>
         <S.DripPostEditTitle>
-          DRIP {props.status === true ? "수정" : "작성"}
+          DRIP {status === true ? "수정" : "작성"}
         </S.DripPostEditTitle>
         <S.DripPostEditContent>
           <S.ImageUploadSection>
-            <S.ImageUploadButton
-              onClick={() => props.fileInputRef.current?.click()}
-            >
+            <S.ImageUploadButton onClick={() => fileInputRef.current?.click()}>
               <ImagePlus size={24} />
               <span>사진 추가</span>
             </S.ImageUploadButton>
             <input
               type="file"
-              ref={props.fileInputRef}
-              onChange={props.onImageUpload}
+              ref={fileInputRef}
+              onChange={onImageUpload}
               accept="image/*"
               multiple
               style={{ display: "none" }}
             />
             <S.ImagePreview>
-              {props.imageSrcList.length > 0 ? (
+              {imageSrcList[currentImageIndex] && (
                 <>
                   <S.MainImage
-                    src={props.imageSrcList[props.currentImageIndex]}
-                    alt="drip 이미지"
+                    src={imageSrcList[currentImageIndex]}
+                    alt="Preview"
+                    onClick={onAddPin}
                   />
-                  <S.DeleteButton
-                    onClick={() => props.onDeleteImage(props.currentImageIndex)}
-                    type="button"
-                  >
-                    ×
-                  </S.DeleteButton>
-                  {props.imageSrcList.length > 1 && (
-                    <>
-                      <S.NavigationButton
-                        onClick={props.onPrevImage}
-                        position="left"
-                      >
-                        <ChevronLeft size={24} />
-                      </S.NavigationButton>
-                      <S.NavigationButton
-                        onClick={props.onNextImage}
-                        position="right"
-                      >
-                        <ChevronRight size={24} />
-                      </S.NavigationButton>
-                    </>
-                  )}
+                  {pins.map((pin) => (
+                    <S.PinMarker
+                      key={pin.id}
+                      style={{
+                        left: `${pin.x}%`,
+                        top: `${pin.y}%`,
+                        backgroundColor: isAddingPin ? "#2563eb" : "#10b981",
+                      }}
+                      onClick={() => onPinClick(pin.id)}
+                    >
+                      {pin.description && (
+                        <S.PinTooltip>{pin.description}</S.PinTooltip>
+                      )}
+                    </S.PinMarker>
+                  ))}
                 </>
-              ) : (
-                <S.PlaceholderText>이미지를 업로드해주세요</S.PlaceholderText>
               )}
+              <S.ImageNavigation>
+                <S.NavButton onClick={onPrevImage}>
+                  <ChevronLeft size={24} />
+                </S.NavButton>
+                <S.NavButton onClick={onNextImage}>
+                  <ChevronRight size={24} />
+                </S.NavButton>
+              </S.ImageNavigation>
             </S.ImagePreview>
           </S.ImageUploadSection>
           <S.TagSection>
@@ -66,17 +91,18 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
               <Hash size={20} />
               <S.TagInput
                 type="text"
-                value={props.tagInput}
-                onChange={props.onTagInputChange}
-                placeholder="태그를 입력하세요 (예: #태그1 #태그2)"
+                value={tagInput}
+                onChange={onTagInputChange}
+                onKeyPress={onKeyPress}
+                placeholder="태그를 입력하세요 (쉼표 또는 엔터로 구분)"
               />
             </S.TagInputWrapper>
             <S.TagList>
-              {props.tags.map((tag, index) => (
+              {tags.map((tag, index) => (
                 <S.TagItem key={index}>
                   {tag}
                   <S.TagDeleteButton
-                    onClick={() => props.onDeleteTag(index)}
+                    onClick={() => onDeleteTag(index)}
                     type="button"
                   >
                     ×
@@ -85,14 +111,30 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps) => {
               ))}
             </S.TagList>
           </S.TagSection>
-          <S.SubmitButton
-            onClick={props.status === true ? props.onUpdate : props.onSubmit}
-            disabled={props.imageSrcList.length === 0}
-          >
-            {props.status === true ? "수정" : "게시"}하기
-          </S.SubmitButton>
+          <S.ButtonGroup>
+            <S.PinButton onClick={onTogglePinMode} $isActive={isAddingPin}>
+              {isAddingPin ? "핀 추가 중..." : "핀 추가"}
+            </S.PinButton>
+            <S.SubmitButton
+              onClick={status === true ? onUpdate : onSubmit}
+              disabled={imageSrcList.length === 0}
+            >
+              {status === true ? "수정" : "게시"}하기
+            </S.SubmitButton>
+          </S.ButtonGroup>
         </S.DripPostEditContent>
       </S.DripPostEditWrapper>
+
+      <PinDescriptionModal
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+        onSubmit={onModalSubmit}
+        initialDescription={
+          selectedPinId
+            ? pins.find((pin) => pin.id === selectedPinId)?.description || ""
+            : ""
+        }
+      />
     </S.Background>
   );
 };

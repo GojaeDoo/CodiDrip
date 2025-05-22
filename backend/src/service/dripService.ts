@@ -9,20 +9,39 @@ import {
 } from "../storage/dripStorage";
 
 export const dripService = {
-  createDrip: async (images: string[], tags: string[], userId: string) => {
-    const uploadedImages = await Promise.all(
-      images.map(async (image: string) => {
-        const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-        if (!matches || matches.length !== 3) {
-          throw new Error("Invalid image format");
-        }
-        const contentType = matches[1];
-        const base64Data = matches[2];
-        const buffer = Buffer.from(base64Data, "base64");
-        return await uploadDripImage(buffer, contentType);
-      })
-    );
-    return await createDripDB(uploadedImages, tags, userId);
+  createDrip: async (
+    images: string[],
+    tags: string[],
+    userId: string,
+    pins: { id: string; x: number; y: number; description: string }[]
+  ) => {
+    try {
+      const processedImages = await Promise.all(
+        images.map(async (image) => {
+          if (image.startsWith("data:image")) {
+            const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+            if (!matches || matches.length !== 3) {
+              throw new Error("Invalid image format");
+            }
+            const contentType = matches[1];
+            const base64Data = matches[2];
+            const buffer = Buffer.from(base64Data, "base64");
+            return await uploadDripImage(buffer, contentType);
+          }
+          return image;
+        })
+      );
+
+      console.log("Processed images:", processedImages);
+      console.log("Pins to save:", pins);
+
+      const result = await createDripDB(processedImages, tags, userId, pins);
+      console.log("Create drip result:", result);
+      return result;
+    } catch (error) {
+      console.error("createDrip error - dripService:", error);
+      throw error;
+    }
   },
 
   getUserDrip: async (userId?: string, gender?: string) => {
@@ -35,12 +54,13 @@ export const dripService = {
     }
   },
 
-  getPostNoDrip: async (postNo?: string) => {
+  getPostNoDrip: async (postNo: number) => {
     try {
       const drip = await getPostNoDripPost(postNo);
       return drip;
     } catch (error) {
       console.error("getPostNoDrip error - dripService:", error);
+      throw error;
     }
   },
 
