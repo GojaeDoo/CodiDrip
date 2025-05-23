@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DripPostEditPresenter from "./DripPostEdit.presenter";
-import { Pin } from "./DripPostEdit.types";
 import { fetchDripPostQuery, postDrip, updateDrip } from "./DripPostEdit.query";
 
 export const DripPostEditContainer = () => {
@@ -12,15 +11,15 @@ export const DripPostEditContainer = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [pins, setPins] = useState<Pin[]>([]);
-  const [isAddingPin, setIsAddingPin] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null!);
   const [editData, setEditData] = useState<{
     post_image: string[];
     post_tag: string[];
   } | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null!);
+  const [aspectRatio, setAspectRatio] = useState("3 / 4");
+  const [imgInfo, setImgInfo] = useState({ width: 1, height: 1, left: 0, top: 0 });
+  const wrapperRef = useRef<HTMLDivElement>(null!);
 
   const searchParams = useSearchParams();
 
@@ -28,6 +27,12 @@ export const DripPostEditContainer = () => {
   const statusParam = searchParams.get("status");
   const status: boolean | null =
     statusParam === "true" ? true : statusParam === "false" ? false : null;
+
+  // 이미지 경로 변환 함수 추가
+  const getImageUrl = (img: string) => {
+    if (img.startsWith("http") || img.startsWith("data:")) return img;
+    return `http://localhost:3005/uploads/drip/${img.replace(/^\\|\//, "")}`;
+  };
 
   useEffect(() => {
     const fetchDripPost = async () => {
@@ -42,7 +47,7 @@ export const DripPostEditContainer = () => {
               post_image: parsedImages,
               post_tag: parsedTags,
             });
-            setImages(parsedImages);
+            setImages(parsedImages.map(getImageUrl));
             setTags(parsedTags);
           }
         } catch (error) {
@@ -102,51 +107,6 @@ export const DripPostEditContainer = () => {
     setTags((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleAddPin = (e: React.MouseEvent<HTMLImageElement>) => {
-    if (!isAddingPin) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    const newPin: Pin = {
-      id: Math.random().toString(36).substr(2, 9),
-      x,
-      y,
-      description: "",
-    };
-
-    setPins((prev) => [...prev, newPin]);
-    setSelectedPinId(newPin.id);
-    setIsModalOpen(true);
-    setIsAddingPin(false);
-  };
-
-  const handlePinClick = (pinId: string) => {
-    setSelectedPinId(pinId);
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPinId(null);
-  };
-
-  const handleModalSubmit = (description: string) => {
-    if (selectedPinId) {
-      setPins((prev) =>
-        prev.map((pin) =>
-          pin.id === selectedPinId ? { ...pin, description } : pin
-        )
-      );
-    }
-    handleModalClose();
-  };
-
-  const handleTogglePinMode = () => {
-    setIsAddingPin(!isAddingPin);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
@@ -159,14 +119,12 @@ export const DripPostEditContainer = () => {
           images,
           tags,
           userId,
-          pins,
         });
       } else {
         await postDrip({
           images,
           tags,
           userId,
-          pins,
         });
       }
       router.push("/drips");
@@ -183,8 +141,55 @@ export const DripPostEditContainer = () => {
     setCurrentImageIndex((prev) => Math.min(images.length - 1, prev + 1));
   };
 
+  // 이미지 렌더링 영역 계산 (Detail과 동일)
+  const updateRect = useCallback(() => {
+    if (imageRef.current) {
+      const container = imageRef.current.parentElement?.getBoundingClientRect();
+      const img = imageRef.current;
+      if (!container) return;
+      const naturalWidth = img.naturalWidth;
+      const naturalHeight = img.naturalHeight;
+      const containerWidth = container.width;
+      const containerHeight = container.height;
+      const imgAspect = naturalWidth / naturalHeight;
+      const containerAspect = containerWidth / containerHeight;
+      let displayWidth = containerWidth;
+      let displayHeight = containerHeight;
+      let offsetLeft = 0;
+      let offsetTop = 0;
+      if (imgAspect > containerAspect) {
+        displayWidth = containerWidth;
+        displayHeight = containerWidth / imgAspect;
+        offsetTop = (containerHeight - displayHeight) / 2;
+      } else {
+        displayHeight = containerHeight;
+        displayWidth = containerHeight * imgAspect;
+        offsetLeft = (containerWidth - displayWidth) / 2;
+      }
+      setImgInfo({
+        width: displayWidth,
+        height: displayHeight,
+        left: offsetLeft,
+        top: offsetTop,
+      });
+    }
+  }, [imageRef]);
+
+  useEffect(() => {
+    updateRect();
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, [updateRect, currentImageIndex]);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
+    updateRect();
+  };
+
   return (
     <DripPostEditPresenter
+      containerRef={wrapperRef}
       images={images}
       imageSrcList={images}
       currentImageIndex={currentImageIndex}
@@ -204,17 +209,9 @@ export const DripPostEditContainer = () => {
       postNo={postNo ? parseInt(postNo) : undefined}
       status={status ?? undefined}
       editData={editData ?? undefined}
-      pins={pins}
-      onAddPin={handleAddPin}
-      onUpdatePin={() => {}}
-      onDeletePin={() => {}}
-      isAddingPin={isAddingPin}
-      onTogglePinMode={handleTogglePinMode}
-      isModalOpen={isModalOpen}
-      selectedPinId={selectedPinId}
-      onPinClick={handlePinClick}
-      onModalClose={handleModalClose}
-      onModalSubmit={handleModalSubmit}
+      imageRef={imageRef}
+      aspectRatio={aspectRatio}
+      onImageLoad={handleImageLoad}
     />
   );
 };

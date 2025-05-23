@@ -4,14 +4,6 @@ export interface PostDripData {
   images: string[];
   tags: string[];
   userId: string;
-  pins: Pin[];
-}
-
-export interface Pin {
-  id: string;
-  x: number;
-  y: number;
-  description: string;
 }
 
 export interface EditData {
@@ -38,15 +30,8 @@ export interface DripPostEditPresenterProps {
   postNo?: number;
   status?: boolean;
   editData?: EditData;
-  pins: Pin[];
-  onAddPin: (e: React.MouseEvent<HTMLImageElement>) => void;
-  onUpdatePin: (pinId: string, description: string) => void;
-  onDeletePin: (pinId: string) => void;
-  isAddingPin: boolean;
-  onTogglePinMode: () => void;
-  isModalOpen: boolean;
-  selectedPinId: string | null;
-  onPinClick: (pinId: string) => void;
-  onModalClose: () => void;
-  onModalSubmit: (description: string) => void;
+  imageRef: RefObject<HTMLImageElement>;
+  onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  aspectRatio: string;
+  onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
 }

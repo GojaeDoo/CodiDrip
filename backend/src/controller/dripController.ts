@@ -3,13 +3,13 @@ import { dripService } from "../service/dripService";
 
 export const createDrip = async (req: Request, res: Response) => {
   try {
-    const { images, tags, userId, pins } = req.body;
+    const { images, tags, userId } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: "userId is required" });
     }
 
-    const result = await dripService.createDrip(images, tags, userId, pins);
+    const result = await dripService.createDrip(images, tags, userId);
     res.status(201).json(result);
   } catch (error) {
     console.error("createDrip error - dripController:", error);

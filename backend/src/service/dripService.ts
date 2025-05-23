@@ -12,8 +12,7 @@ export const dripService = {
   createDrip: async (
     images: string[],
     tags: string[],
-    userId: string,
-    pins: { id: string; x: number; y: number; description: string }[]
+    userId: string
   ) => {
     try {
       const processedImages = await Promise.all(
@@ -33,9 +32,8 @@ export const dripService = {
       );
 
       console.log("Processed images:", processedImages);
-      console.log("Pins to save:", pins);
 
-      const result = await createDripDB(processedImages, tags, userId, pins);
+      const result = await createDripDB(processedImages, tags, userId);
       console.log("Create drip result:", result);
       return result;
     } catch (error) {

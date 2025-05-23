@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState, useCallback, useLayoutEffect } from "react";
 import DripPostDetailPresenter from "./DripPostDetail.presenter";
 import { useQuery } from "@tanstack/react-query";
 import { getDripPostDetail } from "./DripPostDetail.query";
-import { Pin } from "./DripPostDetail.types";
-import { DripPostDetailContainerProps } from "./DripPostDetail.types";
+import { DripPostDetailProps } from "./DripPostDetail.types";
 
-const DripPostDetailContainer = ({ postno }: DripPostDetailContainerProps) => {
+const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [imgInfo, setImgInfo] = useState({ width: 1, height: 1, left: 0, top: 0 });
+  const [aspectRatio, setAspectRatio] = useState("3 / 4");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   console.log("Container mounted with postNo:", postno);
@@ -22,6 +25,53 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailContainerProps) => {
   });
 
   console.log("Query result:", { dripPost, isLoading, error });
+
+  const updateRect = useCallback(() => {
+    if (containerRef.current && imageRef.current) {
+      const container = containerRef.current.getBoundingClientRect();
+      const img = imageRef.current;
+      const naturalWidth = img.naturalWidth;
+      const naturalHeight = img.naturalHeight;
+      const containerWidth = container.width;
+      const containerHeight = container.height;
+      const imgAspect = naturalWidth / naturalHeight;
+      const containerAspect = containerWidth / containerHeight;
+
+      let displayWidth = containerWidth;
+      let displayHeight = containerHeight;
+      let offsetLeft = 0;
+      let offsetTop = 0;
+
+      if (imgAspect > containerAspect) {
+        displayWidth = containerWidth;
+        displayHeight = containerWidth / imgAspect;
+        offsetTop = (containerHeight - displayHeight) / 2;
+      } else {
+        displayHeight = containerHeight;
+        displayWidth = containerHeight * imgAspect;
+        offsetLeft = (containerWidth - displayWidth) / 2;
+      }
+
+      setImgInfo({
+        width: displayWidth,
+        height: displayHeight,
+        left: offsetLeft,
+        top: offsetTop,
+      });
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    updateRect();
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, [updateRect, currentImageIndex]);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
+    updateRect();
+  };
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : 0));
@@ -48,10 +98,21 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailContainerProps) => {
       } else {
         images = [dripPost.게시글이미지];
       }
+      // 파일명만 있으면 URL 붙이기
+      images = images.map(img =>
+        img.startsWith("http")
+          ? img
+          : `http://localhost:3005/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
+      );
       console.log("파싱된 이미지 배열:", images);
     } catch (error) {
       console.error("이미지 파싱 에러:", error);
       images = [dripPost.게시글이미지];
+      images = images.map(img =>
+        img.startsWith("http")
+          ? img
+          : `http://localhost:3005/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
+      );
     }
   }
 
@@ -60,15 +121,15 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailContainerProps) => {
   if (!dripPost) return <div>No post found</div>;
 
   console.log("dripPost:", dripPost);
-  console.log("핀 데이터:", dripPost.핀);
 
   const postTags = JSON.parse(dripPost.태그 || "[]");
-  const pins: Pin[] = dripPost.핀 || [];
-
-  console.log("파싱된 핀 데이터:", pins);
 
   return (
     <DripPostDetailPresenter
+      containerRef={containerRef}
+      imageRef={imageRef}
+      aspectRatio={aspectRatio}
+      onImageLoad={handleImageLoad}
       dripPost={dripPost}
       images={images}
       currentImageIndex={currentImageIndex}
@@ -76,7 +137,6 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailContainerProps) => {
       onNextImage={handleNextImage}
       getImageUrl={getImageUrl}
       postTags={postTags}
-      pins={pins}
       postno={postno}
     />
   );

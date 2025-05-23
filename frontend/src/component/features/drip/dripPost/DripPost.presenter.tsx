@@ -38,28 +38,38 @@ export const DripPostPresenter = (props: DripPostProps) => {
                   </S.UserProfile>
                   <S.MenuWrapper>
                     <S.MenuButton
-                      onClick={(e) => props.onMenuClick(e, post.post_no)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        props.onMenuClick(e, post.post_no);
+                      }}
                     >
                       <MoreVertical size={20} />
                     </S.MenuButton>
                     {props.activeMenu === post.post_no && (
                       <S.Menu>
                         <S.MenuItem
-                          onClick={(e) => props.onHidePost(e, post.post_no)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            props.onHidePost(e, post.post_no);
+                          }}
                         >
                           숨김
                         </S.MenuItem>
                         {post.isOwner && (
                           <>
                             <S.MenuItem
-                              onClick={(e) => props.onEditPost(e, post.post_no)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                props.onEditPost(e, post.post_no);
+                              }}
                             >
                               수정
                             </S.MenuItem>
                             <S.MenuItem
-                              onClick={(e) =>
-                                props.onDeletePost(e, post.post_no)
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                props.onDeletePost(e, post.post_no);
+                              }}
                             >
                               삭제
                             </S.MenuItem>

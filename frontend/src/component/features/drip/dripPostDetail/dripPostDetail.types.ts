@@ -1,3 +1,5 @@
+import { RefObject, SyntheticEvent } from "react";
+
 export interface Comment {
   profile_image: string;
   profile_nickname: string;
@@ -25,30 +27,20 @@ export interface DripPostDetailResponse {
 }
 
 export interface DripPostDetailProps {
-  dripPost: DripPostDetailResponse;
+  postno: string;
+}
+
+export interface DripPostDetailPresenterProps {
+  containerRef: React.RefObject<HTMLDivElement>;
+  imageRef: React.RefObject<HTMLImageElement>;
+  aspectRatio: string;
+  onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+  dripPost: any;
   images: string[];
   currentImageIndex: number;
   onPrevImage: () => void;
   onNextImage: () => void;
   getImageUrl: (imagePath: string) => string;
   postTags: string[];
-  pins: Pin[];
-  postno: number;
-}
-
-export interface DripPostDetailPresenterProps {
-  post: {
-    post_no: number;
-    user_id: string;
-    nickname: string;
-    게시글이미지: string;
-    태그: string;
-    작성일시: string;
-    pins: Pin[];
-  };
-  currentImageIndex: number;
-  onPrevImage: () => void;
-  onNextImage: () => void;
-  onPinClick: (pin: Pin) => void;
-  selectedPin: Pin | null;
+  postno: string;
 }

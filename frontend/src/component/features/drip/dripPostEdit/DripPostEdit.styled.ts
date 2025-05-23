@@ -1,73 +1,297 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg,#1a1a1a);
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #1a1a1a;
+  align-items: flex-start;
+  padding: 3rem 0;
 `;
 
 export const DripPostEditWrapper = styled.div`
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #2d2d2d;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-`;
-
-export const DripPostEditTitle = styled.h1`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  color: #ffffff;
-`;
-
-export const DripPostEditContent = styled.div`
+  max-width: 900px;
+  background: #1a1a1a;
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-`;
-
-export const ImageUploadSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-export const ImageUploadButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #1d1d1d;
-  color: white;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #2563eb;
+  @media (max-width: 900px) {
+    max-width: 100vw;
+    border-radius: 0;
   }
 `;
 
-export const ImagePreview = styled.div`
-  position: relative;
+export const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 900px) {
+    flex-direction: row;
+    min-height: 540px;
+  }
+`;
+
+export const ImageSection = styled.div`
   width: 100%;
-  height: 400px;
-  background: #222;
-  border-radius: 8px;
+  background: #1a1a1a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 900px) {
+    width: 55%;
+    min-height: 540px;
+  }
+`;
+
+export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: ${props => props.$aspectRatio};
+  background: #111;
 `;
 
 export const MainImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+`;
+
+export const ImageNavigation = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  pointer-events: none;
+`;
+
+export const NavButton = styled.button`
+  background: rgba(36, 37, 46, 0.7);
+  border: none;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s, transform 0.2s;
+  &:hover {
+    background: #10b981;
+    color: #fff;
+    transform: scale(1.08);
+  }
+`;
+
+export const ContentSection = styled.div`
+  width: 100%;
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2.5rem 2rem;
+  @media (min-width: 900px) {
+    width: 45%;
+    min-height: 540px;
+    padding: 3rem 2.5rem;
+  }
+`;
+
+export const DripPostEditTitle = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+`;
+
+export const ImageUploadButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.7rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 16px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  transition: background 0.2s, transform 0.2s;
+  &:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
+    transform: translateY(-2px) scale(1.04);
+  }
+`;
+
+export const TagSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+export const TagInputWrapper = styled.form`
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.2rem;
+  border: 1.5px solid #31313a;
+  border-radius: 12px;
+  background: #18181b;
+`;
+
+export const TagInput = styled.input`
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: none;
   border-radius: 8px;
+  font-size: 1rem;
+  background: transparent;
+  color: #fff;
+  outline: none;
+  &::placeholder {
+    color: #a1a1aa;
+    font-size: 1rem;
+  }
+`;
+
+export const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+`;
+
+export const TagItem = styled.span`
+  background: linear-gradient(90deg, #23232b 0%, #18181b 100%);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(16,185,129,0.08);
+  display: flex;
+  align-items: center;
+`;
+
+export const TagDeleteButton = styled.button`
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  color: #ff3b30;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 2rem;
+`;
+
+export const SubmitButton = styled.button`
+  flex: 1;
+  padding: 1rem 0;
+  background: linear-gradient(90deg, #10b981 0%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  transition: background 0.2s, transform 0.2s;
+  &:hover:not(:disabled) {
+    background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
+    transform: translateY(-2px) scale(1.04);
+  }
+  &:disabled {
+    background: #31313a;
+    color: #888;
+    cursor: not-allowed;
+  }
+`;
+
+export const DripPostEditContent = styled.div`
   display: block;
+  width: 100vw;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0;
+`;
+
+export const ImageUploadSection = styled.div`
+  width: 100vw;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0;
+  background: none;
+`;
+
+export const PinContainer = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
+
+export const PinMarker = styled.div`
+  width: 28px;
+  height: 28px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+  border: 2px solid #1e1e1e;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+export const PinDescription = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2d2d2d;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  z-index: 3;
+
+  ${PinContainer}:hover & {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
 `;
 
 export const Pin = styled.div`
@@ -155,63 +379,6 @@ export const PlaceholderText = styled.div`
   font-size: 1.125rem;
 `;
 
-export const TagSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-export const TagInputWrapper = styled.form`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border: 1px solid #404040;
-  border-radius: 4px;
-  background-color: #1a1a1a;
-`;
-
-export const TagInput = styled.input`
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-
-  &:focus {
-    border-color: #007bff;
-  }
-
-  &::placeholder {
-    color: #999;
-  }
-`;
-
-export const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`;
-
-export const TagItem = styled.span`
-  background-color: #404040;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  color: #ffffff;
-`;
-
-export const TagDeleteButton = styled.button`
-  margin-left: 4px;
-  background: transparent;
-  border: none;
-  color: #ff3b30;
-  cursor: pointer;
-  font-weight: bold;
-`;
-
 export const PinButton = styled.button<{ $isActive?: boolean }>`
   padding: 0.75rem 1.5rem;
   background-color: ${({ $isActive }) => ($isActive ? "#2563eb" : "#1d1d1d")};
@@ -224,26 +391,6 @@ export const PinButton = styled.button<{ $isActive?: boolean }>`
 
   &:hover {
     background-color: ${({ $isActive }) => ($isActive ? "#1d4ed8" : "#2563eb")};
-  }
-`;
-
-export const SubmitButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background-color: #10b981;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover:not(:disabled) {
-    background-color: #059669;
-  }
-
-  &:disabled {
-    background-color: #404040;
-    cursor: not-allowed;
   }
 `;
 
@@ -314,57 +461,4 @@ export const ModalButton = styled.button<{ $primary?: boolean }>`
   &:hover {
     background-color: ${({ $primary }) => ($primary ? "#1d4ed8" : "#2563eb")};
   }
-`;
-
-export const PinMarker = styled.div`
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  background-color: #10b981;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-
-  &:hover {
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-`;
-
-export const ImageNavigation = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16px;
-  transform: translateY(-50%);
-`;
-
-export const NavButton = styled.button`
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-`;
-
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
 `;
