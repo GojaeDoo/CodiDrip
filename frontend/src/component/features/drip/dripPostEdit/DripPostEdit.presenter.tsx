@@ -1,9 +1,13 @@
 import React from "react";
 import * as S from "./DripPostEdit.styled";
-import { ImagePlus, Hash, ChevronLeft, ChevronRight } from "lucide-react";
+import { ImagePlus, Hash, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { DripPostEditPresenterProps } from "./DripPostEdit.types";
 
-const DripPostEditPresenter = (props: DripPostEditPresenterProps & { containerRef: React.RefObject<HTMLDivElement> }) => {
+const DripPostEditPresenter = (
+  props: DripPostEditPresenterProps & {
+    containerRef: React.RefObject<HTMLDivElement>;
+  }
+) => {
   const {
     containerRef,
     imageSrcList,
@@ -12,6 +16,7 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps & { containerRe
     onImageUpload,
     onPrevImage,
     onNextImage,
+    onDeleteImage,
     tags,
     tagInput,
     onTagInputChange,
@@ -40,6 +45,12 @@ const DripPostEditPresenter = (props: DripPostEditPresenterProps & { containerRe
                     alt="Preview"
                     onLoad={onImageLoad}
                   />
+                  <S.DeleteImageButton
+                    onClick={() => onDeleteImage(currentImageIndex)}
+                    type="button"
+                  >
+                    <X size={24} />
+                  </S.DeleteImageButton>
                   {imageSrcList.length > 1 && (
                     <>
                       <S.ImageNavigation>

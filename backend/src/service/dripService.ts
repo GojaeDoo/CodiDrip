@@ -4,16 +4,13 @@ import {
   getUserDripPost,
   getPostNoDripPost,
   updateDripPost,
+  deleteDripPost,
   getDripPostCommentStorage,
   postDripPostCommentStorage,
 } from "../storage/dripStorage";
 
 export const dripService = {
-  createDrip: async (
-    images: string[],
-    tags: string[],
-    userId: string
-  ) => {
+  createDrip: async (images: string[], tags: string[], userId: string) => {
     try {
       const processedImages = await Promise.all(
         images.map(async (image) => {
@@ -89,6 +86,16 @@ export const dripService = {
       return await updateDripPost(postNo, uploadedImages, tags, userId);
     } catch (error) {
       console.error("updateDrip error - dripService:", error);
+      throw error;
+    }
+  },
+
+  deleteDrip: async (postNo: string) => {
+    try {
+      const result = await deleteDripPost(postNo);
+      return result;
+    } catch (error) {
+      console.error("deleteDrip error - dripService:", error);
       throw error;
     }
   },

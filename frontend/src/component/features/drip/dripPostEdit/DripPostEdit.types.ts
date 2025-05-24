@@ -20,7 +20,7 @@ export interface DripPostEditPresenterProps {
   onPrevImage: () => void;
   onNextImage: () => void;
   onSelectImage: (index: number) => void;
-  onDeleteImage: () => void;
+  onDeleteImage: (index: number) => void;
   tags: string[];
   tagInput: string;
   onTagInputChange: (e: ChangeEvent<HTMLInputElement>) => void;

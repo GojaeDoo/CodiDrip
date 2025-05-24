@@ -1,7 +1,6 @@
 import axios from "axios";
 import { DripPostType, DripPostResponse } from "./DripPost.types";
 
-// 공통으로 사용되는 데이터 변환 함수
 const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   post_no: post.게시글번호,
   post_image: JSON.parse(post.게시글이미지 || "[]"),
@@ -15,7 +14,6 @@ const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   currentImageIndex: 0,
 });
 
-// 특정 사용자의 게시물을 가져오는 함수
 export const getUserSpecificDripPosts = async (
   userId: string
 ): Promise<DripPostType[]> => {
@@ -30,7 +28,6 @@ export const getUserSpecificDripPosts = async (
   }
 };
 
-// 모든 게시물을 가져오는 함수
 export const getAllDripPosts = async (
   gender?: string
 ): Promise<DripPostType[]> => {
@@ -46,7 +43,6 @@ export const getAllDripPosts = async (
   }
 };
 
-// 기존 함수는 새로운 함수들을 사용하도록 수정
 export const getUserDripPostQuery = async (
   userId?: string,
   gender?: string
@@ -55,4 +51,18 @@ export const getUserDripPostQuery = async (
     return getUserSpecificDripPosts(userId);
   }
   return getAllDripPosts(gender);
+};
+
+// 게시물 삭제
+
+export const deleteDripPostQuery = async (postNo: number) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3005/api/drip/${postNo}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    throw error;
+  }
 };

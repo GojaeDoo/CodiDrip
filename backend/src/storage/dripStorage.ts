@@ -206,6 +206,19 @@ export const updateDripPost = async (
   }
 };
 
+export const deleteDripPost = async (postNo: string) => {
+  try {
+    const result = await pool.query(
+      `DELETE FROM drip_post WHERE post_no = $1`,
+      [postNo]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("deleteDripPost error - dripStorage:", error);
+    throw error;
+  }
+};
+
 export const postDripPostCommentStorage = async (
   userId: string,
   postComment: string,

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
-import { getUserDripPostQuery } from "./DripPost.query";
+import { getUserDripPostQuery, deleteDripPostQuery } from "./DripPost.query";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const DripPostContainer = ({
@@ -87,12 +87,19 @@ export const DripPostContainer = ({
     router.push(`/dripPostEdit?postNo=${postNo}&status=${status}`);
   };
 
-  const onDeletePost = (
+  const onDeletePost = async (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
     e.preventDefault();
-    alert(`게시글 ${postNo} 삭제`);
+    try {
+      await deleteDripPostQuery(postNo);
+      alert("게시글이 삭제되었습니다.");
+      window.location.reload(); // 페이지 새로고침
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("게시글 삭제 중 오류가 발생했습니다.");
+    }
   };
 
   const onLikeClick = (e: React.MouseEvent<SVGSVGElement>, postNo: number) => {

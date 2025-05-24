@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Background = styled.div`
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg,#1a1a1a);
+  background: linear-gradient(135deg, #1a1a1a);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -54,7 +54,7 @@ export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: ${props => props.$aspectRatio};
+  aspect-ratio: ${(props) => props.$aspectRatio};
   background: #111;
 `;
 
@@ -63,7 +63,7 @@ export const MainImage = styled.img`
   height: 100%;
   object-fit: contain;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
 `;
 
 export const ImageNavigation = styled.div`
@@ -133,7 +133,7 @@ export const ImageUploadButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
   &:hover {
     background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
@@ -185,7 +185,7 @@ export const TagItem = styled.span`
   border-radius: 9999px;
   font-size: 1rem;
   font-weight: 500;
-  box-shadow: 0 1px 4px rgba(16,185,129,0.08);
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.08);
   display: flex;
   align-items: center;
 `;
@@ -216,7 +216,7 @@ export const SubmitButton = styled.button`
   font-size: 1.15rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
   &:hover:not(:disabled) {
     background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
@@ -460,5 +460,27 @@ export const ModalButton = styled.button<{ $primary?: boolean }>`
 
   &:hover {
     background-color: ${({ $primary }) => ($primary ? "#1d4ed8" : "#2563eb")};
+  }
+`;
+
+export const DeleteImageButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 10;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
   }
 `;

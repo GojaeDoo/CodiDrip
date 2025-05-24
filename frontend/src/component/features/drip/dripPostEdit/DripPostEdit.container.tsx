@@ -18,7 +18,12 @@ export const DripPostEditContainer = () => {
   } | null>(null);
   const imageRef = useRef<HTMLImageElement>(null!);
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
-  const [imgInfo, setImgInfo] = useState({ width: 1, height: 1, left: 0, top: 0 });
+  const [imgInfo, setImgInfo] = useState({
+    width: 1,
+    height: 1,
+    left: 0,
+    top: 0,
+  });
   const wrapperRef = useRef<HTMLDivElement>(null!);
 
   const searchParams = useSearchParams();
@@ -28,10 +33,13 @@ export const DripPostEditContainer = () => {
   const status: boolean | null =
     statusParam === "true" ? true : statusParam === "false" ? false : null;
 
-  // 이미지 경로 변환 함수 추가
+  // 이미지 경로 변환 함수 최종 정리
   const getImageUrl = (img: string) => {
+    if (!img || img === "undefined" || img === "null") return "";
     if (img.startsWith("http") || img.startsWith("data:")) return img;
-    return `http://localhost:3005/uploads/drip/${img.replace(/^\\|\//, "")}`;
+    // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
+    const fileName = img.replace(/^\\|\//, "");
+    return `http://localhost:3005/uploads/drip/${fileName}`;
   };
 
   useEffect(() => {
@@ -47,7 +55,11 @@ export const DripPostEditContainer = () => {
               post_image: parsedImages,
               post_tag: parsedTags,
             });
-            setImages(parsedImages.map(getImageUrl));
+            // 이미지 URL 변환 적용 (빈 값, undefined, null 방어)
+            const imageUrls = parsedImages
+              .filter((img) => !!img && img !== "undefined" && img !== "null")
+              .map(getImageUrl);
+            setImages(imageUrls);
             setTags(parsedTags);
           }
         } catch (error) {
@@ -63,19 +75,37 @@ export const DripPostEditContainer = () => {
     const files = e.target.files;
     if (!files) return;
 
-    const newImages: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          newImages.push(e.target.result as string);
-          if (newImages.length === files.length) {
-            setImages((prev) => [...prev, ...newImages]);
+    const promises = Array.from(files).map((file) => {
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            resolve(e.target.result as string);
+          } else {
+            reject(new Error("Failed to read file"));
           }
-        }
-      };
-      reader.readAsDataURL(files[i]);
-    }
+        };
+        reader.onerror = () => {
+          reject(new Error("Failed to read file"));
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(promises)
+      .then((newImages) => {
+        console.log("Uploaded images:", newImages); // 디버깅용 로그
+        // 기존 이미지와 새로 추가된 이미지를 합치되, 기존 이미지를 먼저 유지
+        setImages((prev) => {
+          const existingImages = prev.filter((img) =>
+            img.startsWith("http://localhost:3005")
+          );
+          return [...existingImages, ...newImages];
+        });
+      })
+      .catch((error) => {
+        console.error("Error uploading images:", error);
+      });
   };
 
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,9 +144,20 @@ export const DripPostEditContainer = () => {
 
     try {
       if (status) {
+        // 수정 시 기존 이미지와 새로 추가된 이미지를 구분하여 처리
+        const processedImages = images.map((img) => {
+          // 이미 URL 형식인 경우 (기존 이미지)
+          if (img.startsWith("http://localhost:3005")) {
+            // URL에서 파일명만 추출
+            return img.split("/").pop() || "";
+          }
+          // base64 형식인 경우 (새로 추가된 이미지)
+          return img;
+        });
+
         await updateDrip({
           postNo,
-          images,
+          images: processedImages,
           tags,
           userId,
         });
@@ -139,6 +180,13 @@ export const DripPostEditContainer = () => {
 
   const handleNextImage = () => {
     setCurrentImageIndex((prev) => Math.min(images.length - 1, prev + 1));
+  };
+
+  const handleDeleteImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    if (currentImageIndex >= images.length - 1) {
+      setCurrentImageIndex(Math.max(0, images.length - 2));
+    }
   };
 
   // 이미지 렌더링 영역 계산 (Detail과 동일)
@@ -198,7 +246,7 @@ export const DripPostEditContainer = () => {
       onPrevImage={handlePrevImage}
       onNextImage={handleNextImage}
       onSelectImage={() => {}}
-      onDeleteImage={() => {}}
+      onDeleteImage={handleDeleteImage}
       tags={tags}
       tagInput={tagInput}
       onTagInputChange={handleTagInputChange}

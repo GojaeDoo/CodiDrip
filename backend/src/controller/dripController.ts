@@ -67,6 +67,17 @@ export const updateDrip = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteDrip = async (req: Request, res: Response) => {
+  try {
+    const postNo = req.params.postNo;
+    const result = await dripService.deleteDrip(postNo);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("deleteDrip error - dripController:", error);
+    res.status(500).json({ error: "게시물 삭제 중 오류가 발생했습니다." });
+  }
+};
+
 export const getDripPostCommentController = async (
   req: Request,
   res: Response
