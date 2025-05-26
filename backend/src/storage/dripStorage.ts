@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import pool from "../db";
+import { pool } from "../db";
 import fs from "fs";
 import path from "path";
 
@@ -128,20 +128,37 @@ export const getDripPostCommentStorage = async (postNo: number) => {
   try {
     const result = await pool.query(
       `
-        select 
-          p.profile_nickname as 닉네임,
-          dpc.content as 댓글내용,
-          dpc.created_at as 작성시간,
-          p.profile_image as 프로필이미지
-          from drip_post_comment dpc
-          JOIN profile p ON p.user_id = dpc.user_id
-          where dpc.post_id = $1;
+        SELECT 
+          dpc.id,
+          dpc.content,
+          dpc.created_at,
+          dpc.post_id,
+          dpc.parent_id,
+          p.profile_nickname,
+          p.profile_image
+        FROM drip_post_comment dpc
+        JOIN profile p ON p.user_id = dpc.user_id
+        WHERE dpc.post_id = $1
+        ORDER BY dpc.created_at DESC
       `,
       [postNo]
     );
-    return result.rows;
+
+    // 데이터 구조 변환
+    return result.rows.map(row => ({
+      id: row.id,
+      content: row.content,
+      created_at: row.created_at,
+      post_id: row.post_id,
+      parent_id: row.parent_id,
+      user: {
+        nickname: row.profile_nickname,
+        profile_image: row.profile_image
+      }
+    }));
   } catch (error) {
-    console.log(error + " getDripPostCommentStorage");
+    console.error("Error in getDripPostCommentStorage:", error);
+    return [];
   }
 };
 

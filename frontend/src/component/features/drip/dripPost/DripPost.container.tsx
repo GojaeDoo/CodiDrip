@@ -127,6 +127,12 @@ export const DripPostContainer = ({
     router.push(`/dripPostDetail?postNo=${postNo}`);
   };
 
+  const handleReportPost = async (e: React.MouseEvent, postNo: number) => {
+    e.stopPropagation();
+    // TODO: Implement report post functionality
+    console.log("Report post:", postNo);
+  };
+
   return isDripUser ? null : (
     <DripPostPresenter
       dripPostData={
@@ -151,6 +157,7 @@ export const DripPostContainer = ({
       }
       currentImageIndexes={currentImageIndexes}
       currentUserId={currentUserId}
+      activeMenu={activeMenu}
       onPrevImage={onPrevImage}
       onNextImage={onNextImage}
       onHidePost={onHidePost}
@@ -159,8 +166,8 @@ export const DripPostContainer = ({
       onLikeClick={onLikeClick}
       onCommentClick={onCommentClick}
       onMenuClick={onMenuClick}
-      activeMenu={activeMenu}
       onClickMoveDetail={onClickMoveDetail}
+      onReportPost={handleReportPost}
     />
   );
 };

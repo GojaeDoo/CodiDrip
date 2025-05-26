@@ -1,4 +1,4 @@
-import pool from "../db";
+import { pool } from "../db";
 import { Profile } from "../types/profileTypes";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";

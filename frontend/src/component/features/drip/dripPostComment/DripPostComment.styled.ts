@@ -1,66 +1,76 @@
 import styled from "styled-components";
 
-export const CommentSection = styled.section`
+export const CommentSection = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 1.5rem;
-  background: #1a1a1a;
+`;
+
+export const CommentForm = styled.form`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: #1e1e1e;
   border-radius: 12px;
 `;
 
 export const CommentInput = styled.input`
-  width: 100%;
-  padding: 1rem;
-  border: none;
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: 1px solid #2d2d2d;
   border-radius: 8px;
-  background: #2a2a2a;
-  color: white;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-  }
+  background-color: #2d2d2d;
+  color: #ffffff;
+  font-size: 0.9rem;
 
   &:focus {
     outline: none;
-    background: #333;
+    border-color: #3d3d3d;
+  }
+
+  &::placeholder {
+    color: #a0a0a0;
+  }
+`;
+
+export const SubmitButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #ff3333;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background-color: #3d3d3d;
+    cursor: not-allowed;
   }
 `;
 
 export const CommentList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
 `;
 
-export const Comment = styled.div`
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: #2a2a2a;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #333;
-  }
-`;
-
-export const CommentUserImage = styled.img`
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #333;
-`;
-
-export const CommentContent = styled.div`
+export const CommentItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
 `;
 
 export const CommentHeader = styled.div`
@@ -69,57 +79,83 @@ export const CommentHeader = styled.div`
   align-items: center;
 `;
 
-export const CommentUserName = styled.span`
-  font-weight: 500;
-  color: white;
-  font-size: 0.9rem;
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 `;
 
-export const CommentTime = styled.span`
-  color: rgba(255, 255, 255, 0.4);
+export const ProfileImage = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #333;
+`;
+
+export const UserName = styled.span`
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+`;
+
+export const CommentDate = styled.span`
   font-size: 0.8rem;
+  color: #a0a0a0;
 `;
 
-export const CommentText = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+export const CommentContent = styled.p`
   font-size: 0.9rem;
+  color: #ffffff;
+  line-height: 1.5;
   margin: 0;
-  line-height: 1.4;
 `;
 
 export const CommentActions = styled.div`
   display: flex;
   gap: 1rem;
-  margin-top: 0.5rem;
 `;
 
-export const ActionButton = styled.button`
+export const ReplyButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  background: none;
+  gap: 0.5rem;
+  padding: 0.5rem;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
+  background: none;
+  color: #a0a0a0;
   font-size: 0.8rem;
   cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8);
+    color: #ffffff;
   }
+`;
 
-  &.active {
-    color: #4caf50;
-  }
+export const RepliesSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 2rem;
+  padding-left: 1rem;
+  border-left: 2px solid #2d2d2d;
+`;
 
-  &.dislike.active {
-    color: #f44336;
-  }
+export const ReplyItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  background-color: #2d2d2d;
+  border-radius: 8px;
+`;
 
-  svg {
-    font-size: 0.9rem;
-  }
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: #a0a0a0;
+  font-size: 0.9rem;
 `;

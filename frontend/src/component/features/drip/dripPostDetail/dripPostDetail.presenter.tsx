@@ -2,7 +2,7 @@ import React from "react";
 import * as S from "./DripPostDetail.styled";
 import { ChevronLeft, ChevronRight, Heart, MessageCircle, Hash, Share2 } from "lucide-react";
 import { DripPostDetailPresenterProps } from "./DripPostDetail.types";
-import DripPostComment from "@/app/dripPostComment/page";
+import DripPostComment from "../dripPostComment/DripPostComment.presenter";
 
 const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
   const {
@@ -24,7 +24,7 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
       <S.DripPostDetailWrapper>
         <S.PostContainer>
           <S.ImageSection ref={containerRef}>
-            <S.ImageWrapper $aspectRatio={aspectRatio}>
+            <S.ImageWrapper $aspectRatio="1/1">
               {images[currentImageIndex] && (
                 <>
                   <S.MainImage
@@ -71,15 +71,15 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
 
             <S.InteractionSection>
               <S.InteractionButton aria-label="좋아요">
-                <Heart size={22} />
+                <Heart size={24} />
                 <span>좋아요</span>
               </S.InteractionButton>
               <S.InteractionButton aria-label="댓글">
-                <MessageCircle size={22} />
+                <MessageCircle size={24} />
                 <span>댓글</span>
               </S.InteractionButton>
               <S.InteractionButton aria-label="공유">
-                <Share2 size={22} />
+                <Share2 size={24} />
                 <span>공유</span>
               </S.InteractionButton>
             </S.InteractionSection>
@@ -92,10 +92,12 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                 ))}
               </S.TagList>
             </S.TagSection>
-
-            <DripPostComment postno={parseInt(postno)} />
           </S.ContentSection>
         </S.PostContainer>
+
+        <S.CommentSection>
+          <DripPostComment postno={parseInt(postno)} />
+        </S.CommentSection>
       </S.DripPostDetailWrapper>
     </S.Background>
   );

@@ -266,3 +266,9 @@ export const ImageCounter = styled.div`
   backdrop-filter: blur(4px);
 `;
 
+export const CommentSection = styled.div`
+  width: 100%;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-top: 1px solid #2d2d2d;
+`;

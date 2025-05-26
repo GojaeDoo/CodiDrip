@@ -1,4 +1,4 @@
-import pool from "../db"; // db.ts에서 pool 가져오기
+import { pool } from "../db"; // db.ts에서 pool 가져오기
 import { IdCheckType, User } from "../types/userTypes";
 
 export const getUsersFromDB = async () => {

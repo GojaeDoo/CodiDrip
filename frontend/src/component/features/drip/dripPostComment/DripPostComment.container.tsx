@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import DripPostCommentPresenter from "./DripPostComment.presenter";
+import { useSession } from "next-auth/react";
+import DripPostComment from "./DripPostComment.presenter";
 import {
   DripPostCommentPresenterProps,
   DripPostCommentProps,
   fetchDripComment,
+  Comment,
 } from "./DripPostComment.types";
 import {
   fetchDripPostCommentQuery,
@@ -23,88 +25,107 @@ const formatDate = (dateString: string) => {
   return `${month}월${day}일 ${ampm} ${formattedHours}:${formattedMinutes}`;
 };
 
-export const DripPostCommentContainer = (props: DripPostCommentProps) => {
-  const [fetchDripComment, setFetchDripComment] = useState<fetchDripComment[]>(
-    []
-  );
-  const [postComment, setPostComment] = useState("");
-  const [formattedComments, setFormattedComments] = useState<string[]>([]);
+export const DripPostCommentContainer = ({ postno }: { postno: number }) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [commentContent, setCommentContent] = useState("");
+  const [replyContents, setReplyContents] = useState<{ [key: number]: string }>({});
+  const [showReplies, setShowReplies] = useState<{ [key: number]: boolean }>({});
+  const [replies, setReplies] = useState<{ [key: number]: Comment[] }>({});
+  const { data: session } = useSession();
   const isSubmitting = useRef(false);
-  console.log("props.postno:", props.postno);
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetchDripPostCommentQuery(postno);
+      const formattedComments = Array.isArray(response) ? response : [];
+      setComments(formattedComments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setComments([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentContent.trim() || !session?.user?.email || isSubmitting.current) return;
+
+    isSubmitting.current = true;
+    try {
+      await postCommentQuery(session.user.email, commentContent, postno);
+      setCommentContent("");
+      fetchComments();
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    } finally {
+      isSubmitting.current = false;
+    }
+  };
+
+  const handleReplySubmit = async (e: React.FormEvent, commentId: number) => {
+    e.preventDefault();
+    const replyContent = replyContents[commentId];
+    if (!replyContent?.trim() || !session?.user?.email || isSubmitting.current) return;
+
+    isSubmitting.current = true;
+    try {
+      await postCommentQuery(session.user.email, replyContent, postno, commentId);
+      setReplyContents(prev => ({ ...prev, [commentId]: "" }));
+      fetchComments();
+    } catch (error) {
+      console.error("Error posting reply:", error);
+    } finally {
+      isSubmitting.current = false;
+    }
+  };
+
+  const fetchReplies = async (commentId: number) => {
+    try {
+      const response = await fetchDripPostCommentQuery(postno, commentId);
+      const fetchedReplies = Array.isArray(response) ? response : [];
+      setReplies(prev => ({ ...prev, [commentId]: fetchedReplies }));
+      return fetchedReplies;
+    } catch (error) {
+      console.error("Error fetching replies:", error);
+      return [];
+    }
+  };
+
+  const handleShowReplies = async (commentId: number) => {
+    if (!showReplies[commentId]) {
+      await fetchReplies(commentId);
+    }
+    setShowReplies(prev => ({ ...prev, [commentId]: !prev[commentId] }));
+  };
+
+  const handleReplyContentChange = (commentId: number, content: string) => {
+    setReplyContents(prev => ({ ...prev, [commentId]: content }));
+  };
+
+  const handleCommentContentChange = (content: string) => {
+    setCommentContent(content);
+  };
 
   useEffect(() => {
-    const fetchDripPostComment = async () => {
-      try {
-        const response = await fetchDripPostCommentQuery(props.postno);
-        setFetchDripComment(response);
-        setFormattedComments(
-          response.map((fetchDripComment: fetchDripComment) =>
-            formatDate(fetchDripComment.작성시간)
-          )
-        );
-      } catch (error) {
-        console.error("댓글을 불러오는데 실패했습니다:", error);
-      }
-    };
-
-    if (props.postno) {
-      fetchDripPostComment();
-    }
-  }, [props.postno]);
-
-  const onChangePostComment: DripPostCommentPresenterProps["onChangePostComment"] =
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPostComment(event.target.value);
-      console.log(postComment);
-    };
-
-  const onKeyDownPostComment: DripPostCommentPresenterProps["onKeyDownPostComment"] =
-    async (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter" && !event.repeat && !isSubmitting.current) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (isSubmitting.current) return;
-        isSubmitting.current = true;
-
-        try {
-          const userId = localStorage.getItem("userId");
-          console.log("userId:", userId);
-          console.log("postno:", props.postno);
-          if (!userId) {
-            console.error("사용자 ID가 없습니다.");
-            return;
-          }
-          if (!props.postno || isNaN(Number(props.postno))) {
-            console.error("postNo가 올바르지 않습니다:", props.postno);
-            return;
-          }
-
-          await postCommentQuery(userId, postComment, props.postno);
-          // 댓글 작성 성공 후 댓글 목록 새로고침
-          const response = await fetchDripPostCommentQuery(props.postno);
-          setFetchDripComment(response);
-          setFormattedComments(
-            response.map((fetchDripComment: fetchDripComment) =>
-              formatDate(fetchDripComment.작성시간)
-            )
-          );
-          // 입력 필드 초기화
-          setPostComment("");
-        } catch (error) {
-          console.error("댓글 작성 실패:", error);
-        } finally {
-          isSubmitting.current = false;
-        }
-      }
-    };
+    fetchComments();
+  }, [postno]);
 
   return (
-    <DripPostCommentPresenter
-      fetchDripComment={fetchDripComment}
-      formattedComments={formattedComments}
-      onChangePostComment={onChangePostComment}
-      onKeyDownPostComment={onKeyDownPostComment}
+    <DripPostComment
+      postno={postno}
+      comments={comments}
+      isLoading={isLoading}
+      commentContent={commentContent}
+      onCommentContentChange={handleCommentContentChange}
+      onCommentSubmit={handleCommentSubmit}
+      replyContents={replyContents}
+      onReplyContentChange={handleReplyContentChange}
+      onReplySubmit={handleReplySubmit}
+      showReplies={showReplies}
+      onShowReplies={handleShowReplies}
+      replies={replies}
     />
   );
 };

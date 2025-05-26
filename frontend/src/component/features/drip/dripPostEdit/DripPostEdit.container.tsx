@@ -148,8 +148,9 @@ export const DripPostEditContainer = () => {
         const processedImages = images.map((img) => {
           // 이미 URL 형식인 경우 (기존 이미지)
           if (img.startsWith("http://localhost:3005")) {
-            // URL에서 파일명만 추출
-            return img.split("/").pop() || "";
+            // URL에서 파일명만 추출하고 앞에 / 추가
+            const fileName = img.split("/").pop() || "";
+            return `/${fileName}`;
           }
           // base64 형식인 경우 (새로 추가된 이미지)
           return img;

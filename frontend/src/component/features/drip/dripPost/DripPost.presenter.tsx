@@ -47,15 +47,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     </S.MenuButton>
                     {props.activeMenu === post.post_no && (
                       <S.Menu>
-                        <S.MenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            props.onHidePost(e, post.post_no);
-                          }}
-                        >
-                          숨김
-                        </S.MenuItem>
-                        {post.isOwner && (
+                        {post.isOwner ? (
                           <>
                             <S.MenuItem
                               onClick={(e) => {
@@ -72,6 +64,25 @@ export const DripPostPresenter = (props: DripPostProps) => {
                               }}
                             >
                               삭제
+                            </S.MenuItem>
+                          </>
+                        ) : (
+                          <>
+                            <S.MenuItem
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                props.onHidePost(e, post.post_no);
+                              }}
+                            >
+                              숨김
+                            </S.MenuItem>
+                            <S.MenuItem
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                props.onReportPost(e, post.post_no);
+                              }}
+                            >
+                              신고
                             </S.MenuItem>
                           </>
                         )}
@@ -121,17 +132,11 @@ export const DripPostPresenter = (props: DripPostProps) => {
                 </S.ImageContainer>
 
                 <S.PostActions>
-                  <S.ActionButton>
-                    <Heart
-                      size={24}
-                      onClick={(e) => props.onLikeClick(e, post.post_no)}
-                    />
+                  <S.ActionButton onClick={(e) => props.onLikeClick(e, post.post_no)}>
+                    <Heart size={24} />
                   </S.ActionButton>
-                  <S.ActionButton>
-                    <MessageCircle
-                      size={24}
-                      onClick={(e) => props.onCommentClick(e, post.post_no)}
-                    />
+                  <S.ActionButton onClick={(e) => props.onCommentClick(e, post.post_no)}>
+                    <MessageCircle size={24} />
                   </S.ActionButton>
                   <div style={{ flex: 1 }} />
                 </S.PostActions>

@@ -7,6 +7,8 @@ import {
   getDripPostCommentController,
   postDripPostCommentController,
   deleteDrip,
+  getDripPostRepliesController,
+  deleteDripPostCommentController,
 } from "../controller/dripController";
 
 const router = express.Router();
@@ -26,13 +28,16 @@ router.put("/:postNo", updateDrip as RequestHandler);
 // Drip 삭제
 router.delete("/:postNo", deleteDrip as RequestHandler);
 
-// Drip 댓글 조회 (게시물 ID를 경로 파라미터로 사용)
+// Drip 댓글 조회
 router.get("/:postNo/comments", getDripPostCommentController as RequestHandler);
 
 // Drip 댓글 작성
-router.post(
-  "/:postNo/comments",
-  postDripPostCommentController as RequestHandler
-);
+router.post("/:postNo/comments", postDripPostCommentController as RequestHandler);
+
+// Drip 답글 조회
+router.get("/comments/:commentId/replies", getDripPostRepliesController as RequestHandler);
+
+// Drip 댓글 삭제
+router.delete("/comments/:commentId", deleteDripPostCommentController as RequestHandler);
 
 export default router;
