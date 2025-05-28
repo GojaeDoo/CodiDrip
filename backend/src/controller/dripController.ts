@@ -84,10 +84,10 @@ export const getDripPostCommentController = async (req: Request, res: Response) 
   
   try {
     const result = await pool.query(
-      `SELECT c.*, u.nickname, u.profile_image 
+      `SELECT c.*, p.profile_nickname, p.profile_image
        FROM drip_post_comment c
-       LEFT JOIN users u ON c.user_id = u.user_id
-       WHERE c.post_id = $1 AND c.parent_id IS NULL
+       LEFT JOIN profile p ON c.user_id = p.user_id
+       WHERE c.post_id = $1
        ORDER BY c.created_at DESC`,
       [postNo]
     );
@@ -111,7 +111,7 @@ export const postDripPostCommentController = async (req: Request, res: Response)
     
     // 사용자 정보 조회
     const userResult = await pool.query(
-      'SELECT nickname, profile_image FROM users WHERE user_id = $1',
+      'SELECT profile_nickname, profile_image FROM profile WHERE user_id = $1',
       [user_id]
     );
     
@@ -132,9 +132,9 @@ export const getDripPostRepliesController = async (req: Request, res: Response) 
   
   try {
     const result = await pool.query(
-      `SELECT c.*, u.nickname, u.profile_image 
+      `SELECT c.*, p.profile_nickname, p.profile_image
        FROM drip_post_comment c
-       LEFT JOIN users u ON c.user_id = u.user_id
+       LEFT JOIN profile p ON c.user_id = p.user_id
        WHERE c.parent_id = $1
        ORDER BY c.created_at ASC`,
       [commentId]

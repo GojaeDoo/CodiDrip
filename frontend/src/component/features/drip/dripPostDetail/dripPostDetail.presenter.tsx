@@ -2,7 +2,7 @@ import React from "react";
 import * as S from "./DripPostDetail.styled";
 import { ChevronLeft, ChevronRight, Heart, MessageCircle, Hash, Share2 } from "lucide-react";
 import { DripPostDetailPresenterProps } from "./DripPostDetail.types";
-import DripPostComment from "../dripPostComment/DripPostComment.presenter";
+import DripPostCommentContainer from "../dripPostComment/DripPostComment.container";
 
 const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
   const {
@@ -96,7 +96,7 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
         </S.PostContainer>
 
         <S.CommentSection>
-          <DripPostComment postno={parseInt(postno)} />
+          <DripPostCommentContainer postno={parseInt(postno)} />
         </S.CommentSection>
       </S.DripPostDetailWrapper>
     </S.Background>

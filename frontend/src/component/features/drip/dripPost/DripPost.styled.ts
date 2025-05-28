@@ -6,7 +6,7 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1a1a1a;
+
   padding: 12px 0;
 
   @media (max-width: 768px) {
@@ -24,7 +24,7 @@ export const UserDripPostWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-
+  background-color: #1a1a1a;
   @media (max-width: 768px) {
     gap: 0.75rem;
     padding: 0 6px;

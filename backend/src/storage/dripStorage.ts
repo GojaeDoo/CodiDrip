@@ -239,14 +239,15 @@ export const deleteDripPost = async (postNo: string) => {
 export const postDripPostCommentStorage = async (
   userId: string,
   postComment: string,
-  postId: string
+  postId: string,
+  parentId: string | null = null
 ) => {
   try {
     const result = await pool.query(
-      `INSERT INTO drip_post_comment (user_id, post_id, content)
-       VALUES ($1, $2, $3)
+      `INSERT INTO drip_post_comment (user_id, post_id, content, parent_id)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [userId, postId, postComment]
+      [userId, postId, postComment, parentId]
     );
     return result.rows[0];
   } catch (error) {
@@ -261,9 +262,9 @@ export const getDripPostDetail = async (postNo: number) => {
     await client.query("BEGIN");
 
     const postResult = await client.query(
-      `SELECT p.*, u.nickname 
+      `SELECT p.*, pr.profile_nickname 
        FROM drip_post p 
-       LEFT JOIN user u ON p.user_id = u.user_id 
+       LEFT JOIN profile pr ON p.user_id = pr.user_id 
        WHERE p.post_no = $1`,
       [postNo]
     );

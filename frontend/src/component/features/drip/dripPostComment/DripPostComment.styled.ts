@@ -5,6 +5,7 @@ export const CommentSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  
 `;
 
 export const CommentForm = styled.form`
@@ -12,8 +13,13 @@ export const CommentForm = styled.form`
   gap: 1rem;
   align-items: center;
   padding: 1rem;
-  background-color: #1e1e1e;
   border-radius: 12px;
+`;
+
+export const CommentInputWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 `;
 
 export const CommentInput = styled.input`

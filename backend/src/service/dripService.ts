@@ -112,10 +112,11 @@ export const dripService = {
   postDripPostCommentService: async (
     userId: string,
     postComment: string,
-    postNo: string
+    postNo: string,
+    parentId: string | null = null
   ) => {
     try {
-      return await postDripPostCommentStorage(userId, postComment, postNo);
+      return await postDripPostCommentStorage(userId, postComment, postNo, parentId);
     } catch (error) {
       console.error("Error in postDripPostCommentService:", error);
       throw error;
