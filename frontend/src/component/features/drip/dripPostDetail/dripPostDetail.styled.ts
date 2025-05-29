@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
-  background-color: #121212;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 2rem;
@@ -14,33 +14,69 @@ export const Background = styled.div`
 `;
 
 export const DripPostDetailWrapper = styled.div`
-  width: 100%;
-  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  max-width: 1000px;
   margin: 0 auto;
-  background-color: #1e1e1e;
+  width: 100%;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+`;
+
+export const MainSection = styled.div`
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+export const CommentSection = styled.div`
+  flex: 1;
+  min-width: 340px;
+  background: #1e1e1e;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  @media (max-width: 1024px) {
+    min-width: 0;
+    padding: 1.5rem 0;
+    background: none;
+  }
+`;
+
+export const ImageBox = styled.div`
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #000;
+  border-radius: 16px 16px 0 0;
   overflow: hidden;
 `;
 
-export const PostContainer = styled.div`
+export const ProfileBox = styled.div`
+  background: #1e1e1e;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  @media (min-width: 1024px) {
-    flex-direction: row;
-  }
+  gap: 1rem;
+  padding-bottom: 1.5rem;
 `;
 
-export const ImageSection = styled.div`
-  width: 100%;
-  background: #000;
-  position: relative;
-  @media (min-width: 1024px) {
-    width: 60%;
-  }
+export const TagBox = styled.div`
+  background: #1e1e1e;
+  border-radius: 0px 0px 16px 16px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+`;
+
+export const CommentBox = styled.div`
+  background: #1e1e1e;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1rem;
 `;
 
 export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
@@ -56,19 +92,7 @@ export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
 export const MainImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain;
-`;
-
-export const ContentSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  @media (min-width: 1024px) {
-    width: 40%;
-    padding: 2rem;
-  }
+  object-fit: cover;
 `;
 
 export const UserInfo = styled.div`
@@ -103,8 +127,7 @@ export const UserStats = styled.p`
 export const InteractionSection = styled.div`
   display: flex;
   gap: 1.5rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #2d2d2d;
+  padding: 1.5rem 0 0 0;
   justify-content: space-between;
 `;
 
@@ -145,14 +168,6 @@ export const InteractionButton = styled.button`
   }
 `;
 
-export const TagSection = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #2d2d2d;
-`;
-
 export const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -169,55 +184,6 @@ export const Tag = styled.span`
 
   &:hover {
     background-color: #3d3d3d;
-  }
-`;
-
-export const PinContainer = styled.div`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-`;
-
-export const PinMarker = styled.div`
-  width: 28px;
-  height: 28px;
-  background-color: #ff4d4d;
-  border-radius: 50%;
-  border: 2px solid #1e1e1e;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-export const PinDescription = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #2d2d2d;
-  color: #ffffff;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease;
-  margin-top: 8px;
-  font-size: 0.9rem;
-  z-index: 3;
-
-  ${PinContainer}:hover & {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
   }
 `;
 
@@ -264,11 +230,4 @@ export const ImageCounter = styled.div`
   border-radius: 20px;
   font-size: 0.9rem;
   backdrop-filter: blur(4px);
-`;
-
-export const CommentSection = styled.div`
-  width: 100%;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-top: 1px solid #2d2d2d;
 `;

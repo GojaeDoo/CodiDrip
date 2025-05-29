@@ -124,7 +124,7 @@ export const getPostNoDripPost = async (postNo: number) => {
   }
 };
 
-export const getDripPostCommentStorage = async (postNo: number) => {
+export const getDripPostCommentStorage = async (postNo: number, userId?: string) => {
   try {
     const result = await pool.query(
       `
@@ -135,13 +135,17 @@ export const getDripPostCommentStorage = async (postNo: number) => {
           dpc.post_id,
           dpc.parent_id,
           p.profile_nickname,
-          p.profile_image
+          p.profile_image,
+          (SELECT COUNT(*) FROM drip_post_comment_like dcl WHERE dcl.comment_id = dpc.id) AS like_count,
+          EXISTS (
+            SELECT 1 FROM drip_post_comment_like dcl2 WHERE dcl2.comment_id = dpc.id AND dcl2.user_id = $2
+          ) AS liked
         FROM drip_post_comment dpc
         JOIN profile p ON p.user_id = dpc.user_id
         WHERE dpc.post_id = $1
         ORDER BY dpc.created_at DESC
       `,
-      [postNo]
+      [postNo, userId || null]
     );
 
     // 데이터 구조 변환
@@ -151,10 +155,10 @@ export const getDripPostCommentStorage = async (postNo: number) => {
       created_at: row.created_at,
       post_id: row.post_id,
       parent_id: row.parent_id,
-      user: {
-        nickname: row.profile_nickname,
-        profile_image: row.profile_image
-      }
+      profile_nickname: row.profile_nickname,
+      profile_image: row.profile_image,
+      like_count: row.like_count,
+      liked: row.liked,
     }));
   } catch (error) {
     console.error("Error in getDripPostCommentStorage:", error);
@@ -284,4 +288,40 @@ export const getDripPostDetail = async (postNo: number) => {
   } finally {
     client.release();
   }
+};
+
+export const getDripPostRepliesStorage = async (commentId: number) => {
+  const result = await pool.query(
+    `SELECT c.*, p.profile_nickname, p.profile_image
+     FROM drip_post_comment c
+     LEFT JOIN profile p ON c.user_id = p.user_id
+     WHERE c.parent_id = $1
+     ORDER BY c.created_at ASC`,
+    [commentId]
+  );
+  return result.rows;
+};
+
+export const updateDripPostCommentStorage = async (commentId: number, content: string) => {
+  const result = await pool.query(
+    'UPDATE drip_post_comment SET content = $1 WHERE id = $2 RETURNING *',
+    [content, commentId]
+  );
+  return result.rows[0];
+};
+
+export const likeDripPostCommentStorage = async (userId: string, commentId: number) => {
+  const result = await pool.query(
+    `INSERT INTO drip_post_comment_like (user_id, comment_id) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *`,
+    [userId, commentId]
+  );
+  return result.rows[0];
+};
+
+export const unlikeDripPostCommentStorage = async (userId: string, commentId: number) => {
+  const result = await pool.query(
+    `DELETE FROM drip_post_comment_like WHERE user_id = $1 AND comment_id = $2 RETURNING *`,
+    [userId, commentId]
+  );
+  return result.rows[0];
 };

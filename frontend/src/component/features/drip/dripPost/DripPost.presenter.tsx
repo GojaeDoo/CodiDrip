@@ -101,25 +101,27 @@ export const DripPostPresenter = (props: DripPostProps) => {
                   {post.post_image.length > 1 && (
                     <>
                       <S.NavigationButton
-                        onClick={(e) =>
+                        onClick={e => {
+                          e.stopPropagation();
                           props.onPrevImage(
                             e,
                             post.post_no,
-                            post.post_image.length
-                          )
-                        }
+                            post.post_image.length,
+                          );
+                        }}
                         $position="left"
                       >
                         <ChevronLeft size={20} />
                       </S.NavigationButton>
                       <S.NavigationButton
-                        onClick={(e) =>
+                        onClick={e => {
+                          e.stopPropagation();
                           props.onNextImage(
                             e,
                             post.post_no,
                             post.post_image.length
-                          )
-                        }
+                          );
+                        }}
                         $position="right"
                       >
                         <ChevronRight size={20} />

@@ -81,18 +81,10 @@ export const deleteDrip = async (req: Request, res: Response) => {
 
 export const getDripPostCommentController = async (req: Request, res: Response) => {
   const { postNo } = req.params;
-  
+  const userId = req.query.userId || req.body.userId;
   try {
-    const result = await pool.query(
-      `SELECT c.*, p.profile_nickname, p.profile_image
-       FROM drip_post_comment c
-       LEFT JOIN profile p ON c.user_id = p.user_id
-       WHERE c.post_id = $1
-       ORDER BY c.created_at DESC`,
-      [postNo]
-    );
-    
-    res.json(result.rows);
+    const result = await dripService.getDripPostCommentService(Number(postNo), userId as string);
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: '댓글 조회 중 오류가 발생했습니다.' });
@@ -129,21 +121,25 @@ export const postDripPostCommentController = async (req: Request, res: Response)
 
 export const getDripPostRepliesController = async (req: Request, res: Response) => {
   const { commentId } = req.params;
-  
   try {
-    const result = await pool.query(
-      `SELECT c.*, p.profile_nickname, p.profile_image
-       FROM drip_post_comment c
-       LEFT JOIN profile p ON c.user_id = p.user_id
-       WHERE c.parent_id = $1
-       ORDER BY c.created_at ASC`,
-      [commentId]
-    );
-    
-    res.json(result.rows);
+    const replies = await dripService.getDripPostReplies(Number(commentId));
+    res.json(replies);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: '답글 조회 중 오류가 발생했습니다.' });
+  }
+};
+
+export const updateDripPostCommentController = async (req: Request, res: Response) => {
+  const { commentId } = req.params;
+  const { content } = req.body;
+
+  try {
+    await dripService.updateDripPostCommentService(Number(commentId), content);
+    res.json({ message: '댓글이 수정되었습니다.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '댓글 수정 중 오류가 발생했습니다.' });
   }
 };
 
@@ -156,5 +152,35 @@ export const deleteDripPostCommentController = async (req: Request, res: Respons
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: '댓글 삭제 중 오류가 발생했습니다.' });
+  }
+};
+
+export const likeDripPostCommentController = async (req: Request, res: Response) => {
+  const { commentId } = req.params;
+  const userId = req.body.user_id || req.query.user_id;
+  try {
+    await dripService.likeDripPostCommentService(userId, Number(commentId));
+    res.json({ message: '댓글 좋아요 완료' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '댓글 좋아요 중 오류가 발생했습니다.' });
+  }
+};
+
+export const unlikeDripPostCommentController = async (req: Request, res: Response) => {
+  const { commentId } = req.params;
+  const userId = req.body.user_id || req.query.user_id;
+  console.log('Unlike Comment Request:', {
+    commentId,
+    userId,
+    body: req.body,
+    query: req.query
+  });
+  try {
+    await dripService.unlikeDripPostCommentService(userId, Number(commentId));
+    res.json({ message: '댓글 좋아요 취소 완료' });
+  } catch (err) {
+    console.error('Unlike Comment Error:', err);
+    res.status(500).json({ error: '댓글 좋아요 취소 중 오류가 발생했습니다.' });
   }
 };

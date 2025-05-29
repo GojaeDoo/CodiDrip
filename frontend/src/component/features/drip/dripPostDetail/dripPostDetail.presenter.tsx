@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./DripPostDetail.styled";
-import { ChevronLeft, ChevronRight, Heart, MessageCircle, Hash, Share2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, MessageCircle, Share2 } from "lucide-react";
 import { DripPostDetailPresenterProps } from "./DripPostDetail.types";
 import DripPostCommentContainer from "../dripPostComment/DripPostComment.container";
 
@@ -22,8 +22,8 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
   return (
     <S.Background>
       <S.DripPostDetailWrapper>
-        <S.PostContainer>
-          <S.ImageSection ref={containerRef}>
+        <S.MainSection>
+          <S.ImageBox>
             <S.ImageWrapper $aspectRatio="1/1">
               {images[currentImageIndex] && (
                 <>
@@ -51,9 +51,9 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                 </>
               )}
             </S.ImageWrapper>
-          </S.ImageSection>
+          </S.ImageBox>
 
-          <S.ContentSection>
+          <S.ProfileBox>
             <S.UserInfo>
               <S.ProfileImage
                 src={`http://localhost:3005/uploads/profiles/${dripPost.프로필이미지}`}
@@ -68,7 +68,6 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                 )}
               </div>
             </S.UserInfo>
-
             <S.InteractionSection>
               <S.InteractionButton aria-label="좋아요">
                 <Heart size={24} />
@@ -83,18 +82,16 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                 <span>공유</span>
               </S.InteractionButton>
             </S.InteractionSection>
+          </S.ProfileBox>
 
-            <S.TagSection>
-              <Hash size={20} />
-              <S.TagList>
-                {postTags.map((tag, index) => (
-                  <S.Tag key={index}>#{tag.trim()}</S.Tag>
-                ))}
-              </S.TagList>
-            </S.TagSection>
-          </S.ContentSection>
-        </S.PostContainer>
-
+          <S.TagBox>
+            <S.TagList>
+              {postTags.map((tag, index) => (
+                <S.Tag key={index}>#{tag.trim()}</S.Tag>
+              ))}
+            </S.TagList>
+          </S.TagBox>
+        </S.MainSection>
         <S.CommentSection>
           <DripPostCommentContainer postno={parseInt(postno)} />
         </S.CommentSection>
