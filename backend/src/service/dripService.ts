@@ -12,6 +12,9 @@ import {
   likeDripPostCommentStorage,
   unlikeDripPostCommentStorage,
   postDripPostReplyStorage,
+  likeDripPostStorage,
+  unlikeDripPostStorage,
+  getDripPostLikeStatusStorage
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -142,6 +145,30 @@ export const dripService = {
 
   unlikeDripPostCommentService: async (userId: string, commentId: number) => {
     return await unlikeDripPostCommentStorage(userId, commentId);
+  },
+
+  likeDripPostService: async (userId: string, postNo: number) => {
+    try {
+      const result = await likeDripPostStorage(userId, postNo);
+      return result;
+    } catch (error) {
+      console.error('likeDripPostService error:', error);
+      throw error;
+    }
+  },
+
+  unlikeDripPostService: async (userId: string, postNo: number) => {
+    try {
+      const result = await unlikeDripPostStorage(userId, postNo);
+      return result;
+    } catch (error) {
+      console.error('unlikeDripPostService error:', error);
+      throw error;
+    }
+  },
+
+  getDripPostLikeStatusService: async (userId: string, postNo: number) => {
+    return await getDripPostLikeStatusStorage(userId, postNo);
   },
 };
 

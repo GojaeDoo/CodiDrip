@@ -131,7 +131,7 @@ export const InteractionSection = styled.div`
   justify-content: space-between;
 `;
 
-export const InteractionButton = styled.button`
+export const InteractionButton = styled.button<{ $isLiked?: boolean }>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -139,11 +139,11 @@ export const InteractionButton = styled.button`
   gap: 0.25rem;
   background: none;
   border: none;
-  color: #ffffff;
+  color: ${({ $isLiked }) => ($isLiked ? "#ff4d4d" : "#ffffff")};
   cursor: pointer;
   padding: 1rem 0.5rem;
   border-radius: 12px;
-  transition: background 0.2s, transform 0.2s;
+  transition: all 0.2s ease;
 
   &:hover {
     background: #232323;
@@ -151,13 +151,14 @@ export const InteractionButton = styled.button`
   }
 
   svg {
-    color: #ffffff;
+    color: ${({ $isLiked }) => ($isLiked ? "#ff4d4d" : "#ffffff")};
     font-size: 1.5rem;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
   }
 
   &:hover svg {
     color: #ff4d4d;
+    transform: scale(1.1);
   }
 
   span {
@@ -230,4 +231,4 @@ export const ImageCounter = styled.div`
   border-radius: 20px;
   font-size: 0.9rem;
   backdrop-filter: blur(4px);
-`;
+`; 

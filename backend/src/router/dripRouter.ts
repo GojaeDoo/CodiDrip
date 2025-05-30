@@ -12,7 +12,10 @@ import {
   updateDripPostCommentController,
   likeDripPostCommentController,
   unlikeDripPostCommentController,
-  postDripPostReplyController
+  postDripPostReplyController,
+  likeDripPostController,
+  unlikeDripPostController,
+  getDripPostLikeStatusController
 } from "../controller/dripController";
 
 const router = express.Router();
@@ -52,5 +55,14 @@ router.delete("/comments/:commentId/like", unlikeDripPostCommentController as Re
 
 // Drip 대댓글 작성
 router.post("/comments/:commentId/replies", postDripPostReplyController as RequestHandler);
+
+// Drip 게시글 좋아요
+router.post("/:postNo/like", likeDripPostController as RequestHandler);
+
+// Drip 게시글 좋아요 취소
+router.delete("/:postNo/like", unlikeDripPostController as RequestHandler);
+
+// Drip 게시글 좋아요 상태 조회
+router.get("/like-status", getDripPostLikeStatusController as RequestHandler);
 
 export default router;

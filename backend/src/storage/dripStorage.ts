@@ -442,5 +442,89 @@ export const postDripPostReplyStorage = async (userId: string, postReply: string
     [userId, postNo, postReply, parentId]
   );
   return result.rows[0];
+};
+
+export const likeDripPostStorage = async (userId: string, postNo: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 이미 좋아요 했는지 확인
+    const checkResult = await client.query(
+      'SELECT * FROM drip_post_like WHERE user_id = $1 AND post_no = $2',
+      [userId, postNo]
+    );
+
+    if (checkResult.rows.length > 0) {
+      // 이미 좋아요가 있다면 is_like를 true로 업데이트
+      const result = await client.query(
+        'UPDATE drip_post_like SET is_like = true WHERE user_id = $1 AND post_no = $2 RETURNING *',
+        [userId, postNo]
+      );
+      await client.query('COMMIT');
+      return result.rows[0];
+    }
+
+    // 새로운 좋아요 추가
+    const result = await client.query(
+      'INSERT INTO drip_post_like (user_id, post_no, is_like) VALUES ($1, $2, true) RETURNING *',
+      [userId, postNo]
+    );
+
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('likeDripPostStorage error:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export const unlikeDripPostStorage = async (userId: string, postNo: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 좋아요 했는지 확인
+    const checkResult = await client.query(
+      'SELECT * FROM drip_post_like WHERE user_id = $1 AND post_no = $2',
+      [userId, postNo]
+    );
+
+    if (checkResult.rows.length === 0) {
+      throw new Error('좋아요하지 않은 게시글입니다.');
+    }
+
+    // is_like를 false로 업데이트
+    const result = await client.query(
+      'UPDATE drip_post_like SET is_like = false WHERE user_id = $1 AND post_no = $2 RETURNING *',
+      [userId, postNo]
+    );
+
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('unlikeDripPostStorage error:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export const getDripPostLikeStatusStorage = async (userId: string, postNo: number) => {
+  try {
+    const result = await pool.query(
+      'SELECT is_like FROM drip_post_like WHERE user_id = $1 AND post_no = $2',
+      [userId, postNo]
+    );
+    if (result.rows.length === 0) return false;
+    return result.rows[0].is_like;
+  } catch (error) {
+    console.error('getDripPostLikeStatusStorage error:', error);
+    throw error;
+  }
 }; 
 

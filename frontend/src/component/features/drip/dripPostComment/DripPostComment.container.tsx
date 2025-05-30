@@ -6,32 +6,19 @@ import { useRouter } from "next/navigation";
 
 const formatDate = (dateString: string) => dateString.slice(0, 10);
 
-// 댓글 데이터를 계층 구조로 변환하는 함수
 const organizeComments = (comments: Comment[]) => {
-  // 1. created_at 기준 정렬 (오래된 댓글이 먼저)
   const sorted = [...comments].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
   const commentMap = new Map<number, Comment & { replies: Comment[] }>();
   const rootComments: (Comment & { replies: Comment[] })[] = [];
 
-  // 모든 댓글을 Map에 저장
   sorted.forEach(comment => {
     commentMap.set(comment.id, { ...comment, replies: [] });
   });
 
-  // 댓글을 계층 구조로 정리
   sorted.forEach(comment => {
     if (comment.parent_id) {
       const parentKey = Number(comment.parent_id);
-      console.log(
-        'Trying to attach comment', comment.id,
-        'to parent', parentKey,
-        'map has:', commentMap.has(parentKey),
-        'parent_id:', comment.parent_id,
-        'parent_id type:', typeof comment.parent_id,
-        'parentKey type:', typeof parentKey,
-        'all map keys:', Array.from(commentMap.keys())
-      );
       if (commentMap.has(parentKey)) {
         commentMap.get(parentKey)!.replies.push({
           ...comment,
@@ -43,10 +30,6 @@ const organizeComments = (comments: Comment[]) => {
       rootComments.push(commentMap.get(comment.id)!);
     }
   });
-
-  // 디버깅: 계층 구조가 잘 만들어졌는지 출력
-  console.log('Organized comments:', JSON.stringify(rootComments, null, 2));
-
   return rootComments;
 };
 
@@ -69,7 +52,6 @@ export const DripPostCommentContainer = (props: DripPostCommentProps) => {
   const [activeMenuId, setActiveMenuId] = useState<number | null>(null);
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
-  // 대댓글 관련 state
   const [replyingToId, setReplyingToId] = useState<number | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [expandedReplies, setExpandedReplies] = useState<{ [key: number]: boolean }>({});
@@ -122,11 +104,10 @@ export const DripPostCommentContainer = (props: DripPostCommentProps) => {
     }
   }
 
-  // 메뉴 관련 핸들러
   const handleMenuOpen = (commentId: number) => {
     setActiveMenuId(prev => (prev === commentId ? null : commentId));
   };
-  // 수정 모드 진입
+  
   const onEditComment = (commentId: number) => {
     const comment = findCommentById(commentList, commentId);
     if (comment) {

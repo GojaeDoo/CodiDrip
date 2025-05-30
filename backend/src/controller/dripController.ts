@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { dripService } from "../service/dripService";
 import { pool } from "../db";
+import { RequestHandler } from "express";
 
 export const createDrip = async (req: Request, res: Response) => {
   try {
@@ -196,5 +197,42 @@ export const postDripPostReplyController = async (req: Request, res: Response) =
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: '댓글 작성 중 오류가 발생했습니다.' });
+  }
+};
+
+export const likeDripPostController: RequestHandler = async (req, res) => {
+  try {
+    const { postNo } = req.params;
+    const { user_id } = req.body;
+    const result = await dripService.likeDripPostService(user_id, Number(postNo));
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "게시글 좋아요 실패" });
+  }
+};
+
+export const unlikeDripPostController: RequestHandler = async (req, res) => {
+  try {
+    const { postNo } = req.params;
+    const { user_id } = req.body;
+    const result = await dripService.unlikeDripPostService(user_id, Number(postNo));
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "게시글 좋아요 취소 실패" });
+  }
+};
+
+export const getDripPostLikeStatusController = async (req: Request, res: Response) => {
+  try {
+    const userId = req.query.user_id as string;
+    const postNo = parseInt(req.query.post_no as string, 10);
+    if (!userId || isNaN(postNo)) {
+      return res.status(400).json({ error: "user_id와 post_no가 필요합니다." });
+    }
+    const isLiked = await dripService.getDripPostLikeStatusService(userId, postNo);
+    res.json({ is_liked: isLiked });
+  } catch (error) {
+    console.error("getDripPostLikeStatusController error:", error);
+    res.status(500).json({ error: "좋아요 상태 조회 중 오류가 발생했습니다." });
   }
 };

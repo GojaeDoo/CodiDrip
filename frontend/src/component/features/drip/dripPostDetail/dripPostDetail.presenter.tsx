@@ -17,6 +17,8 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
     onNextImage,
     postTags,
     postno,
+    isLiked,
+    onLikeClick,
   } = props;
 
   return (
@@ -69,8 +71,12 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
               </div>
             </S.UserInfo>
             <S.InteractionSection>
-              <S.InteractionButton aria-label="좋아요">
-                <Heart size={24} />
+              <S.InteractionButton 
+                aria-label="좋아요" 
+                onClick={onLikeClick}
+                $isLiked={isLiked}
+              >
+                <Heart size={24} fill={isLiked ? "currentColor" : "none"} />
                 <span>좋아요</span>
               </S.InteractionButton>
               <S.InteractionButton aria-label="댓글">

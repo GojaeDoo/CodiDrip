@@ -24,6 +24,7 @@ export interface DripPostDetailResponse {
   태그: string;
   작성일시: string;
   핀: Pin[];
+  is_liked: boolean;
 }
 
 export interface DripPostDetailProps {
@@ -35,7 +36,7 @@ export interface DripPostDetailPresenterProps {
   imageRef: React.RefObject<HTMLImageElement>;
   aspectRatio: string;
   onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
-  dripPost: any;
+  dripPost: DripPostDetailResponse;
   images: string[];
   currentImageIndex: number;
   onPrevImage: () => void;
@@ -43,4 +44,6 @@ export interface DripPostDetailPresenterProps {
   getImageUrl: (imagePath: string) => string;
   postTags: string[];
   postno: string;
+  isLiked: boolean;
+  onLikeClick: () => void;
 }
