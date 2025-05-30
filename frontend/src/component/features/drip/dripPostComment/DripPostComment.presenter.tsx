@@ -1,70 +1,179 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./DripPostComment.styled";
-import { Send, Heart, MoreVertical } from "lucide-react";
-import {DripPostCommentContainerProps} from "./DripPostComment.types"
+import { Send, Heart, MoreVertical, MessageCircle } from "lucide-react";
+import { DripPostCommentContainerProps } from "./DripPostComment.types";
 
+interface DripPostCommentProps extends DripPostCommentContainerProps {
+  commentContent: string;
+  setCommentContent: (content: string) => void;
+  replyContent: string;
+}
 
-const DripPostComment = (props: DripPostCommentContainerProps) => {
+const DripPostComment = ({
+  commentList,
+  onChangeComment,
+  onSubmitComment,
+  onLikeComment,
+  handleMenuOpen,
+  activeMenuId,
+  onEditComment,
+  onDeleteComment,
+  editingCommentId,
+  editContent,
+  setEditContent,
+  onEditSubmit,
+  onEditCancel,
+  replyingToId,
+  onReplyClick,
+  onChangeReply,
+  onSubmitReply,
+  myUserId,
+  commentContent,
+  setCommentContent,
+  expandedReplies,
+  toggleReplies,
+  replyContent
+}: DripPostCommentProps) => {
   return (
     <S.CommentSection>
-      {/* 댓글 입력창 */}
       <S.CommentInputWrapper>
         <S.CommentInput
-          placeholder="댓글을 작성하세요..."
-          onChange={props.onChangeComment}
+          placeholder="댓글을 입력하세요"
+          value={commentContent}
+          onChange={(e) => setCommentContent(e.target.value)}
         />
-        <S.SubmitButton type="button" onClick={props.onSubmitComment}>
-          <Send size={20} />
-        </S.SubmitButton>
+        <S.SubmitButton onClick={onSubmitComment}>작성</S.SubmitButton>
       </S.CommentInputWrapper>
-      {props.commentList && props.commentList.length > 0 && (
+      {commentList && commentList.length > 0 && (
         <S.CommentList>
-          {props.commentList.map((commentList) => (
-            <S.CommentItem key={commentList.id}>
-              <S.CommentProfileImage
-                src={`http://localhost:3005/uploads/profiles/${commentList.profile_image}`}
-                alt="프로필"
-              />
-              <S.CommentContentBox>
-                <S.CommentNickname>{commentList.profile_nickname}</S.CommentNickname>
-                {props.editingCommentId === commentList.id ? (
-                  <>
-                    <S.CommentInput
-                      value={props.editContent}
-                      onChange={e => props.setEditContent?.(e.target.value)}
-                      style={{ marginBottom: 8 }}
-                    />
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <S.SubmitButton type="button" onClick={props.onEditSubmit}>완료</S.SubmitButton>
-                      <S.SubmitButton type="button" onClick={props.onEditCancel}>취소</S.SubmitButton>
-                    </div>
-                  </>
-                ) : (
-                  <S.CommentText>{commentList.content}</S.CommentText>
-                )}
-                <S.CommentLikeRow>
-                  <S.CommentLikeButton onClick={() => props.onLikeComment?.(commentList.id)}>
-                    <Heart size={16} fill={commentList.liked ? "#ff4d4d" : "none"} />
-                  </S.CommentLikeButton>
-                  <S.CommentLikeCount>{commentList.like_count ?? 0}</S.CommentLikeCount>
-                </S.CommentLikeRow>
-                <S.CommentDate>{commentList.created_at}</S.CommentDate>
-              </S.CommentContentBox>
-
-              {props.myUserId && commentList.user_id === props.myUserId && (
-                <S.CommentMenuWrapper>
-                  <S.CommentMenuButton onClick={() => props.handleMenuOpen?.(commentList.id)}>
-                    <MoreVertical size={18} />
-                  </S.CommentMenuButton>
-                  {props.activeMenuId === commentList.id && (
-                    <S.CommentMenu>
-                      <S.CommentMenuItem onClick={() => props.onEditComment?.(commentList.id)}>수정</S.CommentMenuItem>
-                      <S.CommentMenuItem onClick={() => props.onDeleteComment?.(commentList.id)}>삭제</S.CommentMenuItem>
-                    </S.CommentMenu>
+          {commentList.map((comment) => (
+            <React.Fragment key={comment.id}>
+              <S.CommentItem>
+                <S.CommentProfileImage
+                  src={`http://localhost:3005/uploads/profiles/${comment.profile_image}` || "/default-profile.png"}
+                  alt={comment.profile_nickname}
+                />
+                <S.CommentContentBox>
+                  <S.CommentNickname>{comment.profile_nickname}</S.CommentNickname>
+                  {editingCommentId === comment.id ? (
+                    <S.CommentInputWrapper>
+                      <S.CommentInput
+                        value={editContent}
+                        onChange={(e) => setEditContent(e.target.value)}
+                      />
+                      <S.SubmitButton onClick={onEditSubmit}>수정</S.SubmitButton>
+                      <S.SubmitButton onClick={onEditCancel}>취소</S.SubmitButton>
+                    </S.CommentInputWrapper>
+                  ) : (
+                    <S.CommentText>{comment.content}</S.CommentText>
                   )}
-                </S.CommentMenuWrapper>
+                  <S.CommentLikeRow>
+                    <S.CommentLikeButton
+                      onClick={() => {
+                        console.log('Comment like status before click:', comment.liked);
+                        onLikeComment(comment.id);
+                      }}
+                      $isLiked={comment.liked}
+                    >
+                      {(() => {
+                        console.log('Rendering heart for comment:', comment.id, 'liked:', comment.liked);
+                        return comment.liked ? "♥" : "♡";
+                      })()}
+                    </S.CommentLikeButton>
+                    <S.CommentLikeCount $isLiked={comment.liked}>
+                      {comment.like_count}
+                    </S.CommentLikeCount>
+                    <S.ReplyButton onClick={() => onReplyClick(comment.id)}>
+                      <MessageCircle size={16} />
+                      답글
+                    </S.ReplyButton>
+                  </S.CommentLikeRow>
+                  <S.CommentDate>{comment.created_at}</S.CommentDate>
+                  {comment.replies && comment.replies.length > 0 && (
+                    <S.ReplySection>
+                      <S.ReplyToggleButton onClick={() => toggleReplies(comment.id)}>
+                        답글 {comment.replies.length}개 {expandedReplies[comment.id] ? '접기' : '더보기'}
+                      </S.ReplyToggleButton>
+                      {expandedReplies[comment.id] && (
+                        <S.ReplyList>
+                          {comment.replies.map((reply) => (
+                            <S.ReplyItem key={reply.id}>
+                              <S.ReplyMeta>
+                                <S.CommentProfileImage
+                                  src={`http://localhost:3005/uploads/profiles/${reply.profile_image}` || "/default-profile.png"}
+                                  alt={reply.profile_nickname}
+                                />
+                                <S.CommentNickname>{reply.profile_nickname}</S.CommentNickname>
+                                <S.CommentDate>{reply.created_at}</S.CommentDate>
+                              </S.ReplyMeta>
+                              {editingCommentId === reply.id ? (
+                                <S.CommentInputWrapper>
+                                  <S.CommentInput
+                                    value={editContent}
+                                    onChange={(e) => setEditContent(e.target.value)}
+                                  />
+                                  <S.SubmitButton onClick={onEditSubmit}>수정</S.SubmitButton>
+                                  <S.SubmitButton onClick={onEditCancel}>취소</S.SubmitButton>
+                                </S.CommentInputWrapper>
+                              ) : (
+                                <S.ReplyContent>{reply.content}</S.ReplyContent>
+                              )}
+                              <S.ReplyActions>
+                                <S.ReplyActionButton onClick={() => onLikeComment(reply.id)}>
+                                  <S.HeartIcon $isLiked={reply.liked}>
+                                    {reply.liked ? "♥" : "♡"}
+                                  </S.HeartIcon>
+                                  {" "}({reply.like_count})
+                                </S.ReplyActionButton>
+                                {myUserId === reply.user_id && (
+                                  <>
+                                    <S.ReplyActionButton onClick={() => onEditComment(reply.id)}>
+                                      수정
+                                    </S.ReplyActionButton>
+                                    <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
+                                      삭제
+                                    </S.ReplyActionButton>
+                                  </>
+                                )}
+                              </S.ReplyActions>
+                            </S.ReplyItem>
+                          ))}
+                        </S.ReplyList>
+                      )}
+                    </S.ReplySection>
+                  )}
+                </S.CommentContentBox>
+
+                {myUserId === comment.user_id && (
+                  <S.CommentMenuWrapper>
+                    <S.CommentMenuButton onClick={() => handleMenuOpen(comment.id)}>
+                      ⋮
+                    </S.CommentMenuButton>
+                    {activeMenuId === comment.id && (
+                      <S.CommentMenu>
+                        <S.CommentMenuItem onClick={() => onEditComment(comment.id)}>
+                          수정
+                        </S.CommentMenuItem>
+                        <S.CommentMenuItem onClick={() => onDeleteComment(comment.id)}>
+                          삭제
+                        </S.CommentMenuItem>
+                      </S.CommentMenu>
+                    )}
+                  </S.CommentMenuWrapper>
+                )}
+              </S.CommentItem>
+
+              {replyingToId === comment.id && (
+                <S.ReplyInputWrapper>
+                  <S.ReplyInput
+                    placeholder="답글을 입력하세요"
+                    value={replyContent}
+                    onChange={onChangeReply}
+                  />
+                  <S.SubmitButton onClick={onSubmitReply}>작성</S.SubmitButton>
+                </S.ReplyInputWrapper>
               )}
-            </S.CommentItem>
+            </React.Fragment>
           ))}
         </S.CommentList>
       )}

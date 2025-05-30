@@ -126,40 +126,57 @@ export const getPostNoDripPost = async (postNo: number) => {
 
 export const getDripPostCommentStorage = async (postNo: number, userId?: string) => {
   try {
+    console.log('Getting comments for post:', postNo, 'user:', userId);
+    
     const result = await pool.query(
       `
+        WITH user_likes AS (
+          SELECT comment_id 
+          FROM drip_post_comment_like 
+          WHERE user_id = $2::TEXT
+        )
         SELECT 
           dpc.id,
           dpc.content,
           dpc.created_at,
           dpc.post_id,
           dpc.parent_id,
+          dpc.user_id,
           p.profile_nickname,
           p.profile_image,
-          (SELECT COUNT(*) FROM drip_post_comment_like dcl WHERE dcl.comment_id = dpc.id) AS like_count,
-          EXISTS (
-            SELECT 1 FROM drip_post_comment_like dcl2 WHERE dcl2.comment_id = dpc.id AND dcl2.user_id = $2
-          ) AS liked
+          CAST((SELECT COUNT(*) FROM drip_post_comment_like dcl WHERE dcl.comment_id = dpc.id) AS INTEGER) AS like_count,
+          CASE 
+            WHEN $2 IS NULL THEN false
+            ELSE EXISTS (
+              SELECT 1 FROM user_likes ul WHERE ul.comment_id = dpc.id
+            )
+          END AS liked
         FROM drip_post_comment dpc
         JOIN profile p ON p.user_id = dpc.user_id
         WHERE dpc.post_id = $1
         ORDER BY dpc.created_at DESC
       `,
-      [postNo, userId || null]
+      [postNo, userId]
     );
 
+    console.log('Query result:', result.rows);
+
     // 데이터 구조 변환
-    return result.rows.map(row => ({
+    const comments = result.rows.map(row => ({
       id: row.id,
       content: row.content,
       created_at: row.created_at,
       post_id: row.post_id,
       parent_id: row.parent_id,
+      user_id: row.user_id,
       profile_nickname: row.profile_nickname,
       profile_image: row.profile_image,
-      like_count: row.like_count,
-      liked: row.liked,
+      like_count: Number(row.like_count),
+      liked: Boolean(row.liked),
     }));
+
+    console.log('Processed comments:', comments);
+    return comments;
   } catch (error) {
     console.error("Error in getDripPostCommentStorage:", error);
     return [];
@@ -227,16 +244,40 @@ export const updateDripPost = async (
   }
 };
 
-export const deleteDripPost = async (postNo: string) => {
+export const deleteDripPostStorage = async (postNo: number) => {
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
-      `DELETE FROM drip_post WHERE post_no = $1`,
+    await client.query('BEGIN');
+
+    // 1. 먼저 댓글의 좋아요들을 삭제
+    await client.query(
+      `DELETE FROM drip_post_comment_like 
+       WHERE comment_id IN (
+         SELECT id FROM drip_post_comment WHERE post_id = $1
+       )`,
       [postNo]
     );
+
+    // 2. 그 다음 댓글들을 삭제
+    await client.query(
+      `DELETE FROM drip_post_comment WHERE post_id = $1`,
+      [postNo]
+    );
+    
+    // 3. 마지막으로 게시글 삭제
+    const result = await client.query(
+      `DELETE FROM drip_post WHERE post_no = $1 RETURNING *`,
+      [postNo]
+    );
+
+    await client.query('COMMIT');
     return result.rows[0];
   } catch (error) {
-    console.error("deleteDripPost error - dripStorage:", error);
+    await client.query('ROLLBACK');
+    console.error("deleteDripPostStorage error:", error);
     throw error;
+  } finally {
+    client.release();
   }
 };
 
@@ -311,17 +352,95 @@ export const updateDripPostCommentStorage = async (commentId: number, content: s
 };
 
 export const likeDripPostCommentStorage = async (userId: string, commentId: number) => {
-  const result = await pool.query(
-    `INSERT INTO drip_post_comment_like (user_id, comment_id) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *`,
-    [userId, commentId]
-  );
-  return result.rows[0];
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    console.log('Attempting to like comment:', { userId, commentId });
+
+    // 먼저 이미 좋아요를 눌렀는지 확인
+    const checkResult = await client.query(
+      `SELECT 1 FROM drip_post_comment_like WHERE user_id = $1::TEXT AND comment_id = $2`,
+      [userId, commentId]
+    );
+
+    console.log('Like check result:', checkResult.rows);
+
+    // 이미 좋아요를 눌렀다면 좋아요 취소
+    if (checkResult.rows.length > 0) {
+      console.log('User already liked this comment, removing like');
+      const unlikeResult = await client.query(
+        `DELETE FROM drip_post_comment_like 
+         WHERE user_id = $1::TEXT AND comment_id = $2 
+         RETURNING *`,
+        [userId, commentId]
+      );
+      await client.query('COMMIT');
+      return unlikeResult.rows[0];
+    }
+
+    // 좋아요 추가
+    const result = await client.query(
+      `INSERT INTO drip_post_comment_like (user_id, comment_id) 
+       VALUES ($1::TEXT, $2) 
+       RETURNING *`,
+      [userId, commentId]
+    );
+
+    console.log('Like added:', result.rows[0]);
+
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error("Error in likeDripPostCommentStorage:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 export const unlikeDripPostCommentStorage = async (userId: string, commentId: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    console.log('Attempting to unlike comment:', { userId, commentId });
+
+    // 좋아요 취소
+    const result = await client.query(
+      `DELETE FROM drip_post_comment_like 
+       WHERE user_id = $1::TEXT AND comment_id = $2 
+       RETURNING *`,
+      [userId, commentId]
+    );
+
+    console.log('Unlike result:', result.rows);
+
+    if (result.rows.length === 0) {
+      console.log("No like found to unlike");
+      await client.query('COMMIT');
+      return null;
+    }
+
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error("Error in unlikeDripPostCommentStorage:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export const postDripPostReplyStorage = async (userId: string, postReply: string, postNo: string, parentId: string) => {
   const result = await pool.query(
-    `DELETE FROM drip_post_comment_like WHERE user_id = $1 AND comment_id = $2 RETURNING *`,
-    [userId, commentId]
+    `INSERT INTO drip_post_comment (user_id, post_id, content, parent_id)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [userId, postNo, postReply, parentId]
   );
   return result.rows[0];
-};
+}; 
+

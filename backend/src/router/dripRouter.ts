@@ -11,7 +11,8 @@ import {
   deleteDripPostCommentController,
   updateDripPostCommentController,
   likeDripPostCommentController,
-  unlikeDripPostCommentController
+  unlikeDripPostCommentController,
+  postDripPostReplyController
 } from "../controller/dripController";
 
 const router = express.Router();
@@ -48,5 +49,8 @@ router.post("/comments/:commentId/like", likeDripPostCommentController as Reques
 
 // Drip 댓글 좋아요 취소
 router.delete("/comments/:commentId/like", unlikeDripPostCommentController as RequestHandler);
+
+// Drip 대댓글 작성
+router.post("/comments/:commentId/replies", postDripPostReplyController as RequestHandler);
 
 export default router;

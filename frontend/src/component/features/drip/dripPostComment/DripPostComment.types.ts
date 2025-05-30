@@ -12,17 +12,43 @@ export interface DripPostCommentFetchState {
   user_id: string;
   like_count?: number;
   liked?: boolean;
+  parent_id?: string | null;
+  replies?: DripPostCommentFetchState[];
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  created_at: string;
+  post_id: number;
+  parent_id: string | null;
+  user_id: string;
+  profile_nickname: string;
+  profile_image: string;
+  like_count: number;
+  liked: boolean;
+  replies?: Comment[];
 }
 
 export interface DripPostCommentContainerProps {
-  onChangeComment: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  commentList: Comment[];
+  onChangeComment: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmitComment: () => void;
-  commentList: DripPostCommentFetchState[];
-  onLikeComment?: (commentId: number) => void;
+  onLikeComment: (commentId: number) => void;
+  handleMenuOpen: (commentId: number) => void;
+  activeMenuId: number | null;
+  onEditComment: (commentId: number) => void;
+  onDeleteComment: (commentId: number) => void;
+  editingCommentId: number | null;
+  editContent: string;
+  setEditContent: (content: string) => void;
+  onEditSubmit: () => void;
+  onEditCancel: () => void;
+  replyingToId: number | null;
+  onReplyClick: (commentId: number) => void;
+  onChangeReply: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmitReply: () => void;
   myUserId?: string;
-  activeMenuId?: number | null;
-  handleMenuOpen?: (commentId: number) => void;
-  onEditComment?: (commentId: number) => void;
-  onEditCancel?: () => void;
-  onEditSubmit?: () => void;
+  expandedReplies: { [key: number]: boolean };
+  toggleReplies: (commentId: number) => void;
 }

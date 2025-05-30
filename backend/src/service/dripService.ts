@@ -4,13 +4,14 @@ import {
   getUserDripPost,
   getPostNoDripPost,
   updateDripPost,
-  deleteDripPost,
+  deleteDripPostStorage,
   getDripPostCommentStorage,
   postDripPostCommentStorage,
   getDripPostRepliesStorage,
   updateDripPostCommentStorage,
   likeDripPostCommentStorage,
   unlikeDripPostCommentStorage,
+  postDripPostReplyStorage,
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -96,7 +97,7 @@ export const dripService = {
 
   deleteDrip: async (postNo: string) => {
     try {
-      const result = await deleteDripPost(postNo);
+      const result = await deleteDripPostStorage(Number(postNo));
       return result;
     } catch (error) {
       console.error("deleteDrip error - dripService:", error);
@@ -162,6 +163,20 @@ export const postDripPostCommentService = async (
     return await postDripPostCommentStorage(userId, postComment, postNo);
   } catch (error) {
     console.error("Error in postDripPostCommentService:", error);
+    throw error;
+  }
+};
+
+export const postDripPostReplyService = async (
+  userId: string,
+  postReply: string,
+  postNo: string,
+  parentId: string
+) => {
+  try {
+    return await postDripPostReplyStorage(userId, postReply, postNo, parentId);
+  } catch (error) {
+    console.error("Error in postDripPostReplyService:", error);
     throw error;
   }
 };

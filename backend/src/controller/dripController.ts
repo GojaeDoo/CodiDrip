@@ -184,3 +184,17 @@ export const unlikeDripPostCommentController = async (req: Request, res: Respons
     res.status(500).json({ error: '댓글 좋아요 취소 중 오류가 발생했습니다.' });
   }
 };
+
+export const postDripPostReplyController = async (req: Request, res: Response) => {
+  const { postNo, user_id, content, parent_id } = req.body;
+
+  try { 
+    const result = await pool.query(    
+      'INSERT INTO drip_post_comment (post_id, user_id, content, parent_id) VALUES ($1, $2, $3, $4) RETURNING *',
+      [postNo, user_id, content, parent_id || null]
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '댓글 작성 중 오류가 발생했습니다.' });
+  }
+};
