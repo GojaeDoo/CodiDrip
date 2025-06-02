@@ -226,10 +226,14 @@ export const getDripPostLikeStatusController = async (req: Request, res: Respons
   try {
     const userId = req.query.user_id as string;
     const postNo = parseInt(req.query.post_no as string, 10);
+
     if (!userId || isNaN(postNo)) {
+      console.log("유효하지 않은 파라미터:", { userId, postNo });
       return res.status(400).json({ error: "user_id와 post_no가 필요합니다." });
     }
+    
     const isLiked = await dripService.getDripPostLikeStatusService(userId, postNo);
+    console.log("좋아요 상태:", isLiked);
     res.json({ is_liked: isLiked });
   } catch (error) {
     console.error("getDripPostLikeStatusController error:", error);

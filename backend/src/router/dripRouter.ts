@@ -26,6 +26,9 @@ router.post("/", createDrip as RequestHandler);
 // 사용자별 Drip 조회
 router.get("/", getUserDrip as RequestHandler);
 
+// Drip 게시글 좋아요 상태 조회
+router.get("/like-status", getDripPostLikeStatusController as RequestHandler);
+
 // Drip 조회
 router.get("/:postNo", getPostNoDrip as RequestHandler);
 
@@ -61,8 +64,5 @@ router.post("/:postNo/like", likeDripPostController as RequestHandler);
 
 // Drip 게시글 좋아요 취소
 router.delete("/:postNo/like", unlikeDripPostController as RequestHandler);
-
-// Drip 게시글 좋아요 상태 조회
-router.get("/like-status", getDripPostLikeStatusController as RequestHandler);
 
 export default router;

@@ -1,5 +1,42 @@
+export interface Comment {
+  id: number;
+  content: string;
+  profile_image: string;
+  profile_nickname: string;
+  created_at: string;
+  liked: boolean;
+  like_count: number;
+  parent_id?: string | null;
+  replies?: Comment[];
+  user_id: string;
+}
+
 export interface DripPostCommentProps {
-  postno: number;
+  commentList: Comment[];
+  onLikeComment: (commentId: number) => void;
+  onReplyClick: (commentId: number) => void;
+  onCommentSubmit: () => void;
+  newComment: string;
+  setNewComment: (content: string) => void;
+  expandedReplies: { [key: number]: boolean };
+  toggleReplies: (commentId: number) => void;
+  isModalOpen: boolean;
+  onCloseModal: () => void;
+  onOpenModal: () => void;
+  activeMenuId: number | null;
+  handleMenuOpen: (commentId: number) => void;
+  onEditComment: (commentId: number) => void;
+  onDeleteComment: (commentId: number) => void;
+  editingCommentId: number | null;
+  editContent: string;
+  setEditContent: (content: string) => void;
+  onEditSubmit: () => void;
+  onEditCancel: () => void;
+  myUserId: string;
+  replyingToId: number | null;
+  replyContent: string;
+  onChangeReply: (value: string) => void;
+  onSubmitReply: () => void;
 }
 
 export interface DripPostCommentFetchState {
@@ -16,39 +53,6 @@ export interface DripPostCommentFetchState {
   replies?: DripPostCommentFetchState[];
 }
 
-export interface Comment {
-  id: number;
-  content: string;
-  created_at: string;
-  post_id: number;
-  parent_id: string | null;
-  user_id: string;
-  profile_nickname: string;
-  profile_image: string;
-  like_count: number;
-  liked: boolean;
-  replies?: Comment[];
-}
-
 export interface DripPostCommentContainerProps {
-  commentList: Comment[];
-  onChangeComment: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmitComment: () => void;
-  onLikeComment: (commentId: number) => void;
-  handleMenuOpen: (commentId: number) => void;
-  activeMenuId: number | null;
-  onEditComment: (commentId: number) => void;
-  onDeleteComment: (commentId: number) => void;
-  editingCommentId: number | null;
-  editContent: string;
-  setEditContent: (content: string) => void;
-  onEditSubmit: () => void;
-  onEditCancel: () => void;
-  replyingToId: number | null;
-  onReplyClick: (commentId: number) => void;
-  onChangeReply: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmitReply: () => void;
-  myUserId?: string;
-  expandedReplies: { [key: number]: boolean };
-  toggleReplies: (commentId: number) => void;
+  postno: number;
 }

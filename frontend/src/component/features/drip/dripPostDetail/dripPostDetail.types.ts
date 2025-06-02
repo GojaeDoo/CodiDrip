@@ -36,7 +36,7 @@ export interface DripPostDetailPresenterProps {
   imageRef: React.RefObject<HTMLImageElement>;
   aspectRatio: string;
   onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
-  dripPost: DripPostDetailResponse;
+  dripPost: any;
   images: string[];
   currentImageIndex: number;
   onPrevImage: () => void;
@@ -46,4 +46,8 @@ export interface DripPostDetailPresenterProps {
   postno: string;
   isLiked: boolean;
   onLikeClick: () => void;
+  onCommentClick: () => void;
+  newComment: string;
+  setNewComment: (content: string) => void;
+  onCommentSubmit: () => void;
 }

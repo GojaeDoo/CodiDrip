@@ -5,6 +5,7 @@ import DripPostDetailPresenter from "./DripPostDetail.presenter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDripPostDetail, likeDripPostQuery, unlikeDripPostQuery, getDripPostLikeStatus } from "./DripPostDetail.query";
 import { DripPostDetailProps } from "./DripPostDetail.types";
+import { useRouter } from "next/navigation";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   const queryClient = useQueryClient();
@@ -14,6 +15,10 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const router = useRouter();
 
   console.log("Container mounted with postNo:", postno);
 
@@ -156,6 +161,37 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
 
   const postTags = JSON.parse(dripPost.태그 || "[]");
 
+  const handleCommentSubmit = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    if (!newComment.trim()) {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
+    try {
+      // TODO: 댓글 작성 API 호출
+      setNewComment("");
+    } catch (error) {
+      console.error("댓글 작성 중 에러:", error);
+      alert("댓글 작성 중 오류가 발생했습니다.");
+    }
+  };
+
+  const onCommentClick = () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("로그인 후 댓글을 작성할 수 있습니다.");
+      router.push("/login");
+      return;
+    }
+    // DripPostComment의 모달을 열기 위해 이벤트 발생
+    const event = new CustomEvent('openCommentModal');
+    window.dispatchEvent(event);
+  };
+
   return (
     <DripPostDetailPresenter
       containerRef={containerRef}
@@ -172,6 +208,10 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       postno={postno}
       isLiked={isLiked}
       onLikeClick={handleLikeClick}
+      newComment={newComment}
+      setNewComment={setNewComment}
+      onCommentSubmit={handleCommentSubmit}
+      onCommentClick={onCommentClick}
     />
   );
 };

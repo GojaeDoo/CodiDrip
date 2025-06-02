@@ -1,181 +1,237 @@
-import React, { useState } from "react";
+import React from "react";
 import * as S from "./DripPostComment.styled";
-import { Send, Heart, MoreVertical, MessageCircle } from "lucide-react";
-import { DripPostCommentContainerProps } from "./DripPostComment.types";
+import { Heart, MessageCircle, MoreVertical } from "lucide-react";
+import { DripPostCommentProps } from "./DripPostComment.types";
+import { formatDate } from "./DripPostComment.container";
 
-interface DripPostCommentProps extends DripPostCommentContainerProps {
-  commentContent: string;
-  setCommentContent: (content: string) => void;
-  replyContent: string;
-}
+const DripPostComment = (props: DripPostCommentProps) => {
+  const {
+    commentList,
+    onLikeComment,
+    onReplyClick,
+    onCommentSubmit,
+    newComment,
+    setNewComment,
+    expandedReplies,
+    toggleReplies,
+    isModalOpen,
+    onCloseModal,
+    onOpenModal,
+    activeMenuId,
+    handleMenuOpen,
+    onEditComment,
+    onDeleteComment,
+    editingCommentId,
+    editContent,
+    setEditContent,
+    onEditSubmit,
+    onEditCancel,
+    myUserId,
+    replyingToId,
+    replyContent,
+    onChangeReply,
+    onSubmitReply,
+  } = props;
 
-const DripPostComment = ({
-  commentList,
-  onChangeComment,
-  onSubmitComment,
-  onLikeComment,
-  handleMenuOpen,
-  activeMenuId,
-  onEditComment,
-  onDeleteComment,
-  editingCommentId,
-  editContent,
-  setEditContent,
-  onEditSubmit,
-  onEditCancel,
-  replyingToId,
-  onReplyClick,
-  onChangeReply,
-  onSubmitReply,
-  myUserId,
-  commentContent,
-  setCommentContent,
-  expandedReplies,
-  toggleReplies,
-  replyContent
-}: DripPostCommentProps) => {
   return (
     <S.CommentSection>
-      <S.CommentInputWrapper>
-        <S.CommentInput
-          placeholder="댓글을 입력하세요"
-          value={commentContent}
-          onChange={(e) => setCommentContent(e.target.value)}
-        />
-        <S.SubmitButton onClick={onSubmitComment}>작성</S.SubmitButton>
-      </S.CommentInputWrapper>
-      {commentList && commentList.length > 0 && (
-        <S.CommentList>
-          {commentList.map((comment) => (
-            <React.Fragment key={comment.id}>
-              <S.CommentItem>
-                <S.CommentProfileImage
-                  src={`http://localhost:3005/uploads/profiles/${comment.profile_image}` || "/default-profile.png"}
-                  alt={comment.profile_nickname}
-                />
-                <S.CommentContentBox>
-                  <S.CommentNickname>{comment.profile_nickname}</S.CommentNickname>
-                  {editingCommentId === comment.id ? (
-                    <S.CommentInputWrapper>
-                      <S.CommentInput
-                        value={editContent}
-                        onChange={(e) => setEditContent(e.target.value)}
-                      />
-                      <S.SubmitButton onClick={onEditSubmit}>수정</S.SubmitButton>
-                      <S.SubmitButton onClick={onEditCancel}>취소</S.SubmitButton>
-                    </S.CommentInputWrapper>
-                  ) : (
-                    <S.CommentText>{comment.content}</S.CommentText>
-                  )}
-                  <S.CommentLikeRow>
-                    <S.CommentLikeButton
-                      onClick={() => {
-                        console.log('Comment like status before click:', comment.liked);
-                        onLikeComment(comment.id);
-                      }}
-                      $isLiked={comment.liked}
-                    >
-                      {(() => {
-                        console.log('Rendering heart for comment:', comment.id, 'liked:', comment.liked);
-                        return comment.liked ? "♥" : "♡";
-                      })()}
-                    </S.CommentLikeButton>
-                    <S.CommentLikeCount $isLiked={comment.liked}>
-                      {comment.like_count}
-                    </S.CommentLikeCount>
-                    <S.ReplyButton onClick={() => onReplyClick(comment.id)}>
-                      <MessageCircle size={16} />
-                      답글
-                    </S.ReplyButton>
-                  </S.CommentLikeRow>
-                  <S.CommentDate>{comment.created_at}</S.CommentDate>
-                  {comment.replies && comment.replies.length > 0 && (
-                    <S.ReplySection>
-                      <S.ReplyToggleButton onClick={() => toggleReplies(comment.id)}>
-                        답글 {comment.replies.length}개 {expandedReplies[comment.id] ? '접기' : '더보기'}
-                      </S.ReplyToggleButton>
-                      {expandedReplies[comment.id] && (
-                        <S.ReplyList>
-                          {comment.replies.map((reply) => (
-                            <S.ReplyItem key={reply.id}>
-                              <S.ReplyMeta>
-                                <S.CommentProfileImage
-                                  src={`http://localhost:3005/uploads/profiles/${reply.profile_image}` || "/default-profile.png"}
-                                  alt={reply.profile_nickname}
-                                />
-                                <S.CommentNickname>{reply.profile_nickname}</S.CommentNickname>
-                                <S.CommentDate>{reply.created_at}</S.CommentDate>
-                              </S.ReplyMeta>
-                              {editingCommentId === reply.id ? (
-                                <S.CommentInputWrapper>
-                                  <S.CommentInput
-                                    value={editContent}
-                                    onChange={(e) => setEditContent(e.target.value)}
-                                  />
-                                  <S.SubmitButton onClick={onEditSubmit}>수정</S.SubmitButton>
-                                  <S.SubmitButton onClick={onEditCancel}>취소</S.SubmitButton>
-                                </S.CommentInputWrapper>
-                              ) : (
-                                <S.ReplyContent>{reply.content}</S.ReplyContent>
-                              )}
-                              <S.ReplyActions>
-                                <S.ReplyActionButton onClick={() => onLikeComment(reply.id)}>
-                                  <S.HeartIcon $isLiked={reply.liked}>
-                                    {reply.liked ? "♥" : "♡"}
-                                  </S.HeartIcon>
-                                  {" "}({reply.like_count})
-                                </S.ReplyActionButton>
-                                {myUserId === reply.user_id && (
-                                  <>
-                                    <S.ReplyActionButton onClick={() => onEditComment(reply.id)}>
-                                      수정
-                                    </S.ReplyActionButton>
-                                    <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
-                                      삭제
-                                    </S.ReplyActionButton>
-                                  </>
-                                )}
-                              </S.ReplyActions>
-                            </S.ReplyItem>
-                          ))}
-                        </S.ReplyList>
-                      )}
-                    </S.ReplySection>
-                  )}
-                </S.CommentContentBox>
+      <S.CommentHeader>
+        <S.CommentTitle>댓글</S.CommentTitle>
+        <S.CommentCount>{commentList.length}개</S.CommentCount>
+      </S.CommentHeader>
 
+      <S.CommentList>
+        {commentList.map((comment) => (
+          <S.CommentItem key={comment.id}>
+            <S.UserProfileImage 
+              src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
+              alt={comment.profile_nickname} 
+            />
+            <S.CommentBody>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                <S.UserName>{comment.profile_nickname}</S.UserName>
+              </div>
+                <S.CommentText>{comment.content}</S.CommentText>
+              <S.CommentMeta>
+                <S.CommentDate>{formatDate(comment.created_at)}</S.CommentDate>
+                <S.CommentLikeButton 
+                  $isLiked={comment.liked} 
+                  onClick={() => onLikeComment(comment.id)}
+                >
+                  <Heart size={16} fill={comment.liked ? "#ff3b3b" : "none"} color={comment.liked ? "#ff3b3b" : "#aaa"} />
+                  {comment.like_count}
+                </S.CommentLikeButton>
+                <S.ReplyButton onClick={() => {
+                  onReplyClick(comment.id);
+                  onOpenModal();  // 모달 열기
+                }}>
+                  <MessageCircle size={16} />
+                </S.ReplyButton>
                 {myUserId === comment.user_id && (
-                  <S.CommentMenuWrapper>
-                    <S.CommentMenuButton onClick={() => handleMenuOpen(comment.id)}>
-                      ⋮
-                    </S.CommentMenuButton>
+                  <>
+                    <S.MenuButton onClick={() => handleMenuOpen(comment.id)}>
+                      <MoreVertical size={16} />
+                    </S.MenuButton>
                     {activeMenuId === comment.id && (
-                      <S.CommentMenu>
-                        <S.CommentMenuItem onClick={() => onEditComment(comment.id)}>
-                          수정
-                        </S.CommentMenuItem>
-                        <S.CommentMenuItem onClick={() => onDeleteComment(comment.id)}>
-                          삭제
-                        </S.CommentMenuItem>
-                      </S.CommentMenu>
+                      <S.Menu>
+                        <S.MenuItem onClick={() => {
+                          onEditComment(comment.id);
+                          handleMenuOpen(0);  // 메뉴 닫기
+                        }}>수정</S.MenuItem>
+                        <S.MenuItem onClick={() => {
+                          onDeleteComment(comment.id);
+                          handleMenuOpen(0);  // 메뉴 닫기
+                        }}>삭제</S.MenuItem>
+                      </S.Menu>
                     )}
-                  </S.CommentMenuWrapper>
+                  </>
                 )}
-              </S.CommentItem>
+              </S.CommentMeta>
 
-              {replyingToId === comment.id && (
-                <S.ReplyInputWrapper>
-                  <S.ReplyInput
-                    placeholder="답글을 입력하세요"
-                    value={replyContent}
-                    onChange={onChangeReply}
-                  />
-                  <S.SubmitButton onClick={onSubmitReply}>작성</S.SubmitButton>
-                </S.ReplyInputWrapper>
+              {/* 답글 보기/숨기기 버튼 */}
+              {comment.replies && comment.replies.length > 0 && (
+                <S.ShowRepliesButton onClick={() => toggleReplies(comment.id)}>
+                  {expandedReplies[comment.id] ? "답글 숨기기" : `답글 ${comment.replies.length}개 보기`}
+                </S.ShowRepliesButton>
               )}
-            </React.Fragment>
-          ))}
-        </S.CommentList>
+
+              {/* 대댓글 */}
+              {expandedReplies[comment.id] && comment.replies && comment.replies.length > 0 && (
+                <S.ReplyList>
+                  {comment.replies.map((reply) => (
+                    <S.ReplyItem key={reply.id}>
+                      <S.UserProfileImage 
+                        src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
+                        alt={reply.profile_nickname} 
+                        $small 
+                      />
+                      <S.CommentBody>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                          <S.UserName>{reply.profile_nickname}</S.UserName>
+                          <S.CommentText>{reply.content}</S.CommentText>
+                        </div>
+                        <S.CommentMeta>
+                          <S.CommentDate>{formatDate(reply.created_at)}</S.CommentDate>
+                          <S.CommentLikeButton 
+                            $isLiked={reply.liked} 
+                            onClick={() => onLikeComment(reply.id)}
+                          >
+                            <Heart size={16} fill={reply.liked ? "#ff3b3b" : "none"} color={reply.liked ? "#ff3b3b" : "#aaa"} />
+                            {reply.like_count}
+                          </S.CommentLikeButton>
+                          {myUserId === reply.user_id && (
+                            <>
+                              <S.MenuButton onClick={() => handleMenuOpen(reply.id)}>
+                                <MoreVertical size={16} />
+                              </S.MenuButton>
+                              {activeMenuId === reply.id && (
+                                <S.Menu>
+                                  <S.MenuItem onClick={() => {
+                                    const replyContent = reply.content;
+                                    setEditContent(replyContent);
+                                    onEditComment(reply.id);
+                                    handleMenuOpen(0);
+                                  }}>수정</S.MenuItem>
+                                  <S.MenuItem onClick={() => {
+                                    onDeleteComment(reply.id);
+                                    handleMenuOpen(0);
+                                  }}>삭제</S.MenuItem>
+                                </S.Menu>
+                              )}
+                            </>
+                          )}
+                        </S.CommentMeta>
+                      </S.CommentBody>
+                    </S.ReplyItem>
+                  ))}
+                </S.ReplyList>
+              )}
+            </S.CommentBody>
+          </S.CommentItem>
+        ))}
+      </S.CommentList>
+
+      {/* 답글 작성 모달 */}
+      {isModalOpen && replyingToId && (
+        <S.ModalOverlay onClick={onCloseModal}>
+          <S.ModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ModalHeader>
+              <S.ModalTitle>답글 작성</S.ModalTitle>
+              <S.CloseButton onClick={onCloseModal}>&times;</S.CloseButton>
+            </S.ModalHeader>
+            <S.ModalBody>
+              <S.ModalTextArea
+                value={replyContent}
+                onChange={(e) => onChangeReply(e.target.value)}
+                placeholder="답글을 입력하세요"
+                autoFocus
+              />
+            </S.ModalBody>
+            <S.ModalFooter>
+              <S.ModalButton onClick={onCloseModal}>취소</S.ModalButton>
+              <S.ModalButton onClick={onSubmitReply}>답글 작성</S.ModalButton>
+            </S.ModalFooter>
+          </S.ModalContent>
+        </S.ModalOverlay>
+      )}
+
+      {/* 댓글 작성 모달 */}
+      {isModalOpen && !replyingToId && (
+        <S.ModalOverlay onClick={onCloseModal}>
+          <S.ModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ModalHeader>
+              <S.ModalTitle>댓글 작성</S.ModalTitle>
+              <S.CloseButton onClick={onCloseModal}>&times;</S.CloseButton>
+            </S.ModalHeader>
+            <S.ModalBody>
+              <S.ModalTextArea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="댓글을 입력하세요"
+                autoFocus
+              />
+            </S.ModalBody>
+            <S.ModalFooter>
+              <S.ModalButton onClick={onCloseModal}>취소</S.ModalButton>
+              <S.ModalButton onClick={onCommentSubmit}>작성</S.ModalButton>
+            </S.ModalFooter>
+          </S.ModalContent>
+        </S.ModalOverlay>
+      )}
+
+      {/* 수정 모달 */}
+      {editingCommentId !== null && (
+        <S.ModalOverlay onClick={onEditCancel}>
+          <S.ModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ModalHeader>
+              <S.ModalTitle>
+                {commentList.some(comment => comment.id === editingCommentId) 
+                  ? "댓글 수정" 
+                  : "답글 수정"}
+              </S.ModalTitle>
+              <S.CloseButton onClick={onEditCancel}>&times;</S.CloseButton>
+            </S.ModalHeader>
+            <S.ModalBody>
+              <S.ModalTextArea
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                placeholder={
+                  commentList.some(comment => comment.id === editingCommentId)
+                    ? "댓글을 수정하세요"
+                    : "답글을 수정하세요"
+                }
+                autoFocus
+              />
+            </S.ModalBody>
+            <S.ModalFooter>
+              <S.ModalButton onClick={onEditCancel}>취소</S.ModalButton>
+              <S.ModalButton onClick={() => {
+                onEditSubmit();
+                handleMenuOpen(0);
+              }}>수정</S.ModalButton>
+            </S.ModalFooter>
+          </S.ModalContent>
+        </S.ModalOverlay>
       )}
     </S.CommentSection>
   );

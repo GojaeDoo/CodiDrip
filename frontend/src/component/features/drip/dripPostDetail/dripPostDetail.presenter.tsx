@@ -15,10 +15,12 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
     currentImageIndex,
     onPrevImage,
     onNextImage,
+    getImageUrl,
     postTags,
     postno,
     isLiked,
     onLikeClick,
+    onCommentClick,
   } = props;
 
   return (
@@ -79,7 +81,10 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                 <Heart size={24} fill={isLiked ? "currentColor" : "none"} />
                 <span>좋아요</span>
               </S.InteractionButton>
-              <S.InteractionButton aria-label="댓글">
+              <S.InteractionButton 
+                aria-label="댓글"
+                onClick={onCommentClick}
+              >
                 <MessageCircle size={24} />
                 <span>댓글</span>
               </S.InteractionButton>
@@ -98,6 +103,7 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
             </S.TagList>
           </S.TagBox>
         </S.MainSection>
+        
         <S.CommentSection>
           <DripPostCommentContainer postno={parseInt(postno)} />
         </S.CommentSection>
