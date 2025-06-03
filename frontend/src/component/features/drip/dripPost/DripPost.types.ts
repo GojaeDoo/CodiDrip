@@ -12,6 +12,8 @@ export interface DripPostResponse {
   닉네임: string;
   키: number;
   몸무게: number;
+  "댓글 개수": number;
+  "좋아요 개수": number;
 }
 
 export interface DripPostType {
@@ -25,6 +27,8 @@ export interface DripPostType {
   post_tag: string[];
   isOwner: boolean;
   currentImageIndex: number;
+  "좋아요 개수": number;
+  "댓글 개수": number;
 }
 
 export interface DripPostProps {
@@ -38,16 +42,48 @@ export interface DripPostProps {
   onMenuClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
   onHidePost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
   onEditPost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
-  onDeletePost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
-  onPrevImage: (e: React.MouseEvent<HTMLButtonElement>, postNo: number, totalImages: number) => void;
-  onNextImage: (e: React.MouseEvent<HTMLButtonElement>, postNo: number, totalImages: number) => void;
+  onDeletePost: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  onPrevImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
+  onNextImage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    totalImages: number
+  ) => void;
   onLikeClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
-  onCommentClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
-  onReportPost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
-  onPinClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number, pinId: number) => void;
-  onPinHover: (e: React.MouseEvent<HTMLButtonElement>, postNo: number, pinId: number) => void;
-  onPinLeave: (e: React.MouseEvent<HTMLButtonElement>, postNo: number, pinId: number) => void;
-  onImageClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onCommentClick: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  onReportPost: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  onPinClick: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    pinId: number
+  ) => void;
+  onPinHover: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    pinId: number
+  ) => void;
+  onPinLeave: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number,
+    pinId: number
+  ) => void;
+  onImageClick: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
   onCloseMenu: () => void;
   activePin: { postNo: number; pinId: number } | null;
   isLiked: boolean;

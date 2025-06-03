@@ -12,6 +12,8 @@ const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   profile_weight: post.몸무게,
   isOwner: false,
   currentImageIndex: 0,
+  "좋아요 개수": post["좋아요 개수"],
+  "댓글 개수": post["댓글 개수"],
 });
 
 export const getUserSpecificDripPosts = async (

@@ -101,12 +101,12 @@ export const DripPostPresenter = (props: DripPostProps) => {
                   {post.post_image.length > 1 && (
                     <>
                       <S.NavigationButton
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
                           props.onPrevImage(
                             e,
                             post.post_no,
-                            post.post_image.length,
+                            post.post_image.length
                           );
                         }}
                         $position="left"
@@ -114,7 +114,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
                         <ChevronLeft size={20} />
                       </S.NavigationButton>
                       <S.NavigationButton
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
                           props.onNextImage(
                             e,
@@ -134,11 +134,17 @@ export const DripPostPresenter = (props: DripPostProps) => {
                 </S.ImageContainer>
 
                 <S.PostActions>
-                  <S.ActionButton onClick={(e) => props.onLikeClick(e, post.post_no)}>
+                  <S.ActionButton
+                    onClick={(e) => props.onLikeClick(e, post.post_no)}
+                  >
                     <Heart size={24} />
+                    <span>{post["좋아요 개수"]}</span>
                   </S.ActionButton>
-                  <S.ActionButton onClick={(e) => props.onCommentClick(e, post.post_no)}>
+                  <S.ActionButton
+                    onClick={(e) => props.onCommentClick(e, post.post_no)}
+                  >
                     <MessageCircle size={24} />
+                    <span>{post["댓글 개수"]}</span>
                   </S.ActionButton>
                   <div style={{ flex: 1 }} />
                 </S.PostActions>

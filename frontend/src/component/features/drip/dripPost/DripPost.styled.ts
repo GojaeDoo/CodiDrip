@@ -211,16 +211,30 @@ export const ActionButton = styled.button`
   color: #e4e6eb;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
   transition: all 0.3s ease;
+
+  span {
+    font-size: 12px;
+    color: #b0b3b8;
+  }
 
   &:hover {
     color: #b0b3b8;
     transform: scale(1.1);
+
+    span {
+      color: #e4e6eb;
+    }
   }
 
   @media (max-width: 768px) {
     padding: 3px;
+    gap: 3px;
+
+    span {
+      font-size: 11px;
+    }
 
     &:hover {
       transform: none;
