@@ -131,7 +131,7 @@ export const InteractionSection = styled.div`
   justify-content: space-between;
 `;
 
-export const InteractionButton = styled.button<{ $isLiked?: boolean }>`
+export const InteractionButton = styled.button<{ $isLiked?: boolean; $isSaved?: boolean }>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -151,13 +151,22 @@ export const InteractionButton = styled.button<{ $isLiked?: boolean }>`
   }
 
   svg {
-    color: ${({ $isLiked }) => ($isLiked ? "#ff4d4d" : "#ffffff")};
     font-size: 1.5rem;
     transition: all 0.2s ease;
+    fill: ${({ $isSaved, $isLiked }) => {
+      if ($isSaved) return "#FFD700";
+      if ($isLiked) return "#ff3b3b";
+      return "none";
+    }};
+    stroke: ${({ $isSaved, $isLiked }) => {
+      if ($isSaved) return "#FFD700";
+      if ($isLiked) return "#ff3b3b";
+      return "#666";
+    }};
+    stroke-width: 2;
   }
 
   &:hover svg {
-    color: #ff4d4d;
     transform: scale(1.1);
   }
 

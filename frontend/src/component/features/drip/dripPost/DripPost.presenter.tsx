@@ -7,13 +7,18 @@ import {
   MessageCircle,
   MoreVertical,
 } from "lucide-react";
+import DripPostSkeleton from "../../../commons/skeleton/DripPostSkeleton";
 
 export const DripPostPresenter = (props: DripPostProps) => {
   return (
     <>
       <S.Background>
         <S.UserDripPostWrapper>
-          {!props.dripPostData || props.dripPostData.length === 0 ? (
+          {props.isLoading ? (
+            Array(3).fill(0).map((_, index) => (
+              <DripPostSkeleton key={`skeleton-${index}`} />
+            ))
+          ) : !props.dripPostData || props.dripPostData.length === 0 ? (
             <div>게시물이 없습니다.</div>
           ) : (
             props.dripPostData.map((post) => (
@@ -134,12 +139,20 @@ export const DripPostPresenter = (props: DripPostProps) => {
                 </S.ImageContainer>
 
                 <S.PostActions>
-                  <S.ActionButton
-                    onClick={(e) => props.onLikeClick(e, post.post_no)}
-                  >
-                    <Heart size={24} />
-                    <span>{post["좋아요 개수"]}</span>
-                  </S.ActionButton>
+                  <S.PostFooter>
+                    <S.PostFooterItem>
+                      <S.LikeButton 
+                        $isLiked={post.liked}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          props.onLikeClick(e, post.post_no);
+                        }}
+                      >
+                        <Heart size={24} fill={post.liked ? "#ff3b3b" : "none"} color={post.liked ? "#ff3b3b" : "#aaa"} />
+                        <span>{post["좋아요 개수"]}</span>
+                      </S.LikeButton>
+                    </S.PostFooterItem>
+                  </S.PostFooter>
                   <S.ActionButton
                     onClick={(e) => props.onCommentClick(e, post.post_no)}
                   >

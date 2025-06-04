@@ -31,9 +31,7 @@ export const deleteCommentQuery = async (commentId: number) => {
 
 export const likeCommentQuery = async (commentId: number, user_id: string) => {
   console.log('Sending like request:', { commentId, user_id });
-  const response = await axios.post(`http://localhost:3005/api/drip/comments/${commentId}/like`, {
-    user_id: user_id
-  });
+  const response = await axios.post(`http://localhost:3005/api/drip/comments/${commentId}/like?userId=${user_id}`);
   console.log('Like response:', response.data);
   return response.data;
 };
@@ -41,9 +39,7 @@ export const likeCommentQuery = async (commentId: number, user_id: string) => {
 export const unlikeCommentQuery = async (commentId: number, user_id: string) => {
   console.log('Sending unlike request:', { commentId, user_id });
   try {
-    const response = await axios.delete(`http://localhost:3005/api/drip/comments/${commentId}/like`, {
-      data: { user_id: user_id }
-    });
+    const response = await axios.delete(`http://localhost:3005/api/drip/comments/${commentId}/like?userId=${user_id}`);
     console.log('Unlike response:', response.data);
     return response.data;
   } catch (error) {

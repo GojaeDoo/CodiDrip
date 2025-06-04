@@ -29,6 +29,7 @@ export interface DripPostType {
   currentImageIndex: number;
   "좋아요 개수": number;
   "댓글 개수": number;
+  liked: boolean;
 }
 
 export interface DripPostProps {
@@ -143,6 +144,7 @@ export interface DripPostProps {
   isPinSilent: boolean;
   isPinMuted: boolean;
   isPinUnmuted: boolean;
+  isLoading?: boolean;
 }
 
 export interface DripPostContainerProps {

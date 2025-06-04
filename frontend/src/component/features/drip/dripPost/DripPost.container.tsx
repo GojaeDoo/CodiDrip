@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
-import { getUserDripPostQuery, deleteDripPostQuery } from "./DripPost.query";
+import { getUserDripPostQuery, deleteDripPostQuery, likeDripPostQuery } from "./DripPost.query";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const DripPostContainer = ({
@@ -16,11 +16,11 @@ export const DripPostContainer = ({
   }>({});
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const isDripUser = searchParams.get("dripUser") === "true";
 
-  console.log("drip에서 온 성별 : " + gender);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -29,15 +29,17 @@ export const DripPostContainer = ({
 
   useEffect(() => {
     const fetchDripPosts = async () => {
+      setIsLoading(true);
       try {
         const response = await getUserDripPostQuery(
           userId,
           gender !== "all" ? gender : undefined
         );
         setDripPostData(response);
-        console.log(response);
       } catch (error) {
         console.error("Error fetching drip posts:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -95,20 +97,20 @@ export const DripPostContainer = ({
     try {
       await deleteDripPostQuery(postNo);
       alert("게시글이 삭제되었습니다.");
-      window.location.reload(); // 페이지 새로고침
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting post:", error);
       alert("게시글 삭제 중 오류가 발생했습니다.");
     }
   };
 
-  const onLikeClick = (e: React.MouseEvent<SVGSVGElement>, postNo: number) => {
+  const onLikeClick = (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => {
     e.preventDefault();
-    alert(`게시글 ${postNo} 좋아요`);
+    handleLike(postNo);
   };
 
   const onCommentClick = (
-    e: React.MouseEvent<SVGSVGElement>,
+    e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
     e.preventDefault();
@@ -129,8 +131,26 @@ export const DripPostContainer = ({
 
   const handleReportPost = async (e: React.MouseEvent, postNo: number) => {
     e.stopPropagation();
-    // TODO: Implement report post functionality
-    console.log("Report post:", postNo);
+  };
+
+  const handleLike = async (postId: number) => {
+    try {
+      const response = await likeDripPostQuery(postId);
+      if (response.success) {
+        setDripPostData(dripPostData?.map(post => {
+          if (post.post_no === postId) {
+            return {
+              ...post,
+              liked: response.liked,
+              "좋아요 개수": response.likeCount
+            };
+          }
+          return post;
+        }) ?? []);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 중 오류 발생:", error);
+    }
   };
 
   return isDripUser ? null : (
@@ -155,6 +175,7 @@ export const DripPostContainer = ({
           })
           .filter((post): post is DripPostType => post !== null) ?? []
       }
+      isLoading={isLoading}
       currentImageIndexes={currentImageIndexes}
       currentUserId={currentUserId}
       activeMenu={activeMenu}

@@ -25,6 +25,8 @@ export interface DripPostDetailResponse {
   작성일시: string;
   핀: Pin[];
   is_liked: boolean;
+  "좋아요 개수": number;
+  "댓글 개수": number;
 }
 
 export interface DripPostDetailProps {
@@ -50,4 +52,7 @@ export interface DripPostDetailPresenterProps {
   newComment: string;
   setNewComment: (content: string) => void;
   onCommentSubmit: () => void;
+  likeCount: number;
+  commentCount: number;
+  handleClickSave: () => void;
 }

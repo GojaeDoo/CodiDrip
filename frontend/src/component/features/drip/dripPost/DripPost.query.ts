@@ -14,6 +14,7 @@ const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   currentImageIndex: 0,
   "좋아요 개수": post["좋아요 개수"],
   "댓글 개수": post["댓글 개수"],
+  liked: post.liked || false,
 });
 
 export const getUserSpecificDripPosts = async (
@@ -34,9 +35,10 @@ export const getAllDripPosts = async (
   gender?: string
 ): Promise<DripPostType[]> => {
   try {
+    const userId = localStorage.getItem("userId");
     const url = gender
-      ? `http://localhost:3005/api/drip?gender=${gender}`
-      : "http://localhost:3005/api/drip";
+      ? `http://localhost:3005/api/drip?gender=${gender}&userId=${userId}`
+      : `http://localhost:3005/api/drip?userId=${userId}`;
     const response = await axios.get(url);
     return response.data.map(transformDripPostData);
   } catch (error) {
@@ -65,6 +67,24 @@ export const deleteDripPostQuery = async (postNo: number) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting post:", error);
+    throw error;
+  }
+};
+
+export const likeDripPostQuery = async (postId: number) => {
+  try {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      throw new Error("User not logged in");
+    }
+    const response = await axios.post(`http://localhost:3005/api/drip/${postId}/like?userId=${userId}`);
+    return {
+      success: true,
+      liked: response.data.liked,
+      likeCount: response.data.likeCount
+    };
+  } catch (error) {
+    console.error("Error liking post:", error);
     throw error;
   }
 };

@@ -14,7 +14,9 @@ import {
   postDripPostReplyStorage,
   likeDripPostStorage,
   unlikeDripPostStorage,
-  getDripPostLikeStatusStorage
+  getDripPostLikeStatusStorage,
+  saveDripPostStorage,
+  getDripPostSaveStatusStorage
 } from "../storage/dripStorage";
 
 export const dripService = {
@@ -57,9 +59,9 @@ export const dripService = {
     }
   },
 
-  getPostNoDrip: async (postNo: number) => {
+  getPostNoDrip: async (postNo: number, userId?: string) => {
     try {
-      const drip = await getPostNoDripPost(postNo);
+      const drip = await getPostNoDripPost(postNo, userId);
       return drip;
     } catch (error) {
       console.error("getPostNoDrip error - dripService:", error);
@@ -170,6 +172,24 @@ export const dripService = {
   getDripPostLikeStatusService: async (userId: string, postNo: number) => {
     return await getDripPostLikeStatusStorage(userId, postNo);
   },
+
+  saveDripPostService: async (postNo: number, userId: string) => {
+    try {
+      return await saveDripPostStorage(postNo, userId);
+    } catch (error) {
+      console.error("Error in saveDripPostService:", error);
+      throw error;
+    }
+  },
+
+  getDripPostSaveStatusService: async (postNo: number, userId: string) => {
+    try {
+      return await getDripPostSaveStatusStorage(postNo, userId);
+    } catch (error) {
+      console.error("Error in getDripPostSaveStatusService:", error);
+      throw error;
+    }
+  }
 };
 
 export const getUserDripPostService = async (userId?: string) => {

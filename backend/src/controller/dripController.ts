@@ -34,12 +34,13 @@ export const getUserDrip = async (req: Request, res: Response) => {
 export const getPostNoDrip = async (req: Request, res: Response) => {
   try {
     const postNo = parseInt(req.params.postNo, 10);
+    const userId = req.query.userId as string;
     if (isNaN(postNo)) {
       return res
         .status(400)
         .json({ error: "유효하지 않은 게시물 번호입니다." });
     }
-    const drip = await dripService.getPostNoDrip(postNo);
+    const drip = await dripService.getPostNoDrip(postNo, userId);
     res.status(200).json(drip);
   } catch (error) {
     console.error("getPostNoDrip error - dripController:", error);
@@ -158,10 +159,21 @@ export const deleteDripPostCommentController = async (req: Request, res: Respons
 
 export const likeDripPostCommentController = async (req: Request, res: Response) => {
   const { commentId } = req.params;
-  const userId = req.body.user_id || req.query.user_id;
+  const userId = req.query.userId || req.body.userId;
+  console.log('Like Comment Request:', {
+    commentId,
+    userId,
+    body: req.body,
+    query: req.query
+  });
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
   try {
-    await dripService.likeDripPostCommentService(userId, Number(commentId));
-    res.json({ message: '댓글 좋아요 완료' });
+    const result = await dripService.likeDripPostCommentService(userId as string, Number(commentId));
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: '댓글 좋아요 중 오류가 발생했습니다.' });
@@ -170,16 +182,21 @@ export const likeDripPostCommentController = async (req: Request, res: Response)
 
 export const unlikeDripPostCommentController = async (req: Request, res: Response) => {
   const { commentId } = req.params;
-  const userId = req.body.user_id || req.query.user_id;
+  const userId = req.query.userId || req.body.userId;
   console.log('Unlike Comment Request:', {
     commentId,
     userId,
     body: req.body,
     query: req.query
   });
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
   try {
-    await dripService.unlikeDripPostCommentService(userId, Number(commentId));
-    res.json({ message: '댓글 좋아요 취소 완료' });
+    const result = await dripService.unlikeDripPostCommentService(userId as string, Number(commentId));
+    res.json(result);
   } catch (err) {
     console.error('Unlike Comment Error:', err);
     res.status(500).json({ error: '댓글 좋아요 취소 중 오류가 발생했습니다.' });
@@ -200,25 +217,57 @@ export const postDripPostReplyController = async (req: Request, res: Response) =
   }
 };
 
-export const likeDripPostController: RequestHandler = async (req, res) => {
+export const likeDripPostController = async (req: Request, res: Response) => {
   try {
-    const { postNo } = req.params;
-    const { user_id } = req.body;
-    const result = await dripService.likeDripPostService(user_id, Number(postNo));
-    res.json(result);
+    const postNo = parseInt(req.params.postNo, 10);
+    const userId = req.query.userId || req.body.userId;
+    console.log('Like Post Request:', {
+      postNo,
+      userId,
+      body: req.body,
+      query: req.query
+    });
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const result = await dripService.likeDripPostService(userId as string, postNo);
+    res.json({
+      success: true,
+      liked: result.liked,
+      likeCount: result.likeCount
+    });
   } catch (error) {
-    res.status(500).json({ error: "게시글 좋아요 실패" });
+    console.error("likeDripPostController error:", error);
+    res.status(500).json({ error: "Failed to like post" });
   }
 };
 
-export const unlikeDripPostController: RequestHandler = async (req, res) => {
+export const unlikeDripPostController = async (req: Request, res: Response) => {
   try {
-    const { postNo } = req.params;
-    const { user_id } = req.body;
-    const result = await dripService.unlikeDripPostService(user_id, Number(postNo));
-    res.json(result);
+    const postNo = parseInt(req.params.postNo, 10);
+    const userId = req.query.userId || req.body.userId;
+    console.log('Unlike Post Request:', {
+      postNo,
+      userId,
+      body: req.body,
+      query: req.query
+    });
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const result = await dripService.unlikeDripPostService(userId as string, postNo);
+    res.json({
+      success: true,
+      liked: false,
+      likeCount: result.likeCount
+    });
   } catch (error) {
-    res.status(500).json({ error: "게시글 좋아요 취소 실패" });
+    console.error("unlikeDripPostController error:", error);
+    res.status(500).json({ error: "Failed to unlike post" });
   }
 };
 
@@ -238,5 +287,47 @@ export const getDripPostLikeStatusController = async (req: Request, res: Respons
   } catch (error) {
     console.error("getDripPostLikeStatusController error:", error);
     res.status(500).json({ error: "좋아요 상태 조회 중 오류가 발생했습니다." });
+  }
+};
+
+export const saveDripPostController = async (req: Request, res : Response) => {
+  try {
+    const postNo = parseInt(req.params.postNo, 10);
+    const userId = req.body.userId;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    if (isNaN(postNo)) {
+      return res.status(400).json({ error: "Invalid post number" });
+    }
+
+    const result = await dripService.saveDripPostService(postNo, userId);
+    res.json(result);
+  } catch (error) {
+    console.error("saveDripPostController error:", error);
+    res.status(500).json({ error: "Failed to save post" });
+  }
+}
+
+export const getDripPostSaveStatusController = async (req: Request, res: Response) => {
+  try {
+    const postNo = parseInt(req.params.postNo, 10);
+    const userId = req.query.userId as string;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    if (isNaN(postNo)) {
+      return res.status(400).json({ error: "Invalid post number" });
+    }
+
+    const saved = await dripService.getDripPostSaveStatusService(postNo, userId);
+    res.json({ saved });
+  } catch (error) {
+    console.error("getDripPostSaveStatusController error:", error);
+    res.status(500).json({ error: "Failed to get save status" });
   }
 };

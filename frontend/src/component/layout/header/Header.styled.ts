@@ -5,12 +5,16 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: #1a1a1a;
+  background-color: rgba(26, 26, 26, 0.95);
   border-bottom: 1px solid #333;
   display: flex;
   flex-direction: row;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 `;
 
 export const Logo = styled.div`

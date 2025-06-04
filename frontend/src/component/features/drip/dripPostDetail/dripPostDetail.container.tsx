@@ -1,26 +1,32 @@
 "use client";
 
-import React, { useRef, useState, useCallback, useLayoutEffect } from "react";
+import React, { useRef, useState, useCallback, useLayoutEffect, useEffect } from "react";
 import DripPostDetailPresenter from "./DripPostDetail.presenter";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getDripPostDetail, likeDripPostQuery, unlikeDripPostQuery, getDripPostLikeStatus } from "./DripPostDetail.query";
+import { useQuery } from "@tanstack/react-query";
+import { getDripPostDetail, likeDripPostQuery, unlikeDripPostQuery, getDripPostLikeStatus, saveDripPostQuery, getDripPostSaveStatus } from "./DripPostDetail.query";
 import { DripPostDetailProps } from "./DripPostDetail.types";
 import { useRouter } from "next/navigation";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
-  const queryClient = useQueryClient();
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const [imgInfo, setImgInfo] = useState({ width: 1, height: 1, left: 0, top: 0 });
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [newComment, setNewComment] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
+  const [userId, setUserId] = useState<string>("");
+  const [isSaved, setIsSaved] = useState(false);
 
   const router = useRouter();
 
-  console.log("Container mounted with postNo:", postno);
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const {
     data: dripPost,
@@ -31,14 +37,38 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     queryFn: () => getDripPostDetail(parseInt(postno)),
   });
 
-  React.useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    console.log("[like-status] 요청 파라미터:", { postNo: postno, userId });
-    if (!userId || !postno) return;
-    getDripPostLikeStatus(parseInt(postno), userId)
-      .then((liked) => setIsLiked(liked))
-      .catch(() => setIsLiked(false));
-  }, [postno]);
+  const { data: likeStatus, isLoading: isLikeStatusLoading } = useQuery({
+    queryKey: ["dripPostLikeStatus", postno],
+    queryFn: () => getDripPostLikeStatus(parseInt(postno), userId),
+    enabled: !!userId,
+    staleTime: 0,
+    retry: 1
+  });
+
+  const { data: saveStatus } = useQuery({
+    queryKey: ["dripPostSaveStatus", postno, userId],
+    queryFn: () => getDripPostSaveStatus(parseInt(postno), userId),
+    enabled: !!userId,
+  });
+
+  useEffect(() => {
+    if (!isLikeStatusLoading && likeStatus !== undefined) {
+      setIsLiked(Boolean(likeStatus));
+    }
+  }, [likeStatus, isLikeStatusLoading]);
+
+  useEffect(() => {
+    if (dripPost) {
+      setLikeCount(Number(dripPost["좋아요 개수"]) || 0);
+      setCommentCount(Number(dripPost["댓글 개수"]) || 0);
+    }
+  }, [dripPost]);
+
+  useEffect(() => {
+    if (saveStatus !== undefined) {
+      setIsSaved(saveStatus);
+    }
+  }, [saveStatus]);
 
   const updateRect = useCallback(() => {
     if (containerRef.current && imageRef.current) {
@@ -88,25 +118,23 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   };
 
   const handleLikeClick = async () => {
-    const userId = localStorage.getItem("userId");
     if (!userId) {
-      alert("로그인이 필요합니다.");
+      alert("로그인 후 좋아요를 누를 수 있습니다.");
+      router.push("/login");
       return;
     }
+
     try {
       if (isLiked) {
         await unlikeDripPostQuery(parseInt(postno), userId);
+        setLikeCount(prev => prev - 1);
       } else {
         await likeDripPostQuery(parseInt(postno), userId);
+        setLikeCount(prev => prev + 1);
       }
-      // 좋아요 상태를 다시 동기화
-      console.log("[like-status] 요청 파라미터 (after click):", { postNo: postno, userId });
-      if (!userId || !postno) return;
-      const liked = await getDripPostLikeStatus(parseInt(postno), userId);
-      setIsLiked(liked);
+      setIsLiked(!isLiked);
     } catch (error) {
-      console.error("좋아요 처리 중 에러:", error);
-      alert("좋아요 처리 중 오류가 발생했습니다.");
+      console.error("Error toggling like:", error);
     }
   };
 
@@ -118,30 +146,19 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
-  const getImageUrl = (imagePath: string) => {
-    if (imagePath.startsWith("http")) return imagePath;
-    if (imagePath.startsWith("/")) {
-      return `http://localhost:3005/uploads/drip${imagePath}`;
-    }
-    return `http://localhost:3005/uploads/drip/${imagePath}`;
-  };
-
   let images: string[] = [];
   if (dripPost) {
     try {
-      console.log("원본 게시글이미지:", dripPost.게시글이미지);
       if (typeof dripPost.게시글이미지 === "string") {
         images = JSON.parse(dripPost.게시글이미지);
       } else {
         images = [dripPost.게시글이미지];
       }
-      // 파일명만 있으면 URL 붙이기
       images = images.map(img =>
         img.startsWith("http")
           ? img
           : `http://localhost:3005/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
       );
-      console.log("파싱된 이미지 배열:", images);
     } catch (error) {
       console.error("이미지 파싱 에러:", error);
       images = [dripPost.게시글이미지];
@@ -157,39 +174,29 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   if (error) return <div>Error loading post</div>;
   if (!dripPost) return <div>No post found</div>;
 
-  console.log("dripPost:", dripPost);
-
   const postTags = JSON.parse(dripPost.태그 || "[]");
 
-  const handleCommentSubmit = async () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-    if (!newComment.trim()) {
-      alert("댓글 내용을 입력해주세요.");
-      return;
-    }
-    try {
-      // TODO: 댓글 작성 API 호출
-      setNewComment("");
-    } catch (error) {
-      console.error("댓글 작성 중 에러:", error);
-      alert("댓글 작성 중 오류가 발생했습니다.");
-    }
-  };
-
   const onCommentClick = () => {
-    const userId = localStorage.getItem("userId");
     if (!userId) {
       alert("로그인 후 댓글을 작성할 수 있습니다.");
       router.push("/login");
       return;
     }
-    // DripPostComment의 모달을 열기 위해 이벤트 발생
-    const event = new CustomEvent('openCommentModal');
-    window.dispatchEvent(event);
+    window.dispatchEvent(new Event('openCommentModal'));
+  };
+
+  const handleClickSave = async () => {
+    if (!userId) {
+      alert("로그인 후 이용해주세요.");
+      router.push("/login");
+      return;
+    }
+    try {
+      const response = await saveDripPostQuery(parseInt(postno), userId);
+      setIsSaved(response.saved);
+    } catch (error) {
+      console.error("Error saving post:", error);
+    }
   };
 
   return (
@@ -203,15 +210,15 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       currentImageIndex={currentImageIndex}
       onPrevImage={handlePrevImage}
       onNextImage={handleNextImage}
-      getImageUrl={getImageUrl}
       postTags={postTags}
       postno={postno}
       isLiked={isLiked}
       onLikeClick={handleLikeClick}
-      newComment={newComment}
-      setNewComment={setNewComment}
-      onCommentSubmit={handleCommentSubmit}
       onCommentClick={onCommentClick}
+      likeCount={likeCount}
+      commentCount={commentCount}
+      handleClickSave={handleClickSave}
+      isSaved={isSaved}
     />
   );
 };

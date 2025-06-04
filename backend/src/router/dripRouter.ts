@@ -15,10 +15,14 @@ import {
   postDripPostReplyController,
   likeDripPostController,
   unlikeDripPostController,
-  getDripPostLikeStatusController
+  getDripPostLikeStatusController,
+  saveDripPostController,
+  getDripPostSaveStatusController
 } from "../controller/dripController";
 
 const router = express.Router();
+
+// Drip 게시글
 
 // Drip 생성
 router.post("/", createDrip as RequestHandler);
@@ -37,6 +41,20 @@ router.put("/:postNo", updateDrip as RequestHandler);
 
 // Drip 삭제
 router.delete("/:postNo", deleteDrip as RequestHandler);
+
+// Drip 게시글 좋아요
+router.post("/:postNo/like", likeDripPostController as RequestHandler);
+
+// Drip 게시글 좋아요 취소
+router.delete("/:postNo/like", unlikeDripPostController as RequestHandler);
+
+// Drip 게시글 저장
+router.post("/:postNo/save", saveDripPostController as RequestHandler);
+
+// Drip 게시글 저장 상태 확인
+router.get("/:postNo/save-status", getDripPostSaveStatusController as RequestHandler);
+
+// Drip 댓글
 
 // Drip 댓글 조회
 router.get("/:postNo/comments", getDripPostCommentController as RequestHandler);
@@ -59,10 +77,5 @@ router.delete("/comments/:commentId/like", unlikeDripPostCommentController as Re
 // Drip 대댓글 작성
 router.post("/comments/:commentId/replies", postDripPostReplyController as RequestHandler);
 
-// Drip 게시글 좋아요
-router.post("/:postNo/like", likeDripPostController as RequestHandler);
-
-// Drip 게시글 좋아요 취소
-router.delete("/:postNo/like", unlikeDripPostController as RequestHandler);
 
 export default router;

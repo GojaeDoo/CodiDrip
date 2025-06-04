@@ -350,3 +350,62 @@ export const UserStats = styled.span`
   padding: 2px 6px;
   border-radius: 12px;
 `;
+
+export const PostFooter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const PostFooterItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const LikeButton = styled.button<{ $isLiked?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  color: #e4e6eb;
+
+  span {
+    font-size: 12px;
+    color: #b0b3b8;
+  }
+
+  svg {
+    fill: ${({ $isLiked }) => ($isLiked ? "#ff3b3b" : "none")};
+    stroke: ${({ $isLiked }) => ($isLiked ? "#ff3b3b" : "#666")};
+    stroke-width: 2;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: scale(1.1);
+
+    span {
+      color: #e4e6eb;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.3rem;
+    gap: 0.3rem;
+
+    span {
+      font-size: 11px;
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+

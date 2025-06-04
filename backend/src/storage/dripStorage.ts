@@ -56,6 +56,11 @@ export const createDripDB = async (
 export const getUserDripPost = async (userId?: string, gender?: string) => {
   try {
     let query = `
+      WITH user_likes AS (
+        SELECT post_no 
+        FROM drip_post_like 
+        WHERE user_id = $1::TEXT
+      )
       SELECT 
         p.post_no AS "게시글번호",
         p.post_image AS "게시글이미지",
@@ -66,18 +71,19 @@ export const getUserDripPost = async (userId?: string, gender?: string) => {
         pr.profile_height AS "키",
         pr.profile_weight AS "몸무게",
         (SELECT COUNT(*) FROM drip_post_comment WHERE post_id = p.post_no) AS "댓글 개수",
-        (SELECT COUNT(*) FROM drip_post_like WHERE post_no = p.post_no) AS "좋아요 개수"
+        (SELECT COUNT(*) FROM drip_post_like WHERE post_no = p.post_no) AS "좋아요 개수",
+        CASE 
+          WHEN $1 IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1 FROM user_likes ul WHERE ul.post_no = p.post_no
+          )
+        END AS liked
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
     `;
 
-    const params: any[] = [];
+    const params: any[] = [userId];
     const conditions: string[] = [];
-
-    if (userId) {
-      conditions.push("p.user_id = $" + (params.length + 1));
-      params.push(userId);
-    }
 
     if (gender) {
       conditions.push("pr.profile_gender = $" + (params.length + 1));
@@ -98,11 +104,16 @@ export const getUserDripPost = async (userId?: string, gender?: string) => {
   }
 };
 
-export const getPostNoDripPost = async (postNo: number) => {
+export const getPostNoDripPost = async (postNo: number, userId?: string) => {
   try {
-    console.log("Searching for post_no:", postNo);
+    console.log("Searching for post_no:", postNo, "userId:", userId);
     const result = await pool.query(
       `
+      WITH user_likes AS (
+        SELECT post_no 
+        FROM drip_post_like 
+        WHERE user_id = $2::TEXT
+      )
       SELECT 
         p.post_no AS 게시글번호,
         p.post_image AS 게시글이미지,
@@ -111,12 +122,20 @@ export const getPostNoDripPost = async (postNo: number) => {
         pr.profile_image AS 프로필이미지,
         pr.profile_nickname AS 닉네임,
         pr.profile_height AS 키,
-        pr.profile_weight AS 몸무게
+        pr.profile_weight AS 몸무게,
+        (SELECT COUNT(*) FROM drip_post_comment WHERE post_id = p.post_no) AS "댓글 개수",
+        (SELECT COUNT(*) FROM drip_post_like WHERE post_no = p.post_no) AS "좋아요 개수",
+        CASE 
+          WHEN $2 IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1 FROM user_likes ul WHERE ul.post_no = p.post_no
+          )
+        END AS liked
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
       WHERE post_no = $1
     `,
-      [postNo]
+      [postNo, userId]
     );
     console.log("Query result rows:", result.rows); // 디버깅용 로그
     return result.rows[0];
@@ -467,30 +486,39 @@ export const likeDripPostStorage = async (userId: string, postNo: number) => {
   try {
     await client.query("BEGIN");
 
-    // 이미 좋아요 했는지 확인
+    // 이미 좋아요를 눌렀는지 확인
     const checkResult = await client.query(
       "SELECT * FROM drip_post_like WHERE user_id = $1 AND post_no = $2",
       [userId, postNo]
     );
 
     if (checkResult.rows.length > 0) {
-      // 이미 좋아요가 있다면 is_like를 true로 업데이트
-      const result = await client.query(
-        "UPDATE drip_post_like SET is_like = true WHERE user_id = $1 AND post_no = $2 RETURNING *",
+      // 이미 좋아요를 눌렀다면 좋아요 취소
+      await client.query(
+        "DELETE FROM drip_post_like WHERE user_id = $1 AND post_no = $2",
         [userId, postNo]
       );
-      await client.query("COMMIT");
-      return result.rows[0];
+    } else {
+      // 좋아요를 누르지 않았다면 좋아요 추가
+      await client.query(
+        "INSERT INTO drip_post_like (user_id, post_no, is_like) VALUES ($1, $2, true)",
+        [userId, postNo]
+      );
     }
 
-    // 새로운 좋아요 추가
-    const result = await client.query(
-      "INSERT INTO drip_post_like (user_id, post_no, is_like) VALUES ($1, $2, true) RETURNING *",
-      [userId, postNo]
+    // 좋아요 개수 조회
+    const likeCountResult = await client.query(
+      "SELECT COUNT(*) FROM drip_post_like WHERE post_no = $1",
+      [postNo]
     );
 
     await client.query("COMMIT");
-    return result.rows[0];
+
+    return {
+      success: true,
+      liked: checkResult.rows.length === 0,
+      likeCount: parseInt(likeCountResult.rows[0].count)
+    };
   } catch (error) {
     await client.query("ROLLBACK");
     console.error("likeDripPostStorage error:", error);
@@ -505,24 +533,25 @@ export const unlikeDripPostStorage = async (userId: string, postNo: number) => {
   try {
     await client.query("BEGIN");
 
-    // 좋아요 했는지 확인
-    const checkResult = await client.query(
-      "SELECT * FROM drip_post_like WHERE user_id = $1 AND post_no = $2",
+    // 좋아요 취소
+    await client.query(
+      "DELETE FROM drip_post_like WHERE user_id = $1 AND post_no = $2",
       [userId, postNo]
     );
 
-    if (checkResult.rows.length === 0) {
-      throw new Error("좋아요하지 않은 게시글입니다.");
-    }
-
-    // is_like를 false로 업데이트
-    const result = await client.query(
-      "UPDATE drip_post_like SET is_like = false WHERE user_id = $1 AND post_no = $2 RETURNING *",
-      [userId, postNo]
+    // 좋아요 개수 조회
+    const likeCountResult = await client.query(
+      "SELECT COUNT(*) FROM drip_post_like WHERE post_no = $1",
+      [postNo]
     );
 
     await client.query("COMMIT");
-    return result.rows[0];
+
+    return {
+      success: true,
+      liked: false,
+      likeCount: parseInt(likeCountResult.rows[0].count)
+    };
   } catch (error) {
     await client.query("ROLLBACK");
     console.error("unlikeDripPostStorage error:", error);
@@ -545,6 +574,56 @@ export const getDripPostLikeStatusStorage = async (
     return result.rows[0].is_like;
   } catch (error) {
     console.error("getDripPostLikeStatusStorage error:", error);
+    throw error;
+  }
+};
+
+export const saveDripPostStorage = async (postNo: number, userId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    // 이미 저장했는지 확인
+    const checkResult = await client.query(
+      "SELECT * FROM drip_post_mark WHERE user_id = $1 AND post_no = $2",
+      [userId, postNo]
+    );
+
+    if (checkResult.rows.length > 0) {
+      // 이미 저장했다면 저장 취소
+      await client.query(
+        "DELETE FROM drip_post_mark WHERE user_id = $1 AND post_no = $2",
+        [userId, postNo]
+      );
+      await client.query("COMMIT");
+      return { saved: false };
+    } else {
+      // 저장하지 않았다면 저장 추가
+      await client.query(
+        "INSERT INTO drip_post_mark (user_id, post_no) VALUES ($1, $2)",
+        [userId, postNo]
+      );
+      await client.query("COMMIT");
+      return { saved: true };
+    }
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("saveDripPostStorage error:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export const getDripPostSaveStatusStorage = async (postNo: number, userId: string) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM drip_post_mark WHERE user_id = $1 AND post_no = $2",
+      [userId, postNo]
+    );
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error("getDripPostSaveStatusStorage error:", error);
     throw error;
   }
 };
