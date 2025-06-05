@@ -12,7 +12,6 @@ export const Background = styled.div`
 
 export const MyPageWrapper = styled.div`
   width: 80%;
-  max-width: 1200px;
   min-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -103,25 +102,40 @@ export const ContentSection = styled.div`
 `;
 
 export const Sidebar = styled.div`
-  width: 25%;
+  width: 23%;
+  min-width: 220px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  z-index: 10;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12);
+  padding: 1.5rem 1rem;
+  transition: box-shadow 0.2s, background 0.2s;
 `;
 
 export const SidebarItem = styled.div`
-  padding: 1rem;
-  background: #1e1e1e;
-  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  background: transparent;
+  border-radius: 8px;
   color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 
   &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+    background-color: #23272b;
+    color: #8ab4f8;
+    box-shadow: 0 2px 8px 0 rgba(138,180,248,0.08);
   }
 `;
 
@@ -137,6 +151,7 @@ export const ContentCard = styled.div`
   background: #1e1e1e;
   border-radius: 5px;
   color: #ffffff;
+  height: auto;
 `;
 
 export const CardHeader = styled.div`
@@ -153,10 +168,13 @@ export const CardTitle = styled.h3`
 `;
 
 export const CardContent = styled.div`
-  display: flex;
+  height: auto;
   overflow-x: auto;
-  height: 320px;
-  align-items: flex-start;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: flex;
   gap: 1.5rem;
   padding-bottom: 8px;
+  justify-content: center;
 `;
+

@@ -34,27 +34,29 @@ export const getUserSpecificDripPosts = async (
 export const getAllDripPosts = async (
   gender?: string
 ): Promise<DripPostType[]> => {
-  try {
-    const userId = localStorage.getItem("userId");
-    const url = gender
-      ? `http://localhost:3005/api/drip?gender=${gender}&userId=${userId}`
-      : `http://localhost:3005/api/drip?userId=${userId}`;
-    const response = await axios.get(url);
-    return response.data.map(transformDripPostData);
-  } catch (error) {
-    console.error("게시물 조회 중 에러 발생:", error);
-    throw error;
-  }
+  const userId = localStorage.getItem("userId"); // 추가
+  const url = gender
+    ? `http://localhost:3005/api/drip?gender=${gender}&userId=${userId}` // userId 추가
+    : `http://localhost:3005/api/drip?userId=${userId}`; // userId 추가
+  const response = await axios.get(url);
+  return response.data.map(transformDripPostData);
 };
 
 export const getUserDripPostQuery = async (
-  userId?: string,
-  gender?: string
+  userId?: string,      // 마이페이지에서 보여줄 userId(내가 쓴 글)
+  gender?: string,
+  isMyPage?: boolean    // 마이페이지 여부
 ): Promise<DripPostType[]> => {
-  if (userId) {
-    return getUserSpecificDripPosts(userId);
+  const loginUserId = localStorage.getItem("userId"); // 로그인 유저(항상 liked 판별용)
+  let url = `http://localhost:3005/api/drip?userId=${loginUserId}`;
+  if (isMyPage && userId) {
+    url += `&filterUserId=${userId}`;
   }
-  return getAllDripPosts(gender);
+  if (gender) {
+    url += `&gender=${gender}`;
+  }
+  const response = await axios.get(url);
+  return response.data.map(transformDripPostData);
 };
 
 // 게시물 삭제

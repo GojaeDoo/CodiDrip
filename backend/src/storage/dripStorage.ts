@@ -53,7 +53,7 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string, gender?: string) => {
+export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string) => {
   try {
     let query = `
       WITH user_likes AS (
@@ -82,8 +82,14 @@ export const getUserDripPost = async (userId?: string, gender?: string) => {
       JOIN profile pr ON p.user_id = pr.user_id
     `;
 
-    const params: any[] = [userId];
+    const params: (string | undefined)[] = [userId];
     const conditions: string[] = [];
+
+    // 마이페이지에서만 내 글만 필터
+    if (filterUserId) {
+      conditions.push("p.user_id = $" + (params.length + 1));
+      params.push(filterUserId);
+    }
 
     if (gender) {
       conditions.push("pr.profile_gender = $" + (params.length + 1));

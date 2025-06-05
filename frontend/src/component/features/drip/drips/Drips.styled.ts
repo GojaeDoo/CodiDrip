@@ -52,16 +52,17 @@ export const DripsSelectBtn = styled.button`
 
 export const DripPostWrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 2100px;
   min-height: 70vh;
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  padding: 0 12px;
+  padding: 0 24px;
   margin: 0 auto;
+  justify-content: flex-start;
 
   @media (max-width: 768px) {
     gap: 0.75rem;
-    padding: 0 6px;
+    padding: 0 12px; // 모바일에서는 패딩 줄임
   }
 `;

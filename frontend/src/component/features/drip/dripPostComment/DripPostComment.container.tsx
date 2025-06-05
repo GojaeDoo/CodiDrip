@@ -105,16 +105,16 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       setCommentContent("");
       setIsModalOpen(false);
       queryClient.invalidateQueries({ queryKey: ["comments", props.postno] });
-    } catch (error) {
+      } catch (error) {
       console.error("댓글 작성 중 에러:", error);
       alert("댓글 작성 중 오류가 발생했습니다.");
-    }
-  };
+      }
+    };
 
   const handleMenuOpen = (commentId: number) => {
     setActiveMenuId(prev => (prev === commentId ? null : commentId));
   };
-  
+
   const onEditComment = (commentId: number) => {
     const comment = findCommentById(comments || [], commentId);
     if (comment) {
@@ -127,8 +127,8 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
   const onEditCancel = () => {
     setEditingCommentId(null);
     setEditContent("");
-  };
-  
+    };
+
   const onEditSubmit = async () => {
     if (editingCommentId !== null) {
       await updateCommentQuery(editingCommentId, editContent);
@@ -161,8 +161,8 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     if (!user_id) {
       alert("로그인 후 답글을 작성해주세요.");
       router.push("/login");
-      return;
-    }
+            return;
+          }
     setReplyingToId(replyingToId === commentId ? null : commentId);
     setReplyContent("");
   };
@@ -180,7 +180,7 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       setReplyingToId(null);
       setIsModalOpen(false);
       queryClient.invalidateQueries({ queryKey: ["comments", props.postno] });
-    } catch (error) {
+        } catch (error) {
       console.error("Error posting reply:", error);
     }
   };
@@ -202,9 +202,9 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       alert("로그인 후 댓글을 작성해주세요.");
       router.push("/login");
       return;
-    }
+        }
     setIsModalOpen(true);
-  };
+    };
 
   if (isLoading) return <div>Loading...</div>;
 

@@ -30,7 +30,7 @@ const DripsPresenter = (props: DripsProps) => {
           {props.isDripUser ? (
             <DripUser gender={props.genderSelect} />
           ) : (
-            <DripPost gender={props.genderSelect} />
+            <DripPost gender={props.genderSelect} isMyPage={false} />
           )}
         </S.DripPostWrapper>
       </S.Background>

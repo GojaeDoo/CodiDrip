@@ -1,7 +1,8 @@
-import { DripPostContainer } from "../../drip/dripPost/DripPost.container";
+import DripPost from "@/app/dripPost/page";
+
 import * as S from "./MyPage.styled";
 import { MyPageProps } from "./MyPage.types";
-import { Plus, Bookmark, Tag, LogOut, Edit } from "lucide-react";
+import { Plus, Bookmark, Tag, LogOut, Edit, Heart } from "lucide-react";
 
 export const MyPagePresenter = (props: MyPageProps) => {
   return (
@@ -34,10 +35,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
                   <S.StatNumber>5</S.StatNumber>
                   <S.StatLabel>MY DRIP</S.StatLabel>
                 </S.StatItem>
-                <S.StatItem>
-                  <S.StatNumber>37</S.StatNumber>
-                  <S.StatLabel>좋아요</S.StatLabel>
-                </S.StatItem>
+
               </S.ProfileStats>
               <S.EditButton onClick={props.onClickMoveProfileEdit}>
                 <Edit size={16} />
@@ -52,13 +50,17 @@ export const MyPagePresenter = (props: MyPageProps) => {
                 <Plus size={16} />
                 DRIP 추가
               </S.SidebarItem>
-              <S.SidebarItem>
+              <S.SidebarItem onClick={props.onClickMoveMyDrip}>
+                <Edit size={16} />
+                내가 작성한 DRIP
+              </S.SidebarItem>
+              <S.SidebarItem onClick={props.onClickMoveLikedDrip}>
+                <Heart size={16} />
+                좋아요한 DRIP
+              </S.SidebarItem>
+              <S.SidebarItem onClick={props.onClickMoveSavedDrip}>
                 <Bookmark size={16} />
                 저장한 DRIP
-              </S.SidebarItem>
-              <S.SidebarItem>
-                <Tag size={16} />
-                태그 관리
               </S.SidebarItem>
               <S.SidebarItem>
                 <LogOut size={16} />
@@ -68,23 +70,12 @@ export const MyPagePresenter = (props: MyPageProps) => {
 
             <S.MainContent>
               <S.ContentCard>
-                <S.CardHeader>
-                  <S.CardTitle>내 DRIP</S.CardTitle>
-                </S.CardHeader>
                 <S.CardContent>
-                  <DripPostContainer
+                  <DripPost
+                    gender={props.userProfile?.profile_gender || ""}
                     isMyPage={true}
-                    userId={props.userProfile?.user_id}
+                    userId={props.userProfile?.user_id || ""}
                   />
-                </S.CardContent>
-              </S.ContentCard>
-
-              <S.ContentCard>
-                <S.CardHeader>
-                  <S.CardTitle>좋아요한 DRIP</S.CardTitle>
-                </S.CardHeader>
-                <S.CardContent>
-                  여기에 좋아요한 DRIP 목록이 표시됩니다.
                 </S.CardContent>
               </S.ContentCard>
             </S.MainContent>

@@ -3,6 +3,9 @@ export interface MyPageProps {
   userProfile?: Profile | null;
   onClickMoveProfileEdit?: () => void;
   onClickMoveDripPostEdit?: () => void;
+  onClickMoveMyDrip?: () => void;
+  onClickMoveLikedDrip?: () => void;
+  onClickMoveSavedDrip?: () => void;
 }
 
 export interface Profile {

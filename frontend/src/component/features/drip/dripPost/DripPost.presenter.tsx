@@ -15,7 +15,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
       <S.Background>
         <S.UserDripPostWrapper>
           {props.isLoading ? (
-            Array(3).fill(0).map((_, index) => (
+            Array(5).fill(0).map((_, index) => (
               <DripPostSkeleton key={`skeleton-${index}`} />
             ))
           ) : !props.dripPostData || props.dripPostData.length === 0 ? (

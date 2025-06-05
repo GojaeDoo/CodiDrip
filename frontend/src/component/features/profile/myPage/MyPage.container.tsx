@@ -38,12 +38,27 @@ export const MyPageContainer = () => {
     router.push("/dripPostEdit");
   };
 
+  const onClickMoveMyDrip = () => {
+    console.log("내 DRIP");
+  }
+  
+  const onClickMoveLikedDrip = () => {
+    console.log("좋아요한 DRIP");
+  }
+  
+  const onClickMoveSavedDrip = () => {
+    console.log("저장한 DRIP");
+  }
+
   return (
     <>
       <MyPagePresenter
         userProfile={userProfile}
         onClickMoveProfileEdit={onClickMoveProfileEdit}
         onClickMoveDripPostEdit={onClickMoveDripPostEdit}
+        onClickMoveMyDrip={onClickMoveMyDrip}
+        onClickMoveLikedDrip={onClickMoveLikedDrip}
+        onClickMoveSavedDrip={onClickMoveSavedDrip}
       />
     </>
   );

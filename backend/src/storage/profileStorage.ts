@@ -58,7 +58,8 @@ export const getFindByIdProfileDB = async (
       profile_about,
       profile_height,
       profile_weight,
-      profile_gender
+      profile_gender,
+      profile_follow
     FROM profile
     WHERE user_id = $1`,
     [id]

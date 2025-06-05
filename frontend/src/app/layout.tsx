@@ -26,13 +26,15 @@ export default function RootLayout({
   
   // 헤더가 필요없는 페이지 경로들
   const noHeaderPaths = [
+    "/intro",
     "/login",
     "/join",
     "/idFind",
     "/idFindResult",
     "/passwordFind",
     "/passwordFindResult",
-    "/passwordReset"
+    "/passwordReset",
+    "/"
   ];
   const showHeader = !noHeaderPaths.includes(pathname);
 

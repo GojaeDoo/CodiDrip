@@ -5,9 +5,9 @@ export const Background = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  align-items: flex-start; // center에서 flex-start로 변경
   padding: 12px 0;
+  background-color: #1a1a1a;
 
   @media (max-width: 768px) {
     padding: 6px 0;
@@ -16,18 +16,29 @@ export const Background = styled.div`
 
 export const UserDripPostWrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;
+  gap: 1.91rem;
   padding: 0 12px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   background-color: #1a1a1a;
+  
+  & > * {
+    flex: 0 0 280px;
+    min-width: 280px;
+  }
+
   @media (max-width: 768px) {
     gap: 0.75rem;
     padding: 0 6px;
+    flex-wrap: wrap;
+    
+    & > * {
+      flex: 0 0 100%;
+      min-width: 100%;
+    }
   }
 `;
 
@@ -38,7 +49,7 @@ export const PostCard = styled.div`
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  width: 280px;
+  width: 280px; // 원래 크기 유지
   max-height: 420px;
   display: flex;
   flex-direction: column;
@@ -49,7 +60,7 @@ export const PostCard = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 280px;
+    width: 100%;
     border-radius: 8px;
 
     &:hover {
@@ -408,4 +419,3 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
     }
   }
 `;
-

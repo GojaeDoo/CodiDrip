@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export const DripPostContainer = ({
   gender,
   userId,
+  isMyPage
 }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
@@ -24,15 +25,21 @@ export const DripPostContainer = ({
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) setCurrentUserId(storedUserId);
+    if (storedUserId) {
+      setCurrentUserId(storedUserId);
+    }
   }, []);
-
+  
+  // 두 번째 useEffect - 게시물 가져오기
   useEffect(() => {
     const fetchDripPosts = async () => {
+      if (!currentUserId && isMyPage) return; // 마이페이지인데 currentUserId가 없으면 리턴
+      
       setIsLoading(true);
       try {
+        const targetUserId = isMyPage ? currentUserId : undefined;
         const response = await getUserDripPostQuery(
-          userId,
+          targetUserId,
           gender !== "all" ? gender : undefined
         );
         setDripPostData(response);
@@ -42,9 +49,9 @@ export const DripPostContainer = ({
         setIsLoading(false);
       }
     };
-
+  
     fetchDripPosts();
-  }, [userId, gender]);
+  }, [userId, gender, isMyPage, currentUserId]);
 
   const onPrevImage = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -153,7 +160,7 @@ export const DripPostContainer = ({
     }
   };
 
-  return isDripUser ? null : (
+  return (
     <DripPostPresenter
       dripPostData={
         dripPostData

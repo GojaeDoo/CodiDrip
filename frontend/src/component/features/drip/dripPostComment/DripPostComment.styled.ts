@@ -304,7 +304,7 @@ export const ModalButton = styled.button`
     background: #3d3d3d;
     color: #fff;
 
-    &:hover {
+  &:hover {
       background: #4d4d4d;
     }
   }
@@ -315,6 +315,6 @@ export const ModalButton = styled.button`
 
     &:hover {
       background: #ff6666;
-    }
+  }
   }
 `;
