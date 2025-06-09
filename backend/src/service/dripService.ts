@@ -49,9 +49,9 @@ export const dripService = {
     }
   },
 
-  getUserDrip: async (userId?: string, filterUserId?: string, gender?: string) => {
+  getUserDrip: async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean) => {
     try {
-      const drips = await getUserDripPost(userId, filterUserId, gender);
+      const drips = await getUserDripPost(userId, filterUserId, gender, isLike);
       return drips;
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);

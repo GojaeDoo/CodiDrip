@@ -2,6 +2,7 @@ export interface DripPostAppProps {
   userId?: string;  // 필수에서 선택적으로 변경
   isMyPage?: boolean;
   gender: string;
+  isLike?: boolean;
 }
 
 export interface DripPostResponse {
@@ -152,6 +153,7 @@ export interface DripPostContainerProps {
   gender: string;
   userId?: string;
   isMyPage?: boolean;
+  isLike?: boolean;
 }
 
 export interface DripPostPresenterProps {

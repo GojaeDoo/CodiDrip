@@ -53,7 +53,7 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string) => {
+export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean) => {
   try {
     let query = `
       WITH user_likes AS (
@@ -94,6 +94,15 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
     if (gender) {
       conditions.push("pr.profile_gender = $" + (params.length + 1));
       params.push(gender);
+    }
+
+    // 좋아요한 게시글만 필터링
+    if (isLike && userId) {
+      conditions.push(`EXISTS (
+        SELECT 1 FROM drip_post_like dpl 
+        WHERE dpl.post_no = p.post_no 
+        AND dpl.user_id = $1
+      )`);
     }
 
     if (conditions.length > 0) {

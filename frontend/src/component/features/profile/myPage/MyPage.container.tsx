@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 
 export const MyPageContainer = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
+  const [isLike , setIsLike] = useState(false);
+  const [isSaved , setIsSaved] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,11 +45,13 @@ export const MyPageContainer = () => {
   }
   
   const onClickMoveLikedDrip = () => {
-    console.log("좋아요한 DRIP");
+    setIsLike(true);
+    setIsSaved(false);
   }
   
   const onClickMoveSavedDrip = () => {
-    console.log("저장한 DRIP");
+    setIsSaved(true);
+    setIsLike(false);
   }
 
   return (
@@ -59,6 +63,8 @@ export const MyPageContainer = () => {
         onClickMoveMyDrip={onClickMoveMyDrip}
         onClickMoveLikedDrip={onClickMoveLikedDrip}
         onClickMoveSavedDrip={onClickMoveSavedDrip}
+        isLike={isLike}
+        isSaved={isSaved}
       />
     </>
   );

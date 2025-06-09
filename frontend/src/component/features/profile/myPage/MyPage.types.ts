@@ -6,6 +6,8 @@ export interface MyPageProps {
   onClickMoveMyDrip?: () => void;
   onClickMoveLikedDrip?: () => void;
   onClickMoveSavedDrip?: () => void;
+  isLike?: boolean;
+  isSaved?: boolean;
 }
 
 export interface Profile {

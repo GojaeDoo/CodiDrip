@@ -75,6 +75,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
                     gender={props.userProfile?.profile_gender || ""}
                     isMyPage={true}
                     userId={props.userProfile?.user_id || ""}
+                    isLike={props.isLike}
                   />
                 </S.CardContent>
               </S.ContentCard>

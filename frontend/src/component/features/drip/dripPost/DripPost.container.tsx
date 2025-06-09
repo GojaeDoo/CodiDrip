@@ -9,7 +9,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 export const DripPostContainer = ({
   gender,
   userId,
-  isMyPage
+  isMyPage,
+  isLike
 }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
@@ -40,7 +41,8 @@ export const DripPostContainer = ({
         const targetUserId = isMyPage ? currentUserId : undefined;
         const response = await getUserDripPostQuery(
           targetUserId,
-          gender !== "all" ? gender : undefined
+          gender !== "all" ? gender : undefined,
+          isLike
         );
         setDripPostData(response);
       } catch (error) {
@@ -51,7 +53,7 @@ export const DripPostContainer = ({
     };
   
     fetchDripPosts();
-  }, [userId, gender, isMyPage, currentUserId]);
+  }, [userId, gender, isMyPage, currentUserId, isLike]);
 
   const onPrevImage = (
     e: React.MouseEvent<HTMLButtonElement>,
