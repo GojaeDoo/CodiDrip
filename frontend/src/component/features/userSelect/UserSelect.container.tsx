@@ -17,7 +17,7 @@ export const UserSelectContainer = () => {
   const onClickSend = async () => {
     try {
       const response = await UserSelectQuery(id);
-      console.log(response);
+      console.log("response : " + response);
     } catch (error) {
       console.log(error);
     }
