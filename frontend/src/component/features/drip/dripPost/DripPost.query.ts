@@ -45,11 +45,13 @@ export const getAllDripPosts = async (
 export const getUserDripPostQuery = async (
   userId?: string,      // 마이페이지에서 보여줄 userId(내가 쓴 글)
   gender?: string,
-  isLike?: boolean    // 좋아요한 게시글만 보기
+  isMyPage?: boolean,   // 마이페이지 여부
+  isLike?: boolean,     // 좋아요한 게시글만 보기
+  isSaved?: boolean     // 저장한 게시글만 보기
 ): Promise<DripPostType[]> => {
   const loginUserId = localStorage.getItem("userId"); // 로그인 유저(항상 liked 판별용)
   let url = `http://localhost:3005/api/drip?userId=${loginUserId}`;
-  if (userId) {
+  if (isMyPage && userId) {
     url += `&filterUserId=${userId}`;
   }
   if (gender) {
@@ -57,6 +59,9 @@ export const getUserDripPostQuery = async (
   }
   if (isLike) {
     url += `&isLike=true`;
+  }
+  if (isSaved) {
+    url += `&isSaved=true`;
   }
   const response = await axios.get(url);
   return response.data.map(transformDripPostData);

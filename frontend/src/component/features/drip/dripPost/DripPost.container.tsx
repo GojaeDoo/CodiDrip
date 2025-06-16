@@ -10,7 +10,8 @@ export const DripPostContainer = ({
   gender,
   userId,
   isMyPage,
-  isLike
+  isLike,
+  isSaved
 }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
@@ -42,7 +43,9 @@ export const DripPostContainer = ({
         const response = await getUserDripPostQuery(
           targetUserId,
           gender !== "all" ? gender : undefined,
-          isLike
+          isMyPage,
+          isLike,
+          isSaved
         );
         setDripPostData(response);
       } catch (error) {
@@ -53,7 +56,7 @@ export const DripPostContainer = ({
     };
   
     fetchDripPosts();
-  }, [userId, gender, isMyPage, currentUserId, isLike]);
+  }, [userId, gender, isMyPage, currentUserId, isLike, isSaved]);
 
   const onPrevImage = (
     e: React.MouseEvent<HTMLButtonElement>,

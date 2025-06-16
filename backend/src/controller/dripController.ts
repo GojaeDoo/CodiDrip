@@ -25,7 +25,8 @@ export const getUserDrip = async (req: Request, res: Response) => {
     const filterUserId = req.query.filterUserId as string | undefined;
     const gender = req.query.gender as string;
     const isLike = req.query.isLike === 'true';
-    const drips = await dripService.getUserDrip(userId, filterUserId, gender, isLike);
+    const isSaved = req.query.isSaved === 'true';
+    const drips = await dripService.getUserDrip(userId, filterUserId, gender, isLike, isSaved);
     res.status(200).json(drips);
   } catch (error) {
     console.error("getUserDrip error - dripController:", error);

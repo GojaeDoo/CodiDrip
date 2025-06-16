@@ -40,9 +40,10 @@ export const MyPageContainer = () => {
     router.push("/dripPostEdit");
   };
 
-  const onClickMoveMyDrip = () => {
-    console.log("내 DRIP");
-  }
+ const onClickMoveMyDrip = () => {
+    setIsLike(false);
+    setIsSaved(false);
+  };
   
   const onClickMoveLikedDrip = () => {
     setIsLike(true);

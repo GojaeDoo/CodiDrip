@@ -53,12 +53,17 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean) => {
+export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean) => {
   try {
     let query = `
       WITH user_likes AS (
         SELECT post_no 
         FROM drip_post_like 
+        WHERE user_id = $1::TEXT
+      ),
+      user_saves AS (
+        SELECT post_no 
+        FROM drip_post_mark 
         WHERE user_id = $1::TEXT
       )
       SELECT 
@@ -77,7 +82,13 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
           ELSE EXISTS (
             SELECT 1 FROM user_likes ul WHERE ul.post_no = p.post_no
           )
-        END AS liked
+        END AS liked,
+        CASE 
+          WHEN $1 IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1 FROM user_saves us WHERE us.post_no = p.post_no
+          )
+        END AS saved
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
     `;
@@ -102,6 +113,15 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
         SELECT 1 FROM drip_post_like dpl 
         WHERE dpl.post_no = p.post_no 
         AND dpl.user_id = $1
+      )`);
+    }
+
+    // 저장한 게시글만 필터링
+    if (isSaved && userId) {
+      conditions.push(`EXISTS (
+        SELECT 1 FROM drip_post_mark dpm 
+        WHERE dpm.post_no = p.post_no 
+        AND dpm.user_id = $1
       )`);
     }
 
