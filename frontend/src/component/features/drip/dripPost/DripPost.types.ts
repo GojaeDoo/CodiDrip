@@ -3,6 +3,7 @@ export interface DripPostAppProps {
   isMyPage?: boolean;
   gender: string;
   isLike?: boolean;
+  isSaved?: boolean;
 }
 
 export interface DripPostResponse {
@@ -16,6 +17,7 @@ export interface DripPostResponse {
   몸무게: number;
   "댓글 개수": number;
   "좋아요 개수": number;
+  liked: boolean;
 }
 
 export interface DripPostType {
@@ -154,6 +156,7 @@ export interface DripPostContainerProps {
   userId?: string;
   isMyPage?: boolean;
   isLike?: boolean;
+  isSaved?: boolean;
 }
 
 export interface DripPostPresenterProps {
@@ -179,4 +182,10 @@ export interface DripPostPresenterProps {
   ) => void;
   onMenuClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
   onClickMoveDetail: (postNo: number) => void;
+  onLikeClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
+  onCommentClick: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    postNo: number
+  ) => void;
+  isLoading?: boolean;
 }

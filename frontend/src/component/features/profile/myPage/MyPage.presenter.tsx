@@ -76,6 +76,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
                     isMyPage={true}
                     userId={props.userProfile?.user_id || ""}
                     isLike={props.isLike}
+                    isSaved={props.isSaved}
                   />
                 </S.CardContent>
               </S.ContentCard>

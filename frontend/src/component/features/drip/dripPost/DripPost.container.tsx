@@ -40,6 +40,13 @@ export const DripPostContainer = ({
       setIsLoading(true);
       try {
         const targetUserId = isMyPage ? currentUserId : undefined;
+        console.log("Fetching posts with params:", {
+          targetUserId,
+          gender,
+          isMyPage,
+          isLike,
+          isSaved
+        });
         const response = await getUserDripPostQuery(
           targetUserId,
           gender !== "all" ? gender : undefined,

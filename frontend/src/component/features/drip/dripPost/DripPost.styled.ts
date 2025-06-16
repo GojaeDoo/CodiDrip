@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Background = styled.div`
   width: 100%;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start; // center에서 flex-start로 변경

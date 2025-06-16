@@ -175,6 +175,24 @@ export const CardContent = styled.div`
   display: flex;
   gap: 1.5rem;
   padding-bottom: 8px;
-  justify-content: center;
+  justify-content: flex-start;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+    
+    &:hover {
+      background: #666;
+    }
+  }
 `;
 

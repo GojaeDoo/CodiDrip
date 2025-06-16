@@ -63,6 +63,7 @@ export const getUserDripPostQuery = async (
   if (isSaved) {
     url += `&isSaved=true`;
   }
+  console.log("Fetching drip posts with URL:", url); // 디버깅을 위한 로그 추가
   const response = await axios.get(url);
   return response.data.map(transformDripPostData);
 };
