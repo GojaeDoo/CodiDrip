@@ -110,6 +110,8 @@ export const ProfileImage = styled.img`
       transform: none;
     }
   }
+
+  cursor: pointer;
 `;
 
 export const Username = styled.span`

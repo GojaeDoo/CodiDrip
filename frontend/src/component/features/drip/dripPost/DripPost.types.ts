@@ -89,6 +89,7 @@ export interface DripPostProps {
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => void;
+  onClickMoveUserProfile: (e: React.MouseEvent<HTMLDivElement>, userId: string) => void;
   onCloseMenu: () => void;
   activePin: { postNo: number; pinId: number } | null;
   isLiked: boolean;

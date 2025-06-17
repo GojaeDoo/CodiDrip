@@ -5,7 +5,7 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: rgba(26, 26, 26, 0.95);
+  background-color: #1a1a1a; // ← 여기서 rgba → hex로 변경
   border-bottom: 1px solid #333;
   display: flex;
   flex-direction: row;
@@ -13,8 +13,6 @@ export const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 1000;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 `;
 
 export const Logo = styled.div`
@@ -45,11 +43,11 @@ export const SideMenuContainer = styled.div<{ open: boolean }>`
   left: 0;
   height: 100%;
   width: 15%;
-  background: #1a1a1a;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  background: #1a1a1a !important;
+  /* box-shadow: none; */
   transform: translateX(${({ open }) => (open ? "0" : "-100%")});
   transition: transform 0.3s ease;
-  z-index: 1001;
+  z-index: 9999;
 
   @media (max-width: 768px) {
     width: 70%;

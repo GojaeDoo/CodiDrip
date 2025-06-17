@@ -123,6 +123,11 @@ export const DripPostContainer = ({
     }
   };
 
+  const onClickMoveUserProfile = (e: React.MouseEvent<HTMLDivElement>, userId: string) => {
+    e.stopPropagation();
+    router.push(`/myPage?status=true&postNo=${userId}`);
+  }
+
   const onLikeClick = (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => {
     e.preventDefault();
     handleLike(postNo);
@@ -208,6 +213,7 @@ export const DripPostContainer = ({
       onMenuClick={onMenuClick}
       onClickMoveDetail={onClickMoveDetail}
       onReportPost={handleReportPost}
+      onClickMoveUserProfile={onClickMoveUserProfile}
     />
   );
 };

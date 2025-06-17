@@ -51,17 +51,29 @@ export const getFindByIdProfileDB = async (
 ): Promise<Profile | null> => {
   const result = await pool.query(
     `SELECT 
-      profile_id,
-      profile_nickname,
-      profile_image,
-      user_id,
-      profile_about,
-      profile_height,
-      profile_weight,
-      profile_gender,
-      profile_follow
-    FROM profile
-    WHERE user_id = $1`,
+  p.profile_id,
+  p.profile_nickname,
+  p.profile_image,
+  p.user_id,
+  p.profile_about,
+  p.profile_height,
+  p.profile_weight,
+  p.profile_gender,
+  p.profile_follow,
+  COUNT(dp.post_no) AS post_count
+FROM profile p
+JOIN drip_post dp ON dp.user_id = p.user_id
+WHERE p.user_id = $1
+GROUP BY 
+  p.profile_id,
+  p.profile_nickname,
+  p.profile_image,
+  p.user_id,
+  p.profile_about,
+  p.profile_height,
+  p.profile_weight,
+  p.profile_gender,
+  p.profile_follow;`,
     [id]
   );
   return result.rows[0] || null;
