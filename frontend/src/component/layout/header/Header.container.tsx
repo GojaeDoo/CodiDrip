@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
 import { fetchUserProfile } from "./Header.query";
-import { Profile } from "@/types/profile";
 import { useAuth } from "@/context/AuthContext";
-import { HeaderProps } from "./Header.types";
+import { HeaderProps, Profile } from "./Header.types";
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -15,10 +14,12 @@ const HeaderContainer = () => {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
+    console.log("storedUserId : ", storedUserId);
     if (storedUserId && isLoggedIn) {
       const loadUserProfile = async () => {
         try {
           const profile = await fetchUserProfile(storedUserId);
+          console.log("profile : ", profile);
           setUserProfile(profile);
         } catch (error) {
           console.error("Error loading user profile:", error);

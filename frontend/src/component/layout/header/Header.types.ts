@@ -1,4 +1,4 @@
-import { Profile } from "@/types/profile";
+
 
 export interface HeaderProps {
   isOpen: boolean;
@@ -12,4 +12,17 @@ export interface HeaderProps {
   onClickMoveDrips: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
+}
+
+export interface Profile {
+  id: number;
+  user_id: string;
+  height: number;
+  weight: number;
+  gender: string;
+  nickname: string;
+  profile_image: string | null;
+  profile_about: string | null;
+  created_at: string;
+  updated_at: string;
 }

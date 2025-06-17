@@ -16,6 +16,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
             }
             alt="프로필 이미지"
           />
+          <S.ProfileBar></S.ProfileBar>
           <S.ProfileInfo>
             <S.ProfileName>
               {props.userProfile?.profile_nickname}

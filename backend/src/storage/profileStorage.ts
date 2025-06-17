@@ -62,7 +62,7 @@ export const getFindByIdProfileDB = async (
   p.profile_follow,
   COUNT(dp.post_no) AS post_count
 FROM profile p
-JOIN drip_post dp ON dp.user_id = p.user_id
+LEFT JOIN drip_post dp ON dp.user_id = p.user_id
 WHERE p.user_id = $1
 GROUP BY 
   p.profile_id,
@@ -94,7 +94,8 @@ export const getCreateProfileDB = async (
   gender: string,
   nickname: string,
   profileImage: string | null,
-  userId: string
+  userId: string,
+  profileAbout: string
 ): Promise<Profile | null> => {
   try {
     if (!profileImage) {
@@ -109,12 +110,13 @@ export const getCreateProfileDB = async (
         profile_nickname, 
         profile_image, 
         user_id,
-        profile_follow
+        profile_about
       )
-      VALUES ($1, $2, $3, $4, $5, $6, 0)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
-    const values = [height, weight, gender, nickname, profileImage, userId];
+    const values = [height, weight, gender, nickname, profileImage, userId, profileAbout];
+    console.log("DB 입력 값:", values);
     const result = await pool.query(query, values);
     return result.rows[0] || null;
   } catch (error) {
@@ -129,7 +131,8 @@ export const updateProfile = async (
   gender: string,
   nickname: string,
   profileImage: string,
-  userId: string
+  userId: string,
+  profileAbout: string
 ) => {
   try {
     // 기존 프로필 이미지 조회
@@ -171,11 +174,12 @@ export const updateProfile = async (
         profile_weight = $2,
         profile_gender = $3,
         profile_nickname = $4,
-        profile_image = $5
-      WHERE user_id = $6
+        profile_image = $5,
+        profile_about = $6
+      WHERE user_id = $7
       RETURNING *;
     `;
-    const values = [height, weight, gender, nickname, profileImage, userId];
+    const values = [height, weight, gender, nickname, profileImage, profileAbout, userId];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {

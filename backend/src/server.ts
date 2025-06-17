@@ -5,6 +5,7 @@ import userRouter from "./router/userRouter";
 import profileRouter from "./router/profileRouter";
 import dripRouter from "./router/dripRouter";
 import path from "path";
+import { pool } from "./db";
 
 dotenv.config();
 
@@ -38,4 +39,16 @@ app.use("/api/drip", dripRouter);
 // 서버 실행
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+// 서버 종료 시 DB 커넥션 풀 정리
+process.on("SIGINT", async () => {
+  console.log("서버 종료: DB 커넥션 풀 정리 중...");
+  await pool.end();
+  process.exit();
+});
+process.on("SIGTERM", async () => {
+  console.log("서버 종료: DB 커넥션 풀 정리 중...");
+  await pool.end();
+  process.exit();
 });

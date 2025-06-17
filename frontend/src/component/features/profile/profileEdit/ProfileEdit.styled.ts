@@ -160,3 +160,13 @@ export const SubmitButton = styled.button`
     font-size: 1.2rem;
   }
 `;
+
+export const ProfileEditTextarea = styled.textarea`
+  width: 100%;
+  height: 100px;
+  padding: 1rem;
+  background-color: rgba(217, 217, 217, 0.9);
+  border:none;
+  border-radius: 5px;
+  resize: none;
+`;

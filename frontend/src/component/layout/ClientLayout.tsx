@@ -16,15 +16,14 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     setIsReady(true);
     document.body.style.boxSizing = "border-box";
 
-    if (isLoggedIn && (pathname === "/login" || pathname === "/join")) {
-      router.push("/drips");
-    }
+    // if (isLoggedIn && (pathname === "/login" || pathname === "/join")) {
+    //   // router.push("/drips");
+    // }
   }, [pathname, isLoggedIn, router]);
 
   if (!isReady) return null;
 
   const hiddenRoutes = [
-    "/",
     "/login",
     "/join",
     "/idFind",
@@ -34,12 +33,13 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     "/passwordReset",
     "/profileEdit",
   ];
-  const isHidden = hiddenRoutes.includes(pathname || "");
+
+  const isHidden = pathname === "/" || hiddenRoutes.some(route => pathname?.startsWith(route));
 
   return (
     <>
       {!isHidden && <Header />}
-      <main>{children}</main>
+      <main style={{ paddingTop: !isHidden ? "100px" : "0" }}>{children}</main>
       {!isHidden && <Footer />}
     </>
   );

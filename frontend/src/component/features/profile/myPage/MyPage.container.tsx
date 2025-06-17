@@ -23,6 +23,7 @@ export const MyPageContainer = () => {
       try {
         const profileResponse = await getMyPageProfileQuery(storedUserId);
         setUserProfile(profileResponse);
+        console.log("profileResponse : ", profileResponse);
       } catch (error) {
         console.log("error : ", error);
       }
@@ -32,11 +33,12 @@ export const MyPageContainer = () => {
   }, []);
 
   const onClickMoveProfileEdit = () => {
-    router.push("/profile/edit");
+    const isEditMode = true;
+    router.push(`/profileEdit?Status=${isEditMode}`);
   };
 
   const onClickMoveDripPostEdit = () => {
-    router.push("/dripPost/edit");
+    router.push("/dripPostEdit");
   };
 
   const onClickMoveMyDrip = () => {

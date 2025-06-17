@@ -59,6 +59,10 @@ export const getUserProfile = async (
       return;
     }
     const profile = await getUserProfileById(id);
+    if (!profile) {
+      res.status(404).json({ error: "프로필을 찾을 수 없습니다." });
+      return;
+    }
     res.json(profile);
   } catch (error) {
     res
@@ -73,7 +77,7 @@ export const getCreateProfileController = async (
   next: NextFunction
 ) => {
   try {
-    const { userId, height, weight, gender, nickname, profileImage } = req.body;
+    const { userId, height, weight, gender, nickname, profileImage, profileAbout } = req.body;
     console.log("프로필 생성 요청 데이터:", {
       userId,
       height,
@@ -81,6 +85,7 @@ export const getCreateProfileController = async (
       gender,
       nickname,
       profileImage,
+      profileAbout,
     });
 
     if (!profileImage) {
@@ -93,7 +98,8 @@ export const getCreateProfileController = async (
       gender,
       nickname,
       profileImage,
-      userId
+      userId,
+      profileAbout
     );
     res.status(200).json(profile);
   } catch (error) {
@@ -108,7 +114,7 @@ export const getUpdateProfileController = async (
 ) => {
   try {
     const { userId } = req.params;
-    const { height, weight, gender, nickname, profileImage } = req.body;
+    const { height, weight, gender, nickname, profileImage, profileAbout } = req.body;
     console.log("프로필 수정 요청 데이터:", {
       userId,
       height,
@@ -116,6 +122,7 @@ export const getUpdateProfileController = async (
       gender,
       nickname,
       profileImage,
+      profileAbout,
     });
 
     const profile = await getUpdateProfileService(
@@ -124,7 +131,8 @@ export const getUpdateProfileController = async (
       gender,
       nickname,
       profileImage,
-      userId
+      userId,
+      profileAbout
     );
     res.status(200).json(profile);
   } catch (error) {

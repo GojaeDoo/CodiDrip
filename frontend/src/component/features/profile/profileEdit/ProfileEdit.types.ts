@@ -7,12 +7,14 @@ export interface ProfileEditPresenterProps {
   onChangeGender: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeNickname: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeProfileAbout: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onClickCreateProfile: () => void;
   previewUrl: string | null;
   isEditMode: boolean;
   height: number | null;
   weight: number | null;
   nickname: string;
+  profileAbout: string;
 }
 
 export interface ProfileCreateParams {
@@ -22,4 +24,5 @@ export interface ProfileCreateParams {
   nickname: string;
   profileImage: string;
   userId: string;
+  profileAbout: string;
 }

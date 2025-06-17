@@ -28,12 +28,16 @@ export const ProfileSection = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 280px;
+  height: 280px;
   object-fit: cover;
   border: 2px solid #3a3a3a;
+  border-radius: 50%;
 `;
+
+export const ProfileBar = styled.div`
+  border: 1px solid #3a3a3a;
+`
 
 export const ProfileInfo = styled.div`
   flex: 1;

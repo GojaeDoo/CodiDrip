@@ -45,7 +45,8 @@ export const getCreateProfileService = async (
   gender: string,
   nickname: string,
   profileImage: string | null,
-  userId: string
+  userId: string,
+  profileAbout: string
 ): Promise<Profile | null> => {
   try {
     console.log("파라미터 확인:", {
@@ -55,6 +56,7 @@ export const getCreateProfileService = async (
       nickname,
       profileImage,
       userId,
+      profileAbout,
     });
     const result = await getCreateProfileDB(
       height,
@@ -62,7 +64,8 @@ export const getCreateProfileService = async (
       gender,
       nickname,
       profileImage,
-      userId
+      userId,
+      profileAbout
     );
     console.log("결과:", result);
     return result;
@@ -78,7 +81,8 @@ export const getUpdateProfileService = async (
   gender: string,
   nickname: string,
   profileImage: string,
-  userId: string
+  userId: string,
+  profileAbout: string
 ) => {
   try {
     const updatedProfile = await updateProfile(
@@ -87,7 +91,8 @@ export const getUpdateProfileService = async (
       gender,
       nickname,
       profileImage,
-      userId
+      userId,
+      profileAbout
     );
 
     return {

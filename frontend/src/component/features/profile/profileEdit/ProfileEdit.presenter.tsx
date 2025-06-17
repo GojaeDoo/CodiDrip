@@ -92,6 +92,14 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
               <option value="female">여자</option>
             </S.ProfileEditSelect>
           </S.InputGroup>
+          <S.InputGroup>
+            <S.ProfileEditText>자기소개</S.ProfileEditText>
+            <S.ProfileEditTextarea
+              placeholder="자기소개를 입력해주세요."
+              onChange={props.onChangeProfileAbout}
+              value={props.profileAbout || ""}
+            />
+          </S.InputGroup>
         </S.ProfileEditWrapperRight>
       </S.ProfileEditWrapper>
       <S.SubmitButton onClick={props.onClickCreateProfile}>

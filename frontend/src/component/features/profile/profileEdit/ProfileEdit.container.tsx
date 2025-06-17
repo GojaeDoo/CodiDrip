@@ -17,6 +17,7 @@ export const ProfileEditContainer = () => {
   const [nickname, setNickname] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [profileAbout, setProfileAbout] = useState("");
   const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(
     null
   );
@@ -54,6 +55,7 @@ export const ProfileEditContainer = () => {
         setWeight(response.profile_weight);
         setGender(response.profile_gender?.toLowerCase() || ""); // 성별 값을 소문자로 변환
         setNickname(response.profile_nickname);
+        setProfileAbout(response.profile_about);
         if (response.profile_image) {
           const imageUrl = `http://localhost:3005/uploads/profiles/${response.profile_image}`;
           console.log("이미지 URL:", imageUrl);
@@ -82,6 +84,10 @@ export const ProfileEditContainer = () => {
 
   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
+  };
+
+  const onChangeProfileAbout = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setProfileAbout(event.target.value);
   };
 
   const onChangeProfileImage = async (
@@ -121,52 +127,38 @@ export const ProfileEditContainer = () => {
   };
 
   const onClickCreateProfile = async () => {
+    if (!userId) {
+      console.error("userId가 없습니다.");
+      return;
+    }
+
+    if (!height || !weight || !gender || !nickname || !profileAbout) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+
     try {
-      if (!userId) {
-        alert("로그인이 필요합니다.");
-        router.push("/login");
-        return;
-      }
+      const profileData = {
+        userId,
+        height,
+        weight,
+        gender,
+        nickname,
+        profileAbout,
+        profileImage: uploadedImagePath || previewUrl || "",
+      };
 
-      if (!uploadedImagePath) {
-        alert("프로필 이미지를 업로드해주세요.");
-        return;
-      }
-
-      if (Status === "true") {
-        if (height && weight && gender && nickname) {
-          const response = await ProfileUpdate({
-            userId,
-            height: Number(height),
-            weight: Number(weight),
-            gender,
-            nickname,
-            profileImage: uploadedImagePath,
-          });
-          console.log("프로필 생성 응답:", response);
-          router.push("/myPage");
-        } else {
-          alert("모든 항목을 입력해주세요.");
-        }
+      if (isEditMode) {
+        await ProfileUpdate(profileData);
+        alert("프로필이 수정되었습니다.");
       } else {
-        if (height && weight && gender && nickname) {
-          const response = await ProfileCreate({
-            userId,
-            height: Number(height),
-            weight: Number(weight),
-            gender,
-            nickname,
-            profileImage: uploadedImagePath,
-          });
-          console.log("프로필 생성 응답:", response);
-          router.push("/drips");
-        } else {
-          alert("모든 항목을 입력해주세요.");
-        }
+        await ProfileCreate(profileData);
+        alert("프로필이 생성되었습니다.");
       }
+      router.push("/myPage");
     } catch (error) {
-      console.error("프로필 생성 중 오류 발생:", error);
-      alert("프로필 생성 중 오류가 발생했습니다.");
+      console.error("프로필 저장 중 오류 발생:", error);
+      alert("프로필 저장 중 오류가 발생했습니다.");
     }
   };
 
@@ -182,11 +174,13 @@ export const ProfileEditContainer = () => {
         onChangeNickname={onChangeNickname}
         onChangeProfileImage={onChangeProfileImage}
         onClickCreateProfile={onClickCreateProfile}
+        onChangeProfileAbout={onChangeProfileAbout}
         previewUrl={previewUrl}
         isEditMode={isEditMode}
         height={height}
         weight={weight}
         nickname={nickname}
+        profileAbout={profileAbout}
       />
     </>
   );

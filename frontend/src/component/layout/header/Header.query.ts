@@ -1,11 +1,16 @@
 import axios from "axios";
-import { Profile } from "@/types/profile";
+import { Profile } from "./Header.types";
 
-export const fetchUserProfile = async (userId: string): Promise<Profile> => {
+export const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
   try {
     const response = await axios.get(
       `http://localhost:3005/api/profiles/${userId}`
     );
+    
+    if (!response.data) {
+      return null;
+    }
+
     const profile = {
       ...response.data,
       profile_image: response.data.profile_image
