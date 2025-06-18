@@ -123,9 +123,15 @@ export const DripPostContainer = ({
     }
   };
 
-  const onClickMoveUserProfile = (e: React.MouseEvent<HTMLDivElement>, userId: string) => {
+  const onClickMoveUserProfile = (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => {
     e.stopPropagation();
-    router.push(`/myPage?status=true&postNo=${userId}`);
+
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId === userId) {
+      router.push(`/myPage`);
+    } else {
+      router.push(`/myPage?status=true&postNo=${postNo}`);
+    }
   }
 
   const onLikeClick = (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => {

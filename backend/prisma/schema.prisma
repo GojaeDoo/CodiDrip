@@ -8,23 +8,98 @@ datasource db {
 }
 
 model profile {
-  profile_id      Int      @id @default(autoincrement())
-  profile_nickname String
-  profile_image   String?
-  user_id         String   @unique
-  profile_about   String?
-  profile_height  Int?
-  profile_weight  Int?
-  profile_gender  String?
-  profile_follow  Int      @default(0)
+  profile_id       Int     @id @default(autoincrement())
+  profile_nickname String  @db.VarChar(50)
+  profile_height   Int?
+  profile_weight   Int?
+  profile_image    String?
+  profile_gender   String? @db.VarChar(10)
+  profile_follow   Int?    @default(0)
+  profile_about    String?
+  user_id          String  @db.VarChar(50)
 }
 
-model Verification {
-  id        String   @id @default(uuid())
-  email     String
-  code      String
-  expiresAt DateTime
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-} 
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model drip_post {
+  post_no           Int                 @id @default(autoincrement())
+  user_id           String              @db.VarChar(50)
+  post_image        String
+  post_tag          String              @unique @db.VarChar(255)
+  post_like         Int?
+  drip_post_comment drip_post_comment[]
+  drip_post_like    drip_post_like[]
+  drip_post_mark    drip_post_mark[]
+}
+
+model drip_post_comment {
+  id                      Int                      @id @default(autoincrement())
+  post_id                 Int
+  user_id                 String                   @db.VarChar
+  content                 String
+  parent_id               Int?
+  created_at              DateTime?                @default(now()) @db.Timestamp(6)
+  drip_post_comment       drip_post_comment?       @relation("drip_post_commentTodrip_post_comment", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  other_drip_post_comment drip_post_comment[]      @relation("drip_post_commentTodrip_post_comment")
+  drip_post               drip_post                @relation(fields: [post_id], references: [post_no], onDelete: NoAction, onUpdate: NoAction)
+  users                   users                    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  drip_post_comment_like  drip_post_comment_like[]
+}
+
+model drip_post_comment_like {
+  id                Int               @id @default(autoincrement())
+  comment_id        Int
+  user_id           String            @db.VarChar
+  created_at        DateTime?         @default(now()) @db.Timestamp(6)
+  drip_post_comment drip_post_comment @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users             users             @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([comment_id, user_id])
+}
+
+model drip_post_like {
+  id         Int       @id @default(autoincrement())
+  post_no    Int
+  user_id    String    @db.VarChar
+  is_like    Boolean
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  drip_post  drip_post @relation(fields: [post_no], references: [post_no], onDelete: Cascade, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([post_no, user_id])
+}
+
+model drip_post_mark {
+  id         Int       @id @default(autoincrement())
+  post_no    Int
+  user_id    String    @db.VarChar
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  drip_post  drip_post @relation(fields: [post_no], references: [post_no], onDelete: Cascade, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([post_no, user_id])
+}
+
+model user_follow {
+  id                                   Int       @id @default(autoincrement())
+  follower_id                          String    @db.VarChar(50)
+  followee_id                          String    @db.VarChar(50)
+  created_at                           DateTime? @default(now()) @db.Timestamp(6)
+  users_user_follow_followee_idTousers users     @relation("user_follow_followee_idTousers", fields: [followee_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  users_user_follow_follower_idTousers users     @relation("user_follow_follower_idTousers", fields: [follower_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([follower_id, followee_id], map: "unique_follower_followee")
+}
+
+model users {
+  user_no                                    Int                      @id @default(autoincrement())
+  user_id                                    String                   @unique @db.VarChar(50)
+  user_password                              String
+  user_email                                 String                   @unique @db.VarChar(255)
+  user_gender                                String?                  @db.VarChar(10)
+  drip_post_comment                          drip_post_comment[]
+  drip_post_comment_like                     drip_post_comment_like[]
+  drip_post_like                             drip_post_like[]
+  drip_post_mark                             drip_post_mark[]
+  user_follow_user_follow_followee_idTousers user_follow[]            @relation("user_follow_followee_idTousers")
+  user_follow_user_follow_follower_idTousers user_follow[]            @relation("user_follow_follower_idTousers")
+}

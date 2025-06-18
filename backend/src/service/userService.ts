@@ -10,6 +10,10 @@ import {
   selectUserStorage,
   findUserByEmailDB,
   updateUserPasswordDB,
+  checkFollowStatusDB,
+  toggleFollowDB,
+  getFollowersDB,
+  getFollowingDB,
 } from "../storage/userStorage";
 import {
   IdCheckType,
@@ -178,6 +182,55 @@ export const resetPasswordService = async (email: string, password: string) => {
 
     return { success: true, message: "비밀번호가 재설정되었습니다." };
   } catch (error) {
+    throw error;
+  }
+};
+
+// 팔로우 상태 확인 서비스
+export const checkFollowStatusService = async (followerId: string, followeeId: string) => {
+  try {
+    const isFollowing = await checkFollowStatusDB(followerId, followeeId);
+    return { isFollowing };
+  } catch (error) {
+    console.error("checkFollowStatusService error - userService");
+    throw error;
+  }
+};
+
+// 팔로우 토글 서비스
+export const toggleFollowService = async (followerId: string, followeeId: string) => {
+  try {
+    // 자기 자신을 팔로우하려는 경우 방지
+    if (followerId === followeeId) {
+      throw new Error("자기 자신을 팔로우할 수 없습니다.");
+    }
+
+    const result = await toggleFollowDB(followerId, followeeId);
+    return result;
+  } catch (error) {
+    console.error("toggleFollowService error - userService");
+    throw error;
+  }
+};
+
+// 팔로워 목록 가져오기 서비스
+export const getFollowersService = async (userId: string) => {
+  try {
+    const followers = await getFollowersDB(userId);
+    return followers;
+  } catch (error) {
+    console.error("getFollowersService error - userService");
+    throw error;
+  }
+};
+
+// 팔로잉 목록 가져오기 서비스
+export const getFollowingService = async (userId: string) => {
+  try {
+    const following = await getFollowingDB(userId);
+    return following;
+  } catch (error) {
+    console.error("getFollowingService error - userService");
     throw error;
   }
 };

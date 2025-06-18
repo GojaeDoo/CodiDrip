@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
-import { fetchUserProfile } from "./Header.query";
+import { fetchUserProfile,getSearchResult } from "./Header.query";
 import { useAuth } from "@/context/AuthContext";
 import { HeaderProps, Profile } from "./Header.types";
 
@@ -11,6 +11,7 @@ const HeaderContainer = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const router = useRouter();
   const { isLoggedIn, logout } = useAuth();
+  const [searchInput, setSearchInput] = useState<string>("");
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -66,6 +67,19 @@ const HeaderContainer = () => {
     logout();
   };
 
+  const onChangeSearchInput: HeaderProps["onChangeSearchInput"] = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    console.log("searchInput : ", searchInput);
+  };
+
+  const onEnterSearchInput: HeaderProps["onEnterSearchInput"] = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const response = await getSearchResult(searchInput);
+      console.log("response : ", response);
+      
+    }
+  };
+
   return (
     <HeaderPresenter
       isOpen={isOpen}
@@ -79,6 +93,8 @@ const HeaderContainer = () => {
       onClickMoveDrips={onClickMoveDrips}
       isLoggedIn={isLoggedIn}
       userProfile={userProfile}
+      onChangeSearchInput={onChangeSearchInput}
+      onEnterSearchInput={onEnterSearchInput}
     />
   );
 };

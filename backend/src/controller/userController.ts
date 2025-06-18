@@ -18,6 +18,10 @@ import {
   verifyPasswordCode,
   selectUserService,
   resetPasswordService,
+  checkFollowStatusService,
+  toggleFollowService,
+  getFollowersService,
+  getFollowingService,
 } from "../service/userService";
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -228,6 +232,98 @@ export const postUserResetPassword = async (req: Request, res: Response) => {
     console.error("비밀번호 재설정 실패:", error);
     res.status(500).json({
       error: "postUserResetPassword 500error - userController",
+    });
+  }
+};
+
+// 팔로우 상태 확인 컨트롤러
+export const getFollowStatusController = async (req: Request, res: Response) => {
+  try {
+    const { followerId, followingId } = req.query;
+
+    if (!followerId || !followingId) {
+      res.status(400).json({ 
+        error: "followerId와 followingId가 필요합니다." 
+      });
+      return;
+    }
+
+    const result = await checkFollowStatusService(
+      followerId as string, 
+      followingId as string
+    );
+    
+    res.json(result);
+  } catch (error) {
+    console.error("팔로우 상태 확인 실패:", error);
+    res.status(500).json({ 
+      error: "팔로우 상태 확인 중 오류가 발생했습니다." 
+    });
+  }
+};
+
+// 팔로우 토글 컨트롤러
+export const postToggleFollowController = async (req: Request, res: Response) => {
+  try {
+    const { followerId, followingId } = req.body;
+
+    if (!followerId || !followingId) {
+      res.status(400).json({ 
+        error: "followerId와 followingId가 필요합니다." 
+      });
+      return;
+    }
+
+    const result = await toggleFollowService(followerId, followingId);
+    res.json(result);
+  } catch (error: any) {
+    console.error("팔로우 토글 실패:", error);
+    res.status(500).json({ 
+      error: error.message || "팔로우 처리 중 오류가 발생했습니다." 
+    });
+  }
+};
+
+// 팔로워 목록 가져오기 컨트롤러
+export const getFollowersController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      res.status(400).json({ 
+        error: "userId가 필요합니다." 
+      });
+      return;
+    }
+
+    const followers = await getFollowersService(userId as string);
+    res.json(followers);
+  } catch (error) {
+    console.error("팔로워 목록 조회 실패:", error);
+    res.status(500).json({ 
+      error: "팔로워 목록 조회 중 오류가 발생했습니다." 
+    });
+  }
+};
+
+// 팔로잉 목록 가져오기 컨트롤러
+export const getFollowingController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      res.status(400).json({ 
+        error: "userId가 필요합니다." 
+      });
+      return;
+    }
+
+    const following = await getFollowingService(userId as string);
+    res.json(following);
+  } catch (error) {
+    console.error("팔로잉 목록 조회 실패:", error);
+    res.status(500).json({ 
+      error: "팔로잉 목록 조회 중 오류가 발생했습니다." 
     });
   }
 };

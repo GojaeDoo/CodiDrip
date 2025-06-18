@@ -31,7 +31,7 @@ export const DripPostPresenter = (props: DripPostProps) => {
                   <S.ProfileImage
                       src={`http://localhost:3005/uploads/profiles/${post.profile_image}`}
                       alt="profile"
-                      onClick={(e) => props.onClickMoveUserProfile(e, post.post_no)}
+                      onClick={(e) => props.onClickMoveUserProfile(e, post.post_no , post.user_id)}
                   />
                     <S.UserInfo>
                       <S.Username>{post.profile_nickname}</S.Username>

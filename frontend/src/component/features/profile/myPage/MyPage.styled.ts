@@ -106,6 +106,26 @@ export const EditButton = styled.button`
   }
 `;
 
+export const FollowButton = styled.button<{ $isFollowing: boolean }>`
+  background: ${props => props.$isFollowing ? '#ff4757' : '#3a3a3a'};
+  border: none;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${props => props.$isFollowing ? '#ff3742' : '#262a2d'};
+    color: #ffffff;
+  }
+`;
+
 export const ContentSection = styled.div`
   width: 100%;
   display: flex;

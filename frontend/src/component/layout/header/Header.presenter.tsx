@@ -27,7 +27,7 @@ const HeaderPresenter = (props: HeaderProps) => {
         <S.MenuItem>건의사항/신고</S.MenuItem>
       </S.SideMenuContainer>
       <S.SearchInputContainer>
-        <S.SearchInput />
+        <S.SearchInput onChange={props.onChangeSearchInput} onKeyDown={props.onEnterSearchInput}/>
       </S.SearchInputContainer>
       <S.Logo onClick={props.onClickMain}>CODIDRIP</S.Logo>
       {props.isLoggedIn ? (

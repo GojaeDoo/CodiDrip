@@ -1,8 +1,9 @@
 import DripPost from "@/app/dripPost/page";
+import Follow from "@/app/follow/page";
 
 import * as S from "./MyPage.styled";
 import { MyPageProps } from "./MyPage.types";
-import { Plus, Bookmark, Tag, LogOut, Edit, Heart, Users } from "lucide-react";
+import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus } from "lucide-react";
 
 export const MyPagePresenter = (props: MyPageProps) => {
   return (
@@ -41,51 +42,81 @@ export const MyPagePresenter = (props: MyPageProps) => {
             <S.ProfileDetails>
               {props.userProfile?.profile_height || 0}cm / {props.userProfile?.profile_weight || 0}kg / {props.userProfile?.profile_gender || "미설정"}
             </S.ProfileDetails>
-            <S.EditButton onClick={props.onClickMoveProfileEdit}>
-              <Edit size={16} />
-              프로필 수정
-            </S.EditButton>
+            {props.isMyPage ? (
+              <S.EditButton onClick={props.onClickMoveProfileEdit}>
+                <Edit size={16} />
+                프로필 수정
+              </S.EditButton>
+            ) : (
+              <S.FollowButton onClick={props.onClickFollow} $isFollowing={props.isFollowing || false}>
+                {props.isFollowing ? (
+                  <>
+                    <UserMinus size={16} />
+                    언팔로우
+                  </>
+                ) : (
+                  <>
+                    <UserPlus size={16} />
+                    팔로우
+                  </>
+                )}
+              </S.FollowButton>
+            )}
           </S.ProfileInfo>
         </S.ProfileSection>
 
         <S.ContentSection>
           <S.TabButtons>
-            <S.TabButton data-active={props.isMyDrip} onClick={props.onClickMoveMyDrip}>
+            <S.TabButton data-active={props.isMyDrip || false} onClick={props.onClickMoveMyDrip}>
               <Edit size={16} />
-              내가 작성한 DRIP
+              작성한 DRIP
             </S.TabButton>
-            <S.TabButton data-active={props.isLike} onClick={props.onClickMoveLikedDrip}>
+            {props.isMyPage && (
+            <S.TabButton data-active={props.isLike || false} onClick={props.onClickMoveLikedDrip}>
               <Heart size={16} />
               좋아요한 DRIP
             </S.TabButton>
-            <S.TabButton data-active={props.isSaved} onClick={props.onClickMoveSavedDrip}>
+            )}
+            {props.isMyPage && (
+            <S.TabButton data-active={props.isSaved || false} onClick={props.onClickMoveSavedDrip}>
               <Bookmark size={16} />
               저장한 DRIP
             </S.TabButton>
-            <S.TabButton data-active={props.isFollower} onClick={props.onClickMoveFollower}>
+            )}
+            <S.TabButton data-active={props.isFollower || false} onClick={props.onClickMoveFollower}>
               <Users size={16} />
               팔로워
             </S.TabButton>
-            <S.TabButton data-active={props.isFollowing} onClick={props.onClickMoveFollowing}>
+            <S.TabButton data-active={props.isFollowingTab || false} onClick={props.onClickMoveFollowing}>
               <Users size={16} />
               팔로잉
             </S.TabButton>
           </S.TabButtons>
 
           <S.ContentArea>
-            <S.AddButton onClick={props.onClickMoveDripPostEdit}>
-              <Plus size={16} />
-              DRIP 추가
-            </S.AddButton>
+            {props.isMyPage && (
+              <S.AddButton onClick={props.onClickMoveDripPostEdit}>
+                <Plus size={16} />
+                DRIP 추가
+              </S.AddButton>
+            )}
             <S.ContentCard>
               <S.CardContent>
-                <DripPost
-                  gender={props.userProfile?.profile_gender || ""}
-                  isMyPage={true}
-                  userId={props.userProfile?.user_id || ""}
-                  isLike={props.isLike}
-                  isSaved={props.isSaved}
-                />
+                {(props.isMyDrip || props.isLike || props.isSaved) && (
+                  <DripPost
+                    gender={props.userProfile?.profile_gender || ""}
+                    isMyPage={props.isMyPage || false}
+                    userId={props.userProfile?.user_id || ""}
+                    isLike={props.isLike}
+                    isSaved={props.isSaved}
+                  />
+                )}
+                {(props.isFollower || props.isFollowingTab) && props.userProfile?.user_id && (
+                  <Follow 
+                    initialTab={props.activeFollowTab} 
+                    targetUserId={props.userProfile.user_id}
+                  />
+                )}
               </S.CardContent>
             </S.ContentCard>
           </S.ContentArea>

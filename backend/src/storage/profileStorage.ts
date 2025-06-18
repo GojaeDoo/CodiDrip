@@ -59,10 +59,10 @@ export const getFindByIdProfileDB = async (
   p.profile_height,
   p.profile_weight,
   p.profile_gender,
-  p.profile_follow,
-  COUNT(dp.post_no) AS post_count
+  COUNT(DISTINCT uf.follower_id) AS profile_follow,
+  (SELECT COUNT(*) FROM drip_post WHERE user_id = p.user_id) AS post_count
 FROM profile p
-LEFT JOIN drip_post dp ON dp.user_id = p.user_id
+LEFT JOIN user_follow uf ON uf.followee_id = p.user_id
 WHERE p.user_id = $1
 GROUP BY 
   p.profile_id,
@@ -72,8 +72,7 @@ GROUP BY
   p.profile_about,
   p.profile_height,
   p.profile_weight,
-  p.profile_gender,
-  p.profile_follow;`,
+  p.profile_gender;`,
     [id]
   );
   return result.rows[0] || null;

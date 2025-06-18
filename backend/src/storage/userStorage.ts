@@ -146,3 +146,129 @@ export const updateUserPasswordDB = async (
     throw error;
   }
 };
+
+// 팔로우 상태 확인
+export const checkFollowStatusDB = async (followerId: string, followeeId: string) => {
+  try {
+    const query = `
+      SELECT id FROM user_follow 
+      WHERE follower_id = $1 AND followee_id = $2
+    `;
+    const values = [followerId, followeeId];
+    const result = await pool.query(query, values);
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error("checkFollowStatusDB error - userStorage");
+    throw error;
+  }
+};
+
+// 팔로우 추가
+export const addFollowDB = async (followerId: string, followeeId: string) => {
+  try {
+    const query = `
+      INSERT INTO user_follow (follower_id, followee_id)
+      VALUES ($1, $2)
+      RETURNING *
+    `;
+    const values = [followerId, followeeId];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    console.error("addFollowDB error - userStorage");
+    throw error;
+  }
+};
+
+// 팔로우 삭제
+export const removeFollowDB = async (followerId: string, followeeId: string) => {
+  try {
+    const query = `
+      DELETE FROM user_follow 
+      WHERE follower_id = $1 AND followee_id = $2
+      RETURNING *
+    `;
+    const values = [followerId, followeeId];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    console.error("removeFollowDB error - userStorage");
+    throw error;
+  }
+};
+
+// 팔로우 토글 (팔로우 상태에 따라 추가/삭제)
+export const toggleFollowDB = async (followerId: string, followeeId: string) => {
+  try {
+    const isFollowing = await checkFollowStatusDB(followerId, followeeId);
+    
+    if (isFollowing) {
+      // 이미 팔로우 중이면 언팔로우
+      await removeFollowDB(followerId, followeeId);
+      return { isFollowing: false, action: 'unfollowed' };
+    } else {
+      // 팔로우하지 않았으면 팔로우
+      await addFollowDB(followerId, followeeId);
+      return { isFollowing: true, action: 'followed' };
+    }
+  } catch (error) {
+    console.error("toggleFollowDB error - userStorage");
+    throw error;
+  }
+};
+
+// 팔로워 목록 가져오기 (나를 팔로우하는 사람들)
+export const getFollowersDB = async (userId: string) => {
+  try {
+    const query = `
+      SELECT 
+        p.profile_id,
+        p.profile_nickname,
+        p.profile_height,
+        p.profile_weight,
+        p.profile_image,
+        p.profile_gender,
+        p.profile_follow,
+        p.user_id,
+        p.profile_about
+      FROM user_follow uf
+      JOIN profile p ON uf.follower_id = p.user_id
+      WHERE uf.followee_id = $1
+      ORDER BY uf.id DESC
+    `;
+    const values = [userId];
+    const result = await pool.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error("getFollowersDB error - userStorage");
+    throw error;
+  }
+};
+
+// 팔로잉 목록 가져오기 (내가 팔로우하는 사람들)
+export const getFollowingDB = async (userId: string) => {
+  try {
+    const query = `
+      SELECT 
+        p.profile_id,
+        p.profile_nickname,
+        p.profile_height,
+        p.profile_weight,
+        p.profile_image,
+        p.profile_gender,
+        p.profile_follow,
+        p.user_id,
+        p.profile_about
+      FROM user_follow uf
+      JOIN profile p ON uf.followee_id = p.user_id
+      WHERE uf.follower_id = $1
+      ORDER BY uf.id DESC
+    `;
+    const values = [userId];
+    const result = await pool.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error("getFollowingDB error - userStorage");
+    throw error;
+  }
+};

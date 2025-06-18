@@ -23,3 +23,14 @@ export const fetchUserProfile = async (userId: string): Promise<Profile | null> 
     throw error;
   }
 };
+
+export const getSearchResult = async (keyword: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/profiles/search?keyword=${keyword}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching search result:", error);
+  }
+};

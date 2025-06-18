@@ -35,6 +35,7 @@ app.use(
 app.use("/api/users", userRouter);
 app.use("/api/profiles", profileRouter);
 app.use("/api/drip", dripRouter);
+// app.use("/api/search", searchRouter);
 
 // 서버 실행
 app.listen(port, () => {

@@ -12,6 +12,8 @@ export interface HeaderProps {
   onClickMoveDrips: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
+  onChangeSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEnterSearchInput: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export interface Profile {
