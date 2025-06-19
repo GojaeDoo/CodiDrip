@@ -27,7 +27,7 @@ export const fetchUserProfile = async (userId: string): Promise<Profile | null> 
 export const getSearchResult = async (keyword: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/profiles/search?keyword=${keyword}`
+      `http://localhost:3005/api/search/search?keyword=${keyword}`
     );
     return response.data;
   } catch (error) {

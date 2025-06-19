@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true, // styled-components 활성화
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3005',
+        pathname: '/uploads/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

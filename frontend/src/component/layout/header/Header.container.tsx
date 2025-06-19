@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { fetchUserProfile,getSearchResult } from "./Header.query";
 import { useAuth } from "@/context/AuthContext";
 import { HeaderProps, Profile } from "./Header.types";
+import { SearchModalContainer } from "@/component/features/search/SearchModal.container";
+import { SearchResult } from "@/component/features/search/SearchModal.types";
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -12,6 +14,8 @@ const HeaderContainer = () => {
   const router = useRouter();
   const { isLoggedIn, logout } = useAuth();
   const [searchInput, setSearchInput] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -69,33 +73,50 @@ const HeaderContainer = () => {
 
   const onChangeSearchInput: HeaderProps["onChangeSearchInput"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
-    console.log("searchInput : ", searchInput);
   };
 
   const onEnterSearchInput: HeaderProps["onEnterSearchInput"] = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const response = await getSearchResult(searchInput);
-      console.log("response : ", response);
-      
+    if (e.key === "Enter" && searchInput.trim()) {
+      try {
+        const response = await getSearchResult(searchInput);
+        console.log("response : ", response);
+        setSearchResults(response);
+        setIsSearchModalOpen(true);
+      } catch (error) {
+        console.error("검색 중 오류 발생:", error);
+        alert("검색 중 오류가 발생했습니다.");
+      }
     }
   };
 
+  const closeSearchModal = () => {
+    setIsSearchModalOpen(false);
+    setSearchResults([]);
+  };
+
   return (
-    <HeaderPresenter
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      onClickMoveMyPage={onClickMoveMyPage}
-      onClickMoveLogin={onClickMoveLogin}
-      onClickMoveJoin={onClickMoveJoin}
-      onClickLogout={onClickLogout}
-      onClickMain={onClickMain}
-      onClickMoveDripUser={onClickMoveDripUser}
-      onClickMoveDrips={onClickMoveDrips}
-      isLoggedIn={isLoggedIn}
-      userProfile={userProfile}
-      onChangeSearchInput={onChangeSearchInput}
-      onEnterSearchInput={onEnterSearchInput}
-    />
+    <>
+      <HeaderPresenter
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onClickMoveMyPage={onClickMoveMyPage}
+        onClickMoveLogin={onClickMoveLogin}
+        onClickMoveJoin={onClickMoveJoin}
+        onClickLogout={onClickLogout}
+        onClickMain={onClickMain}
+        onClickMoveDripUser={onClickMoveDripUser}
+        onClickMoveDrips={onClickMoveDrips}
+        isLoggedIn={isLoggedIn}
+        userProfile={userProfile}
+        onChangeSearchInput={onChangeSearchInput}
+        onEnterSearchInput={onEnterSearchInput}
+      />
+      <SearchModalContainer
+        isOpen={isSearchModalOpen}
+        onClose={closeSearchModal}
+        searchResults={searchResults}
+      />
+    </>
   );
 };
 

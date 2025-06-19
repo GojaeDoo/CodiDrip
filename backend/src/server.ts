@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userRouter from "./router/userRouter";
 import profileRouter from "./router/profileRouter";
 import dripRouter from "./router/dripRouter";
+import searchRouter from "./router/searchRouter";
 import path from "path";
 import { pool } from "./db";
 
@@ -35,7 +36,7 @@ app.use(
 app.use("/api/users", userRouter);
 app.use("/api/profiles", profileRouter);
 app.use("/api/drip", dripRouter);
-// app.use("/api/search", searchRouter);
+app.use("/api/search", searchRouter);
 
 // 서버 실행
 app.listen(port, () => {

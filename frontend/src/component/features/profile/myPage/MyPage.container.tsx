@@ -5,6 +5,7 @@ import { MyPagePresenter } from "./MyPage.presenter";
 import { MyPageProps } from "./MyPage.types";
 import { getMyPageProfileQuery, getDripPostDetailQuery, checkFollowStatusQuery, toggleFollowQuery } from "./MyPage.query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { decodeUserId } from "@/utils/urlEncoder";
 
 export const MyPageContainer = () => {
   const router = useRouter();
@@ -16,9 +17,9 @@ export const MyPageContainer = () => {
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     const queryStringStatus = searchParams.get("status");
+    const encodedUserId = searchParams.get("uid");
     const queryStringPostNo = searchParams.get("postNo");
-    console.log("queryStringStatus : ", queryStringStatus);
-    console.log("queryStringPostNo : ", queryStringPostNo);
+    
     if (!storedUserId) {
       alert("로그인 후 이용해주세요.");
       return;
@@ -27,13 +28,12 @@ export const MyPageContainer = () => {
     const fetchData = async () => {
       try {
         if (queryStringStatus === "true") {
-          const getDripPostDetail = await getDripPostDetailQuery(parseInt(queryStringPostNo || "0"));
-          const targetUserId = getDripPostDetail.user_id;
+          let targetUserId: string;
+          targetUserId = decodeUserId(encodedUserId || "");
           const profileResponse = await getMyPageProfileQuery(targetUserId);
           setUserProfile(profileResponse);
           console.log("profileResponse : ", profileResponse);
           
-          // 팔로우 상태 확인
           const followStatus = await checkFollowStatusQuery(storedUserId, targetUserId);
           setIsFollowing(followStatus);
         } else {

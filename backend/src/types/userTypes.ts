@@ -22,3 +22,11 @@ export interface VerificationCode {
   email: string;
   expiresAt: Date;
 }
+
+export interface SearchResult {
+  type: 'profile' | 'post';
+  id: number;
+  name: string;
+  image: string;
+  user_id: string;
+}

@@ -5,6 +5,7 @@ import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostType } from "./DripPost.types";
 import { getUserDripPostQuery, deleteDripPostQuery, likeDripPostQuery } from "./DripPost.query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { encodeUserId } from "@/utils/urlEncoder";
 
 export const DripPostContainer = ({
   gender,
@@ -125,12 +126,12 @@ export const DripPostContainer = ({
 
   const onClickMoveUserProfile = (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => {
     e.stopPropagation();
-
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId === userId) {
       router.push(`/myPage`);
     } else {
-      router.push(`/myPage?status=true&postNo=${postNo}`);
+      const encodedUserId = encodeUserId(userId);
+      router.push(`/myPage?status=true&uid=${encodedUserId}`);
     }
   }
 
