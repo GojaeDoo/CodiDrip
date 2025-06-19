@@ -5,6 +5,7 @@ import {
   getUserProfileById,
   getCreateProfileService,
   getUpdateProfileService,
+  getNicknameCheckService
 } from "../service/profileService";
 import { PrismaClient } from "@prisma/client";
 
@@ -140,3 +141,31 @@ export const getUpdateProfileController = async (
     next(error);
   }
 };
+
+export const getNicknameCheck = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { nickname } = req.params;
+    const { userId } = req.query; // 현재 사용자 ID를 쿼리 파라미터로 받음
+    const profile = await getNicknameCheckService(nickname);
+    
+    // 프로필이 존재하지만 현재 사용자의 것이라면 사용 가능
+    let isAvailable = !profile;
+    
+    if (profile && userId && profile.user_id === userId) {
+      isAvailable = true;
+      console.log("현재 사용자의 닉네임이므로 사용 가능");
+    }
+    
+    res.json({ 
+      isAvailable,
+      message: isAvailable ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."
+    });
+  } catch (error) {
+    console.error("닉네임 중복확인 중 오류 발생:", error);
+    res.status(500).json({ error: "닉네임 중복확인 중 오류 발생" });
+  } 
+}

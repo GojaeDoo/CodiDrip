@@ -5,21 +5,39 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: #1a1a1a; // ← 여기서 rgba → hex로 변경
+  background-color: #1a1a1a;
   border-bottom: 1px solid #333;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
 `;
 
-export const Logo = styled.div`
-  width: 100%;
+export const LeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  width: 200px;
+`;
+
+export const CenterSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+`;
+
+export const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 200px;
+`;
+
+export const Logo = styled.div`
   font-size: 2.3rem;
   font-family: "Inter", sans-serif;
   font-weight: 1000;

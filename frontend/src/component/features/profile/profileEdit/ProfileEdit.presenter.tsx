@@ -1,5 +1,4 @@
 import * as S from "./ProfileEdit.styled";
-import * as C from "../../../commons/Commons.styled";
 import { ProfileEditPresenterProps } from "./ProfileEdit.types";
 
 export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
@@ -27,22 +26,23 @@ export const ProfileEditPresenter = (props: ProfileEditPresenterProps) => {
         <S.ProfileEditWrapperRight>
           <S.InputGroup>
             <S.ProfileEditText>닉네임</S.ProfileEditText>
-            <input
-              type="text"
-              placeholder="닉네임을 입력해주세요."
-              onChange={props.onChangeNickname}
-              value={props.nickname || ""}
-              style={{
-                width: "100%",
-                height: "45px",
-                fontSize: "1rem",
-                backgroundColor: "rgba(217, 217, 217, 0.9)",
-                outline: "none",
-                border: "1px solid rgba(217, 217, 217, 0.9)",
-                borderRadius: "5px",
-                padding: "0 1rem",
-              }}
-            />
+            <S.InputWithButton>
+              <input
+                type="text"
+                placeholder="닉네임을 입력해주세요."
+                onChange={props.onChangeNickname}
+                value={props.nickname || ""}
+              />
+              <S.ProfileNicknameCheckButton 
+                onClick={props.onClickNicknameCheck}
+                style={{
+                  backgroundColor: props.isNicknameChecked ? '#4CAF50' : 'rgba(217, 217, 217, 0.9)',
+                  color: props.isNicknameChecked ? '#ffffff' : '#000000'
+                }}
+              >
+                {props.isNicknameChecked ? '확인완료' : '중복확인'}
+              </S.ProfileNicknameCheckButton>
+            </S.InputWithButton>
           </S.InputGroup>
 
           <S.InputGroup>

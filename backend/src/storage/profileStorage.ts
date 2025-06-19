@@ -186,3 +186,14 @@ export const updateProfile = async (
     throw error;
   }
 };
+
+export const getFindNickNameCheckDB = async (nickname: string) => {
+  
+  try {
+    const result = await pool.query(`SELECT * FROM profile WHERE profile_nickname = $1`, [nickname]);
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error("getFindNickNameCheckDB error - profileStorage");
+    throw error;
+  }
+};

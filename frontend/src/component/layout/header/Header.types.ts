@@ -10,6 +10,7 @@ export interface HeaderProps {
   onClickMoveMyPage: () => void;
   onClickMoveDripUser: () => void;
   onClickMoveDrips: () => void;
+  onClickMoveFreeBoardList: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
   onChangeSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;

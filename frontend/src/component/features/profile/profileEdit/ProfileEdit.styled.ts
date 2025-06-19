@@ -88,6 +88,53 @@ export const ProfileEditText = styled.div`
   }
 `;
 
+export const ProfileNicknameCheckButton = styled.button`
+  height: 45px;
+  background-color: rgba(217, 217, 217, 0.9);
+  outline: none;
+  border: none;
+  border: 1px solid rgba(217, 217, 217, 0.9);
+  border-radius: 5px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  white-space: nowrap;
+  min-width: 80px;
+
+  &:hover {
+    background-color: #262a2d;
+    color: #ffffff;
+  }
+
+  @media (min-width: 768px) {
+    height: 50px;
+    font-size: 1.1rem;
+    min-width: 100px;
+  }
+`;
+
+export const InputWithButton = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+
+  input {
+    flex: 1;
+    height: 45px;
+    font-size: 1rem;
+    background-color: rgba(217, 217, 217, 0.9);
+    outline: none;
+    border: 1px solid rgba(217, 217, 217, 0.9);
+    border-radius: 5px;
+    padding: 0 1rem;
+
+    @media (min-width: 768px) {
+      height: 50px;
+      font-size: 1.1rem;
+    }
+  }
+`;
+
 export const ProfileEditSelect = styled.select`
   width: 100%;
   height: 45px;

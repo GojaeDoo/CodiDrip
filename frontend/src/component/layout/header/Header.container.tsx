@@ -47,25 +47,29 @@ const HeaderContainer = () => {
     }
   };
 
-  const onClickMoveLogin = () => {
+  const onClickMoveLogin: HeaderProps["onClickMoveLogin"] = () => {
     router.push("/login");
   };
 
-  const onClickMoveJoin = () => {
+  const onClickMoveJoin: HeaderProps["onClickMoveJoin"] = () => {
     router.push("/join");
   };
 
-  const onClickMain = () => {
+  const onClickMain: HeaderProps["onClickMain"] = () => {
     router.push("/drips");
   };
 
-  const onClickMoveDripUser = () => {
+  const onClickMoveDripUser: HeaderProps["onClickMoveDripUser"] = () => {
     router.push("/drips?dripUser=true");
   };
 
-  const onClickMoveDrips = () => {
+  const onClickMoveDrips:HeaderProps["onClickMoveDrips"] = () => {
     router.push("/drips");
   };
+
+  const onClickMoveFreeBoardList = () => {
+    router.push("/freeBoardList");
+  }
 
   const onClickLogout = () => {
     logout();
@@ -110,6 +114,7 @@ const HeaderContainer = () => {
         userProfile={userProfile}
         onChangeSearchInput={onChangeSearchInput}
         onEnterSearchInput={onEnterSearchInput}
+        onClickMoveFreeBoardList={onClickMoveFreeBoardList}
       />
       <SearchModalContainer
         isOpen={isSearchModalOpen}

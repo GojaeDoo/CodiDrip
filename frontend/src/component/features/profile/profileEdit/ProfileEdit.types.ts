@@ -8,6 +8,7 @@ export interface ProfileEditPresenterProps {
   onChangeNickname: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileAbout: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onClickNicknameCheck: () => void;
   onClickCreateProfile: () => void;
   previewUrl: string | null;
   isEditMode: boolean;
@@ -15,6 +16,7 @@ export interface ProfileEditPresenterProps {
   weight: number | null;
   nickname: string;
   profileAbout: string;
+  isNicknameChecked: boolean;
 }
 
 export interface ProfileCreateParams {
@@ -25,4 +27,13 @@ export interface ProfileCreateParams {
   profileImage: string;
   userId: string;
   profileAbout: string;
+}
+
+export interface ProfileData {
+  userId: string;
+  height: number;
+  weight: number;
+  gender: string;
+  nickname: string;
+  profileImage: string;
 }

@@ -6,6 +6,7 @@ import {
   ProfileCreate,
   getProfileQuery,
   ProfileUpdate,
+  getNicknameCheck
 } from "./profileEdit.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
@@ -22,6 +23,9 @@ export const ProfileEditContainer = () => {
     null
   );
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [checkedNickname, setCheckedNickname] = useState("");
+  const [originalNickname, setOriginalNickname] = useState("");
 
   const searchParams = useSearchParams();
   const Status = searchParams.get("Status");
@@ -56,6 +60,12 @@ export const ProfileEditContainer = () => {
         setGender(response.profile_gender?.toLowerCase() || ""); // 성별 값을 소문자로 변환
         setNickname(response.profile_nickname);
         setProfileAbout(response.profile_about);
+        
+        // 프로필 수정 모드에서는 기존 닉네임에 대해 중복확인 완료 상태로 설정
+        setIsNicknameChecked(true);
+        setCheckedNickname(response.profile_nickname);
+        setOriginalNickname(response.profile_nickname);
+        
         if (response.profile_image) {
           const imageUrl = `http://localhost:3005/uploads/profiles/${response.profile_image}`;
           console.log("이미지 URL:", imageUrl);
@@ -83,11 +93,49 @@ export const ProfileEditContainer = () => {
   };
 
   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
+    const newNickname = event.target.value;
+    setNickname(newNickname);
+    
+    // 프로필 수정 모드에서 기존 닉네임으로 돌아가면 자동으로 중복확인 완료
+    if (isEditMode && newNickname === originalNickname) {
+      setIsNicknameChecked(true);
+      setCheckedNickname(newNickname);
+    } else if (newNickname !== checkedNickname) {
+      // 다른 닉네임이면 중복확인 상태 초기화
+      setIsNicknameChecked(false);
+    }
   };
 
   const onChangeProfileAbout = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setProfileAbout(event.target.value);
+  };
+
+  const onClickNicknameCheck = async () => {
+    console.log("=== 닉네임 체크 시작 ===");
+    
+    if (!nickname.trim()) {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await getNicknameCheck(nickname, userId || undefined);
+      
+      if (response.isAvailable) {
+        setIsNicknameChecked(true);
+        setCheckedNickname(nickname);
+        alert("사용 가능한 닉네임입니다.");
+      } else {
+        setIsNicknameChecked(false);
+        setCheckedNickname("");
+        alert("이미 사용 중인 닉네임입니다.");
+      }
+    } catch (error) {
+      console.error("닉네임 중복확인 오류:", error);
+      setIsNicknameChecked(false);
+      setCheckedNickname("");
+      alert("닉네임 중복확인 중 오류가 발생했습니다.");
+    }
   };
 
   const onChangeProfileImage = async (
@@ -137,6 +185,12 @@ export const ProfileEditContainer = () => {
       return;
     }
 
+    // 중복확인 체크
+    if (!isNicknameChecked || nickname !== checkedNickname) {
+      alert("닉네임 중복확인을 완료해주세요.");
+      return;
+    }
+
     try {
       const profileData = {
         userId,
@@ -181,6 +235,8 @@ export const ProfileEditContainer = () => {
         weight={weight}
         nickname={nickname}
         profileAbout={profileAbout}
+        onClickNicknameCheck={onClickNicknameCheck}
+        isNicknameChecked={isNicknameChecked}
       />
     </>
   );

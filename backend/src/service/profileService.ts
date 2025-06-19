@@ -4,6 +4,7 @@ import {
   getUserProfileByIdDB,
   getCreateProfileDB,
   updateProfile,
+  getFindNickNameCheckDB
 } from "../storage/profileStorage";
 import { Profile } from "../types/profileTypes";
 import { PrismaClient } from "@prisma/client";
@@ -102,5 +103,14 @@ export const getUpdateProfileService = async (
   } catch (error) {
     console.error("프로필 수정 중 오류 발생:", error);
     throw error;
+  }
+};
+
+export const getNicknameCheckService = async (nickname: string) => {
+  try {
+    return await getFindNickNameCheckDB(nickname);
+  } catch (error) {
+    console.error("getNicknameCheckService error - profileService");
+    throw new Error("닉네임 중복확인 중 오류가 발생했습니다.");
   }
 };

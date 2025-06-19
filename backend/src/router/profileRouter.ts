@@ -5,6 +5,7 @@ import {
   getUserProfile,
   getCreateProfileController,
   getUpdateProfileController,
+  getNicknameCheck
 } from "../controller/profileController";
 import multer from "multer";
 import path from "path";
@@ -20,6 +21,9 @@ router.get("/:id", getProfile as RequestHandler);
 
 // user_id로 프로필 가져오기
 router.get("/user/:id", getUserProfile as RequestHandler);
+
+// 닉네임 중복확인
+router.get("/nicknameCheck/:nickname", getNicknameCheck as RequestHandler);
 
 // 프로필 생성
 router.post("/createProfile", getCreateProfileController as RequestHandler);
