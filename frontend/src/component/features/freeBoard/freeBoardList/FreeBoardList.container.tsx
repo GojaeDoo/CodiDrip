@@ -1,93 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FreeBoardListPresenter } from "./FreeBoardList.presenter";
 import { FreeBoardPost } from "./FreeBoardList.types";
+import { getFreeBoardList, getFreeBoardSearch } from "./FreeBoardList.query";
 import * as S from "./FreeBoardList.styled";
-
-// 임시 데이터 (나중에 API로 교체)
-const mockPosts: FreeBoardPost[] = [
-  {
-    id: 1,
-    title: "안녕하세요! 자유게시판에 처음 와봤어요",
-    author: "새내기",
-    createdAt: "2024-01-15T10:30:00Z",
-    viewCount: 45
-  },
-  {
-    id: 2,
-    title: "오늘 날씨가 정말 좋네요",
-    author: "날씨맨",
-    createdAt: "2024-01-15T09:15:00Z",
-    viewCount: 23
-  },
-  {
-    id: 3,
-    title: "프로그래밍 공부하는 분들 계신가요?",
-    author: "코딩초보",
-    createdAt: "2024-01-15T08:45:00Z",
-    viewCount: 67
-  },
-  {
-    id: 4,
-    title: "맛집 추천해주세요!",
-    author: "맛집탐험가",
-    createdAt: "2024-01-14T18:20:00Z",
-    viewCount: 89
-  },
-  {
-    id: 5,
-    title: "영화 추천 부탁드려요",
-    author: "영화광",
-    createdAt: "2024-01-14T16:30:00Z",
-    viewCount: 34
-  },
-  {
-    id: 6,
-    title: "운동하는 분들 있나요?",
-    author: "헬스맨",
-    createdAt: "2024-01-14T14:15:00Z",
-    viewCount: 56
-  },
-  {
-    id: 7,
-    title: "책 추천해주세요",
-    author: "독서광",
-    createdAt: "2024-01-14T12:00:00Z",
-    viewCount: 78
-  },
-  {
-    id: 8,
-    title: "여행 계획 세우는 중입니다",
-    author: "여행자",
-    createdAt: "2024-01-14T10:30:00Z",
-    viewCount: 42
-  },
-  {
-    id: 9,
-    title: "음악 추천 부탁드려요",
-    author: "음악애호가",
-    createdAt: "2024-01-14T09:00:00Z",
-    viewCount: 91
-  },
-  {
-    id: 10,
-    title: "게임하는 분들 계신가요?",
-    author: "게이머",
-    createdAt: "2024-01-14T07:30:00Z",
-    viewCount: 123
-  }
-];
 
 const POSTS_PER_PAGE = 10;
 
 export const FreeBoardListContainer = () => {
-  const [posts] = useState<FreeBoardPost[]>(mockPosts);
-  const [filteredPosts, setFilteredPosts] = useState<FreeBoardPost[]>(mockPosts);
+  const [posts, setPosts] = useState<FreeBoardPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<FreeBoardPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  // 자유게시판 목록 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const data = await getFreeBoardList();
+        setPosts(data);
+        setFilteredPosts(data);
+      } catch (error) {
+        console.error("자유게시판 목록 조회 오류:", error);
+        setPosts([]);
+        setFilteredPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
@@ -148,25 +96,31 @@ export const FreeBoardListContainer = () => {
     return pages;
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setCurrentPage(1); // 검색 시 첫 페이지로 이동
     
-    if (searchQuery.trim() === "") {
-      setFilteredPosts(posts);
-    } else {
-      const filtered = posts.filter(post => 
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.author.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredPosts(filtered);
+    try {
+      if (searchQuery.trim() === "") {
+        // 검색어가 없으면 전체 목록 가져오기
+        const data = await getFreeBoardList();
+        setPosts(data);
+        setFilteredPosts(data);
+      } else {
+        // 검색어가 있으면 검색 API 호출
+        const searchData = await getFreeBoardSearch(searchQuery);
+        setFilteredPosts(searchData);
+      }
+    } catch (error) {
+      console.error("검색 오류:", error);
+      alert("검색에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -174,17 +128,34 @@ export const FreeBoardListContainer = () => {
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
-    // 페이지 상단으로 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePostClick = (postId: number) => {
+  const onPostClick = (postId: number) => {
     router.push(`/freeBoardDetail?id=${postId}`);
   };
 
-  const handleWriteClick = () => {
+  const onWriteClick = () => {
     router.push("/freeBoardEdit");
   };
+
+  if (loading) {
+    return (
+      <S.Background>
+        <S.FreeBoardListWrapper>
+          <S.Header>
+            <S.Title>자유게시판</S.Title>
+            <S.Subtitle>자유롭게 의견을 나누는 공간입니다</S.Subtitle>
+          </S.Header>
+          <S.Content>
+            <div style={{ textAlign: 'center', padding: '2rem', color: '#fff' }}>
+              로딩 중...
+            </div>
+          </S.Content>
+        </S.FreeBoardListWrapper>
+      </S.Background>
+    );
+  }
 
   return (
     <FreeBoardListPresenter
@@ -192,12 +163,12 @@ export const FreeBoardListContainer = () => {
       currentPage={currentPage}
       totalPages={totalPages}
       searchQuery={searchQuery}
-      onSearch={handleSearch}
+      onClickSearch={handleSearch}
       onPageChange={onPageChange}
-      onPostClick={handlePostClick}
-      onWriteClick={handleWriteClick}
-      onSearchInputChange={handleSearchInputChange}
-      onSearchKeyPress={handleSearchKeyPress}
+      onPostClick={onPostClick}
+      onWriteClick={onWriteClick}
+      onSearchInputChange={onSearchInputChange}
+      onSearchKeyPress={onSearchKeyPress}
       formatDate={formatDate}
       renderPagination={renderPagination}
     />

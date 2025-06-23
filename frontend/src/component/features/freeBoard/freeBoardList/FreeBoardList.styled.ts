@@ -147,6 +147,7 @@ export const Cell = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  justify-content: center;
 `;
 
 export const TitleCell = styled(Cell)`
@@ -160,11 +161,13 @@ export const TitleCell = styled(Cell)`
 
 export const AuthorCell = styled(Cell)`
   color: #b0b0b0;
+  justify-content: center;
 `;
 
 export const DateCell = styled(Cell)`
   color: #888;
   font-size: 12px;
+  justify-content: center;
 `;
 
 export const ViewCell = styled(Cell)`

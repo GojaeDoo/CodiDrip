@@ -12,7 +12,7 @@ export interface FreeBoardListProps {
   currentPage: number;
   totalPages: number;
   searchQuery: string;
-  onSearch: (query: string) => void;
+  onClickSearch: () => void;
   onPageChange: (page: number) => void;
   onPostClick: (postId: number) => void;
   onWriteClick: () => void;
@@ -23,7 +23,7 @@ export interface FreeBoardListPresenterProps {
   currentPage: number;
   totalPages: number;
   searchQuery: string;
-  onSearch: () => void;
+  onClickSearch: () => void;
   onPageChange: (page: number) => void;
   onPostClick: (postId: number) => void;
   onWriteClick: () => void;

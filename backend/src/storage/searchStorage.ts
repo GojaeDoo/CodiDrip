@@ -51,3 +51,19 @@ export const getSearchResultDB = async (keyword: string): Promise<SearchResult[]
         throw new Error("getSearchResultDB 500error - searchStorage");
     }
 }
+
+export const getFreeBoardSearchDB = async (keyword: string) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, title, profile_nickname as author, created_at as "createdAt", view_count as "viewCount" 
+             FROM freeBoard 
+             WHERE title ILIKE $1 OR content ILIKE $1 OR profile_nickname ILIKE $1
+             ORDER BY created_at DESC`,
+            [`%${keyword}%`]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error("getFreeBoardSearchDB error - searchStorage:", error);
+        throw new Error("getFreeBoardSearchDB 500error - searchStorage");
+    }
+}

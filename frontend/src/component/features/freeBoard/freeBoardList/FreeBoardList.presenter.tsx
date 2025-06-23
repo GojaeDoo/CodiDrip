@@ -2,20 +2,7 @@ import React from "react";
 import * as S from "./FreeBoardList.styled";
 import { FreeBoardListPresenterProps } from "./FreeBoardList.types";
 
-export const FreeBoardListPresenter = ({
-  posts,
-  currentPage,
-  totalPages,
-  searchQuery,
-  onSearch,
-  onPageChange,
-  onPostClick,
-  onWriteClick,
-  onSearchInputChange,
-  onSearchKeyPress,
-  formatDate,
-  renderPagination
-}: FreeBoardListPresenterProps) => {
+export const FreeBoardListPresenter = (props:FreeBoardListPresenterProps) => {
   return (
     <S.Background>
       <S.FreeBoardListWrapper>
@@ -30,50 +17,50 @@ export const FreeBoardListPresenter = ({
               <S.SearchInput
                 type="text"
                 placeholder="제목 또는 내용으로 검색..."
-                value={searchQuery}
-                onChange={onSearchInputChange}
-                onKeyPress={onSearchKeyPress}
+                value={props.searchQuery}
+                onChange={props.onSearchInputChange}
+                onKeyPress={props.onSearchKeyPress}
               />
-              <S.SearchButton onClick={onSearch}>
+              <S.SearchButton onClick={props.onClickSearch}>
                 검색
               </S.SearchButton>
             </S.SearchContainer>
-            <S.WriteButton onClick={onWriteClick}>
+            <S.WriteButton onClick={props.onWriteClick}>
               글쓰기
             </S.WriteButton>
           </S.TopBar>
 
           <S.BoardTable>
             <S.TableHeader>
-              <div>번호</div>
-              <div>제목</div>
-              <div>작성자</div>
-              <div>작성일</div>
-              <div>조회수</div>
+              <div style={{textAlign: "center"}}>번호</div>
+              <div style={{textAlign: "center"}}>제목</div>
+              <div style={{textAlign: "center"}}>작성자</div>
+              <div style={{textAlign: "center"}}>작성일</div>
+              <div style={{textAlign: "center"}}>조회수</div>
             </S.TableHeader>
 
-            {posts.length === 0 ? (
+            {props.posts.length === 0 ? (
               <S.NoPosts>
                 게시글이 없습니다.
               </S.NoPosts>
             ) : (
-              posts.map((post) => (
-                <S.TableRow key={post.id} onClick={() => onPostClick(post.id)}>
+              props.posts.map((post) => (
+                <S.TableRow key={post.id} onClick={() => props.onPostClick(post.id)}>
                   <S.Cell>{post.id}</S.Cell>
                   <S.TitleCell>{post.title}</S.TitleCell>
                   <S.AuthorCell>{post.author}</S.AuthorCell>
-                  <S.DateCell>{formatDate(post.createdAt)}</S.DateCell>
+                  <S.DateCell>{props.formatDate(post.createdAt)}</S.DateCell>
                   <S.ViewCell>{post.viewCount}</S.ViewCell>
                 </S.TableRow>
               ))
             )}
           </S.BoardTable>
 
-          {totalPages > 1 && (
+          {props.totalPages > 1 && (
             <S.Pagination>
-              {renderPagination()}
+              {props.renderPagination()}
               <S.PageInfo>
-                {currentPage} / {totalPages} 페이지
+                {props.currentPage} / {props.totalPages} 페이지
               </S.PageInfo>
             </S.Pagination>
           )}
