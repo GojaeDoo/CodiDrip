@@ -1,3 +1,4 @@
+import FreeBoardCommentContainer from "@/component/features/freeBoard/freeBoardComment/FreeBoardComment.container"
 import * as S from "./FreeBoardDetail.styled"
 import { FreeBoardDetailPresenterProps } from "./FreeBoardDetail.types"
 
@@ -72,6 +73,7 @@ export const FreeBoardDetailPresenter = (props:FreeBoardDetailPresenterProps) =>
                     )}
                 </S.ButtonGroup>
             </S.FreeBoardDetailWrapper>
+            <FreeBoardCommentContainer withBackground={false}/>
         </S.Background>
     )
 }
