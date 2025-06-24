@@ -103,3 +103,29 @@ export const deleteFreeBoardDB = async (postId: number) => {
         throw new Error("deleteFreeBoardDB 500error - freeBoardStorage");
     }
 }
+
+export const postFreeBoardCommentDB = async (newComment: string, userId: string, id: string) => {
+    try {
+        const result = await pool.query(
+            "INSERT INTO freeboard_comments (content, user_id, post_id) VALUES ($1, $2, $3) RETURNING *",
+            [newComment, userId, id]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("postFreeBoardCommentDB error - freeBoardStorage:", error);
+        throw new Error("postFreeBoardCommentDB 500error - freeBoardStorage");
+    }
+}
+
+export const getFreeBoardCommentDB = async (postId: number) => {
+    try {
+        const result = await pool.query(
+            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE post_id = $1",
+            [postId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error("getFreeBoardCommentDB error - freeBoardStorage:", error);
+        throw new Error("getFreeBoardCommentDB 500error - freeBoardStorage");
+    }
+}

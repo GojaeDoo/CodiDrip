@@ -7,6 +7,25 @@ export const CommentSection = styled.div`
   padding: 1rem 0;
 `;
 
+export const EmptyState = styled.div`
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+  
+  .empty-text {
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+`;
+
 export const CommentHeader = styled.div`
   display: flex;
   align-items: center;

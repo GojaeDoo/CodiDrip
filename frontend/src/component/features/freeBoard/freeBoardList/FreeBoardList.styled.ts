@@ -127,7 +127,7 @@ export const TableRow = styled.div`
   gap: 16px;
   padding: 16px 24px;
   border-bottom: 1px solid #333;
-  transition: background-color 0.2s;
+  transition: background-color 0.1s;
   cursor: pointer;
 
   &:hover {
@@ -154,9 +154,6 @@ export const TitleCell = styled(Cell)`
   font-weight: 500;
   color: #fff;
   
-  &:hover {
-    color: #4a90e2;
-  }
 `;
 
 export const AuthorCell = styled(Cell)`

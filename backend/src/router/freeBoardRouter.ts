@@ -1,5 +1,5 @@
 import express, { RequestHandler } from "express";
-import { createFreeBoard, getFreeBoardList, getFreeBoardDetail, updateFreeBoard, deleteFreeBoard } from "../controller/freeBoardController";
+import { createFreeBoard, getFreeBoardList, getFreeBoardDetail, updateFreeBoard, deleteFreeBoard, postFreeBoardComment, getFreeBoardComment } from "../controller/freeBoardController";
 
 const router = express.Router();
 
@@ -17,5 +17,12 @@ router.put("/:id", updateFreeBoard as RequestHandler);
 
 // 게시글 삭제
 router.delete("/:id", deleteFreeBoard as RequestHandler);
+
+
+// 자유게시판 게시글 댓글 작성
+router.post("/comment", postFreeBoardComment as RequestHandler);
+
+// 자유게시판 게시글 댓글 조회
+router.get("/comment/:id", getFreeBoardComment as RequestHandler);
 
 export default router;

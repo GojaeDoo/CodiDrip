@@ -41,114 +41,121 @@ const DripPostComment = (props: DripPostCommentProps) => {
       </S.CommentHeader>
 
       <S.CommentList>
-        {commentList.map((comment) => (
-          <S.CommentItem key={comment.id}>
-            <S.UserProfileImage 
-              src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
-              alt={comment.profile_nickname} 
-            />
-            <S.CommentBody>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <S.UserName>{comment.profile_nickname}</S.UserName>
-              </div>
-                <S.CommentText>{comment.content}</S.CommentText>
-              <S.CommentMeta>
-                <S.CommentDate>{formatDate(comment.created_at)}</S.CommentDate>
-                <S.CommentLikeButton 
-                  $isLiked={comment.liked} 
-                  onClick={() => onLikeComment(comment.id)}
-                >
-                  <Heart size={16} fill={comment.liked ? "#ff3b3b" : "none"} color={comment.liked ? "#ff3b3b" : "#aaa"} />
-                  {comment.like_count}
-                </S.CommentLikeButton>
-                <S.ReplyButton onClick={() => {
-                  onReplyClick(comment.id);
-                  onOpenModal();  // 모달 열기
-                }}>
-                  <MessageCircle size={16} />
-                </S.ReplyButton>
-                {myUserId === comment.user_id && (
-                  <>
-                    <S.MenuButton onClick={() => handleMenuOpen(comment.id)}>
-                      <MoreVertical size={16} />
-                    </S.MenuButton>
-                    {activeMenuId === comment.id && (
-                      <S.Menu>
-                        <S.MenuItem onClick={() => {
-                          onEditComment(comment.id);
-                          handleMenuOpen(0);  // 메뉴 닫기
-                        }}>수정</S.MenuItem>
-                        <S.MenuItem onClick={() => {
-                          onDeleteComment(comment.id);
-                          handleMenuOpen(0);  // 메뉴 닫기
-                        }}>삭제</S.MenuItem>
-                      </S.Menu>
-                    )}
-                  </>
+        {commentList.length === 0 ? (
+          <S.EmptyState>
+            <div className="empty-icon">💬</div>
+            <p className="empty-text">아직 댓글이 없습니다.<br />첫 번째 댓글을 남겨보세요!</p>
+          </S.EmptyState>
+        ) : (
+          commentList.map((comment) => (
+            <S.CommentItem key={comment.id}>
+              <S.UserProfileImage 
+                src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
+                alt={comment.profile_nickname} 
+              />
+              <S.CommentBody>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <S.UserName>{comment.profile_nickname}</S.UserName>
+                </div>
+                  <S.CommentText>{comment.content}</S.CommentText>
+                <S.CommentMeta>
+                  <S.CommentDate>{formatDate(comment.created_at)}</S.CommentDate>
+                  <S.CommentLikeButton 
+                    $isLiked={comment.liked} 
+                    onClick={() => onLikeComment(comment.id)}
+                  >
+                    <Heart size={16} fill={comment.liked ? "#ff3b3b" : "none"} color={comment.liked ? "#ff3b3b" : "#aaa"} />
+                    {comment.like_count}
+                  </S.CommentLikeButton>
+                  <S.ReplyButton onClick={() => {
+                    onReplyClick(comment.id);
+                    onOpenModal();  // 모달 열기
+                  }}>
+                    <MessageCircle size={16} />
+                  </S.ReplyButton>
+                  {myUserId === comment.user_id && (
+                    <>
+                      <S.MenuButton onClick={() => handleMenuOpen(comment.id)}>
+                        <MoreVertical size={16} />
+                      </S.MenuButton>
+                      {activeMenuId === comment.id && (
+                        <S.Menu>
+                          <S.MenuItem onClick={() => {
+                            onEditComment(comment.id);
+                            handleMenuOpen(0);  // 메뉴 닫기
+                          }}>수정</S.MenuItem>
+                          <S.MenuItem onClick={() => {
+                            onDeleteComment(comment.id);
+                            handleMenuOpen(0);  // 메뉴 닫기
+                          }}>삭제</S.MenuItem>
+                        </S.Menu>
+                      )}
+                    </>
+                  )}
+                </S.CommentMeta>
+
+                {/* 답글 보기/숨기기 버튼 */}
+                {comment.replies && comment.replies.length > 0 && (
+                  <S.ShowRepliesButton onClick={() => toggleReplies(comment.id)}>
+                    {expandedReplies[comment.id] ? "답글 숨기기" : `답글 ${comment.replies.length}개 보기`}
+                  </S.ShowRepliesButton>
                 )}
-              </S.CommentMeta>
 
-              {/* 답글 보기/숨기기 버튼 */}
-              {comment.replies && comment.replies.length > 0 && (
-                <S.ShowRepliesButton onClick={() => toggleReplies(comment.id)}>
-                  {expandedReplies[comment.id] ? "답글 숨기기" : `답글 ${comment.replies.length}개 보기`}
-                </S.ShowRepliesButton>
-              )}
-
-              {/* 대댓글 */}
-              {expandedReplies[comment.id] && comment.replies && comment.replies.length > 0 && (
-                <S.ReplyList>
-                  {comment.replies.map((reply) => (
-                    <S.ReplyItem key={reply.id}>
-                      <S.UserProfileImage 
-                        src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
-                        alt={reply.profile_nickname} 
-                        $small 
-                      />
-                      <S.CommentBody>
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                          <S.UserName>{reply.profile_nickname}</S.UserName>
-                          <S.CommentText>{reply.content}</S.CommentText>
-                        </div>
-                        <S.CommentMeta>
-                          <S.CommentDate>{formatDate(reply.created_at)}</S.CommentDate>
-                          <S.CommentLikeButton 
-                            $isLiked={reply.liked} 
-                            onClick={() => onLikeComment(reply.id)}
-                          >
-                            <Heart size={16} fill={reply.liked ? "#ff3b3b" : "none"} color={reply.liked ? "#ff3b3b" : "#aaa"} />
-                            {reply.like_count}
-                          </S.CommentLikeButton>
-                          {myUserId === reply.user_id && (
-                            <>
-                              <S.MenuButton onClick={() => handleMenuOpen(reply.id)}>
-                                <MoreVertical size={16} />
-                              </S.MenuButton>
-                              {activeMenuId === reply.id && (
-                                <S.Menu>
-                                  <S.MenuItem onClick={() => {
-                                    const replyContent = reply.content;
-                                    setEditContent(replyContent);
-                                    onEditComment(reply.id);
-                                    handleMenuOpen(0);
-                                  }}>수정</S.MenuItem>
-                                  <S.MenuItem onClick={() => {
-                                    onDeleteComment(reply.id);
-                                    handleMenuOpen(0);
-                                  }}>삭제</S.MenuItem>
-                                </S.Menu>
-                              )}
-                            </>
-                          )}
-                        </S.CommentMeta>
-                      </S.CommentBody>
-                    </S.ReplyItem>
-                  ))}
-                </S.ReplyList>
-              )}
-            </S.CommentBody>
-          </S.CommentItem>
-        ))}
+                {/* 대댓글 */}
+                {expandedReplies[comment.id] && comment.replies && comment.replies.length > 0 && (
+                  <S.ReplyList>
+                    {comment.replies.map((reply) => (
+                      <S.ReplyItem key={reply.id}>
+                        <S.UserProfileImage 
+                          src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
+                          alt={reply.profile_nickname} 
+                          $small 
+                        />
+                        <S.CommentBody>
+                          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                            <S.UserName>{reply.profile_nickname}</S.UserName>
+                            <S.CommentText>{reply.content}</S.CommentText>
+                          </div>
+                          <S.CommentMeta>
+                            <S.CommentDate>{formatDate(reply.created_at)}</S.CommentDate>
+                            <S.CommentLikeButton 
+                              $isLiked={reply.liked} 
+                              onClick={() => onLikeComment(reply.id)}
+                            >
+                              <Heart size={16} fill={reply.liked ? "#ff3b3b" : "none"} color={reply.liked ? "#ff3b3b" : "#aaa"} />
+                              {reply.like_count}
+                            </S.CommentLikeButton>
+                            {myUserId === reply.user_id && (
+                              <>
+                                <S.MenuButton onClick={() => handleMenuOpen(reply.id)}>
+                                  <MoreVertical size={16} />
+                                </S.MenuButton>
+                                {activeMenuId === reply.id && (
+                                  <S.Menu>
+                                    <S.MenuItem onClick={() => {
+                                      const replyContent = reply.content;
+                                      setEditContent(replyContent);
+                                      onEditComment(reply.id);
+                                      handleMenuOpen(0);
+                                    }}>수정</S.MenuItem>
+                                    <S.MenuItem onClick={() => {
+                                      onDeleteComment(reply.id);
+                                      handleMenuOpen(0);
+                                    }}>삭제</S.MenuItem>
+                                  </S.Menu>
+                                )}
+                              </>
+                            )}
+                          </S.CommentMeta>
+                        </S.CommentBody>
+                      </S.ReplyItem>
+                    ))}
+                  </S.ReplyList>
+                )}
+              </S.CommentBody>
+            </S.CommentItem>
+          ))
+        )}
       </S.CommentList>
 
       {/* 답글 작성 모달 */}
@@ -165,7 +172,11 @@ const DripPostComment = (props: DripPostCommentProps) => {
                 onChange={(e) => onChangeReply(e.target.value)}
                 placeholder="답글을 입력하세요"
                 autoFocus
+                maxLength={100}
               />
+              <div style={{textAlign: 'right', color: '#aaa', fontSize: '0.85rem', marginTop: '0.3rem'}}>
+                {replyContent.length}/100
+              </div>
             </S.ModalBody>
             <S.ModalFooter>
               <S.ModalButton onClick={onCloseModal}>취소</S.ModalButton>
@@ -189,7 +200,11 @@ const DripPostComment = (props: DripPostCommentProps) => {
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="댓글을 입력하세요"
                 autoFocus
+                maxLength={100}
               />
+              <div style={{textAlign: 'right', color: '#aaa', fontSize: '0.85rem', marginTop: '0.3rem'}}>
+                {newComment.length}/100
+              </div>
             </S.ModalBody>
             <S.ModalFooter>
               <S.ModalButton onClick={onCloseModal}>취소</S.ModalButton>
@@ -221,7 +236,11 @@ const DripPostComment = (props: DripPostCommentProps) => {
                     : "답글을 수정하세요"
                 }
                 autoFocus
+                maxLength={100}
               />
+              <div style={{textAlign: 'right', color: '#aaa', fontSize: '0.85rem', marginTop: '0.3rem'}}>
+                {editContent.length}/100
+              </div>
             </S.ModalBody>
             <S.ModalFooter>
               <S.ModalButton onClick={onEditCancel}>취소</S.ModalButton>

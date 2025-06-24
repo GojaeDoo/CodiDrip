@@ -44,9 +44,9 @@ export const FreeBoardListPresenter = (props:FreeBoardListPresenterProps) => {
                 게시글이 없습니다.
               </S.NoPosts>
             ) : (
-              props.posts.map((post) => (
+              props.posts.map((post , index) => (
                 <S.TableRow key={post.id} onClick={() => props.onPostClick(post.id)}>
-                  <S.Cell>{post.id}</S.Cell>
+                  <S.Cell>{index + 1}</S.Cell>
                   <S.TitleCell>{post.title}</S.TitleCell>
                   <S.AuthorCell>{post.author}</S.AuthorCell>
                   <S.DateCell>{props.formatDate(post.createdAt)}</S.DateCell>

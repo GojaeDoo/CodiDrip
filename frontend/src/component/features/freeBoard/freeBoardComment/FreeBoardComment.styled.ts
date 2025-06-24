@@ -29,6 +29,9 @@ export const CommentHeader = styled.div`
   padding: 2.5rem 4rem 1.5rem 4rem;
   border-bottom: 1px solid #333;
   background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   
   @media (max-width: 768px) {
     padding: 2rem 2rem 1rem 2rem;
@@ -52,30 +55,10 @@ export const CommentHeader = styled.div`
 
 export const CommentList = styled.div`
   padding: 1.5rem 4rem;
-  max-height: 600px;
-  overflow-y: auto;
   background: #1e1e1e;
   
   @media (max-width: 768px) {
     padding: 1rem 2rem;
-  }
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #2a2a2a;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 4px;
-    
-    &:hover {
-      background: #666;
-    }
   }
 `;
 
@@ -110,7 +93,6 @@ export const UserAvatar = styled.div`
   color: white;
   font-weight: 600;
   font-size: 1rem;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 `;
 
 export const UserInfo = styled.div`
@@ -359,30 +341,41 @@ export const ModalFooter = styled.div`
 `;
 
 export const AddCommentButton = styled.button`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: rgba(217, 217, 217, 0.9);
   color: white;
   border: none;
-  padding: 1.25rem 2.5rem;
+  padding: 1rem 1rem;
   border-radius: 12px;
   font-weight: 600;
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin: 2rem 4rem;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-  
-  @media (max-width: 768px) {
-    margin: 1.5rem 2rem;
-    padding: 1rem 2rem;
-    font-size: 1rem;
-  }
+  margin: 2rem 0;
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+    background-color: #262a2d;
+    color: #ffffff;
+  }
+`;
+
+export const ShowMoreButton = styled.button`
+  width: 100%;
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 1rem 4rem;
+  transition: all 0.2s ease;
+  border-top: 1px solid #333;
+  
+  &:hover {
+    background: #252525;
+    color: #8b9eff;
   }
   
-  &:active {
-    transform: translateY(-1px);
+  @media (max-width: 768px) {
+    padding: 1rem 2rem;
   }
 `;

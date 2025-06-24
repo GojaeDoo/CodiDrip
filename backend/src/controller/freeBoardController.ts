@@ -4,9 +4,15 @@ import {
     getFreeBoardListService,
     getFreeBoardDetailService,
     updateFreeBoardService,
-    deleteFreeBoardService
+    deleteFreeBoardService,
+    postFreeBoardCommentService,
+    getFreeBoardCommentService
 } from "../service/freeBoardService";
 
+// 자유게시판 게시글
+
+
+// 자유게시판 게시글 작성
 export const createFreeBoard = async (req: Request, res: Response) => {
     try {
         const { title, content, userId } = req.body;
@@ -18,6 +24,7 @@ export const createFreeBoard = async (req: Request, res: Response) => {
     }
 }
 
+// 자유게시판 게시글 조회
 export const getFreeBoardList = async (req: Request, res: Response) => {
     try {
         const result = await getFreeBoardListService();
@@ -28,6 +35,7 @@ export const getFreeBoardList = async (req: Request, res: Response) => {
     }
 }
 
+// 자유게시판 게시글 상세 조회 
 export const getFreeBoardDetail = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
@@ -44,6 +52,7 @@ export const getFreeBoardDetail = async (req: Request, res: Response) => {
     }
 }
 
+// 자유게시판 게시글 수정
 export const updateFreeBoard = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
@@ -62,6 +71,7 @@ export const updateFreeBoard = async (req: Request, res: Response) => {
     }
 }
 
+// 자유게시판 게시글 삭제
 export const deleteFreeBoard = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
@@ -70,5 +80,32 @@ export const deleteFreeBoard = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("deleteFreeBoard error - freeBoardController:", error);
         res.status(500).json({ error: "deleteFreeBoard 500error - freeBoardController" });
+    }
+}
+
+
+// 자유게시판 댓글 
+
+// 자유게시판 게시글 작성
+export const postFreeBoardComment = async (req: Request, res: Response) => {
+    try {
+        const { newComment, userId, id } = req.body;
+        const result = await postFreeBoardCommentService(newComment, userId, id);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("postFreeBoardComment error - freeBoardController:", error);
+        res.status(500).json({ error: "postFreeBoardComment 500error - freeBoardController" });
+    }
+}
+
+// 자유게시판 게시글 댓글 조회
+export const getFreeBoardComment = async (req: Request, res: Response) => {
+    try {
+        const postId = parseInt(req.params.id);
+        const result = await getFreeBoardCommentService(postId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("getFreeBoardComment error - freeBoardController:", error);
+        res.status(500).json({ error: "getFreeBoardComment 500error - freeBoardController" });
     }
 }

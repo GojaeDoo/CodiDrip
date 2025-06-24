@@ -1,24 +1,6 @@
 import React from "react";
 import * as S from "./FreeBoardComment.styled";
-import { FreeBoardCommentProps, Comment } from "./FreeBoardComment.types";
-
-interface FreeBoardCommentPresenterProps extends FreeBoardCommentProps {
-  isModalOpen: boolean;
-  newComment: string;
-  editingCommentId: string | null;
-  editContent: string;
-  onOpenModal: () => void;
-  onCloseModal: () => void;
-  onNewCommentChange: (value: string) => void;
-  onSubmitComment: () => void;
-  onEditComment: (comment: Comment) => void;
-  onSaveEdit: () => void;
-  onCancelEdit: () => void;
-  onEditContentChange: (value: string) => void;
-  onDeleteComment: (commentId: string) => void;
-  formatTimestamp: (timestamp: string) => string;
-  getInitials: (username: string) => string;
-}
+import { FreeBoardCommentProps, Comment, FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
 
 export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps> = ({
   comments = [],
@@ -36,15 +18,21 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
   onCancelEdit,
   onEditContentChange,
   onDeleteComment,
+  onShowMoreComments,
+  onShowLessComments,
   formatTimestamp,
   getInitials,
+  hasMoreComments,
+  showAllComments,
 }) => {
   if (isLoading) {
     return (
       <S.FreeBoardCommentWrapper>
         <S.CommentHeader>
-          <h2>댓글</h2>
-          <div className="comment-count">로딩 중...</div>
+          <div>
+            <h2>댓글</h2>
+            <div className="comment-count">로딩 중...</div>
+          </div>
         </S.CommentHeader>
         <S.CommentList>
           <div style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
@@ -59,8 +47,13 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
     <>
       <S.FreeBoardCommentWrapper>
         <S.CommentHeader>
-          <h2>댓글</h2>
-          <div className="comment-count">{comments.length}개의 댓글</div>
+          <div>
+            <h2>댓글</h2>
+            <div className="comment-count">{comments.length}개의 댓글</div>
+          </div>
+          <S.AddCommentButton onClick={onOpenModal}>
+            댓글 작성
+          </S.AddCommentButton>
         </S.CommentHeader>
 
         <S.CommentList>
@@ -73,24 +66,35 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
             comments.map((comment) => (
               <S.CommentItem key={comment.id}>
                 <S.CommentHeaderInfo>
-                  <S.UserAvatar>
-                    {getInitials(comment.username)}
-                  </S.UserAvatar>
+                    <S.UserAvatar>
+                      {comment.profile_image ? (
+                        <img 
+                          src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
+                          alt={comment.profile_nickname}
+                          style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+                        />
+                      ) : (
+                        getInitials(comment.profile_nickname)
+                      )}
+                    </S.UserAvatar>
                   <S.UserInfo>
-                    <p className="username">{comment.username}</p>
-                    <p className="timestamp">{formatTimestamp(comment.timestamp)}</p>
+                    <p className="username">{comment.profile_nickname}</p>
+                    <p className="timestamp">{formatTimestamp(comment.created_at)}</p>
                   </S.UserInfo>
                   <S.CommentActions>
                     <button onClick={() => onEditComment(comment)}>
                       수정
                     </button>
-                    <button onClick={() => onDeleteComment(comment.id)}>
+                    <button onClick={() => onDeleteComment(comment.post_id)}>
                       삭제
+                    </button>
+                    <button onClick={() => onReplyComment(comment.post_id)}>
+                      답글
                     </button>
                   </S.CommentActions>
                 </S.CommentHeaderInfo>
                 
-                {editingCommentId === comment.id ? (
+                {editingCommentId === comment.post_id ? (
                   <div style={{ marginLeft: "3.5rem" }}>
                     <S.CommentInput
                       value={editContent}
@@ -134,9 +138,11 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
           )}
         </S.CommentList>
 
-        <S.AddCommentButton onClick={onOpenModal}>
-          💬 댓글 작성하기
-        </S.AddCommentButton>
+        {hasMoreComments && (
+          <S.ShowMoreButton onClick={showAllComments ? onShowLessComments : onShowMoreComments}>
+            {showAllComments ? "댓글 접기" : `댓글 더보기`}
+          </S.ShowMoreButton>
+        )}
       </S.FreeBoardCommentWrapper>
 
       {isModalOpen && (
