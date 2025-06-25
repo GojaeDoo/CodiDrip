@@ -7,6 +7,7 @@ export interface Comment {
   profile_image: string;
   content: string;
   parent_id: string;
+  reply_count?: number;
 }
 
 export interface CommentFormData {
@@ -26,6 +27,10 @@ export interface FreeBoardCommentPresenterProps extends FreeBoardCommentProps {
   newComment: string;
   editingCommentId: string | null;
   editContent: string;
+  replyingToCommentId: string | null;
+  replyContent: string;
+  showingRepliesFor: string | null;
+  replies: { [commentId: string]: Comment[] };
   onOpenModal: () => void;
   onCloseModal: () => void;
   onNewCommentChange: (value: string) => void;
@@ -37,8 +42,16 @@ export interface FreeBoardCommentPresenterProps extends FreeBoardCommentProps {
   onDeleteComment: (commentId: string) => void;
   onShowMoreComments: () => void;
   onShowLessComments: () => void;
+  onReplyComment: (commentId: string) => void;
+  onCancelReply: () => void;
+  onReplyContentChange: (value: string) => void;
+  onSubmitReply: () => void;
+  onShowReplies: (commentId: string) => void;
+  onHideReplies: (commentId: string) => void;
   formatTimestamp: (timestamp: string) => string;
   getInitials: (username: string) => string;
   hasMoreComments: boolean;
   showAllComments: boolean;
+  isLogin: boolean;
+  isCommentAuthor: (commentUserId: string) => boolean;
 }

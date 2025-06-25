@@ -379,3 +379,103 @@ export const ShowMoreButton = styled.button`
     padding: 1rem 2rem;
   }
 `;
+
+// 대댓글 wrapper
+export const ReplyWrapper = styled.div`
+  margin-left: 3.5rem;
+  margin-top: 1rem;
+`;
+
+// 대댓글 컨테이너
+export const ReplyContainer = styled.div`
+  border-left: 2px solid #e0e0e0;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+`;
+
+// 대댓글 아바타
+export const ReplyAvatar = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #667eea;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-right: 0.5rem;
+`;
+
+// 대댓글 상단(닉네임, 시간, 버튼)
+export const ReplyHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+`;
+
+// 대댓글 수정/삭제 버튼
+export const ReplyActionButton = styled.button`
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+  &:last-child {
+    color: #e74c3c;
+    margin-right: 0;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+// 댓글/대댓글 입력창 wrapper
+export const EditInputWrapper = styled.div`
+  margin-left: 3.5rem;
+`;
+
+// 버튼 그룹 wrapper
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
+// 저장/취소 버튼
+export const SaveButton = styled.button`
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+export const CancelButton = styled.button`
+  background: #666;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+// 대댓글 보기/숨기기 버튼
+export const ToggleReplyButton = styled.button`
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+`;
+
+// 대댓글 없음 메시지
+export const NoReply = styled.div`
+  margin-left: 3.5rem;
+  margin-top: 1rem;
+  color: #666;
+  font-size: 14px;
+`;

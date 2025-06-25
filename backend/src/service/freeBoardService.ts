@@ -1,4 +1,4 @@
-import { createFreeBoardDB, getFreeBoardListDB, getFreeBoardDetailDB, updateFreeBoardDB, deleteFreeBoardDB, postFreeBoardCommentDB, getFreeBoardCommentDB } from "../storage/freeBoardStorage";
+import { createFreeBoardDB, getFreeBoardListDB, getFreeBoardDetailDB, updateFreeBoardDB, deleteFreeBoardDB, postFreeBoardCommentDB, getFreeBoardCommentDB, updateFreeBoardCommentDB, deleteFreeBoardCommentDB, postFreeBoardReplyDB, getFreeBoardRepliesDB } from "../storage/freeBoardStorage";
 
 export const createFreeBoardService = async (title: string, content: string, userId: string) => {
     try {
@@ -60,6 +60,16 @@ export const postFreeBoardCommentService = async (newComment: string, userId: st
     }
 }
 
+export const postFreeBoardReplyService = async (newComment: string, userId: string, postId: string, parentId: string) => {
+    try {
+        const result = await postFreeBoardReplyDB(newComment, userId, postId, parentId);
+        return result;
+    } catch (error) {
+        console.error("postFreeBoardReplyService error - freeBoardService:", error);
+        throw new Error("postFreeBoardReplyService 500error - freeBoardService");
+    }
+}
+
 export const getFreeBoardCommentService = async (postId: number) => {
     try {
         const result = await getFreeBoardCommentDB(postId);
@@ -67,5 +77,35 @@ export const getFreeBoardCommentService = async (postId: number) => {
     } catch (error) {
         console.error("getFreeBoardCommentService error - freeBoardService:", error);
         throw new Error("getFreeBoardCommentService 500error - freeBoardService");
+    }
+}
+
+export const updateFreeBoardCommentService = async (commentId: string, content: string, userId: string) => {
+    try {
+        const result = await updateFreeBoardCommentDB(commentId, content, userId);
+        return result;
+    } catch (error) {
+        console.error("updateFreeBoardCommentService error - freeBoardService:", error);
+        throw error;
+    }
+}
+
+export const deleteFreeBoardCommentService = async (commentId: string, userId: string) => {
+    try {
+        const result = await deleteFreeBoardCommentDB(commentId, userId);
+        return result;
+    } catch (error) {
+        console.error("deleteFreeBoardCommentService error - freeBoardService:", error);
+        throw error;
+    }
+}
+
+export const getFreeBoardRepliesService = async (commentId: string) => {
+    try {
+        const result = await getFreeBoardRepliesDB(commentId);
+        return result;
+    } catch (error) {
+        console.error("getFreeBoardRepliesService error - freeBoardService:", error);
+        throw new Error("getFreeBoardRepliesService 500error - freeBoardService");
     }
 }

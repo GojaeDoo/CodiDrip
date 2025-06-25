@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./FreeBoardComment.styled";
-import { FreeBoardCommentProps, Comment, FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
+import { FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
 
 export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps> = ({
   comments = [],
@@ -9,6 +9,10 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
   newComment,
   editingCommentId,
   editContent,
+  replyingToCommentId,
+  replyContent,
+  showingRepliesFor,
+  replies,
   onOpenModal,
   onCloseModal,
   onNewCommentChange,
@@ -20,10 +24,18 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
   onDeleteComment,
   onShowMoreComments,
   onShowLessComments,
+  onReplyComment,
+  onCancelReply,
+  onReplyContentChange,
+  onSubmitReply,
+  onShowReplies,
+  onHideReplies,
   formatTimestamp,
   getInitials,
   hasMoreComments,
   showAllComments,
+  isLogin,
+  isCommentAuthor,
 }) => {
   if (isLoading) {
     return (
@@ -63,9 +75,10 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
               <p className="empty-text">아직 댓글이 없습니다.<br />첫 번째 댓글을 남겨보세요!</p>
             </S.EmptyState>
           ) : (
-            comments.map((comment) => (
-              <S.CommentItem key={comment.id}>
-                <S.CommentHeaderInfo>
+            comments.map((comment) => {
+              return (
+                <S.CommentItem key={comment.id}>
+                  <S.CommentHeaderInfo>
                     <S.UserAvatar>
                       {comment.profile_image ? (
                         <img 
@@ -77,64 +90,116 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                         getInitials(comment.profile_nickname)
                       )}
                     </S.UserAvatar>
-                  <S.UserInfo>
-                    <p className="username">{comment.profile_nickname}</p>
-                    <p className="timestamp">{formatTimestamp(comment.created_at)}</p>
-                  </S.UserInfo>
-                  <S.CommentActions>
-                    <button onClick={() => onEditComment(comment)}>
-                      수정
-                    </button>
-                    <button onClick={() => onDeleteComment(comment.post_id)}>
-                      삭제
-                    </button>
-                    <button onClick={() => onReplyComment(comment.post_id)}>
-                      답글
-                    </button>
-                  </S.CommentActions>
-                </S.CommentHeaderInfo>
-                
-                {editingCommentId === comment.post_id ? (
-                  <div style={{ marginLeft: "3.5rem" }}>
-                    <S.CommentInput
-                      value={editContent}
-                      onChange={(e) => onEditContentChange(e.target.value)}
-                      placeholder="댓글을 수정하세요..."
-                    />
-                    <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-                      <button
-                        onClick={onSaveEdit}
-                        style={{
-                          background: "#667eea",
-                          color: "white",
-                          border: "none",
-                          padding: "0.5rem 1rem",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        저장
-                      </button>
-                      <button
-                        onClick={onCancelEdit}
-                        style={{
-                          background: "#666",
-                          color: "white",
-                          border: "none",
-                          padding: "0.5rem 1rem",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        취소
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <S.CommentContent>{comment.content}</S.CommentContent>
-                )}
-              </S.CommentItem>
-            ))
+                    <S.UserInfo>
+                      <p className="username">{comment.profile_nickname}</p>
+                      <p className="timestamp">{formatTimestamp(comment.created_at)}</p>
+                    </S.UserInfo>
+                    <S.CommentActions>
+                      {isLogin && isCommentAuthor(comment.user_id) && (
+                        <>
+                          <button onClick={() => onEditComment(comment)}>
+                            수정
+                          </button>
+                          <button onClick={() => onDeleteComment(comment.id)}>
+                            삭제
+                          </button>
+                        </>
+                      )}
+                      {isLogin && (
+                        <button onClick={() => onReplyComment(comment.id)}>
+                          답글
+                        </button>
+                      )}
+                    </S.CommentActions>
+                  </S.CommentHeaderInfo>
+                  
+                  {editingCommentId === comment.id ? (
+                    <S.EditInputWrapper>
+                      <S.CommentInput
+                        value={editContent}
+                        onChange={(e) => onEditContentChange(e.target.value)}
+                        placeholder="댓글을 수정하세요..."
+                      />
+                      <S.ButtonGroup>
+                        <S.SaveButton onClick={onSaveEdit}>저장</S.SaveButton>
+                        <S.CancelButton onClick={onCancelEdit}>취소</S.CancelButton>
+                      </S.ButtonGroup>
+                    </S.EditInputWrapper>
+                  ) : (
+                    <S.CommentContent>{comment.content}</S.CommentContent>
+                  )}
+
+                  {/* 대댓글 입력 UI */}
+                  {replyingToCommentId === comment.id && (
+                    <S.ReplyWrapper>
+                      <S.CommentInput
+                        value={replyContent}
+                        onChange={(e) => onReplyContentChange(e.target.value)}
+                        placeholder="대댓글을 작성하세요..."
+                      />
+                      <S.ButtonGroup>
+                        <S.SaveButton onClick={onSubmitReply}>답글 작성</S.SaveButton>
+                        <S.CancelButton onClick={onCancelReply}>취소</S.CancelButton>
+                      </S.ButtonGroup>
+                    </S.ReplyWrapper>
+                  )}
+
+                  {/* 대댓글 보기 버튼 */}
+                  {comment.reply_count !== undefined && comment.reply_count > 0 && (
+                    <S.ReplyWrapper style={{ marginTop: "0.5rem" }}>
+                      {showingRepliesFor === comment.id ? (
+                        <S.ToggleReplyButton onClick={() => onHideReplies(comment.id)}>
+                          대댓글 숨기기
+                        </S.ToggleReplyButton>
+                      ) : (
+                        <S.ToggleReplyButton onClick={() => onShowReplies(comment.id)}>
+                          대댓글 보기 ({comment.reply_count}개)
+                        </S.ToggleReplyButton>
+                      )}
+                    </S.ReplyWrapper>
+                  )}
+
+                  {/* 대댓글 목록 */}
+                  {showingRepliesFor === comment.id && replies[comment.id] && replies[comment.id].length > 0 && (
+                    <S.ReplyWrapper>
+                      {replies[comment.id].map((reply) => (
+                        <S.ReplyContainer key={reply.id}>
+                          <S.ReplyHeader>
+                            <S.ReplyAvatar>
+                              {getInitials(reply.profile_nickname)}
+                            </S.ReplyAvatar>
+                            <span style={{ fontWeight: "bold", marginRight: "0.5rem" }}>
+                              {reply.profile_nickname}
+                            </span>
+                            <span style={{ color: "#666", fontSize: "12px" }}>
+                              {formatTimestamp(reply.created_at)}
+                            </span>
+                            {isLogin && isCommentAuthor(reply.user_id) && (
+                              <div style={{ marginLeft: "auto", display: "flex" }}>
+                                <S.ReplyActionButton onClick={() => onEditComment(reply)}>
+                                  수정
+                                </S.ReplyActionButton>
+                                <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
+                                  삭제
+                                </S.ReplyActionButton>
+                              </div>
+                            )}
+                          </S.ReplyHeader>
+                          <div>{reply.content}</div>
+                        </S.ReplyContainer>
+                      ))}
+                    </S.ReplyWrapper>
+                  )}
+
+                  {/* 대댓글이 없을 때 메시지 */}
+                  {showingRepliesFor === comment.id && (!replies[comment.id] || replies[comment.id].length === 0) && (
+                    <S.NoReply>
+                      아직 대댓글이 없습니다.
+                    </S.NoReply>
+                  )}
+                </S.CommentItem>
+              );
+            })
           )}
         </S.CommentList>
 

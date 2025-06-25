@@ -6,7 +6,11 @@ import {
     updateFreeBoardService,
     deleteFreeBoardService,
     postFreeBoardCommentService,
-    getFreeBoardCommentService
+    getFreeBoardCommentService,
+    updateFreeBoardCommentService,
+    deleteFreeBoardCommentService,
+    postFreeBoardReplyService,
+    getFreeBoardRepliesService
 } from "../service/freeBoardService";
 
 // 자유게시판 게시글
@@ -107,5 +111,67 @@ export const getFreeBoardComment = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("getFreeBoardComment error - freeBoardController:", error);
         res.status(500).json({ error: "getFreeBoardComment 500error - freeBoardController" });
+    }
+}
+
+// 자유게시판 댓글 수정
+export const updateFreeBoardComment = async (req: Request, res: Response) => {
+    try {
+        const commentId = req.params.commentId;
+        const { content, userId } = req.body;
+        const result = await updateFreeBoardCommentService(commentId, content, userId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("updateFreeBoardComment error - freeBoardController:", error);
+        if (error instanceof Error && error.message.includes("권한")) {
+            res.status(403).json({ error: error.message });
+        } else if (error instanceof Error && error.message.includes("찾을 수 없습니다")) {
+            res.status(404).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "updateFreeBoardComment 500error - freeBoardController" });
+        }
+    }
+}
+
+// 자유게시판 댓글 삭제
+export const deleteFreeBoardComment = async (req: Request, res: Response) => {
+    try {
+        const commentId = req.params.commentId;
+        const { userId } = req.body;
+        const result = await deleteFreeBoardCommentService(commentId, userId);
+        res.status(200).json({ message: "댓글이 삭제되었습니다." });
+    } catch (error) {
+        console.error("deleteFreeBoardComment error - freeBoardController:", error);
+        if (error instanceof Error && error.message.includes("권한")) {
+            res.status(403).json({ error: error.message });
+        } else if (error instanceof Error && error.message.includes("찾을 수 없습니다")) {
+            res.status(404).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "deleteFreeBoardComment 500error - freeBoardController" });
+        }
+    }
+}
+
+// 자유게시판 대댓글 작성
+export const postFreeBoardReply = async (req: Request, res: Response) => {
+    try {
+        const { newComment, userId, postId, parentId } = req.body;
+        const result = await postFreeBoardReplyService(newComment, userId, postId, parentId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("postFreeBoardReply error - freeBoardController:", error);
+        res.status(500).json({ error: "postFreeBoardReply 500error - freeBoardController" });
+    }
+}
+
+// 자유게시판 대댓글 조회
+export const getFreeBoardReplies = async (req: Request, res: Response) => {
+    try {
+        const commentId = req.params.commentId;
+        const result = await getFreeBoardRepliesService(commentId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("getFreeBoardReplies error - freeBoardController:", error);
+        res.status(500).json({ error: "getFreeBoardReplies 500error - freeBoardController" });
     }
 }

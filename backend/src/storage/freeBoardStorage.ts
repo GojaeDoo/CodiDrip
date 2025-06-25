@@ -117,15 +117,120 @@ export const postFreeBoardCommentDB = async (newComment: string, userId: string,
     }
 }
 
+export const postFreeBoardReplyDB = async (newComment: string, userId: string, postId: string, parentId: string) => {
+    try {
+        const result = await pool.query(
+            "INSERT INTO freeboard_comments (content, user_id, post_id, parent_id) VALUES ($1, $2, $3, $4) RETURNING *",
+            [newComment, userId, postId, parentId]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("postFreeBoardReplyDB error - freeBoardStorage:", error);
+        throw new Error("postFreeBoardReplyDB 500error - freeBoardStorage");
+    }
+}
+
 export const getFreeBoardCommentDB = async (postId: number) => {
     try {
         const result = await pool.query(
-            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE post_id = $1",
+            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE post_id = $1 ORDER BY fc.created_at ASC",
             [postId]
         );
-        return result.rows;
+
+        // 각 댓글의 대댓글 개수 조회
+        const commentsWithReplyCount = await Promise.all(
+            result.rows.map(async (comment) => {
+                const replyCount = await getFreeBoardRepliesCountDB(comment.id);
+                return {
+                    ...comment,
+                    reply_count: replyCount
+                };
+            })
+        );
+
+        return commentsWithReplyCount;
     } catch (error) {
         console.error("getFreeBoardCommentDB error - freeBoardStorage:", error);
         throw new Error("getFreeBoardCommentDB 500error - freeBoardStorage");
+    }
+}
+
+export const getFreeBoardRepliesDB = async (commentId: string) => {
+    try {
+        const result = await pool.query(
+            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE fc.parent_id = $1 ORDER BY fc.created_at ASC",
+            [commentId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error("getFreeBoardRepliesDB error - freeBoardStorage:", error);
+        throw new Error("getFreeBoardRepliesDB 500error - freeBoardStorage");
+    }
+}
+
+export const getFreeBoardRepliesCountDB = async (commentId: string) => {
+    try {
+        const result = await pool.query(
+            "SELECT COUNT(*) as count FROM freeboard_comments WHERE parent_id = $1",
+            [commentId]
+        );
+        return parseInt(result.rows[0].count);
+    } catch (error) {
+        console.error("getFreeBoardRepliesCountDB error - freeBoardStorage:", error);
+        throw new Error("getFreeBoardRepliesCountDB 500error - freeBoardStorage");
+    }
+}
+
+export const updateFreeBoardCommentDB = async (commentId: string, content: string, userId: string) => {
+    try {
+        // 댓글 작성자 확인
+        const authorCheck = await pool.query(
+            "SELECT user_id FROM freeboard_comments WHERE id = $1",
+            [commentId]
+        );
+        
+        if (authorCheck.rows.length === 0) {
+            throw new Error("댓글을 찾을 수 없습니다.");
+        }
+        
+        if (authorCheck.rows[0].user_id !== userId) {
+            throw new Error("수정 권한이 없습니다.");
+        }
+        
+        const result = await pool.query(
+            "UPDATE freeboard_comments SET content = $1 WHERE id = $2 RETURNING *",
+            [content, commentId]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("updateFreeBoardCommentDB error - freeBoardStorage:", error);
+        throw error;
+    }
+}
+
+export const deleteFreeBoardCommentDB = async (commentId: string, userId: string) => {
+    try {
+        // 댓글 작성자 확인
+        const authorCheck = await pool.query(
+            "SELECT user_id FROM freeboard_comments WHERE id = $1",
+            [commentId]
+        );
+        
+        if (authorCheck.rows.length === 0) {
+            throw new Error("댓글을 찾을 수 없습니다.");
+        }
+        
+        if (authorCheck.rows[0].user_id !== userId) {
+            throw new Error("삭제 권한이 없습니다.");
+        }
+        
+        const result = await pool.query(
+            "DELETE FROM freeboard_comments WHERE id = $1",
+            [commentId]
+        );
+        return result.rowCount;
+    } catch (error) {
+        console.error("deleteFreeBoardCommentDB error - freeBoardStorage:", error);
+        throw error;
     }
 }
