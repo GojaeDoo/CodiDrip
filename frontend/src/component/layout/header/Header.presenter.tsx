@@ -58,6 +58,7 @@ const HeaderPresenter = (props: HeaderProps) => {
         <S.MenuItem onClick={props.onClickMoveDripUser}>DRIP 사용자</S.MenuItem>
         <S.MenuItem onClick={props.onClickMoveMyPage}>마이페이지</S.MenuItem>
         <S.MenuItem onClick={props.onClickMoveFreeBoardList}>자유게시판</S.MenuItem>
+        <S.MenuItem onClick={props.onClickMoveFreeBoardList}>신고함</S.MenuItem>
       </S.SideMenuContainer>
     </S.HeaderContainer>
   );
