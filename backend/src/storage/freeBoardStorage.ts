@@ -133,7 +133,7 @@ export const postFreeBoardReplyDB = async (newComment: string, userId: string, p
 export const getFreeBoardCommentDB = async (postId: number) => {
     try {
         const result = await pool.query(
-            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE post_id = $1 ORDER BY fc.created_at ASC",
+            "SELECT fc.id,fc.post_id ,fc.created_at ,p.profile_nickname ,p.user_id ,p.profile_image ,fc.content,fc.parent_id FROM freeboard_comments fc join profile p on fc.user_id = p.user_id WHERE post_id = $1 AND fc.parent_id IS NULL ORDER BY fc.created_at ASC",
             [postId]
         );
 
@@ -232,5 +232,19 @@ export const deleteFreeBoardCommentDB = async (commentId: string, userId: string
     } catch (error) {
         console.error("deleteFreeBoardCommentDB error - freeBoardStorage:", error);
         throw error;
+    }
+}
+
+// 사용자가 작성한 자유게시판 게시글 조회
+export const getUserFreeBoardPostsDB = async (userId: string) => {
+    try {
+        const result = await pool.query(
+            "SELECT id, title, content, profile_nickname as author, created_at as \"createdAt\", view_count as \"viewCount\" FROM freeBoard WHERE user_id = $1 ORDER BY created_at DESC",
+            [userId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error("getUserFreeBoardPostsDB error - freeBoardStorage:", error);
+        throw new Error("getUserFreeBoardPostsDB 500error - freeBoardStorage");
     }
 }

@@ -1,11 +1,17 @@
 import DripPost from "@/app/dripPost/page";
 import Follow from "@/app/follow/page";
+import FollowSkeleton from "@/component/commons/skeleton/follow/FollowSkeleton";
+import FreeBoardSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardSkeleton";
+import MyPageSkeleton from "@/component/commons/skeleton/profile/MypageSkeleton";
 
 import * as S from "./MyPage.styled";
 import { MyPageProps } from "./MyPage.types";
-import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus } from "lucide-react";
+import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus, Eye } from "lucide-react";
 
 export const MyPagePresenter = (props: MyPageProps) => {
+  if (props.isMyPageLoading) {
+    return <MyPageSkeleton />;
+  }
   return (
     <S.Background>
       <S.MyPageWrapper>
@@ -91,6 +97,10 @@ export const MyPagePresenter = (props: MyPageProps) => {
               <Users size={16} />
               팔로잉
             </S.TabButton>
+            <S.TabButton data-active={props.isMyPost || false} onClick={props.onClickMoveMyPost}>
+              <Edit size={16} />
+              작성한 게시글
+            </S.TabButton>
           </S.TabButtons>
 
           <S.ContentArea>
@@ -112,10 +122,41 @@ export const MyPagePresenter = (props: MyPageProps) => {
                   />
                 )}
                 {(props.isFollower || props.isFollowingTab) && props.userProfile?.user_id && (
-                  <Follow 
-                    initialTab={props.activeFollowTab} 
-                    targetUserId={props.userProfile.user_id}
-                  />
+                  props.isFollowLoading ? (
+                    <FollowSkeleton count={6} />
+                  ) : (
+                    <Follow 
+                      initialTab={props.activeFollowTab} 
+                      targetUserId={props.userProfile.user_id}
+                    />
+                  )
+                )}
+                {props.isMyPost && (
+                  props.isFreeBoardLoading ? (
+                    <FreeBoardSkeleton count={6} />
+                  ) : (
+                    <S.FreeBoardPostsContainer>
+                      {props.freeBoardPosts.length === 0 ? (
+                        <S.NoPostsMessage>
+                          작성한 자유게시판 게시글이 없습니다.
+                        </S.NoPostsMessage>
+                      ) : (
+                        props.freeBoardPosts.map((post) => (
+                          <S.FreeBoardPostItem key={post.id} onClick={() => props.onClickFreeBoardPost(post.id)}>
+                            <S.PostTitle>{post.title}</S.PostTitle>
+                            <S.PostContent>{post.content.length > 100 ? `${post.content.substring(0, 100)}...` : post.content}</S.PostContent>
+                            <S.PostMeta>
+                              <S.PostDate>{props.formatDate(post.createdAt)}</S.PostDate>
+                              <S.PostViews>
+                                <Eye size={14} />
+                                {post.viewCount}
+                              </S.PostViews>
+                            </S.PostMeta>
+                          </S.FreeBoardPostItem>
+                        ))
+                      )}
+                    </S.FreeBoardPostsContainer>
+                  )
                 )}
               </S.CardContent>
             </S.ContentCard>

@@ -145,6 +145,15 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         const updatedComments = await getFreeBoardCommentQuery(id);
         setComments(updatedComments);
         
+        // 대댓글 수정인 경우 해당 대댓글 목록도 새로고침
+        if (showingRepliesFor) {
+          const updatedReplies = await getFreeBoardRepliesQuery(showingRepliesFor);
+          setReplies(prev => ({
+            ...prev,
+            [showingRepliesFor]: updatedReplies
+          }));
+        }
+        
         setEditingCommentId(null);
         setEditContent("");
       } catch (error) {
@@ -166,6 +175,15 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
       // 댓글 리스트 새로고침
       const updatedComments = await getFreeBoardCommentQuery(id);
       setComments(updatedComments);
+      
+      // 대댓글 삭제인 경우 해당 대댓글 목록도 새로고침
+      if (showingRepliesFor) {
+        const updatedReplies = await getFreeBoardRepliesQuery(showingRepliesFor);
+        setReplies(prev => ({
+          ...prev,
+          [showingRepliesFor]: updatedReplies
+        }));
+      }
     } catch (error) {
       console.log("댓글 삭제 오류 : " + error);
     }

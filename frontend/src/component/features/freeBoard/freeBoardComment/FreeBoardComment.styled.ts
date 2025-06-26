@@ -382,84 +382,124 @@ export const ShowMoreButton = styled.button`
 
 // 대댓글 wrapper
 export const ReplyWrapper = styled.div`
-  margin-left: 3.5rem;
-  margin-top: 1rem;
+  margin-left: 3rem;
+  padding: 1rem;
 `;
 
 // 대댓글 컨테이너
 export const ReplyContainer = styled.div`
-  border-left: 2px solid #e0e0e0;
-  padding-left: 1rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
+  border-radius: 8px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 // 대댓글 아바타
 export const ReplyAvatar = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background-color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  margin-right: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 0.75rem;
 `;
 
 // 대댓글 상단(닉네임, 시간, 버튼)
 export const ReplyHeader = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
 // 대댓글 수정/삭제 버튼
 export const ReplyActionButton = styled.button`
   background: none;
   border: none;
-  color: #667eea;
+  color: #888;
   cursor: pointer;
   font-size: 12px;
-  margin-right: 0.5rem;
-  transition: color 0.2s;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  
+  &:first-child {
+    color: #667eea;
+    
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: #8b9eff;
+    }
+  }
+  
   &:last-child {
     color: #e74c3c;
     margin-right: 0;
-  }
-  &:hover {
-    text-decoration: underline;
+    
+    &:hover {
+      background: rgba(231, 76, 60, 0.1);
+      color: #ff6b6b;
+    }
   }
 `;
 
 // 댓글/대댓글 입력창 wrapper
 export const EditInputWrapper = styled.div`
   margin-left: 3.5rem;
+  margin-top: 1rem;
 `;
 
 // 버튼 그룹 wrapper
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 `;
 
 // 저장/취소 버튼
 export const SaveButton = styled.button`
-  background: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
 `;
+
 export const CancelButton = styled.button`
-  background: #666;
-  color: white;
+  background: #444;
+  color: #ccc;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #555;
+    color: #fff;
+    transform: translateY(-1px);
+  }
 `;
 
 // 대댓글 보기/숨기기 버튼
@@ -469,7 +509,14 @@ export const ToggleReplyButton = styled.button`
   color: #667eea;
   cursor: pointer;
   font-size: 14px;
-  text-decoration: underline;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #8b9eff;
+    text-decoration: underline;
+  }
 `;
 
 // 대댓글 없음 메시지
@@ -478,4 +525,176 @@ export const NoReply = styled.div`
   margin-top: 1rem;
   color: #666;
   font-size: 14px;
+  font-style: italic;
+  padding: 1rem;
+  background: #252525;
+  border-radius: 8px;
+`;
+
+// 대댓글 입력 UI wrapper
+export const ReplyInputWrapper = styled.div`
+  margin-left: 3.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #252525;
+  border-radius: 12px;
+`;
+
+// 대댓글 입력창
+export const ReplyInput = styled.textarea`
+  width: 100%;
+  min-height: 80px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #ffffff;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &::placeholder {
+    color: #666;
+  }
+  
+  &:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+`;
+
+// 대댓글 버튼 그룹
+export const ReplyButtonGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  justify-content: flex-end;
+`;
+
+// 대댓글 작성/취소 버튼
+export const ReplySubmitButton = styled.button`
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+export const ReplyCancelButton = styled.button`
+  background: #444;
+  color: #ccc;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #555;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+`;
+
+// 대댓글 수정 UI wrapper
+export const ReplyEditWrapper = styled.div`
+  margin-left: 3.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #252525;
+  border-radius: 12px;
+`;
+
+// 대댓글 수정 입력창
+export const ReplyEditInput = styled.textarea`
+  width: 100%;
+  min-height: 80px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #ffffff;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &::placeholder {
+    color: #666;
+  }
+  
+  &:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+`;
+
+// 대댓글 수정 버튼 그룹
+export const ReplyEditButtonGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  justify-content: flex-end;
+`;
+
+// 대댓글 수정 저장/취소 버튼
+export const ReplyEditSaveButton = styled.button`
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+export const ReplyEditCancelButton = styled.button`
+  background: #444;
+  color: #ccc;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #555;
+    color: #fff;
+    transform: translateY(-1px);
+  }
 `;

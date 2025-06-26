@@ -12,11 +12,13 @@ export const DripsSelectWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 2vw;
+  margin-bottom: 3vh;
 `;
 
 export const DripsSelectWrapperTop = styled.div`
   width: 100%;
   height: 50%;
+
 `;
 
 export const DripsSelectWrapperTopTitle = styled.div`
@@ -42,7 +44,18 @@ export const DripsSelectWrapperBottom = styled.div`
 export const DripsSelectBtn = styled.button`
   width: 9vw;
   height: 4vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #ffffff;
+  min-width: 100px;
+  min-height: 20px;
+  font-family: "Inter", sans-serif;
+  font-weight: 1000;
+  font-style: italic;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #3a3a3a;
 
   &:hover {
     color: #ffffff;

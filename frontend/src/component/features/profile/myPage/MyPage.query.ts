@@ -52,3 +52,15 @@ export const toggleFollowQuery = async (followerId: string, followingId: string)
     throw error;
   }
 };
+
+export const getUserFreeBoardPostsQuery = async (userId: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/freeBoard/user/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("getUserFreeBoardPostsQuery error : ", error);
+    return [];
+  }
+};

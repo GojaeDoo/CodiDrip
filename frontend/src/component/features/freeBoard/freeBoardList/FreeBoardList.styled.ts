@@ -1,4 +1,13 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+
+export const FreeBoardListGlobalStyle = createGlobalStyle`
+  .pc-only { display: block; }
+  .mobile-only { display: none; }
+  @media (max-width: 768px) {
+    .pc-only { display: none !important; }
+    .mobile-only { display: flex !important; }
+  }
+`;
 
 export const Background = styled.div`
   width: 100%;
@@ -14,6 +23,11 @@ export const FreeBoardListWrapper = styled.div`
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  @media (max-width: 768px) {
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
 `;
 
 export const Header = styled.div`
@@ -21,6 +35,9 @@ export const Header = styled.div`
   padding: 32px;
   text-align: center;
   border-bottom: 1px solid #333;
+  @media (max-width: 768px) {
+    padding: 16px 8px;
+  }
 `;
 
 export const Title = styled.h1`
@@ -29,16 +46,25 @@ export const Title = styled.h1`
   font-weight: 700;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 export const Subtitle = styled.p`
   color: #b0b0b0;
   font-size: 16px;
   margin: 8px 0 0 0;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export const Content = styled.div`
   padding: 32px;
+  @media (max-width: 768px) {
+    padding: 12px 4px;
+  }
 `;
 
 export const TopBar = styled.div`
@@ -48,12 +74,22 @@ export const TopBar = styled.div`
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid #333;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
 `;
 
 export const SearchContainer = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    gap: 4px;
+  }
 `;
 
 export const SearchInput = styled.input`
@@ -66,13 +102,10 @@ export const SearchInput = styled.input`
   outline: none;
   transition: border-color 0.3s;
   width: 300px;
-
-  &:focus {
-    border-color: #4a90e2;
-  }
-
-  &::placeholder {
-    color: #666;
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 8px;
   }
 `;
 
@@ -83,9 +116,9 @@ export const SearchButton = styled.button`
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 `;
 
@@ -96,9 +129,11 @@ export const WriteButton = styled.button`
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 13px;
+    width: 100%;
+    margin-top: 4px;
   }
 `;
 
@@ -107,6 +142,10 @@ export const BoardTable = styled.div`
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #333;
+  @media (max-width: 768px) {
+    border-radius: 6px;
+    font-size: 13px;
+  }
 `;
 
 export const TableHeader = styled.div`
@@ -119,6 +158,9 @@ export const TableHeader = styled.div`
   font-weight: 600;
   color: #fff;
   font-size: 14px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const TableRow = styled.div`
@@ -129,13 +171,22 @@ export const TableRow = styled.div`
   border-bottom: 1px solid #333;
   transition: background-color 0.1s;
   cursor: pointer;
-
   &:hover {
     background: #2a2a2a;
   }
-
   &:last-child {
     border-bottom: none;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 8px;
+    background: #232323;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   }
 `;
 
@@ -148,12 +199,20 @@ export const Cell = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   justify-content: center;
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    font-size: 13px;
+    padding: 2px 0;
+  }
 `;
 
 export const TitleCell = styled(Cell)`
-  font-weight: 500;
+  font-weight: 600;
   color: #fff;
-  
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+  }
 `;
 
 export const AuthorCell = styled(Cell)`
@@ -177,6 +236,10 @@ export const NoPosts = styled.div`
   padding: 60px 24px;
   color: #666;
   font-size: 16px;
+  @media (max-width: 768px) {
+    padding: 32px 4px;
+    font-size: 13px;
+  }
 `;
 
 export const Pagination = styled.div`
@@ -187,6 +250,11 @@ export const Pagination = styled.div`
   margin-top: 32px;
   padding-top: 24px;
   border-top: 1px solid #333;
+  @media (max-width: 768px) {
+    gap: 4px;
+    margin-top: 12px;
+    padding-top: 8px;
+  }
 `;
 
 export const PageButton = styled.button<{ active?: boolean }>`
@@ -198,15 +266,17 @@ export const PageButton = styled.button<{ active?: boolean }>`
   cursor: pointer;
   transition: all 0.3s;
   font-size: 14px;
-
   &:hover {
     background: ${props => props.active ? '#357abd' : '#2a2a2a'};
     border-color: ${props => props.active ? '#357abd' : '#4a90e2'};
   }
-
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  @media (max-width: 768px) {
+    padding: 4px 6px;
+    font-size: 12px;
   }
 `;
 
@@ -214,4 +284,19 @@ export const PageInfo = styled.span`
   color: #888;
   font-size: 14px;
   margin: 0 16px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    margin: 0 4px;
+  }
+`;
+
+export const MetaRow = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    gap: 8px;
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    margin-top: 2px;
+  }
 `;

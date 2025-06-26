@@ -17,7 +17,6 @@ export const DripPostDetailWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  max-width: 1000px;
   margin: 0 auto;
   width: 100%;
   @media (max-width: 1024px) {
@@ -35,7 +34,6 @@ export const MainSection = styled.div`
 
 export const CommentSection = styled.div`
   flex: 1;
-  min-width: 340px;
   background: #1e1e1e;
   border-radius: 16px;
   padding: 1.5rem;

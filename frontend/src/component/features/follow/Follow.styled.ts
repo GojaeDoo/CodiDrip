@@ -6,16 +6,17 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1a1a1a;
-  padding: 40px 0;
+  background: #1e1e1e;
+  
 `;
 
 export const FollowWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   min-height: 70vh;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  background: #1e1e1e;
 `;
 
 export const HeaderSection = styled.div`
@@ -76,7 +77,7 @@ export const FollowItem = styled.div`
   gap: 1rem;
   padding: 1.5rem;
   background: #1e1e1e;
-  border-radius: 10px;
+  border-bottom: 1px solid #3a3a3a;
   transition: background-color 0.2s ease;
 
   &:hover {

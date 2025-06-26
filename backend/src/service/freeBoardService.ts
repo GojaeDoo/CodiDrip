@@ -1,4 +1,4 @@
-import { createFreeBoardDB, getFreeBoardListDB, getFreeBoardDetailDB, updateFreeBoardDB, deleteFreeBoardDB, postFreeBoardCommentDB, getFreeBoardCommentDB, updateFreeBoardCommentDB, deleteFreeBoardCommentDB, postFreeBoardReplyDB, getFreeBoardRepliesDB } from "../storage/freeBoardStorage";
+import { createFreeBoardDB, getFreeBoardListDB, getFreeBoardDetailDB, updateFreeBoardDB, deleteFreeBoardDB, postFreeBoardCommentDB, getFreeBoardCommentDB, updateFreeBoardCommentDB, deleteFreeBoardCommentDB, postFreeBoardReplyDB, getFreeBoardRepliesDB, getUserFreeBoardPostsDB } from "../storage/freeBoardStorage";
 
 export const createFreeBoardService = async (title: string, content: string, userId: string) => {
     try {
@@ -107,5 +107,15 @@ export const getFreeBoardRepliesService = async (commentId: string) => {
     } catch (error) {
         console.error("getFreeBoardRepliesService error - freeBoardService:", error);
         throw new Error("getFreeBoardRepliesService 500error - freeBoardService");
+    }
+}
+
+export const getUserFreeBoardPostsService = async (userId: string) => {
+    try {
+        const result = await getUserFreeBoardPostsDB(userId);
+        return result;
+    } catch (error) {
+        console.error("getUserFreeBoardPostsService error - freeBoardService:", error);
+        throw new Error("getUserFreeBoardPostsService 500error - freeBoardService");
     }
 }

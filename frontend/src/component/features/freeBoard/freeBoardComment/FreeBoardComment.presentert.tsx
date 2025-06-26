@@ -107,7 +107,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                       )}
                       {isLogin && (
                         <button onClick={() => onReplyComment(comment.id)}>
-                          답글
+                          댓글
                         </button>
                       )}
                     </S.CommentActions>
@@ -131,17 +131,24 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
 
                   {/* 대댓글 입력 UI */}
                   {replyingToCommentId === comment.id && (
-                    <S.ReplyWrapper>
-                      <S.CommentInput
+                    <S.ReplyInputWrapper>
+                      <S.ReplyInput
                         value={replyContent}
                         onChange={(e) => onReplyContentChange(e.target.value)}
                         placeholder="대댓글을 작성하세요..."
                       />
-                      <S.ButtonGroup>
-                        <S.SaveButton onClick={onSubmitReply}>답글 작성</S.SaveButton>
-                        <S.CancelButton onClick={onCancelReply}>취소</S.CancelButton>
-                      </S.ButtonGroup>
-                    </S.ReplyWrapper>
+                      <S.ReplyButtonGroup>
+                        <S.ReplySubmitButton 
+                          onClick={onSubmitReply}
+                          disabled={!replyContent.trim()}
+                        >
+                          답글 작성
+                        </S.ReplySubmitButton>
+                        <S.ReplyCancelButton onClick={onCancelReply}>
+                          취소
+                        </S.ReplyCancelButton>
+                      </S.ReplyButtonGroup>
+                    </S.ReplyInputWrapper>
                   )}
 
                   {/* 대댓글 보기 버튼 */}
@@ -149,11 +156,11 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                     <S.ReplyWrapper style={{ marginTop: "0.5rem" }}>
                       {showingRepliesFor === comment.id ? (
                         <S.ToggleReplyButton onClick={() => onHideReplies(comment.id)}>
-                          대댓글 숨기기
+                          ↑ 댓글 숨기기
                         </S.ToggleReplyButton>
                       ) : (
                         <S.ToggleReplyButton onClick={() => onShowReplies(comment.id)}>
-                          대댓글 보기 ({comment.reply_count}개)
+                          ↓ 댓글 ({comment.reply_count}개)
                         </S.ToggleReplyButton>
                       )}
                     </S.ReplyWrapper>
@@ -166,12 +173,29 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                         <S.ReplyContainer key={reply.id}>
                           <S.ReplyHeader>
                             <S.ReplyAvatar>
-                              {getInitials(reply.profile_nickname)}
+                              {reply.profile_image ? (
+                                <img 
+                                  src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
+                                  alt={reply.profile_nickname}
+                                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+                                />
+                              ) : (
+                                getInitials(reply.profile_nickname)
+                              )}
                             </S.ReplyAvatar>
-                            <span style={{ fontWeight: "bold", marginRight: "0.5rem" }}>
+                            <span style={{ 
+                              fontWeight: "600", 
+                              marginRight: "0.75rem",
+                              color: "#ffffff",
+                              fontSize: "14px"
+                            }}>
                               {reply.profile_nickname}
                             </span>
-                            <span style={{ color: "#666", fontSize: "12px" }}>
+                            <span style={{ 
+                              color: "#888", 
+                              fontSize: "12px",
+                              fontWeight: "500"
+                            }}>
                               {formatTimestamp(reply.created_at)}
                             </span>
                             {isLogin && isCommentAuthor(reply.user_id) && (
@@ -185,7 +209,33 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                               </div>
                             )}
                           </S.ReplyHeader>
-                          <div>{reply.content}</div>
+                          
+                          {editingCommentId === reply.id ? (
+                            <S.ReplyEditWrapper>
+                              <S.ReplyEditInput
+                                value={editContent}
+                                onChange={(e) => onEditContentChange(e.target.value)}
+                                placeholder="대댓글을 수정하세요..."
+                              />
+                              <S.ReplyEditButtonGroup>
+                                <S.ReplyEditSaveButton onClick={onSaveEdit}>
+                                  저장
+                                </S.ReplyEditSaveButton>
+                                <S.ReplyEditCancelButton onClick={onCancelEdit}>
+                                  취소
+                                </S.ReplyEditCancelButton>
+                              </S.ReplyEditButtonGroup>
+                            </S.ReplyEditWrapper>
+                          ) : (
+                            <div style={{ 
+                              color: "#e0e0e0", 
+                              lineHeight: "1.6",
+                              fontSize: "14px",
+                              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                            }}>
+                              {reply.content}
+                            </div>
+                          )}
                         </S.ReplyContainer>
                       ))}
                     </S.ReplyWrapper>

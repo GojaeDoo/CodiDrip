@@ -1,5 +1,5 @@
 import express, { RequestHandler } from "express";
-import { createFreeBoard, getFreeBoardList, getFreeBoardDetail, updateFreeBoard, deleteFreeBoard, postFreeBoardComment, getFreeBoardComment, updateFreeBoardComment, deleteFreeBoardComment, postFreeBoardReply, getFreeBoardReplies } from "../controller/freeBoardController";
+import { createFreeBoard, getFreeBoardList, getFreeBoardDetail, updateFreeBoard, deleteFreeBoard, postFreeBoardComment, getFreeBoardComment, updateFreeBoardComment, deleteFreeBoardComment, postFreeBoardReply, getFreeBoardReplies, getUserFreeBoardPosts } from "../controller/freeBoardController";
 
 const router = express.Router();
 
@@ -36,5 +36,11 @@ router.put("/comment/:commentId", updateFreeBoardComment as RequestHandler);
 
 // 자유게시판 댓글 삭제
 router.delete("/comment/:commentId", deleteFreeBoardComment as RequestHandler);
+
+// 자유게시판 대댓글 조회
+router.get("/replies/:commentId", getFreeBoardReplies as RequestHandler);
+
+// 사용자가 작성한 자유게시판 게시글 조회
+router.get("/user/:userId", getUserFreeBoardPosts as RequestHandler);
 
 export default router;

@@ -6,6 +6,7 @@ import { FreeBoardListPresenter } from "./FreeBoardList.presenter";
 import { FreeBoardPost } from "./FreeBoardList.types";
 import { getFreeBoardList, getFreeBoardSearch } from "./FreeBoardList.query";
 import * as S from "./FreeBoardList.styled";
+import FreeBoardListSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardListSkeleton";
 
 const POSTS_PER_PAGE = 10;
 
@@ -148,9 +149,7 @@ export const FreeBoardListContainer = () => {
             <S.Subtitle>자유롭게 의견을 나누는 공간입니다</S.Subtitle>
           </S.Header>
           <S.Content>
-            <div style={{ textAlign: 'center', padding: '2rem', color: '#fff' }}>
-              로딩 중...
-            </div>
+            <FreeBoardListSkeleton />
           </S.Content>
         </S.FreeBoardListWrapper>
       </S.Background>

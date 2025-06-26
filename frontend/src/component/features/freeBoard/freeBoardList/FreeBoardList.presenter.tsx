@@ -46,11 +46,16 @@ export const FreeBoardListPresenter = (props:FreeBoardListPresenterProps) => {
             ) : (
               props.posts.map((post , index) => (
                 <S.TableRow key={post.id} onClick={() => props.onPostClick(post.id)}>
-                  <S.Cell>{index + 1}</S.Cell>
+                  <S.Cell className="pc-only">{index + 1}</S.Cell>
                   <S.TitleCell>{post.title}</S.TitleCell>
-                  <S.AuthorCell>{post.author}</S.AuthorCell>
-                  <S.DateCell>{props.formatDate(post.createdAt)}</S.DateCell>
-                  <S.ViewCell>{post.viewCount}</S.ViewCell>
+                  <S.AuthorCell className="pc-only">{post.author}</S.AuthorCell>
+                  <S.DateCell className="pc-only">{props.formatDate(post.createdAt)}</S.DateCell>
+                  <S.ViewCell className="pc-only">{post.viewCount}</S.ViewCell>
+                  <S.MetaRow className="mobile-only">
+                    <span>{post.author}</span>
+                    <span>{props.formatDate(post.createdAt)}</span>
+                    <span>조회 {post.viewCount}</span>
+                  </S.MetaRow>
                 </S.TableRow>
               ))
             )}

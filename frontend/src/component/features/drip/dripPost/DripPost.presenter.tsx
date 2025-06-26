@@ -7,7 +7,7 @@ import {
   MessageCircle,
   MoreVertical,
 } from "lucide-react";
-import DripPostSkeleton from "../../../commons/skeleton/DripPostSkeleton";
+import DripPostSkeleton from "../../../commons/skeleton/drip/DripPostSkeleton";
 
 export const DripPostPresenter = (props: DripPostProps) => {
   return (
@@ -74,14 +74,6 @@ export const DripPostPresenter = (props: DripPostProps) => {
                           </>
                         ) : (
                           <>
-                            <S.MenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                props.onHidePost(e, post.post_no);
-                              }}
-                            >
-                              숨김
-                            </S.MenuItem>
                             <S.MenuItem
                               onClick={(e) => {
                                 e.stopPropagation();

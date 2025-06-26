@@ -15,12 +15,19 @@ export const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 1000;
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 0 8px;
+  }
 `;
 
 export const LeftSection = styled.div`
   display: flex;
   align-items: center;
   width: 200px;
+  @media (max-width: 768px) {
+    width: 100px;
+  }
 `;
 
 export const CenterSection = styled.div`
@@ -35,6 +42,9 @@ export const RightSection = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 200px;
+  @media (max-width: 768px) {
+    width: 100px;
+  }
 `;
 
 export const Logo = styled.div`
@@ -51,7 +61,7 @@ export const Logo = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
   }
 `;
 
@@ -96,6 +106,13 @@ export const BurgerButton = styled.button`
   &:hover {
     color: #666666;
   }
+  @media (max-width: 768px) {
+    padding: 4px;
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -109,6 +126,13 @@ export const CloseButton = styled.button`
 
   &:hover {
     color: #666666;
+  }
+  @media (max-width: 768px) {
+    padding: 4px;
+    svg {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
 
@@ -125,6 +149,10 @@ export const MenuLogo = styled.div`
   color: #ffffff;
   cursor: pointer;
   transition: color 0.3s ease;
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+    margin: 1vh 0vh;
+  }
 `;
 
 export const MenuItem = styled.a`
@@ -138,6 +166,10 @@ export const MenuItem = styled.a`
     background: #333;
     color: #666666;
   }
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    padding: 16px 10px;
+  }
 `;
 
 export const SearchInputContainer = styled.div`
@@ -148,7 +180,7 @@ export const SearchInputContainer = styled.div`
   justify-items: center;
 
   @media (max-width: 768px) {
-    min-width: 20vw;
+    min-width: 23vw;
   }
 `;
 
@@ -167,7 +199,10 @@ export const SearchInput = styled.input`
   }
 
   @media (max-width: 768px) {
-    min-width: 20vw;
+    min-width: 23vw;
+    height: 28px;
+    font-size: 0.9rem;
+    padding-left: 8px;
   }
 `;
 
@@ -197,7 +232,7 @@ export const Login = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin: 0 1vw 0 2vw;
   }
 `;
@@ -221,7 +256,7 @@ export const Join = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-right: 1vw;
   }
 `;
@@ -232,7 +267,7 @@ export const UserContainer = styled.div`
   gap: 0.5vw;
 
   @media (max-width: 768px) {
-    gap: 1vw;
+    gap: 0.5vw;
   }
 `;
 
@@ -251,8 +286,8 @@ export const ProfileImage = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
@@ -275,7 +310,7 @@ export const Logout = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-right: 1vw;
   }
 `;
@@ -284,4 +319,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;

@@ -74,10 +74,10 @@ const DripPostComment = (props: DripPostCommentProps) => {
                     <MessageCircle size={16} />
                   </S.ReplyButton>
                   {myUserId === comment.user_id && (
-                    <>
-                      <S.MenuButton onClick={() => handleMenuOpen(comment.id)}>
-                        <MoreVertical size={16} />
-                      </S.MenuButton>
+                    <S.MenuButtonWrapper>
+                      <button type="button" onClick={() => handleMenuOpen(comment.id)}>
+                        <MoreVertical size={16} color="#aaa"/>
+                      </button>
                       {activeMenuId === comment.id && (
                         <S.Menu>
                           <S.MenuItem onClick={() => {
@@ -90,14 +90,14 @@ const DripPostComment = (props: DripPostCommentProps) => {
                           }}>삭제</S.MenuItem>
                         </S.Menu>
                       )}
-                    </>
+                    </S.MenuButtonWrapper>
                   )}
                 </S.CommentMeta>
 
                 {/* 답글 보기/숨기기 버튼 */}
                 {comment.replies && comment.replies.length > 0 && (
                   <S.ShowRepliesButton onClick={() => toggleReplies(comment.id)}>
-                    {expandedReplies[comment.id] ? "답글 숨기기" : `답글 ${comment.replies.length}개 보기`}
+                    {expandedReplies[comment.id] ? "↑ 댓글 숨기기" : `↓ 댓글 ${comment.replies.length}개`}
                   </S.ShowRepliesButton>
                 )}
 
@@ -126,10 +126,10 @@ const DripPostComment = (props: DripPostCommentProps) => {
                               {reply.like_count}
                             </S.CommentLikeButton>
                             {myUserId === reply.user_id && (
-                              <>
-                                <S.MenuButton onClick={() => handleMenuOpen(reply.id)}>
+                              <S.MenuButtonWrapper>
+                                <button type="button" onClick={() => handleMenuOpen(reply.id)}>
                                   <MoreVertical size={16} />
-                                </S.MenuButton>
+                                </button>
                                 {activeMenuId === reply.id && (
                                   <S.Menu>
                                     <S.MenuItem onClick={() => {
@@ -144,7 +144,7 @@ const DripPostComment = (props: DripPostCommentProps) => {
                                     }}>삭제</S.MenuItem>
                                   </S.Menu>
                                 )}
-                              </>
+                              </S.MenuButtonWrapper>
                             )}
                           </S.CommentMeta>
                         </S.CommentBody>

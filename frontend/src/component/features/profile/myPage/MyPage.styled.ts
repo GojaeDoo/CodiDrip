@@ -185,10 +185,10 @@ export const AddButton = styled.button`
 
 export const ContentCard = styled.div`
   padding: 1.5rem;
-  background: #1e1e1e;
   border-radius: 5px;
   color: #ffffff;
   height: auto;
+  border: 1px solid #3a3a3a;
 `;
 
 export const CardContent = styled.div`
@@ -218,5 +218,75 @@ export const CardContent = styled.div`
       background: #666;
     }
   }
+`;
+
+// 자유게시판 게시글 목록 컨테이너
+export const FreeBoardPostsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+`;
+
+// 게시글이 없을 때 메시지
+export const NoPostsMessage = styled.div`
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  padding: 2rem;
+`;
+
+// 자유게시판 게시글 아이템
+export const FreeBoardPostItem = styled.div`
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #3a3a3a;
+
+  &:hover {
+    background: #2a2a2a;
+    border-color: #555;
+    transform: translateY(-2px);
+  }
+`;
+
+// 게시글 제목
+export const PostTitle = styled.h3`
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+`;
+
+// 게시글 내용
+export const PostContent = styled.p`
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+  white-space: normal;
+`;
+
+// 게시글 메타 정보
+export const PostMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font-size: 0.85rem;
+`;
+
+// 게시글 작성일
+export const PostDate = styled.span`
+  color: #666;
+`;
+
+// 게시글 조회수
+export const PostViews = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #666;
 `;
 

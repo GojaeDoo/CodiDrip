@@ -9,7 +9,6 @@ export const Background = styled.div`
   background: #1a1a1a;
   padding: 12px 0;
 
-
   @media (max-width: 768px) {
     padding: 6px 0;
   }
@@ -23,7 +22,7 @@ export const UserDripWrapper = styled.div`
   gap: 1.5rem;
   padding: 0 12px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
 
   @media (max-width: 768px) {
@@ -33,29 +32,33 @@ export const UserDripWrapper = styled.div`
 `;
 
 export const UserCard = styled.div`
-  background: #1e1e1e;
-  border: 1px solid #2d2d2d;
+  background: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
   width: 280px;
   max-height: 420px;
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
+  animation: pulse 1.5s infinite;
 
-  &:hover {
-    transform: translateY(-2px);
+  @keyframes pulse {
+    0% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.6;
+    }
   }
 
   @media (max-width: 768px) {
     width: 280px;
     border-radius: 8px;
-
-    &:hover {
-      transform: none;
-    }
   }
 `;
 
@@ -64,18 +67,13 @@ export const ProfileImageWrapper = styled.div`
   height: 280px;
   position: relative;
   overflow: hidden;
-  background: #2d2d2d;
+  background: #e0e0e0;
 `;
 
-export const ProfileImage = styled.img`
+export const ProfileImageSkeleton = styled.div`
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-
-  ${UserCard}:hover & {
-    transform: scale(1.05);
-  }
+  background: #e0e0e0;
 `;
 
 export const UserInfo = styled.div`
@@ -85,19 +83,17 @@ export const UserInfo = styled.div`
   gap: 0.5rem;
 `;
 
-export const Nickname = styled.h3`
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ffffff;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+export const NicknameSkeleton = styled.div`
+  width: 120px;
+  height: 18px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 6px;
 `;
 
-export const UserStats = styled.p`
-  margin: 0;
-  font-size: 0.9rem;
-  color: #a0a0a0;
-  font-weight: 500;
+export const UserStatsSkeleton = styled.div`
+  width: 100px;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 4px;
 `;

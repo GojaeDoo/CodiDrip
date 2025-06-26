@@ -10,7 +10,8 @@ import {
     updateFreeBoardCommentService,
     deleteFreeBoardCommentService,
     postFreeBoardReplyService,
-    getFreeBoardRepliesService
+    getFreeBoardRepliesService,
+    getUserFreeBoardPostsService
 } from "../service/freeBoardService";
 
 // 자유게시판 게시글
@@ -173,5 +174,17 @@ export const getFreeBoardReplies = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("getFreeBoardReplies error - freeBoardController:", error);
         res.status(500).json({ error: "getFreeBoardReplies 500error - freeBoardController" });
+    }
+}
+
+// 사용자가 작성한 자유게시판 게시글 조회
+export const getUserFreeBoardPosts = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId;
+        const result = await getUserFreeBoardPostsService(userId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("getUserFreeBoardPosts error - freeBoardController:", error);
+        res.status(500).json({ error: "getUserFreeBoardPosts 500error - freeBoardController" });
     }
 }

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const CommentSection = styled.div`
+
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -129,26 +130,14 @@ export const ReplyButton = styled.button`
   }
 `;
 
-export const MenuButton = styled.button`
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  transition: color 0.2s ease;
+export const MenuButtonWrapper = styled.div`
   position: relative;
-
-  &:hover {
-    color: #fff;
-  }
+  display: inline-block;
 `;
 
 export const Menu = styled.div`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px);
   right: 0;
   background: #232323;
   border-radius: 8px;
@@ -158,7 +147,6 @@ export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.3rem 0;
-  margin-top: 0.5rem;
 `;
 
 export const MenuItem = styled.button`
@@ -203,8 +191,7 @@ export const ReplyInput = styled.input`
 `;
 
 export const ReplyList = styled.div`
-  margin-left: 3.2rem;
-  margin-top: 0.8rem;
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -226,6 +213,8 @@ export const ShowRepliesButton = styled.button`
   padding: 0.5rem 0;
   margin-top: 0.5rem;
   transition: color 0.2s ease;
+  display: flex;
+  justify-content: flex-start;
 
   &:hover {
     color: #fff;

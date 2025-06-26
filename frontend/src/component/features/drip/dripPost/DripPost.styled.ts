@@ -20,7 +20,7 @@ export const UserDripPostWrapper = styled.div`
   gap: 1.91rem;
   padding: 0 12px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   background-color: #1a1a1a;
   
