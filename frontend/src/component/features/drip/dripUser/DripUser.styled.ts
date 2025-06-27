@@ -6,9 +6,9 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1a1a1a;
+  background: var(--background);
   padding: 12px 0;
-
+  transition: background-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 6px 0;
@@ -33,12 +33,12 @@ export const UserDripWrapper = styled.div`
 `;
 
 export const UserCard = styled.div`
-  background: #1e1e1e;
-  border: 1px solid #2d2d2d;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
   width: 280px;
   max-height: 420px;
   display: flex;
@@ -64,7 +64,8 @@ export const ProfileImageWrapper = styled.div`
   height: 280px;
   position: relative;
   overflow: hidden;
-  background: #2d2d2d;
+  background: var(--card-border);
+  transition: background-color 0.3s ease;
 `;
 
 export const ProfileImage = styled.img`
@@ -89,15 +90,17 @@ export const Nickname = styled.h3`
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  transition: color 0.3s ease;
 `;
 
 export const UserStats = styled.p`
   margin: 0;
   font-size: 0.9rem;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   font-weight: 500;
+  transition: color 0.3s ease;
 `;

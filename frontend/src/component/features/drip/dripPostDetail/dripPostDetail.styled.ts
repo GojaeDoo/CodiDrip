@@ -3,11 +3,13 @@ import styled from "styled-components";
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
+  background-color: var(--background);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  transition: background-color 0.3s ease;
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -34,47 +36,55 @@ export const MainSection = styled.div`
 
 export const CommentSection = styled.div`
   flex: 1;
-  background: #1e1e1e;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 1.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   @media (max-width: 1024px) {
     min-width: 0;
     padding: 1.5rem 0;
     background: none;
+    border: none;
   }
 `;
 
 export const ImageBox = styled.div`
   width: 100%;
   aspect-ratio: 1/1;
-  background: #000;
+  background: var(--card-border);
   border-radius: 16px 16px 0 0;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 `;
 
 export const ProfileBox = styled.div`
-  background: #1e1e1e;
+  background: var(--card-bg);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding-bottom: 1.5rem;
+  transition: background-color 0.3s ease;
 `;
 
 export const TagBox = styled.div`
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 0px 0px 16px 16px;
   padding: 1rem 1.5rem;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
+  transition: background-color 0.3s ease;
 `;
 
 export const CommentBox = styled.div`
-  background: #1e1e1e;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 1.5rem;
   margin-top: 1rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
@@ -98,7 +108,8 @@ export const UserInfo = styled.div`
   align-items: center;
   gap: 1rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #2d2d2d;
+  border-bottom: 1px solid var(--card-border);
+  transition: border-color 0.3s ease;
 `;
 
 export const ProfileImage = styled.img`
@@ -106,20 +117,23 @@ export const ProfileImage = styled.img`
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #333;
+  border: 2px solid var(--card-border);
+  transition: border-color 0.3s ease;
 `;
 
 export const UserName = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 export const UserStats = styled.p`
   font-size: 0.9rem;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   margin: 0.25rem 0 0;
+  transition: color 0.3s ease;
 `;
 
 export const InteractionSection = styled.div`
@@ -137,20 +151,20 @@ export const InteractionButton = styled.button<{ $isLiked?: boolean; $isSaved?: 
   gap: 0.25rem;
   background: none;
   border: none;
-  color: ${({ $isLiked }) => ($isLiked ? "#ff4d4d" : "#ffffff")};
+  color: ${({ $isLiked }) => ($isLiked ? "#ff4d4d" : "var(--text-primary)")};
   cursor: pointer;
   padding: 1rem 0.5rem;
   border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background: #232323;
+    background: var(--card-border);
     transform: translateY(-2px) scale(1.05);
   }
 
   svg {
     font-size: 1.5rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     fill: ${({ $isSaved, $isLiked }) => {
       if ($isSaved) return "#FFD700";
       if ($isLiked) return "#ff3b3b";
@@ -159,7 +173,7 @@ export const InteractionButton = styled.button<{ $isLiked?: boolean; $isSaved?: 
     stroke: ${({ $isSaved, $isLiked }) => {
       if ($isSaved) return "#FFD700";
       if ($isLiked) return "#ff3b3b";
-      return "#666";
+      return "var(--text-secondary)";
     }};
     stroke-width: 2;
   }
@@ -183,15 +197,16 @@ export const TagList = styled.div`
 `;
 
 export const Tag = styled.span`
-  background-color: #2d2d2d;
-  color: #ffffff;
+  background-color: var(--card-border);
+  color: var(--text-primary);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #3d3d3d;
+    background-color: var(--accent);
+    color: var(--text-primary);
   }
 `;
 
@@ -208,9 +223,9 @@ export const ImageNavigation = styled.div`
 `;
 
 export const NavButton = styled.button`
-  background-color: rgba(45, 45, 45, 0.9);
+  background-color: rgba(0, 0, 0, 0.7);
   border: none;
-  color: #ffffff;
+  color: var(--text-primary);
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -219,11 +234,11 @@ export const NavButton = styled.button`
   justify-content: center;
   cursor: pointer;
   pointer-events: auto;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background-color: #3d3d3d;
+    background-color: rgba(0, 0, 0, 0.9);
     transform: scale(1.1);
   }
 `;
@@ -233,9 +248,10 @@ export const ImageCounter = styled.div`
   bottom: 1.5rem;
   right: 1.5rem;
   background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  color: var(--text-primary);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
   backdrop-filter: blur(4px);
+  transition: color 0.3s ease;
 `; 

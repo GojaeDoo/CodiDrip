@@ -1,5 +1,3 @@
-
-
 export interface HeaderProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +13,8 @@ export interface HeaderProps {
   userProfile: Profile | null;
   onChangeSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEnterSearchInput: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onToggleTheme: () => void;
+  theme: "light" | "dark";
 }
 
 export interface Profile {

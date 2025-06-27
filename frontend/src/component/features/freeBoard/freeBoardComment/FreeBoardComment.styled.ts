@@ -2,22 +2,24 @@ import styled from "styled-components";
 
 export const Background = styled.div`
   width: 100%;
-  background: #1a1a1a;
+  background: var(--background);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 2rem 0;
+  transition: background-color 0.3s ease;
 `;
 
 export const FreeBoardCommentWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
   
   @media (max-width: 1200px) {
     max-width: 95vw;
@@ -27,35 +29,39 @@ export const FreeBoardCommentWrapper = styled.div`
 
 export const CommentHeader = styled.div`
   padding: 2.5rem 4rem 1.5rem 4rem;
-  border-bottom: 1px solid #333;
-  background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   
   @media (max-width: 768px) {
     padding: 2rem 2rem 1rem 2rem;
   }
   
   h2 {
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 1.75rem;
     font-weight: 600;
     margin: 0;
     letter-spacing: -0.01em;
+    transition: color 0.3s ease;
   }
   
   .comment-count {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 1rem;
     margin-top: 0.75rem;
     font-weight: 500;
+    transition: color 0.3s ease;
   }
 `;
 
 export const CommentList = styled.div`
   padding: 1.5rem 4rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
   
   @media (max-width: 768px) {
     padding: 1rem 2rem;
@@ -64,7 +70,8 @@ export const CommentList = styled.div`
 
 export const CommentItem = styled.div`
   padding: 2rem 0;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--card-border);
+  transition: border-color 0.3s ease;
   
   &:last-child {
     border-bottom: none;
@@ -99,18 +106,20 @@ export const UserInfo = styled.div`
   flex: 1;
   
   .username {
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: 600;
     font-size: 1.1rem;
     margin: 0;
     letter-spacing: -0.01em;
+    transition: color 0.3s ease;
   }
   
   .timestamp {
-    color: #666;
+    color: var(--text-muted);
     font-size: 0.9rem;
     margin: 0.25rem 0 0 0;
     font-weight: 500;
+    transition: color 0.3s ease;
   }
 `;
 
@@ -121,7 +130,7 @@ export const CommentActions = styled.div`
   button {
     background: none;
     border: none;
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0.5rem 0.75rem;
@@ -130,19 +139,20 @@ export const CommentActions = styled.div`
     font-weight: 500;
     
     &:hover {
-      background: #333;
-      color: #fff;
+      background: var(--card-border);
+      color: var(--text-primary);
       transform: translateY(-1px);
     }
   }
 `;
 
 export const CommentContent = styled.div`
-  color: #e0e0e0;
+  color: var(--text-primary);
   line-height: 1.7;
   font-size: 1rem;
   margin-left: 4rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: color 0.3s ease;
   
   @media (max-width: 768px) {
     margin-left: 3rem;
@@ -151,18 +161,19 @@ export const CommentContent = styled.div`
 
 export const CommentForm = styled.div`
   padding: 2rem;
-  border-top: 1px solid #333;
-  background: #252525;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const CommentInput = styled.textarea`
   width: 100%;
   min-height: 100px;
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: var(--card-border);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1.25rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   resize: vertical;
   outline: none;
@@ -170,12 +181,12 @@ export const CommentInput = styled.textarea`
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
   &::placeholder {
-    color: #666;
+    color: var(--text-muted);
   }
   
   &:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
 `;
 
@@ -185,7 +196,7 @@ export const CommentSubmit = styled.div`
   margin-top: 1.25rem;
   
   button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--accent);
     color: white;
     border: none;
     padding: 0.875rem 2rem;
@@ -196,8 +207,9 @@ export const CommentSubmit = styled.div`
     font-size: 1rem;
     
     &:hover {
+      background: var(--accent-hover);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
     
     &:disabled {

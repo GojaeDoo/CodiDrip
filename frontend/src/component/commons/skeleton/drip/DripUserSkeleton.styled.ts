@@ -1,4 +1,13 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const pulse = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+`;
 
 export const Background = styled.div`
   width: 100%;
@@ -6,8 +15,9 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1a1a1a;
+  background: var(--background);
   padding: 12px 0;
+  transition: background-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 6px 0;
@@ -32,8 +42,8 @@ export const UserDripWrapper = styled.div`
 `;
 
 export const UserCard = styled.div`
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,19 +52,8 @@ export const UserCard = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
-  animation: pulse 1.5s infinite;
-
-  @keyframes pulse {
-    0% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 0.8;
-    }
-    100% {
-      opacity: 0.6;
-    }
-  }
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   @media (max-width: 768px) {
     width: 280px;
@@ -67,13 +66,15 @@ export const ProfileImageWrapper = styled.div`
   height: 280px;
   position: relative;
   overflow: hidden;
-  background: #e0e0e0;
+  background: var(--card-border);
+  transition: background-color 0.3s ease;
 `;
 
 export const ProfileImageSkeleton = styled.div`
   width: 100%;
   height: 100%;
-  background: #e0e0e0;
+  background: var(--card-border);
+  transition: background-color 0.3s ease;
 `;
 
 export const UserInfo = styled.div`
@@ -86,14 +87,18 @@ export const UserInfo = styled.div`
 export const NicknameSkeleton = styled.div`
   width: 120px;
   height: 18px;
-  background: #e0e0e0;
+  background: var(--card-border);
   border-radius: 4px;
   margin-bottom: 6px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const UserStatsSkeleton = styled.div`
   width: 100px;
   height: 16px;
-  background: #e0e0e0;
+  background: var(--card-border);
   border-radius: 4px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;

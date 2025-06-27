@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const CommentSection = styled.div`
-
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -11,7 +10,8 @@ export const CommentSection = styled.div`
 export const EmptyState = styled.div`
   text-align: center;
   padding: 4rem 2rem;
-  color: #666;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
   
   .empty-icon {
     font-size: 4rem;
@@ -37,12 +37,14 @@ export const CommentHeader = styled.div`
 export const CommentTitle = styled.h3`
   font-size: 1.1rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 `;
 
 export const CommentCount = styled.span`
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 `;
 
 export const CommentList = styled.div`
@@ -74,16 +76,18 @@ export const CommentBody = styled.div`
 
 export const UserName = styled.span`
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 `;
 
 export const CommentText = styled.p`
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.4;
   margin: 0;
   white-space: pre-wrap;
+  transition: color 0.3s ease;
 `;
 
 export const CommentMeta = styled.div`
@@ -95,21 +99,22 @@ export const CommentMeta = styled.div`
 `;
 
 export const CommentDate = styled.span`
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 0.8rem;
+  transition: color 0.3s ease;
 `;
 
 export const CommentLikeButton = styled.button<{ $isLiked: boolean }>`
   background: none;
   border: none;
-  color: ${props => props.$isLiked ? '#ff4d4d' : '#aaa'};
+  color: ${props => props.$isLiked ? '#ff4d4d' : 'var(--text-muted)'};
   display: flex;
   align-items: center;
   gap: 0.3rem;
   cursor: pointer;
   padding: 0;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     color: #ff4d4d;
@@ -119,14 +124,14 @@ export const CommentLikeButton = styled.button<{ $isLiked: boolean }>`
 export const ReplyButton = styled.button`
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 0.9rem;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #fff;
+    color: var(--text-primary);
   }
 `;
 
@@ -139,7 +144,8 @@ export const Menu = styled.div`
   position: absolute;
   top: calc(100% + 5px);
   right: 0;
-  background: #232323;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   min-width: 100px;
@@ -147,20 +153,21 @@ export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.3rem 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const MenuItem = styled.button`
   background: none;
   border: none;
-  color: #fff;
+  color: var(--text-primary);
   padding: 0.7rem 1.2rem;
   text-align: left;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background: #333;
+    background: var(--card-border);
   }
 `;
 
@@ -174,19 +181,20 @@ export const ReplyForm = styled.div`
 export const ReplyInput = styled.input`
   flex: 1;
   padding: 0.6rem 0.8rem;
-  border: 1px solid #2d2d2d;
+  border: 1px solid var(--card-border);
   border-radius: 8px;
-  background-color: #2d2d2d;
-  color: #ffffff;
+  background-color: var(--card-border);
+  color: var(--text-primary);
   font-size: 0.9rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #3d3d3d;
+    border-color: var(--accent);
   }
 
   &::placeholder {
-    color: #a0a0a0;
+    color: var(--text-muted);
   }
 `;
 
@@ -207,17 +215,17 @@ export const ReplyItem = styled.div`
 export const ShowRepliesButton = styled.button`
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   cursor: pointer;
   padding: 0.5rem 0;
   margin-top: 0.5rem;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
   display: flex;
   justify-content: flex-start;
 
   &:hover {
-    color: #fff;
+    color: var(--text-primary);
   }
 `;
 
@@ -235,11 +243,13 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: #232323;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   width: 90%;
   max-width: 500px;
   padding: 1.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const ModalHeader = styled.div`
@@ -252,20 +262,22 @@ export const ModalHeader = styled.div`
 export const ModalTitle = styled.h3`
   font-size: 1.2rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 `;
 
 export const CloseButton = styled.button`
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #fff;
+    color: var(--text-primary);
   }
 `;
 
@@ -277,20 +289,21 @@ export const ModalTextArea = styled.textarea`
   width: 100%;
   min-height: 100px;
   padding: 0.8rem;
-  border: 1px solid #2d2d2d;
+  border: 1px solid var(--card-border);
   border-radius: 8px;
-  background-color: #2d2d2d;
-  color: #ffffff;
+  background-color: var(--card-border);
+  color: var(--text-primary);
   font-size: 0.95rem;
   resize: vertical;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #3d3d3d;
+    border-color: var(--accent);
   }
 
   &::placeholder {
-    color: #a0a0a0;
+    color: var(--text-muted);
   }
 `;
 
@@ -306,23 +319,23 @@ export const ModalButton = styled.button`
   border-radius: 6px;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:first-child {
-    background: #3d3d3d;
-    color: #fff;
+    background: var(--card-border);
+    color: var(--text-primary);
 
-  &:hover {
-      background: #4d4d4d;
+    &:hover {
+      background: var(--accent);
     }
   }
 
   &:last-child {
-    background: #ff4d4d;
-    color: #fff;
+    background: var(--danger);
+    color: var(--text-primary);
 
     &:hover {
       background: #ff6666;
-  }
+    }
   }
 `;

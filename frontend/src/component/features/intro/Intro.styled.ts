@@ -88,10 +88,11 @@ export const IntroWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background: #1a1a1a;
+  background: var(--background);
   display: flex;
   position: relative;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 `;
 
 export const SplashScreen = styled.div`
@@ -104,10 +105,11 @@ export const SplashScreen = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #1a1a1a;
+  background: var(--background);
   z-index: 10;
   animation: ${fadeIn} 0.5s ease-out forwards;
   animation-delay: 0s;
+  transition: background-color 0.3s ease;
 `;
 
 export const SplashText = styled.div`
@@ -116,13 +118,14 @@ export const SplashText = styled.div`
   font-family: "Pretendard", sans-serif;
   letter-spacing: -0.02em;
   line-height: 1.4;
-  color: #ffffff;
+  color: var(--text-primary);
   text-align: center;
   margin-bottom: 2rem;
   opacity: 0;
   animation: ${fadeIn} 0.5s ease-out 0.5s forwards,
     ${fadeOut} 0.5s ease-out 3.5s forwards;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease;
 `;
 
 export const BrandName = styled.div`
@@ -130,11 +133,12 @@ export const BrandName = styled.div`
   gap: 0.5rem;
   font-size: 4rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 2rem;
   opacity: 0;
   animation: ${fadeIn} 0.5s ease-out 2s forwards;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease;
 `;
 
 export const BrandLetter = styled.span<{ delay: number }>`
@@ -170,11 +174,12 @@ export const LeftSection = styled.div`
 export const Title = styled.h1`
   font-size: 4.5rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   animation: ${slideUp} 0.8s ease-out;
   line-height: 1.2;
   position: relative;
+  transition: color 0.3s ease;
 
   &::after {
     content: "";
@@ -183,7 +188,7 @@ export const Title = styled.h1`
     left: 0;
     width: 100%;
     height: 3px;
-    background: linear-gradient(90deg, #ffffff, transparent);
+    background: linear-gradient(90deg, var(--text-primary), transparent);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.5s ease-out;
@@ -196,7 +201,7 @@ export const Title = styled.h1`
 
 export const SubTitle = styled.h2`
   font-size: 1.8rem;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 2rem;
   animation: ${slideUp} 0.8s ease-out;
   animation-delay: 0.2s;
@@ -205,13 +210,13 @@ export const SubTitle = styled.h2`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
 `;
 
 export const Description = styled.p`
   font-size: 1.2rem;
-  color: #ffffff;
+  color: var(--text-primary);
   max-width: 500px;
   margin-bottom: 3rem;
   line-height: 1.8;
@@ -219,7 +224,7 @@ export const Description = styled.p`
   animation-delay: 0.4s;
   opacity: 0;
   animation-fill-mode: forwards;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 
   &:hover {
     transform: translateX(10px);
@@ -269,23 +274,23 @@ export const Button = styled.button`
 `;
 
 export const PrimaryButton = styled(Button)`
-  background-color: #ffffff;
-  color: #1a1a1a;
+  background-color: var(--button-bg);
+  color: var(--button-text);
 
   &:hover {
-    background-color: #666666;
+    background-color: var(--button-hover);
     transform: translateY(-2px);
   }
 `;
 
 export const SecondaryButton = styled(Button)`
   background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary);
 
   &:hover {
-    background-color: #ffffff;
-    color: #1a1a1a;
+    background-color: var(--text-primary);
+    color: var(--background);
     transform: translateY(-2px);
   }
 `;
@@ -338,9 +343,9 @@ export const Overlay = styled.div`
   height: 100%;
   background: linear-gradient(
     to right,
-    rgba(26, 26, 26, 0.8) 0%,
-    rgba(26, 26, 26, 0.4) 50%,
-    rgba(26, 26, 26, 0) 100%
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0) 100%
   );
   z-index: 1;
 `;

@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
-  background-color: #1a1a1a;
+  background-color: var(--background);
+  transition: background-color 0.3s ease;
 `;
 
 export const DripsSelectWrapper = styled.div`
@@ -18,11 +19,10 @@ export const DripsSelectWrapper = styled.div`
 export const DripsSelectWrapperTop = styled.div`
   width: 100%;
   height: 50%;
-
 `;
 
 export const DripsSelectWrapperTopTitle = styled.div`
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
@@ -30,6 +30,7 @@ export const DripsSelectWrapperTopTitle = styled.div`
   display: flex;
   align-items: center;
   margin-top: 3vh;
+  transition: color 0.3s ease;
 `;
 
 export const DripsSelectWrapperBottom = styled.div`
@@ -47,7 +48,8 @@ export const DripsSelectBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
   min-width: 100px;
   min-height: 20px;
   font-family: "Inter", sans-serif;
@@ -55,11 +57,13 @@ export const DripsSelectBtn = styled.button`
   font-style: italic;
   font-size: 1.2rem;
   border-radius: 10px;
-  border: 1px solid #3a3a3a;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
   &:hover {
-    color: #ffffff;
-    background-color: #000000;
+    color: var(--text-primary);
+    background-color: var(--accent);
+    border-color: var(--accent);
   }
 `;
 

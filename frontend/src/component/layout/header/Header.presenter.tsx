@@ -3,7 +3,7 @@
 import React from "react";
 import { HeaderProps } from "./Header.types";
 import * as S from "./Header.styled";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 const HeaderPresenter = (props: HeaderProps) => {
   return (
@@ -26,6 +26,9 @@ const HeaderPresenter = (props: HeaderProps) => {
       </S.CenterSection>
 
       <S.RightSection>
+        <S.ThemeToggleButton onClick={props.onToggleTheme}>
+          {props.theme === "light" ? <Moon size={24} /> : <Sun size={24} />}
+        </S.ThemeToggleButton>
         {props.isLoggedIn ? (
           <S.ButtonContainer>
             <S.UserContainer>

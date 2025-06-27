@@ -6,8 +6,8 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1e1e1e;
-  
+  background: var(--background);
+  transition: background-color 0.3s ease;
 `;
 
 export const FollowWrapper = styled.div`
@@ -16,22 +16,24 @@ export const FollowWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background: #1e1e1e;
+  transition: background-color 0.3s ease;
 `;
 
 export const HeaderSection = styled.div`
   width: 100%;
   padding: 2rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 10px;
   text-align: center;
+  transition: background-color 0.3s ease;
 `;
 
 export const Title = styled.h1`
   font-size: 2rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 `;
 
 export const TabButtons = styled.div`
@@ -42,9 +44,9 @@ export const TabButtons = styled.div`
 `;
 
 export const TabButton = styled.button<{ $isActive: boolean }>`
-  background: ${props => props.$isActive ? '#3a3a3a' : 'transparent'};
-  border: 2px solid #3a3a3a;
-  color: ${props => props.$isActive ? '#ffffff' : '#a0a0a0'};
+  background: ${props => props.$isActive ? 'var(--card-border)' : 'transparent'};
+  border: 2px solid var(--card-border);
+  color: ${props => props.$isActive ? 'var(--text-primary)' : 'var(--text-secondary)'};
   padding: 0.75rem 1.5rem;
   border-radius: 5px;
   font-size: 1rem;
@@ -52,8 +54,8 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
   transition: all 0.2s ease;
 
   &:hover {
-    background: #3a3a3a;
-    color: #ffffff;
+    background: var(--card-border);
+    color: var(--text-primary);
   }
 `;
 
@@ -76,12 +78,11 @@ export const FollowItem = styled.div`
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  background: #1e1e1e;
-  border-bottom: 1px solid #3a3a3a;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--card-border);
+  transition: background-color 0.2s ease, border-color 0.3s ease;
 
   &:hover {
-    background: #2a2a2a;
+    background: var(--card-border);
   }
 `;
 
@@ -90,7 +91,8 @@ export const FollowProfileImage = styled.img`
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3a3a3a;
+  border: 3px solid var(--card-border);
+  transition: border-color 0.3s ease;
 `;
 
 export const FollowInfo = styled.div`
@@ -103,19 +105,22 @@ export const FollowInfo = styled.div`
 export const FollowName = styled.div`
   font-size: 1.3rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 `;
 
 export const FollowDetail = styled.div`
   font-size: 1rem;
-  color: #a0a0a0;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 `;
 
 export const FollowAbout = styled.div`
   font-size: 0.9rem;
-  color: #888;
+  color: var(--text-muted);
   margin-top: 0.5rem;
   line-height: 1.4;
+  transition: color 0.3s ease;
 `;
 
 export const EmptyMessage = styled.div`
@@ -123,10 +128,11 @@ export const EmptyMessage = styled.div`
   justify-content: center;
   align-items: center;
   height: 300px;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   font-size: 1.2rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 export const LoadingMessage = styled.div`
@@ -134,8 +140,9 @@ export const LoadingMessage = styled.div`
   justify-content: center;
   align-items: center;
   height: 300px;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   font-size: 1.2rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;

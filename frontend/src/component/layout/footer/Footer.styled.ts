@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
   width: 100%;
-  background-color: #1a1a1a;
+  background-color: var(--card-bg);
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  transition: background-color 0.3s ease;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -32,7 +33,8 @@ export const FooterInnerLeft = styled.div`
   gap: 0.5rem;
   align-items: center;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
+  transition: color 0.3s ease;
 
   @media (min-width: 768px) {
     font-size: 0.9rem;
@@ -44,8 +46,9 @@ export const FooterContainerRight = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--card-border);
   padding-top: 1.5rem;
+  transition: border-color 0.3s ease;
 
   @media (min-width: 768px) {
     border-top: none;
@@ -67,15 +70,17 @@ export const FooterInterRight = styled.div`
 `;
 
 export const FooterText = styled.span`
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
   white-space: nowrap;
+  transition: color 0.3s ease;
 `;
 
 export const FooterBrand = styled.span`
-  color: white;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 1.1rem;
   white-space: nowrap;
+  transition: color 0.3s ease;
 
   @media (min-width: 768px) {
     font-size: 1.2rem;
@@ -83,14 +88,14 @@ export const FooterBrand = styled.span`
 `;
 
 export const FooterBigText = styled.span`
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
   font-size: 0.9rem;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-primary);
   }
 
   @media (min-width: 768px) {

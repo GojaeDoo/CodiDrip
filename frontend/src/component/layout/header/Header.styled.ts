@@ -5,8 +5,8 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: #1a1a1a;
-  border-bottom: 1px solid #333;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--card-border);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -15,6 +15,7 @@ export const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   @media (max-width: 768px) {
     height: 60px;
     padding: 0 8px;
@@ -52,12 +53,12 @@ export const Logo = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-primary);
   cursor: pointer;
   transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
 
   @media (max-width: 768px) {
@@ -71,10 +72,10 @@ export const SideMenuContainer = styled.div<{ open: boolean }>`
   left: 0;
   height: 100%;
   width: 15%;
-  background: #1a1a1a !important;
+  background: var(--card-bg) !important;
   /* box-shadow: none; */
   transform: translateX(${({ open }) => (open ? "0" : "-100%")});
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
   z-index: 9999;
 
   @media (max-width: 768px) {
@@ -100,11 +101,12 @@ export const BurgerButton = styled.button`
   padding: 10px;
   display: flex;
   align-items: center;
-  color: #ffffff;
+  color: var(--text-primary);
   background: transparent;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
   @media (max-width: 768px) {
     padding: 4px;
@@ -122,10 +124,11 @@ export const CloseButton = styled.button`
   padding: 10px;
   display: flex;
   justify-content: flex-end;
-  color: #ffffff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
   @media (max-width: 768px) {
     padding: 4px;
@@ -146,7 +149,7 @@ export const MenuLogo = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-primary);
   cursor: pointer;
   transition: color 0.3s ease;
   @media (max-width: 768px) {
@@ -159,12 +162,13 @@ export const MenuItem = styled.a`
   display: block;
   padding: 10px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--text-primary);
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background: #333;
-    color: #666666;
+    background: var(--card-border);
+    color: var(--text-secondary);
   }
   @media (max-width: 768px) {
     font-size: 1.1rem;
@@ -187,15 +191,16 @@ export const SearchInputContainer = styled.div`
 export const SearchInput = styled.input`
   min-width: 8vw;
   height: 4vh;
-  background-color: #333;
+  background-color: var(--card-border);
   border-radius: 5px;
   outline: none;
   padding-left: 1vw;
-  color: #ffffff;
-  border: 1px solid #666666;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
   &::placeholder {
-    color: #666666;
+    color: var(--text-muted);
   }
 
   @media (max-width: 768px) {
@@ -220,15 +225,16 @@ export const Login = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 2vw 0 5vw;
   cursor: pointer;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
 
   @media (max-width: 768px) {
@@ -244,15 +250,16 @@ export const Join = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 2vw;
   cursor: pointer;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
 
   @media (max-width: 768px) {
@@ -275,9 +282,10 @@ export const ProfileImage = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #333;
+  background-color: var(--card-border);
   overflow: hidden;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 
   img {
     width: 100%;
@@ -298,15 +306,16 @@ export const Logout = styled.div`
   font-family: "Inter", sans-serif;
   font-weight: 1000;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 2vw;
   cursor: pointer;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #666666;
+    color: var(--text-secondary);
   }
 
   @media (max-width: 768px) {
@@ -321,5 +330,34 @@ export const ButtonContainer = styled.div`
   align-items: center;
   @media (max-width: 768px) {
     gap: 0.5rem;
+  }
+`;
+
+export const ThemeToggleButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 1rem;
+
+  &:hover {
+    background-color: var(--card-border);
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px;
+    margin-right: 0.5rem;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;

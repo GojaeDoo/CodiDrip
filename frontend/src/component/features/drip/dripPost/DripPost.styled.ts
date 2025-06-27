@@ -6,7 +6,8 @@ export const Background = styled.div`
   flex-direction: column;
   align-items: flex-start; // center에서 flex-start로 변경
   padding: 12px 0;
-  background-color: #1a1a1a;
+  background-color: var(--background);
+  transition: background-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 6px 0;
@@ -22,7 +23,8 @@ export const UserDripPostWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: #1a1a1a;
+  background-color: var(--background);
+  transition: background-color 0.3s ease;
   
   & > * {
     flex: 0 0 280px;
@@ -42,12 +44,12 @@ export const UserDripPostWrapper = styled.div`
 `;
 
 export const PostCard = styled.div`
-  background: #1e1e1e;
-  border: 1px solid #2d2d2d;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
   width: 280px; // 원래 크기 유지
   max-height: 420px;
   display: flex;
@@ -72,8 +74,9 @@ export const PostHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  border-bottom: 1px solid #2d2d2d;
-  background: #1e1e1e;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 6px 8px;
@@ -95,8 +98,8 @@ export const ProfileImage = styled.img`
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #2d2d2d;
-  transition: transform 0.3s ease;
+  border: 1px solid var(--card-border);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 
   &:hover {
     transform: scale(1.1);
@@ -117,7 +120,8 @@ export const ProfileImage = styled.img`
 export const Username = styled.span`
   font-weight: 600;
   font-size: 12px;
-  color: #e4e6eb;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 
   @media (max-width: 768px) {
     font-size: 11px;
@@ -128,8 +132,9 @@ export const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   aspect-ratio: 4/3;
-  background: #000;
+  background: var(--card-border);
   overflow: hidden;
+  transition: background-color 0.3s ease;
 `;
 
 export const PostImage = styled.img`
@@ -163,7 +168,7 @@ export const NavigationButton = styled.button<{ $position: "left" | "right" }>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-primary);
   transition: all 0.3s ease;
 
   &:hover {
@@ -187,10 +192,11 @@ export const ImageCounter = styled.div`
   top: 8px;
   right: 8px;
   background: rgba(0, 0, 0, 0.7);
-  color: white;
+  color: var(--text-primary);
   padding: 2px 6px;
   border-radius: 10px;
   font-size: 11px;
+  transition: color 0.3s ease;
 
   @media (max-width: 768px) {
     top: 6px;
@@ -206,8 +212,9 @@ export const PostActions = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid #2d2d2d;
-  background: #1e1e1e;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 4px 8px;
@@ -220,7 +227,7 @@ export const ActionButton = styled.button`
   border: none;
   padding: 4px;
   cursor: pointer;
-  color: #e4e6eb;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -228,15 +235,15 @@ export const ActionButton = styled.button`
 
   span {
     font-size: 12px;
-    color: #b0b3b8;
+    color: var(--text-secondary);
   }
 
   &:hover {
-    color: #b0b3b8;
+    color: var(--text-secondary);
     transform: scale(1.1);
 
     span {
-      color: #e4e6eb;
+      color: var(--text-primary);
     }
   }
 
@@ -256,7 +263,8 @@ export const ActionButton = styled.button`
 
 export const PostInfo = styled.div`
   padding: 8px 12px;
-  background: #1e1e1e;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 6px 8px;
@@ -276,16 +284,16 @@ export const PostTags = styled.div`
 `;
 
 export const Tag = styled.span`
-  color: #8ab4f8;
+  color: var(--text-primary);
   font-size: 11px;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 2px 6px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 6px;
 
   &:hover {
-    background: #3d3d3d;
+    background: var(--accent-hover);
     transform: translateY(-1px);
   }
 
@@ -304,15 +312,16 @@ export const MenuButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  color: #e4e6eb;
+  color: var(--text-primary);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: 4px;
-  transition: color 0.2s;
+  transition: color 0.3s ease;
+  
   &:hover {
-    color: #b0b3b8;
+    color: var(--text-secondary);
   }
 `;
 
@@ -320,13 +329,15 @@ export const Menu = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
-  background: #232323;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   padding: 8px 0;
   z-index: 10;
   min-width: 120px;
   margin-top: 4px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const MenuItem = styled.button`
@@ -334,14 +345,16 @@ export const MenuItem = styled.button`
   padding: 8px 16px;
   background: none;
   border: none;
-  color: #e4e6eb;
+  color: var(--text-primary);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s ease, color 0.3s ease;
+  
   &:hover {
-    background: #333;
+    background: var(--card-border);
   }
 `;
+
 export const MenuWrapper = styled.div`
   position: relative;
   display: flex;
@@ -357,10 +370,11 @@ export const UserInfo = styled.div`
 
 export const UserStats = styled.span`
   font-size: 0.8rem;
-  color: #888;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  background: var(--card-border);
   padding: 2px 6px;
   border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 export const PostFooter = styled.div`
@@ -385,25 +399,25 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
-  color: #e4e6eb;
+  color: var(--text-primary);
 
   span {
     font-size: 12px;
-    color: #b0b3b8;
+    color: var(--text-secondary);
   }
 
   svg {
     fill: ${({ $isLiked }) => ($isLiked ? "#ff3b3b" : "none")};
-    stroke: ${({ $isLiked }) => ($isLiked ? "#ff3b3b" : "#666")};
+    stroke: ${({ $isLiked }) => ($isLiked ? "#ff3b3b" : "var(--text-secondary)")};
     stroke-width: 2;
   }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--card-border);
     transform: scale(1.1);
 
     span {
-      color: #e4e6eb;
+      color: var(--text-primary);
     }
   }
 

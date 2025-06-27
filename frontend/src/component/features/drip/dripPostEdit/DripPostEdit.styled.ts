@@ -3,23 +3,38 @@ import styled from "styled-components";
 export const Background = styled.div`
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #1a1a1a);
+  background: var(--background);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 3rem 0;
+  transition: background-color 0.3s ease;
+
+  @media (max-width: 900px) {
+    padding: 2rem 0;
+  }
+  @media (max-width: 768px) {
+    padding: 1.2rem 0;
+  }
+  @media (max-width: 480px) {
+    padding: 0.5rem 0;
+  }
 `;
 
 export const DripPostEditWrapper = styled.div`
   width: 100%;
   max-width: 900px;
-  background: #1a1a1a;
+  background: var(--card-bg);
   border-radius: 24px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
   @media (max-width: 900px) {
     max-width: 100vw;
+    border-radius: 0;
+  }
+  @media (max-width: 768px) {
     border-radius: 0;
   }
 `;
@@ -35,14 +50,21 @@ export const PostContainer = styled.div`
 
 export const ImageSection = styled.div`
   width: 100%;
-  background: #1a1a1a;
+  background: var(--card-bg);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease;
   @media (min-width: 900px) {
     width: 55%;
     min-height: 540px;
+  }
+  @media (max-width: 768px) {
+    min-height: 120px;
+  }
+  @media (max-width: 480px) {
+    min-height: 80px;
   }
 `;
 
@@ -55,7 +77,14 @@ export const ImageWrapper = styled.div<{ $aspectRatio: string }>`
   align-items: center;
   justify-content: center;
   aspect-ratio: ${(props) => props.$aspectRatio};
-  background: #111;
+  background: var(--card-border);
+  transition: background-color 0.3s ease;
+  @media (max-width: 768px) {
+    min-height: 100px;
+  }
+  @media (max-width: 480px) {
+    min-height: 60px;
+  }
 `;
 
 export const MainImage = styled.img`
@@ -64,6 +93,12 @@ export const MainImage = styled.img`
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  @media (max-width: 768px) {
+    border-radius: 6px;
+  }
+  @media (max-width: 480px) {
+    border-radius: 4px;
+  }
 `;
 
 export const ImageNavigation = styled.div`
@@ -81,7 +116,7 @@ export const ImageNavigation = styled.div`
 export const NavButton = styled.button`
   background: rgba(36, 37, 46, 0.7);
   border: none;
-  color: #fff;
+  color: var(--text-primary);
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -92,52 +127,85 @@ export const NavButton = styled.button`
   pointer-events: auto;
   transition: background 0.2s, transform 0.2s;
   &:hover {
-    background: #10b981;
-    color: #fff;
+    background: var(--success);
+    color: var(--text-primary);
     transform: scale(1.08);
   }
 `;
 
 export const ContentSection = styled.div`
   width: 100%;
-  background: #1e1e1e;
+  background: var(--card-bg);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 2.5rem 2rem;
+  gap: 1.1rem;
+  padding: 1rem 0.5rem;
+  transition: background-color 0.3s ease;
   @media (min-width: 900px) {
     width: 45%;
     min-height: 540px;
-    padding: 3rem 2.5rem;
+    padding: 2rem 1.2rem;
+  }
+  @media (max-width: 768px) {
+    gap: 0.9rem;
+    padding: 0.7rem 0.2rem;
+  }
+  @media (max-width: 480px) {
+    gap: 0.7rem;
+    padding: 0.4rem 0.1rem;
   }
 `;
 
 export const DripPostEditTitle = styled.h1`
-  font-size: 2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
 `;
 
 export const ImageUploadButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 1.7rem;
-  background: #ffffff;
-  color: #000000;
-  border-radius: 16px;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--accent);
+  color: var(--text-primary);
+  border-radius: 8px;
   border: none;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.7rem;
+  min-height: 40px;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
   &:hover {
-    background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
+    background: var(--accent-hover);
     transform: translateY(-2px) scale(1.04);
+  }
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    min-height: 38px;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.3rem;
+    border-radius: 4px;
+    margin-bottom: 0.4rem;
+    min-height: 36px;
   }
 `;
 
@@ -152,23 +220,39 @@ export const TagInputWrapper = styled.form`
   align-items: center;
   gap: 0.7rem;
   padding: 0.9rem 1.2rem;
-  border: 1.5px solid #31313a;
+  border: 1.5px solid var(--card-border);
   border-radius: 12px;
-  background: #18181b;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const TagInput = styled.input`
   width: 100%;
-  padding: 0.7rem 1rem;
+  padding: 0.3rem 0.5rem;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
   background: transparent;
-  color: #fff;
+  color: var(--text-primary);
   outline: none;
+  min-height: 40px;
+  margin-bottom: 0.7rem;
+  transition: color 0.3s ease;
   &::placeholder {
-    color: #a1a1aa;
-    font-size: 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.3rem;
+    min-height: 38px;
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.2rem;
+    min-height: 36px;
+    margin-bottom: 0.4rem;
   }
 `;
 
@@ -179,43 +263,63 @@ export const TagList = styled.div`
 `;
 
 export const TagItem = styled.span`
-  background: linear-gradient(90deg, #23232b 0%, #18181b 100%);
-  color: #fff;
-  padding: 0.5rem 1.2rem;
+  background: var(--card-border);
+  color: var(--text-primary);
+  padding: 0.2rem 0.5rem;
   border-radius: 9999px;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
   box-shadow: 0 1px 4px rgba(16, 185, 129, 0.08);
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.15rem 0.3rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.2rem;
+  }
 `;
 
 export const TagDeleteButton = styled.button`
   margin-left: 8px;
   background: transparent;
   border: none;
-  color: #ff3b30;
+  color: var(--danger);
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: bold;
+  transition: color 0.3s ease;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 1.2rem;
-  margin-top: 2rem;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  @media (max-width: 768px) {
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+  }
+  @media (max-width: 480px) {
+    gap: 0.2rem;
+    margin-top: 0.1rem;
+  }
 `;
 
 export const SubmitButton = styled.button`
   flex: 1;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   background: linear-gradient(90deg, #10b981 0%, #2563eb 100%);
   color: #fff;
   border: none;
-  border-radius: 16px;
-  font-size: 1.15rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  min-height: 40px;
+  margin-bottom: 0.2rem;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
   &:hover:not(:disabled) {
@@ -226,6 +330,20 @@ export const SubmitButton = styled.button`
     background: #31313a;
     color: #888;
     cursor: not-allowed;
+  }
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.3rem 0;
+    border-radius: 6px;
+    min-height: 38px;
+    margin-bottom: 0.15rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 0.2rem 0;
+    border-radius: 4px;
+    min-height: 36px;
+    margin-bottom: 0.1rem;
   }
 `;
 

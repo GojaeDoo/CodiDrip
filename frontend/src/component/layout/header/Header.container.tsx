@@ -4,6 +4,7 @@ import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
 import { fetchUserProfile,getSearchResult } from "./Header.query";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 import { HeaderProps, Profile } from "./Header.types";
 import { SearchModalContainer } from "@/component/features/search/SearchModal.container";
 import { SearchResult } from "@/component/features/search/SearchModal.types";
@@ -13,6 +14,7 @@ const HeaderContainer = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const router = useRouter();
   const { isLoggedIn, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
@@ -115,6 +117,8 @@ const HeaderContainer = () => {
         onChangeSearchInput={onChangeSearchInput}
         onEnterSearchInput={onEnterSearchInput}
         onClickMoveFreeBoardList={onClickMoveFreeBoardList}
+        onToggleTheme={toggleTheme}
+        theme={theme}
       />
       <SearchModalContainer
         isOpen={isSearchModalOpen}

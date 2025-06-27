@@ -2,12 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root {
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card-bg: #232323;
+  --card-border: #333333;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b3b8;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --button-bg: #4f46e5;
+  --button-hover: #4338ca;
+  --button-text: #ffffff;
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --card-bg: #f8f9fa;
+  --card-border: #e9ecef;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --button-bg: #6366f1;
+  --button-hover: #4f46e5;
+  --button-text: #ffffff;
+  --danger: #dc2626;
+  --success: #059669;
+  --warning: #d97706;
+}
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -25,7 +56,9 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #1a1a1a;
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .loading {

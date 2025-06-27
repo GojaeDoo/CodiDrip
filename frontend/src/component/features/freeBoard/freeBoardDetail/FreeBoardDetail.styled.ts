@@ -2,25 +2,27 @@ import styled from "styled-components";
 
 export const Background = styled.div`
   width: 100%;
-  background: #1a1a1a;
+  background: var(--background);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
   padding: 2rem 0;
+  transition: background-color 0.3s ease;
 `;
 
 export const FreeBoardDetailWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   margin-bottom: 2rem;
+  transition: background-color 0.3s ease;
   
   @media (max-width: 1200px) {
     max-width: 95vw;
@@ -30,8 +32,9 @@ export const FreeBoardDetailWrapper = styled.div`
 
 export const Header = styled.div`
   padding: 3rem 4rem 2rem 4rem;
-  border-bottom: 1px solid #333;
-  background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   
   @media (max-width: 768px) {
     padding: 2rem 2rem 1.5rem 2rem;
@@ -39,12 +42,13 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  transition: color 0.3s ease;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -56,11 +60,12 @@ export const PostInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #888;
+  color: var(--text-secondary);
   font-size: 1rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
   gap: 1rem;
+  transition: color 0.3s ease;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -77,9 +82,10 @@ export const AuthorInfo = styled.div`
 `;
 
 export const Author = styled.span`
-  color: #4a9eff;
+  color: var(--accent);
   font-weight: 600;
   font-size: 1.1rem;
+  transition: color 0.3s ease;
 `;
 
 export const DateInfo = styled.div`
@@ -90,10 +96,11 @@ export const DateInfo = styled.div`
 `;
 
 export const ViewCount = styled.span`
-  color: #666;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: color 0.3s ease;
   
   &::before {
     content: "👁️";
@@ -104,7 +111,8 @@ export const ViewCount = styled.span`
 export const Content = styled.div`
   padding: 3rem 4rem;
   flex: 1;
-  background: #1e1e1e;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
   
   @media (max-width: 768px) {
     padding: 2rem 2rem;
@@ -112,18 +120,20 @@ export const Content = styled.div`
 `;
 
 export const PostContent = styled.div`
-  color: #e0e0e0;
+  color: var(--text-primary);
   font-size: 1.1rem;
   line-height: 1.8;
   white-space: pre-wrap;
   word-break: break-word;
   min-height: 400px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: color 0.3s ease;
   
   h1, h2, h3, h4, h5, h6 {
-    color: #ffffff;
+    color: var(--text-primary);
     margin: 2rem 0 1rem 0;
     font-weight: 600;
+    transition: color 0.3s ease;
   }
   
   h1 { font-size: 2rem; }
@@ -144,27 +154,30 @@ export const PostContent = styled.div`
   }
   
   blockquote {
-    border-left: 4px solid #4a9eff;
+    border-left: 4px solid var(--accent);
     padding-left: 1.5rem;
     margin: 2rem 0;
     font-style: italic;
-    color: #ccc;
+    color: var(--text-secondary);
+    transition: border-color 0.3s ease, color 0.3s ease;
   }
   
   code {
-    background: #2a2a2a;
+    background: var(--card-border);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
+    transition: background-color 0.3s ease;
   }
   
   pre {
-    background: #2a2a2a;
+    background: var(--card-border);
     padding: 1.5rem;
     border-radius: 8px;
     overflow-x: auto;
     margin: 2rem 0;
+    transition: background-color 0.3s ease;
   }
   
   pre code {
@@ -178,8 +191,9 @@ export const ButtonGroup = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2rem 4rem;
-  border-top: 1px solid #333;
-  background: #222;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   
   @media (max-width: 768px) {
     padding: 1.5rem 2rem;
@@ -200,26 +214,18 @@ export const RightButtons = styled.div`
 
 export const BackButton = styled.button`
   padding: 0.875rem 1.75rem;
-  background: #333;
+  background: var(--card-border);
   border: none;
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    background: #444;
-    transform: translateY(-1px);
-  }
   
-  &::before {
-    content: "←";
-    font-size: 1.1rem;
+  &:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
   }
 `;
 

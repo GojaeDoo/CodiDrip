@@ -12,17 +12,19 @@ export const FreeBoardListGlobalStyle = createGlobalStyle`
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
-  background-color: #1a1a1a;
+  background-color: var(--background);
   padding: 20px;
+  transition: background-color 0.3s ease;
 `;
 
 export const FreeBoardListWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #1a1a1a;
+  background-color: var(--card-bg);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  transition: background-color 0.3s ease;
   @media (max-width: 768px) {
     max-width: 100%;
     border-radius: 0;
@@ -31,30 +33,33 @@ export const FreeBoardListWrapper = styled.div`
 `;
 
 export const Header = styled.div`
-  background-color: #1a1a1a;
+  background-color: var(--card-bg);
   padding: 32px;
   text-align: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   @media (max-width: 768px) {
     padding: 16px 8px;
   }
 `;
 
 export const Title = styled.h1`
-  color: #fff;
+  color: var(--text-primary);
   font-size: 32px;
   font-weight: 700;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: color 0.3s ease;
   @media (max-width: 768px) {
     font-size: 20px;
   }
 `;
 
 export const Subtitle = styled.p`
-  color: #b0b0b0;
+  color: var(--text-secondary);
   font-size: 16px;
   margin: 8px 0 0 0;
+  transition: color 0.3s ease;
   @media (max-width: 768px) {
     font-size: 12px;
   }
@@ -73,7 +78,8 @@ export const TopBar = styled.div`
   align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--card-border);
+  transition: border-color 0.3s ease;
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 8px;
@@ -94,13 +100,13 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   padding: 12px 16px;
-  border: 2px solid #333;
+  border: 2px solid var(--card-border);
   border-radius: 8px;
-  background: #2a2a2a;
-  color: #fff;
+  background: var(--card-bg);
+  color: var(--text-primary);
   font-size: 14px;
   outline: none;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s ease, color 0.3s ease;
   width: 300px;
   @media (max-width: 768px) {
     width: 100%;
@@ -111,11 +117,17 @@ export const SearchInput = styled.input`
 
 export const SearchButton = styled.button`
   padding: 12px 20px;
-  background-color: rgba(217, 217, 217, 0.9);
+  background-color: var(--accent);
+  color: white;
   outline: none;
+  border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: var(--accent-hover);
+  }
   @media (max-width: 768px) {
     padding: 8px 12px;
     font-size: 13px;
@@ -124,11 +136,17 @@ export const SearchButton = styled.button`
 
 export const WriteButton = styled.button`
   padding: 12px 24px;
-  background-color: rgba(217, 217, 217, 0.9);
+  background-color: var(--accent);
+  color: white;
   outline: none;
+  border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: var(--accent-hover);
+  }
   @media (max-width: 768px) {
     padding: 8px 12px;
     font-size: 13px;
@@ -138,10 +156,11 @@ export const WriteButton = styled.button`
 `;
 
 export const BoardTable = styled.div`
-  background: #222;
+  background: var(--card-bg);
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #333;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   @media (max-width: 768px) {
     border-radius: 6px;
     font-size: 13px;
@@ -153,11 +172,12 @@ export const TableHeader = styled.div`
   grid-template-columns: 80px 1fr 120px 120px 100px;
   gap: 16px;
   padding: 16px 24px;
-  background: #2a2a2a;
-  border-bottom: 1px solid #333;
+  background: var(--card-border);
+  border-bottom: 1px solid var(--card-border);
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
   @media (max-width: 768px) {
     display: none;
   }
@@ -168,11 +188,11 @@ export const TableRow = styled.div`
   grid-template-columns: 80px 1fr 120px 120px 100px;
   gap: 16px;
   padding: 16px 24px;
-  border-bottom: 1px solid #333;
-  transition: background-color 0.1s;
+  border-bottom: 1px solid var(--card-border);
+  transition: background-color 0.1s, border-color 0.3s ease;
   cursor: pointer;
   &:hover {
-    background: #2a2a2a;
+    background: var(--card-border);
   }
   &:last-child {
     border-bottom: none;
@@ -182,7 +202,7 @@ export const TableRow = styled.div`
     flex-direction: column;
     gap: 6px;
     padding: 14px 8px;
-    background: #232323;
+    background: var(--card-bg);
     border-radius: 8px;
     margin-bottom: 10px;
     border: none;
@@ -191,18 +211,18 @@ export const TableRow = styled.div`
 `;
 
 export const Cell = styled.div`
-  color: #e0e0e0;
+  color: var(--text-primary);
   font-size: 14px;
   display: flex;
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  justify-content: center;
+  transition: color 0.3s ease;
   @media (max-width: 768px) {
-    justify-content: flex-start;
     font-size: 13px;
-    padding: 2px 0;
+    white-space: normal;
+    word-break: break-word;
   }
 `;
 

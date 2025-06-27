@@ -10,7 +10,7 @@ const FollowSkeleton: React.FC<FollowSkeletonProps> = ({ count = 6 }) => {
     <S.SkeletonList>
       {Array.from({ length: count }).map((_, idx) => (
         <S.SkeletonItem key={idx}>
-          <S.SkeletonProfile />
+          <S.SkeletonProfileImage />
           <S.SkeletonInfo>
             <S.SkeletonName />
             <S.SkeletonDetail />

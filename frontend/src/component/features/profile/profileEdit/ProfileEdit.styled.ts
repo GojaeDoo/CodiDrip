@@ -3,11 +3,13 @@ import styled from "styled-components";
 export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
+  background-color: var(--background);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
 
   @media (min-width: 768px) {
     padding: 3rem 2rem;

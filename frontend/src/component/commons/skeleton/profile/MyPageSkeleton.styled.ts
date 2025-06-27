@@ -1,4 +1,13 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const pulse = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+`;
 
 export const SkeletonBackground = styled.div`
   width: 100%;
@@ -6,8 +15,9 @@ export const SkeletonBackground = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1a1a1a;
+  background: var(--background);
   padding: 40px 0;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonWrapper = styled.div`
@@ -23,15 +33,19 @@ export const SkeletonProfileSection = styled.div`
   display: flex;
   gap: 2rem;
   padding: 2rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 10px;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const SkeletonProfileImage = styled.div`
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: #2d2d2d;
+  background: var(--card-border);
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonProfileInfo = styled.div`
@@ -44,8 +58,10 @@ export const SkeletonProfileInfo = styled.div`
 export const SkeletonName = styled.div`
   width: 180px;
   height: 32px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 8px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonStats = styled.div`
@@ -57,46 +73,57 @@ export const SkeletonStats = styled.div`
 export const SkeletonStat = styled.div`
   width: 80px;
   height: 24px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 8px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonBio = styled.div`
   width: 60%;
   height: 18px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 8px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonDetails = styled.div`
   width: 40%;
   height: 18px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 8px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonTabButtons = styled.div`
   display: flex;
   gap: 1rem;
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid var(--card-border);
   padding-bottom: 1rem;
+  transition: border-color 0.3s ease;
 `;
 
 export const SkeletonTab = styled.div`
   width: 120px;
   height: 32px;
-  background: #2d2d2d;
+  background: var(--card-border);
   border-radius: 8px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonCard = styled.div`
   padding: 1.5rem;
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 5px;
-  color: #ffffff;
+  color: var(--text-primary);
   height: 180px;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 `;

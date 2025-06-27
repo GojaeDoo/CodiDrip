@@ -15,14 +15,15 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: #1a1a1a;
+  background: var(--card-bg);
   border-radius: 16px;
   width: 95%;
   max-width: 800px;
   max-height: 80vh;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  border: 1px solid #333;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const ModalHeader = styled.div`
@@ -30,15 +31,17 @@ export const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 24px 32px;
-  border-bottom: 1px solid #333;
-  background: #222;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const ModalTitle = styled.h2`
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 `;
 
 export const CloseButton = styled.button`
@@ -46,7 +49,7 @@ export const CloseButton = styled.button`
   border: none;
   font-size: 28px;
   cursor: pointer;
-  color: #999;
+  color: var(--text-secondary);
   padding: 0;
   width: 36px;
   height: 36px;
@@ -54,11 +57,11 @@ export const CloseButton = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--card-border);
+    color: var(--text-primary);
   }
 `;
 
@@ -66,7 +69,8 @@ export const ResultsContainer = styled.div`
   max-height: 70vh;
   overflow-y: auto;
   padding: 0;
-  background: #1a1a1a;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
 `;
 
 export const ResultItem = styled.div`
@@ -75,14 +79,14 @@ export const ResultItem = styled.div`
   align-items: center;
   padding: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   border-radius: 12px;
-  background: #222;
-  border: 1px solid #333;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
 
   &:hover {
-    background-color: #2a2a2a;
-    border-color: #444;
+    background-color: var(--card-border);
+    border-color: var(--accent);
     transform: translateY(-2px);
   }
 `;
@@ -101,28 +105,31 @@ export const ResultInfo = styled.div`
 export const ResultName = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100px;
+  transition: color 0.3s ease;
 `;
 
 export const ResultType = styled.div`
   font-size: 12px;
-  color: #999;
-  background-color: #333;
+  color: var(--text-secondary);
+  background-color: var(--card-border);
   padding: 4px 8px;
   border-radius: 12px;
   display: inline-block;
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 export const NoResults = styled.div`
   padding: 60px 32px;
   text-align: center;
-  color: #999;
+  color: var(--text-secondary);
   font-size: 16px;
+  transition: color 0.3s ease;
 `;
 
 export const ResultsGrid = styled.div`
@@ -130,7 +137,8 @@ export const ResultsGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 16px;
   padding: 24px 32px;
-  background: #1a1a1a;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
 `;
 
 export const ProfileSection = styled.div`
@@ -142,10 +150,11 @@ export const PostSection = styled.div`
 `;
 
 export const SectionTitle = styled.h3`
-  color: #fff;
+  color: var(--text-primary);
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 16px 0;
   padding: 0 32px;
   padding-top: 24px;
+  transition: color 0.3s ease;
 `; 
