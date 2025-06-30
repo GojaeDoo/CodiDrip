@@ -4,17 +4,23 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import FreeBoardDetailPresenter from "./FreeBoardDetail.presenter";
 import { FreeBoardDetailPost } from "./FreeBoardDetail.types";
-import { deleteFreeBoardWriteQuery, getFreeBoardDetailQuery } from "./FreeBoardDetail.query";
+import { deleteFreeBoardWriteQuery, getFreeBoardDetailQuery, reportFreeBoardPostQuery } from "./FreeBoardDetail.query";
+import { useAuth } from "@/context/AuthContext";
 
 export const FreeBoardDetailContainer = () => {
   const [post, setPost] = useState<FreeBoardDetailPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [selectedReportReason, setSelectedReportReason] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const postId = searchParams.get("id");
+  const { isAdmin } = useAuth();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -33,6 +39,10 @@ export const FreeBoardDetailContainer = () => {
         
         if (userId === response.user_id) {
           setIsLogin(true);
+          setIsAuthor(true);
+        } else if (userId) {
+          setIsLogin(true);
+          setIsAuthor(false);
         }
       } catch (error) {
         console.error("게시글 조회 오류:", error);
@@ -76,6 +86,48 @@ export const FreeBoardDetailContainer = () => {
     }
   };
 
+  // 신고 관련 핸들러들
+  const handleReportClick = () => {
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    setShowReportModal(true);
+  };
+
+  const handleCloseReportModal = () => {
+    setShowReportModal(false);
+    setSelectedReportReason("");
+  };
+
+  const handleReportReasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedReportReason(e.target.value);
+  };
+
+  const handleSubmitReport = async () => {
+    if (!post || !selectedReportReason || !token) {
+      return;
+    }
+
+    try {
+      const data = await reportFreeBoardPostQuery(post.id, selectedReportReason);
+
+      if (data.success) {
+        alert("신고가 성공적으로 접수되었습니다.");
+        handleCloseReportModal();
+      } else {
+        alert(data.message || "신고 처리 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("신고 오류:", error);
+      if (error instanceof Error && error.message === '로그인이 필요합니다.') {
+        alert('로그인이 필요합니다.');
+      } else {
+        alert("신고 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <FreeBoardDetailPresenter
       post={post}
@@ -85,6 +137,14 @@ export const FreeBoardDetailContainer = () => {
       onDelete={onDelete}
       formatDate={formatDate}
       isLogin={isLogin}
+      isAuthor={isAuthor}
+      isAdmin={isAdmin}
+      showReportModal={showReportModal}
+      selectedReportReason={selectedReportReason}
+      onReportClick={handleReportClick}
+      onCloseReportModal={handleCloseReportModal}
+      onReportReasonChange={handleReportReasonChange}
+      onSubmitReport={handleSubmitReport}
     />
   );
 };

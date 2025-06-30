@@ -19,9 +19,10 @@ export const Background = styled.div`
 export const ProfileEditTitle = styled.div`
   font-size: 2rem;
   font-weight: 1000;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 2rem;
   text-align: center;
+  transition: color 0.3s ease;
 
   @media (min-width: 768px) {
     font-size: 2.5rem;
@@ -32,12 +33,12 @@ export const ProfileEditTitle = styled.div`
 export const ProfileEditWrapper = styled.div`
   width: 100%;
   max-width: 800px;
-  background-color: #1a1a1a;
   border-radius: 12px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  transition: background-color 0.3s ease;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -82,8 +83,9 @@ export const ProfileEditWrapperRight = styled.div`
 export const ProfileEditText = styled.div`
   font-size: 1rem;
   font-weight: 1000;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 
   @media (min-width: 768px) {
     font-size: 1.1rem;
@@ -92,19 +94,21 @@ export const ProfileEditText = styled.div`
 
 export const ProfileNicknameCheckButton = styled.button`
   height: 45px;
-  background-color: rgba(217, 217, 217, 0.9);
+  background-color: var(--card-border);
   outline: none;
   border: none;
-  border: 1px solid rgba(217, 217, 217, 0.9);
+  border: 1px solid var(--card-border);
   border-radius: 5px;
   padding: 0 1rem;
   font-size: 1rem;
   white-space: nowrap;
   min-width: 80px;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+    background-color: var(--accent);
+    color: var(--text-primary);
   }
 
   @media (min-width: 768px) {
@@ -124,11 +128,21 @@ export const InputWithButton = styled.div`
     flex: 1;
     height: 45px;
     font-size: 1rem;
-    background-color: rgba(217, 217, 217, 0.9);
+    background-color: var(--card-bg);
     outline: none;
-    border: 1px solid rgba(217, 217, 217, 0.9);
+    border: 1px solid var(--card-border);
     border-radius: 5px;
     padding: 0 1rem;
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      border-color: var(--accent);
+    }
 
     @media (min-width: 768px) {
       height: 50px;
@@ -141,11 +155,22 @@ export const ProfileEditSelect = styled.select`
   width: 100%;
   height: 45px;
   font-size: 1rem;
-  background-color: rgba(217, 217, 217, 0.9);
+  background-color: var(--card-bg);
   outline: none;
-  border: 1px solid rgba(217, 217, 217, 0.9);
+  border: 1px solid var(--card-border);
   border-radius: 5px;
   padding: 0 1rem;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+  &:focus {
+    border-color: var(--accent);
+  }
+
+  option {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+  }
 
   @media (min-width: 768px) {
     height: 50px;
@@ -156,8 +181,8 @@ export const ProfileEditSelect = styled.select`
 export const FileInputLabel = styled.label`
   display: inline-block;
   padding: 0.7em 1.5em;
-  background: #333;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-primary);
   border-radius: 7px;
   font-weight: 700;
   cursor: pointer;
@@ -167,7 +192,7 @@ export const FileInputLabel = styled.label`
   width: 100%;
 
   &:hover {
-    background: #444;
+    background: var(--accent-hover);
   }
 
   @media (min-width: 768px) {
@@ -190,8 +215,8 @@ export const SubmitButton = styled.button`
   width: 100%;
   max-width: 800px;
   height: 50px;
-  background: #333;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-primary);
   border: none;
   border-radius: 7px;
   font-size: 1.1rem;
@@ -201,7 +226,7 @@ export const SubmitButton = styled.button`
   margin-top: 2rem;
 
   &:hover {
-    background: #444;
+    background: var(--accent-hover);
   }
 
   @media (min-width: 768px) {
@@ -214,8 +239,19 @@ export const ProfileEditTextarea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 1rem;
-  background-color: rgba(217, 217, 217, 0.9);
-  border:none;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 5px;
   resize: none;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
 `;

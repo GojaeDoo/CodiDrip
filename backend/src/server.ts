@@ -6,6 +6,7 @@ import profileRouter from "./router/profileRouter";
 import dripRouter from "./router/dripRouter";
 import searchRouter from "./router/searchRouter";
 import freeBoardRouter from "./router/freeBoardRouter";
+import reportRouter from "./router/reportRouter";
 import path from "path";
 import { pool } from "./db";
 
@@ -39,6 +40,7 @@ app.use("/api/profiles", profileRouter);
 app.use("/api/drip", dripRouter);
 app.use("/api/search", searchRouter);
 app.use("/api/freeBoard", freeBoardRouter);
+app.use("/api/reports", reportRouter);
 
 // 서버 실행
 app.listen(port, () => {

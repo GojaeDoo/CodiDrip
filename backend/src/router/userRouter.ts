@@ -15,6 +15,7 @@ import {
   postToggleFollowController,
   getFollowersController,
   getFollowingController,
+  checkUserAdminStatusController,
 } from "../controller/userController";
 
 const router = express.Router();
@@ -37,5 +38,8 @@ router.get("/follow/status", getFollowStatusController); // 팔로우 상태 확
 router.post("/follow/toggle", postToggleFollowController); // 팔로우/언팔로우 토글
 router.get("/followers", getFollowersController); // 팔로워 목록
 router.get("/following", getFollowingController); // 팔로잉 목록
+
+// 관리자 상태 확인 라우트
+router.get("/admin-status", checkUserAdminStatusController); // 사용자 관리자 상태 확인
 
 export default router;

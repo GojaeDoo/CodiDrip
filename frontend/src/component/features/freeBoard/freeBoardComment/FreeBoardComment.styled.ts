@@ -255,7 +255,7 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: #1e1e1e;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 2.5rem;
   width: 90%;
@@ -263,7 +263,8 @@ export const ModalContent = styled.div`
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-  border: 1px solid #333;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   
   @media (max-width: 600px) {
     width: 95%;
@@ -277,20 +278,22 @@ export const ModalHeader = styled.div`
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--card-border);
+  transition: border-color 0.3s ease;
   
   h3 {
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0;
     letter-spacing: -0.01em;
+    transition: color 0.3s ease;
   }
   
   .close-button {
     background: none;
     border: none;
-    color: #888;
+    color: var(--text-muted);
     font-size: 1.75rem;
     cursor: pointer;
     padding: 0.5rem;
@@ -298,8 +301,8 @@ export const ModalHeader = styled.div`
     transition: all 0.2s ease;
     
     &:hover {
-      background: #333;
-      color: #fff;
+      background: var(--card-border);
+      color: var(--text-primary);
       transform: scale(1.1);
     }
   }
@@ -324,12 +327,12 @@ export const ModalFooter = styled.div`
     font-size: 1rem;
     
     &.cancel {
-      background: #444;
-      color: #ccc;
+      background: var(--card-border);
+      color: var(--text-secondary);
       
       &:hover {
-        background: #555;
-        color: #fff;
+        background: var(--text-muted);
+        color: var(--text-primary);
         transform: translateY(-1px);
       }
     }
@@ -535,12 +538,13 @@ export const ToggleReplyButton = styled.button`
 export const NoReply = styled.div`
   margin-left: 3.5rem;
   margin-top: 1rem;
-  color: #666;
+  color: var(--text-muted);
   font-size: 14px;
   font-style: italic;
   padding: 1rem;
-  background: #252525;
+  background: var(--card-border);
   border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 // 대댓글 입력 UI wrapper
@@ -548,19 +552,20 @@ export const ReplyInputWrapper = styled.div`
   margin-left: 3.5rem;
   margin-top: 1rem;
   padding: 1rem;
-  background: #252525;
+  background: var(--card-border);
   border-radius: 12px;
+  transition: background-color 0.3s ease;
 `;
 
 // 대댓글 입력창
 export const ReplyInput = styled.textarea`
   width: 100%;
   min-height: 80px;
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: var(--background);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 1rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
   resize: vertical;
   outline: none;
@@ -568,11 +573,11 @@ export const ReplyInput = styled.textarea`
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
   &::placeholder {
-    color: #666;
+    color: var(--text-muted);
   }
   
   &:focus {
-    border-color: #667eea;
+    border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 `;
@@ -632,19 +637,20 @@ export const ReplyEditWrapper = styled.div`
   margin-left: 3.5rem;
   margin-top: 1rem;
   padding: 1rem;
-  background: #252525;
+  background: var(--card-border);
   border-radius: 12px;
+  transition: background-color 0.3s ease;
 `;
 
 // 대댓글 수정 입력창
 export const ReplyEditInput = styled.textarea`
   width: 100%;
   min-height: 80px;
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: var(--background);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 1rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
   resize: vertical;
   outline: none;
@@ -652,11 +658,11 @@ export const ReplyEditInput = styled.textarea`
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
   &::placeholder {
-    color: #666;
+    color: var(--text-muted);
   }
   
   &:focus {
-    border-color: #667eea;
+    border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 `;
@@ -708,5 +714,106 @@ export const ReplyEditCancelButton = styled.button`
     background: #555;
     color: #fff;
     transform: translateY(-1px);
+  }
+`;
+
+// 신고 모달 스타일
+export const ReportModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+`;
+
+export const ReportModalContent = styled.div`
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  
+  @media (max-width: 600px) {
+    width: 95%;
+    padding: 2rem;
+  }
+`;
+
+export const ReportModalTitle = styled.h3`
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+`;
+
+export const ReportModalText = styled.p`
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+`;
+
+export const ReportReasonSelect = styled.select`
+  width: 100%;
+  padding: 1rem;
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+  
+  &:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  option {
+    background: var(--card-bg);
+    color: var(--text-primary);
+  }
+`;
+
+export const ReportModalButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+`;
+
+export const ReportModalButton = styled.button<{ $primary?: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background-color: ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--card-border)')};
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ $primary }) => ($primary ? 'var(--accent-hover)' : 'var(--card-border)')};
+  }
+
+  &:disabled {
+    background-color: var(--card-border);
+    color: var(--text-secondary);
+    cursor: not-allowed;
   }
 `;

@@ -8,6 +8,7 @@ export const DripPost = (props: DripPostAppProps) => {
     userId={props.userId} 
     isLike={props.isLike} 
     isSaved={props.isSaved}
+    selectedStyles={props.selectedStyles}
   />;
 };
 

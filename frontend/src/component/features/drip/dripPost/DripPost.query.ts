@@ -47,7 +47,8 @@ export const getUserDripPostQuery = async (
   gender?: string,
   isMyPage?: boolean,   
   isLike?: boolean,     
-  isSaved?: boolean     
+  isSaved?: boolean,
+  selectedStyles?: string[]
 ): Promise<DripPostType[]> => {
   const loginUserId = localStorage.getItem("userId");
   let url = `http://localhost:3005/api/drip?userId=${loginUserId}`;
@@ -62,6 +63,9 @@ export const getUserDripPostQuery = async (
   }
   if (isSaved) {
     url += `&isSaved=true`;
+  }
+  if (selectedStyles && selectedStyles.length > 0) {
+    url += `&styles=${selectedStyles.join(',')}`;
   }
   const response = await axios.get(url);
   return response.data.map(transformDripPostData);
@@ -94,5 +98,83 @@ export const likeDripPostQuery = async (postId: number) => {
   } catch (error) {
     console.error("Error liking post:", error);
     throw error;
+  }
+};
+
+// 신고 API
+export const createReport = async (reportData: ReportData): Promise<ReportResponse> => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('로그인이 필요합니다.');
+    }
+
+    const response = await fetch(`http://localhost:3005/api/reports`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(reportData)
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || '신고 처리 중 오류가 발생했습니다.');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('createReport error:', error);
+    throw error;
+  }
+};
+
+export const getReportCount = async (targetType: ReportTargetType, targetId: number): Promise<number> => {
+  try {
+    const response = await fetch(
+      `http://localhost:3005/api/reports/count?targetType=${targetType}&targetId=${targetId}`
+    );
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || '신고 개수 조회 중 오류가 발생했습니다.');
+    }
+
+    return data.count;
+  } catch (error) {
+    console.error('getReportCount error:', error);
+    throw error;
+  }
+};
+
+export const checkUserReported = async (targetType: ReportTargetType, targetId: number): Promise<boolean> => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return false;
+    }
+
+    const response = await fetch(
+      `http://localhost:3005/api/reports/check?targetType=${targetType}&targetId=${targetId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || '신고 확인 중 오류가 발생했습니다.');
+    }
+
+    return data.hasReported;
+  } catch (error) {
+    console.error('checkUserReported error:', error);
+    return false;
   }
 };

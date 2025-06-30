@@ -3,12 +3,12 @@ export interface HeaderProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onClickMoveLogin: () => void;
   onClickMoveJoin: () => void;
-  onClickLogout: () => void;
   onClickMain: () => void;
   onClickMoveMyPage: () => void;
   onClickMoveDripUser: () => void;
   onClickMoveDrips: () => void;
   onClickMoveFreeBoardList: () => void;
+  onClickMoveReportList: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
   onChangeSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;

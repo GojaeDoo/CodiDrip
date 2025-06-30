@@ -36,6 +36,13 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
   showAllComments,
   isLogin,
   isCommentAuthor,
+  showReportModal,
+  selectedReportReason,
+  onReportClick,
+  onCloseReportModal,
+  onReportReasonChange,
+  onSubmitReport,
+  isAdmin,
 }) => {
   if (isLoading) {
     return (
@@ -96,19 +103,16 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                     </S.UserInfo>
                     <S.CommentActions>
                       {isLogin && isCommentAuthor(comment.user_id) && (
-                        <>
-                          <button onClick={() => onEditComment(comment)}>
-                            수정
-                          </button>
-                          <button onClick={() => onDeleteComment(comment.id)}>
-                            삭제
-                          </button>
-                        </>
+                        <button onClick={() => onEditComment(comment)}>수정</button>
+                      )}
+                      {isLogin && (isCommentAuthor(comment.user_id) || isAdmin) && (
+                        <button onClick={() => onDeleteComment(comment.id)}>삭제</button>
+                      )}
+                      {isLogin && !isCommentAuthor(comment.user_id) && !isAdmin && (
+                        <button onClick={() => onReportClick(comment.id)}>신고</button>
                       )}
                       {isLogin && (
-                        <button onClick={() => onReplyComment(comment.id)}>
-                          댓글
-                        </button>
+                        <button onClick={() => onReplyComment(comment.id)}>댓글</button>
                       )}
                     </S.CommentActions>
                   </S.CommentHeaderInfo>
@@ -198,14 +202,23 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                             }}>
                               {formatTimestamp(reply.created_at)}
                             </span>
-                            {isLogin && isCommentAuthor(reply.user_id) && (
+                            {isLogin && (
                               <div style={{ marginLeft: "auto", display: "flex" }}>
-                                <S.ReplyActionButton onClick={() => onEditComment(reply)}>
-                                  수정
-                                </S.ReplyActionButton>
-                                <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
-                                  삭제
-                                </S.ReplyActionButton>
+                                {(isCommentAuthor(reply.user_id) || isAdmin) && (
+                                  <>
+                                    <S.ReplyActionButton onClick={() => onEditComment(reply)}>
+                                      수정
+                                    </S.ReplyActionButton>
+                                    <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
+                                      삭제
+                                    </S.ReplyActionButton>
+                                  </>
+                                )}
+                                {!isCommentAuthor(reply.user_id) && !isAdmin && (
+                                  <S.ReplyActionButton onClick={() => onReportClick(reply.id)}>
+                                    신고
+                                  </S.ReplyActionButton>
+                                )}
                               </div>
                             )}
                           </S.ReplyHeader>
@@ -297,6 +310,41 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
             </S.ModalFooter>
           </S.ModalContent>
         </S.ModalOverlay>
+      )}
+
+      {/* 신고 모달 */}
+      {showReportModal && (
+        <S.ReportModalOverlay onClick={onCloseReportModal}>
+          <S.ReportModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ReportModalTitle>댓글 신고</S.ReportModalTitle>
+            <S.ReportModalText>
+              신고 사유를 선택해주세요. 신고된 댓글은 검토 후 처리됩니다.
+            </S.ReportModalText>
+            <S.ReportReasonSelect
+              value={selectedReportReason}
+              onChange={onReportReasonChange}
+            >
+              <option value="">신고 사유를 선택하세요</option>
+              <option value="욕설">욕설</option>
+              <option value="광고">광고</option>
+              <option value="도배">도배</option>
+              <option value="부적절한 사진">부적절한 사진</option>
+              <option value="기타">기타</option>
+            </S.ReportReasonSelect>
+            <S.ReportModalButtonGroup>
+              <S.ReportModalButton onClick={onCloseReportModal}>
+                취소
+              </S.ReportModalButton>
+              <S.ReportModalButton 
+                $primary 
+                onClick={onSubmitReport}
+                disabled={!selectedReportReason}
+              >
+                신고하기
+              </S.ReportModalButton>
+            </S.ReportModalButtonGroup>
+          </S.ReportModalContent>
+        </S.ReportModalOverlay>
       )}
     </>
   );

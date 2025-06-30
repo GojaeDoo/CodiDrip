@@ -29,6 +29,7 @@ export const uploadDripImage = async (
 export const createDripDB = async (
   images: string[],
   tags: string[],
+  styleCategory: string,
   userId: string
 ) => {
   const client = await pool.connect();
@@ -36,10 +37,10 @@ export const createDripDB = async (
     await client.query("BEGIN");
 
     const result = await client.query(
-      `INSERT INTO drip_post (post_image, post_tag, user_id) 
-       VALUES ($1, $2, $3) 
+      `INSERT INTO drip_post (post_image, post_tag, style_category, user_id) 
+       VALUES ($1, $2, $3, $4) 
        RETURNING post_no`,
-      [JSON.stringify(images), JSON.stringify(tags), userId]
+      [JSON.stringify(images), JSON.stringify(tags), styleCategory, userId]
     );
 
     await client.query("COMMIT");
@@ -53,9 +54,9 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean) => {
+export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
   try {
-    console.log("getUserDripPost params:", { userId, filterUserId, gender, isLike, isSaved });
+    console.log("getUserDripPost params:", { userId, filterUserId, gender, isLike, isSaved, styles });
     let query = `
       WITH user_likes AS (
         SELECT post_no 
@@ -71,6 +72,7 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
         p.post_no AS "게시글번호",
         p.post_image AS "게시글이미지",
         p.post_tag AS "태그",
+        p.style_category AS "스타일카테고리",
         p.user_id,
         pr.profile_image AS "프로필이미지",
         pr.profile_nickname AS "닉네임",
@@ -92,10 +94,14 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
         END AS saved
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
+      JOIN users u ON pr.user_id = u.user_id
     `;
 
     const params: (string | undefined)[] = [userId];
     const conditions: string[] = [];
+
+    // 관리자 계정 제외 (일반 사용자만 조회)
+    conditions.push("u.is_admin = false");
 
     // 마이페이지에서만 내 글만 필터 (좋아요/저장 필터가 없을 때만)
     if (filterUserId && !isLike && !isSaved) {
@@ -107,6 +113,14 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
     if (gender && !isLike && !isSaved) {
       conditions.push("pr.profile_gender = $" + (params.length + 1));
       params.push(gender);
+    }
+
+    // 스타일 카테고리 필터링
+    if (styles) {
+      const styleArray = styles.split(',');
+      const stylePlaceholders = styleArray.map((_, index) => `$${params.length + index + 1}`).join(',');
+      conditions.push(`p.style_category = ANY(ARRAY[${stylePlaceholders}])`);
+      params.push(...styleArray);
     }
 
     // 좋아요한 게시글만 필터링
@@ -159,6 +173,7 @@ export const getPostNoDripPost = async (postNo: number, userId?: string) => {
         p.post_no AS 게시글번호,
         p.post_image AS 게시글이미지,
         p.post_tag AS 태그,
+        p.style_category AS 스타일카테고리,
         p.user_id,
         pr.profile_image AS 프로필이미지,
         pr.profile_nickname AS 닉네임,
@@ -174,7 +189,8 @@ export const getPostNoDripPost = async (postNo: number, userId?: string) => {
         END AS liked
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
-      WHERE post_no = $1
+      JOIN users u ON pr.user_id = u.user_id
+      WHERE post_no = $1 AND u.is_admin = false
     `,
       [postNo, userId]
     );
@@ -252,6 +268,7 @@ export const updateDripPost = async (
   postNo: string,
   images: string[],
   tags: string[],
+  styleCategory: string,
   userId: string
 ) => {
   try {
@@ -292,10 +309,10 @@ export const updateDripPost = async (
     // DB 업데이트
     const result = await pool.query(
       `UPDATE drip_post 
-       SET post_image = $1, post_tag = $2
-       WHERE post_no = $3 AND user_id = $4
+       SET post_image = $1, post_tag = $2, style_category = $3
+       WHERE post_no = $4 AND user_id = $5
        RETURNING *`,
-      [JSON.stringify(images), JSON.stringify(tags), postNo, userId]
+      [JSON.stringify(images), JSON.stringify(tags), styleCategory, postNo, userId]
     );
 
     if (result.rows.length === 0) {

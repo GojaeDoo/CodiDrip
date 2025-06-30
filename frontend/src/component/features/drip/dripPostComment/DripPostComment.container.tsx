@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import DripPostComment from "./DripPostComment.presenter";
-import { DripPostCommentContainerProps, Comment, DripPostCommentProps } from "./DripPostComment.types";
-import { getCommentQuery, postCommentQuery, updateCommentQuery, deleteCommentQuery, likeCommentQuery, unlikeCommentQuery } from "./DripPostComment.query";
+import { DripPostCommentContainerProps, Comment, DripPostCommentProps, ReportReasonType } from "./DripPostComment.types";
+import { getCommentQuery, postCommentQuery, updateCommentQuery, deleteCommentQuery, likeCommentQuery, unlikeCommentQuery, reportCommentQuery } from "./DripPostComment.query";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 export const formatDate = (dateString: string) => dateString.slice(0, 10);
 
@@ -58,9 +59,14 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
   const [replyContent, setReplyContent] = useState("");
   const [expandedReplies, setExpandedReplies] = useState<{ [key: number]: boolean }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // 신고 관련 상태
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportCommentId, setReportCommentId] = useState<number | null>(null);
 
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { isAdmin } = useAuth();
 
   const {
     data: comments,
@@ -206,6 +212,39 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     setIsModalOpen(true);
     };
 
+  // 신고 관련 핸들러들
+  const onOpenReportModal = (commentId: number) => {
+    setReportCommentId(commentId);
+    setShowReportModal(true);
+  };
+
+  const onCloseReportModal = () => {
+    setShowReportModal(false);
+    setReportCommentId(null);
+  };
+
+  const onReportSubmit = async (reason: ReportReasonType) => {
+    if (!reportCommentId) return;
+    
+    try {
+      const data = await reportCommentQuery(reportCommentId, reason);
+      
+      if (data.success) {
+        alert("신고가 접수되었습니다. 검토 후 처리됩니다.");
+        onCloseReportModal();
+      } else {
+        alert(data.message || "신고 처리 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("신고 처리 중 오류 발생:", error);
+      if (error instanceof Error && error.message === '로그인이 필요합니다.') {
+        alert('로그인이 필요합니다.');
+      } else {
+        alert("신고 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -231,10 +270,17 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       onEditSubmit={onEditSubmit}
       onEditCancel={onEditCancel}
       myUserId={user_id}
+      isAdmin={isAdmin}
       replyingToId={replyingToId}
       replyContent={replyContent}
       onChangeReply={onChangeReply}
       onSubmitReply={onSubmitReply}
+      // 신고 관련 props
+      showReportModal={showReportModal}
+      reportCommentId={reportCommentId}
+      onOpenReportModal={onOpenReportModal}
+      onCloseReportModal={onCloseReportModal}
+      onReportSubmit={onReportSubmit}
     />
   );
 };

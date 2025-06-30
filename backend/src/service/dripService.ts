@@ -20,7 +20,7 @@ import {
 } from "../storage/dripStorage";
 
 export const dripService = {
-  createDrip: async (images: string[], tags: string[], userId: string) => {
+  createDrip: async (images: string[], tags: string[], styleCategory: string, userId: string) => {
     try {
       const processedImages = await Promise.all(
         images.map(async (image) => {
@@ -40,7 +40,7 @@ export const dripService = {
 
       console.log("Processed images:", processedImages);
 
-      const result = await createDripDB(processedImages, tags, userId);
+      const result = await createDripDB(processedImages, tags, styleCategory, userId);
       console.log("Create drip result:", result);
       return result;
     } catch (error) {
@@ -49,9 +49,9 @@ export const dripService = {
     }
   },
 
-  getUserDrip: async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean) => {
+  getUserDrip: async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
     try {
-      const drips = await getUserDripPost(userId, filterUserId, gender, isLike, isSaved);
+      const drips = await getUserDripPost(userId, filterUserId, gender, isLike, isSaved, styles);
       return drips;
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);
@@ -73,6 +73,7 @@ export const dripService = {
     postNo: string,
     images: string[],
     tags: string[],
+    styleCategory: string,
     userId: string
   ) => {
     try {
@@ -93,7 +94,7 @@ export const dripService = {
         })
       );
 
-      return await updateDripPost(postNo, uploadedImages, tags, userId);
+      return await updateDripPost(postNo, uploadedImages, tags, styleCategory, userId);
     } catch (error) {
       console.error("updateDrip error - dripService:", error);
       throw error;

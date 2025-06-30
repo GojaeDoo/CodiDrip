@@ -46,8 +46,18 @@ const LoginContainer = () => {
     try {
       const response = await loginUser(userId, userPassword);
       const currentUserId = response.user.user_id;
-      login(response.token, currentUserId);
+      const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true";
+      
+      console.log("=== 로그인 응답 정보 ===");
+      console.log("전체 응답:", response);
+      console.log("사용자 정보:", response.user);
       console.log("User ID:", currentUserId);
+      console.log("Is Admin:", isAdmin);
+      console.log("Is Admin 타입:", typeof isAdmin);
+      console.log("=== 로그인 응답 정보 끝 ===");
+      
+      login(response.token, currentUserId, isAdmin);
+      
       const responseProfile = await profileCheck(currentUserId);
       console.log("responseProfile : ", responseProfile);
       setId(currentUserId);

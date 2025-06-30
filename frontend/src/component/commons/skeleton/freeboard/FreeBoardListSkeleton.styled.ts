@@ -18,8 +18,10 @@ export const SkeletonRow = styled.div`
   gap: 16px;
   padding: 16px 24px;
   margin-bottom: 8px;
-  background: #232323;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -31,7 +33,11 @@ export const SkeletonRow = styled.div`
 export const SkeletonBox = styled.div`
   height: 18px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
+  background: linear-gradient(90deg, 
+    var(--skeleton-start) 25%, 
+    var(--skeleton-middle) 50%, 
+    var(--skeleton-end) 75%
+  );
   background-size: 400px 100%;
   animation: ${shimmer} 1.2s infinite linear;
 `;

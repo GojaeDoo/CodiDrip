@@ -6,9 +6,11 @@ import { MyPageProps, FreeBoardPost } from "./MyPage.types";
 import { getMyPageProfileQuery, getDripPostDetailQuery, checkFollowStatusQuery, toggleFollowQuery, getUserFreeBoardPostsQuery } from "./MyPage.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { decodeUserId } from "@/utils/urlEncoder";
+import { useAuth } from "@/context/AuthContext";
 
 export const MyPageContainer = () => {
   const router = useRouter();
+  const { logout } = useAuth();
   const [userProfile, setUserProfile] = useState<MyPageProps["userProfile"]>(null);
   const [activeTab, setActiveTab] = useState<'myDrip' | 'liked' | 'saved' | 'follower' | 'following' | 'myPost'>('myDrip');
   const [isFollowing, setIsFollowing] = useState(false);
@@ -91,6 +93,11 @@ export const MyPageContainer = () => {
     router.push(`/profileEdit?Status=${isEditMode}`);
   };
 
+  const onClickLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   const onClickFollow = async () => {
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId || !userProfile) return;
@@ -165,6 +172,7 @@ export const MyPageContainer = () => {
       onClickMoveFollowing={onClickMoveFollowing}
       onClickMoveMyPost={onClickMoveMyPost}
       onClickFreeBoardPost={onClickFreeBoardPost}
+      onClickLogout={onClickLogout}
       isFollowLoading={isFollowLoading}
       isFreeBoardLoading={isFreeBoardLoading}
       isMyPageLoading={isMyPageLoading}

@@ -46,3 +46,16 @@ export const profileCheck = async (id: string) => {
     throw error; // 그 외 에러는 그대로 throw
   }
 };
+
+// 사용자 관리자 상태 확인 API
+export const checkUserAdminStatus = async (userId: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/users/admin-status?userId=${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("관리자 상태 확인 실패:", error);
+    throw error;
+  }
+};

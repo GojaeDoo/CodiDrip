@@ -14,6 +14,7 @@ import {
   toggleFollowDB,
   getFollowersDB,
   getFollowingDB,
+  checkUserAdminStatus,
 } from "../storage/userStorage";
 import {
   IdCheckType,
@@ -138,6 +139,12 @@ export const loginUser = async (user_id: string, user_password: string) => {
     // 토큰 생성
     const token = generateToken(user.user_id);
 
+    console.log("=== loginUser 서비스 ===");
+    console.log("반환할 사용자 정보:", user);
+    console.log("is_admin 값:", user.is_admin);
+    console.log("is_admin 타입:", typeof user.is_admin);
+    console.log("=== loginUser 서비스 끝 ===");
+
     return {
       user,
       token,
@@ -231,6 +238,17 @@ export const getFollowingService = async (userId: string) => {
     return following;
   } catch (error) {
     console.error("getFollowingService error - userService");
+    throw error;
+  }
+};
+
+// 사용자 관리자 상태 확인 서비스
+export const checkUserAdminStatusService = async (userId: string) => {
+  try {
+    const user = await checkUserAdminStatus(userId);
+    return user;
+  } catch (error) {
+    console.error("checkUserAdminStatusService error - userService");
     throw error;
   }
 };

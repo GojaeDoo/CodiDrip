@@ -5,13 +5,17 @@ import { RequestHandler } from "express";
 
 export const createDrip = async (req: Request, res: Response) => {
   try {
-    const { images, tags, userId } = req.body;
+    const { images, tags, styleCategory, userId } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: "userId is required" });
     }
 
-    const result = await dripService.createDrip(images, tags, userId);
+    if (!styleCategory) {
+      return res.status(400).json({ error: "styleCategory is required" });
+    }
+
+    const result = await dripService.createDrip(images, tags, styleCategory, userId);
     res.status(201).json(result);
   } catch (error) {
     console.error("createDrip error - dripController:", error);
@@ -26,7 +30,9 @@ export const getUserDrip = async (req: Request, res: Response) => {
     const gender = req.query.gender as string;
     const isLike = req.query.isLike === 'true';
     const isSaved = req.query.isSaved === 'true';
-    const drips = await dripService.getUserDrip(userId, filterUserId, gender, isLike, isSaved);
+    const styles = req.query.styles as string | undefined;
+    
+    const drips = await dripService.getUserDrip(userId, filterUserId, gender, isLike, isSaved, styles);
     res.status(200).json(drips);
   } catch (error) {
     console.error("getUserDrip error - dripController:", error);
@@ -54,9 +60,9 @@ export const getPostNoDrip = async (req: Request, res: Response) => {
 export const updateDrip = async (req: Request, res: Response) => {
   try {
     const postNo = req.params.postNo;
-    const { images, tags, userId } = req.body;
+    const { images, tags, styleCategory, userId } = req.body;
 
-    if (!postNo || !images || !tags || !userId) {
+    if (!postNo || !images || !tags || !styleCategory || !userId) {
       return res.status(400).json({ error: "필수 정보가 누락되었습니다." });
     }
 
@@ -64,6 +70,7 @@ export const updateDrip = async (req: Request, res: Response) => {
       postNo,
       images,
       tags,
+      styleCategory,
       userId
     );
     res.status(200).json(updatedDrip);

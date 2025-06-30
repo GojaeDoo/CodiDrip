@@ -54,4 +54,11 @@ export interface FreeBoardCommentPresenterProps extends FreeBoardCommentProps {
   showAllComments: boolean;
   isLogin: boolean;
   isCommentAuthor: (commentUserId: string) => boolean;
+  isAdmin: boolean;
+  showReportModal: boolean;
+  selectedReportReason: string;
+  onReportClick: (commentId: string) => void;
+  onCloseReportModal: () => void;
+  onReportReasonChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onSubmitReport: () => void;
 }

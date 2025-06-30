@@ -61,19 +61,61 @@ export const FreeBoardDetailPresenter = (props:FreeBoardDetailPresenterProps) =>
                         </S.BackButton>
                     </S.LeftButtons>
                     
-                    {props.isLogin && (
-                        <S.RightButtons>
+                    <S.RightButtons>
+                        {props.isLogin && !props.isAuthor && !props.isAdmin && (
+                            <S.ReportButton onClick={props.onReportClick}>
+                                신고
+                            </S.ReportButton>
+                        )}
+                        {props.isAuthor && (
                             <S.EditButton onClick={props.onEdit}>
                                 수정
                             </S.EditButton>
+                        )}
+                        {(props.isAuthor || props.isAdmin) && (
                             <S.DeleteButton onClick={props.onDelete}>
                                 삭제
                             </S.DeleteButton>
-                        </S.RightButtons>
-                    )}
+                        )}
+                    </S.RightButtons>
                 </S.ButtonGroup>
             </S.FreeBoardDetailWrapper>
             <FreeBoardCommentContainer withBackground={false}/>
+            
+            {/* 신고 모달 */}
+            {props.showReportModal && (
+                <S.ReportModalOverlay onClick={props.onCloseReportModal}>
+                    <S.ReportModalContent onClick={(e) => e.stopPropagation()}>
+                        <S.ReportModalTitle>게시글 신고</S.ReportModalTitle>
+                        <S.ReportModalText>
+                            신고 사유를 선택해주세요. 신고된 게시글은 검토 후 처리됩니다.
+                        </S.ReportModalText>
+                        <S.ReportReasonSelect
+                            value={props.selectedReportReason}
+                            onChange={props.onReportReasonChange}
+                        >
+                            <option value="">신고 사유를 선택하세요</option>
+                            <option value="욕설">욕설</option>
+                            <option value="광고">광고</option>
+                            <option value="도배">도배</option>
+                            <option value="부적절한 사진">부적절한 사진</option>
+                            <option value="기타">기타</option>
+                        </S.ReportReasonSelect>
+                        <S.ReportModalButtonGroup>
+                            <S.ReportModalButton onClick={props.onCloseReportModal}>
+                                취소
+                            </S.ReportModalButton>
+                            <S.ReportModalButton 
+                                $primary 
+                                onClick={props.onSubmitReport}
+                                disabled={!props.selectedReportReason}
+                            >
+                                신고하기
+                            </S.ReportModalButton>
+                        </S.ReportModalButtonGroup>
+                    </S.ReportModalContent>
+                </S.ReportModalOverlay>
+            )}
         </S.Background>
     )
 }

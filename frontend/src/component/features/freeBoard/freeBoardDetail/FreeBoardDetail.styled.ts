@@ -292,3 +292,120 @@ export const ErrorMessage = styled.p`
   max-width: 400px;
   line-height: 1.6;
 `;
+
+export const ReportButton = styled.button`
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  
+  &:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+  }
+`;
+
+export const ReportModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+`;
+
+export const ReportModalContent = styled.div`
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  
+  @media (max-width: 600px) {
+    width: 95%;
+    padding: 2rem;
+  }
+`;
+
+export const ReportModalTitle = styled.h3`
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+`;
+
+export const ReportModalText = styled.p`
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+`;
+
+export const ReportReasonSelect = styled.select`
+  width: 100%;
+  padding: 1rem;
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+  
+  &:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  option {
+    background: var(--card-bg);
+    color: var(--text-primary);
+  }
+`;
+
+export const ReportModalButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+`;
+
+export const ReportModalButton = styled.button<{ $primary?: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background-color: ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--card-border)')};
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ $primary }) => ($primary ? 'var(--accent-hover)' : 'var(--card-border)')};
+  }
+
+  &:disabled {
+    background-color: var(--card-border);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+  }
+`;

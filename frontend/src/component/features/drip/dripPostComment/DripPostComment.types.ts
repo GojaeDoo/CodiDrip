@@ -11,6 +11,25 @@ export interface Comment {
   user_id: string;
 }
 
+export type ReportTargetType = 'post' | 'comment';
+export type ReportReasonType = 
+  | '욕설'
+  | '광고'
+  | '도배'
+  | '부적절한 사진'
+  | '기타';
+
+export interface ReportData {
+  targetType: ReportTargetType;
+  targetId: number;
+  reportReason: ReportReasonType;
+}
+
+export interface ReportResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface DripPostCommentProps {
   commentList: Comment[];
   onLikeComment: (commentId: number) => void;
@@ -33,10 +52,16 @@ export interface DripPostCommentProps {
   onEditSubmit: () => void;
   onEditCancel: () => void;
   myUserId: string;
+  isAdmin: boolean;
   replyingToId: number | null;
   replyContent: string;
   onChangeReply: (value: string) => void;
   onSubmitReply: () => void;
+  showReportModal: boolean;
+  reportCommentId: number | null;
+  onOpenReportModal: (commentId: number) => void;
+  onCloseReportModal: () => void;
+  onReportSubmit: (reason: ReportReasonType) => void;
 }
 
 export interface DripPostCommentFetchState {

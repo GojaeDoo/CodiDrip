@@ -3,12 +3,14 @@ import styled from "styled-components";
 export const SkeletonWrapper = styled.div`
   width: 280px;
   height: 350px;
-  background: #fff;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 10px;
   animation: pulse 1.5s infinite;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   @keyframes pulse {
     0% {
@@ -39,7 +41,8 @@ export const SkeletonProfileImage = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonUserInfo = styled.div`
@@ -49,22 +52,25 @@ export const SkeletonUserInfo = styled.div`
 export const SkeletonUsername = styled.div`
   width: 120px;
   height: 18px;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
   border-radius: 4px;
   margin-bottom: 6px;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonUserStats = styled.div`
   width: 100px;
   height: 16px;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
   border-radius: 4px;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonImage = styled.div`
   width: 100%;
   aspect-ratio: 1;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonActions = styled.div`
@@ -76,8 +82,9 @@ export const SkeletonActions = styled.div`
 export const SkeletonAction = styled.div`
   width: 24px;
   height: 24px;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
   border-radius: 4px;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonTags = styled.div`
@@ -90,8 +97,9 @@ export const SkeletonTags = styled.div`
 export const SkeletonTag = styled.div`
   width: 60px;
   height: 24px;
-  background: #e0e0e0;
+  background: var(--skeleton-start);
   border-radius: 4px;
+  transition: background-color 0.3s ease;
 `;
 
 export const SkeletonContainer = styled.div`

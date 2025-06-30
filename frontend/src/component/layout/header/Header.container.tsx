@@ -13,7 +13,7 @@ const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const router = useRouter();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -73,9 +73,9 @@ const HeaderContainer = () => {
     router.push("/freeBoardList");
   }
 
-  const onClickLogout = () => {
-    logout();
-  };
+  const onClickMoveReportList = () => {
+    router.push("/reportList");
+  }
 
   const onChangeSearchInput: HeaderProps["onChangeSearchInput"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -108,7 +108,6 @@ const HeaderContainer = () => {
         onClickMoveMyPage={onClickMoveMyPage}
         onClickMoveLogin={onClickMoveLogin}
         onClickMoveJoin={onClickMoveJoin}
-        onClickLogout={onClickLogout}
         onClickMain={onClickMain}
         onClickMoveDripUser={onClickMoveDripUser}
         onClickMoveDrips={onClickMoveDrips}
@@ -117,6 +116,7 @@ const HeaderContainer = () => {
         onChangeSearchInput={onChangeSearchInput}
         onEnterSearchInput={onEnterSearchInput}
         onClickMoveFreeBoardList={onClickMoveFreeBoardList}
+        onClickMoveReportList={onClickMoveReportList}
         onToggleTheme={toggleTheme}
         theme={theme}
       />

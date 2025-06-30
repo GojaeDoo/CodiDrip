@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (token: string, userId: string) => void;
+  isAdmin: boolean;
+  login: (token: string, userId: string, isAdmin?: boolean) => void;
   logout: () => void;
 }
 
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const timeoutCheckRef = useRef<NodeJS.Timeout>();
   const TIMEOUT_DURATION = 3600000;
 
@@ -68,8 +70,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("로그아웃 실행됨");
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("isAdmin");
     localStorage.removeItem("lastActivityTime");
     setIsLoggedIn(false);
+    setIsAdmin(false);
     if (timeoutCheckRef.current) {
       clearInterval(timeoutCheckRef.current);
     }
@@ -78,7 +82,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const adminStatus = localStorage.getItem("isAdmin") === "true";
+    
+    console.log("=== AuthContext 초기화 ===");
+    console.log("토큰 존재:", !!token);
+    console.log("localStorage isAdmin:", localStorage.getItem("isAdmin"));
+    console.log("adminStatus:", adminStatus);
+    console.log("=== AuthContext 초기화 끝 ===");
+    
     setIsLoggedIn(!!token);
+    setIsAdmin(adminStatus);
 
     if (token) {
       const lastActivityTime = localStorage.getItem("lastActivityTime");
@@ -95,16 +108,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const login = (token: string, userId: string) => {
+  const login = (token: string, userId: string, isAdmin: boolean = false) => {
+    console.log("=== AuthContext login 함수 ===");
+    console.log("받은 isAdmin:", isAdmin);
+    console.log("받은 isAdmin 타입:", typeof isAdmin);
+    console.log("=== AuthContext login 함수 끝 ===");
+    
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
+    localStorage.setItem("isAdmin", isAdmin.toString());
     localStorage.setItem("lastActivityTime", Date.now().toString());
     setIsLoggedIn(true);
+    setIsAdmin(isAdmin);
     startTimeoutCheck();
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

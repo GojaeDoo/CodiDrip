@@ -22,10 +22,14 @@ export const getFindAllProfileDB = async (
         p.user_id,
         p.profile_about
       FROM profile p
+      JOIN users u ON p.user_id = u.user_id
     `;
 
     const params: any[] = [];
     const conditions: string[] = [];
+
+    // 관리자 계정 제외 (일반 사용자만 조회)
+    conditions.push("u.is_admin = false");
 
     if (gender) {
       conditions.push("p.profile_gender = $" + (params.length + 1));

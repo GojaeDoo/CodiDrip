@@ -22,6 +22,7 @@ import {
   toggleFollowService,
   getFollowersService,
   getFollowingService,
+  checkUserAdminStatusService,
 } from "../service/userService";
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -180,6 +181,13 @@ export const loginUserController = async (
     }
 
     const result = await loginUser(user_id, user_password);
+    
+    console.log("=== loginUserController ===");
+    console.log("응답할 사용자 정보:", result.user);
+    console.log("is_admin 값:", result.user.is_admin);
+    console.log("is_admin 타입:", typeof result.user.is_admin);
+    console.log("=== loginUserController 끝 ===");
+    
     res.status(200).json({
       message: "로그인 성공",
       user: result.user,
@@ -310,20 +318,32 @@ export const getFollowersController = async (req: Request, res: Response) => {
 export const getFollowingController = async (req: Request, res: Response) => {
   try {
     const { userId } = req.query;
-
-    if (!userId) {
-      res.status(400).json({ 
-        error: "userId가 필요합니다." 
-      });
+    if (!userId || typeof userId !== "string") {
+      res.status(400).json({ error: "getFollowingController 400error - userController" });
       return;
     }
 
-    const following = await getFollowingService(userId as string);
+    const following = await getFollowingService(userId);
     res.json(following);
   } catch (error) {
     console.error("팔로잉 목록 조회 실패:", error);
-    res.status(500).json({ 
-      error: "팔로잉 목록 조회 중 오류가 발생했습니다." 
-    });
+    res.status(500).json({ error: "getFollowingController 500error - userController" });
+  }
+};
+
+// 사용자 관리자 상태 확인 컨트롤러
+export const checkUserAdminStatusController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.query;
+    if (!userId || typeof userId !== "string") {
+      res.status(400).json({ error: "checkUserAdminStatusController 400error - userController" });
+      return;
+    }
+
+    const user = await checkUserAdminStatusService(userId);
+    res.json(user);
+  } catch (error) {
+    console.error("사용자 관리자 상태 확인 실패:", error);
+    res.status(500).json({ error: "checkUserAdminStatusController 500error - userController" });
   }
 };

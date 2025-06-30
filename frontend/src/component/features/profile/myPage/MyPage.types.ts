@@ -46,6 +46,7 @@ export interface MyPageProps {
   onClickMoveFollowing: () => void;
   onClickMoveMyPost: () => void;
   onClickFreeBoardPost: (postId: number) => void;
+  onClickLogout: () => void;
   isFollowLoading: boolean;
   isFreeBoardLoading: boolean;
   isMyPageLoading: boolean;

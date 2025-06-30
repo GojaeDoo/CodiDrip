@@ -1,5 +1,5 @@
 import * as S from "./DripPost.styled";
-import { DripPostProps } from "./DripPost.types";
+import { DripPostPresenterProps, ReportReasonType } from "./DripPost.types";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,8 +8,22 @@ import {
   MoreVertical,
 } from "lucide-react";
 import DripPostSkeleton from "../../../commons/skeleton/drip/DripPostSkeleton";
+import { useState } from "react";
 
-export const DripPostPresenter = (props: DripPostProps) => {
+export const DripPostPresenter = (props: DripPostPresenterProps) => {
+  const [reportReason, setReportReason] = useState<ReportReasonType | "">("");
+
+  console.log("=== DripPost Presenter ===");
+  console.log("isAdmin:", props.isAdmin);
+  console.log("isAdmin 타입:", typeof props.isAdmin);
+  console.log("=== DripPost Presenter 끝 ===");
+
+  const handleReportSubmit = () => {
+    if (reportReason) {
+      props.onReportSubmit(reportReason as ReportReasonType);
+    }
+  };
+
   return (
     <>
       <S.Background>
@@ -53,36 +67,35 @@ export const DripPostPresenter = (props: DripPostProps) => {
                     </S.MenuButton>
                     {props.activeMenu === post.post_no && (
                       <S.Menu>
-                        {post.isOwner ? (
-                          <>
-                            <S.MenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                props.onEditPost(e, post.post_no);
-                              }}
-                            >
-                              수정
-                            </S.MenuItem>
-                            <S.MenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                props.onDeletePost(e, post.post_no);
-                              }}
-                            >
-                              삭제
-                            </S.MenuItem>
-                          </>
-                        ) : (
-                          <>
-                            <S.MenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                props.onReportPost(e, post.post_no);
-                              }}
-                            >
-                              신고
-                            </S.MenuItem>
-                          </>
+                        {post.isOwner && (
+                          <S.MenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              props.onEditPost(e, post.post_no);
+                            }}
+                          >
+                            수정
+                          </S.MenuItem>
+                        )}
+                        {(post.isOwner || props.isAdmin) && (
+                          <S.MenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              props.onDeletePost(e, post.post_no);
+                            }}
+                          >
+                            삭제
+                          </S.MenuItem>
+                        )}
+                        {!post.isOwner && !props.isAdmin && (
+                          <S.MenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              props.onOpenReportModal(post.post_no);
+                            }}
+                          >
+                            신고
+                          </S.MenuItem>
                         )}
                       </S.Menu>
                     )}
@@ -167,6 +180,41 @@ export const DripPostPresenter = (props: DripPostProps) => {
           )}
         </S.UserDripPostWrapper>
       </S.Background>
+
+      {/* 신고 모달 */}
+      {props.showReportModal && (
+        <S.ReportModalOverlay onClick={props.onCloseReportModal}>
+          <S.ReportModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ReportModalTitle>게시글 신고</S.ReportModalTitle>
+            <S.ReportModalText>
+              신고 사유를 선택해주세요. 신고된 게시글은 검토 후 처리됩니다.
+            </S.ReportModalText>
+            <S.ReportReasonSelect
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value as ReportReasonType)}
+            >
+              <option value="">신고 사유를 선택하세요</option>
+              <option value="욕설">욕설</option>
+              <option value="광고">광고</option>
+              <option value="도배">도배</option>
+              <option value="부적절한 사진">부적절한 사진</option>
+              <option value="기타">기타</option>
+            </S.ReportReasonSelect>
+            <S.ReportModalButtonGroup>
+              <S.ReportModalButton onClick={props.onCloseReportModal}>
+                취소
+              </S.ReportModalButton>
+              <S.ReportModalButton 
+                $primary 
+                onClick={handleReportSubmit}
+                disabled={!reportReason}
+              >
+                신고하기
+              </S.ReportModalButton>
+            </S.ReportModalButtonGroup>
+          </S.ReportModalContent>
+        </S.ReportModalOverlay>
+      )}
     </>
   );
 };

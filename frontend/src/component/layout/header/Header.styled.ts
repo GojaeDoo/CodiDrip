@@ -214,6 +214,7 @@ export const SearchInput = styled.input`
 export const Login_JoinContainer = styled.div`
   width: auto;
   height: 100%;
+  margin-right: 1vw;
   display: flex;
   flex-direction: row;
 `;
@@ -229,7 +230,6 @@ export const Login = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 2vw 0 5vw;
   cursor: pointer;
   transition: color 0.3s ease;
 
@@ -268,23 +268,14 @@ export const Join = styled.div`
   }
 `;
 
-export const UserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5vw;
-
-  @media (max-width: 768px) {
-    gap: 0.5vw;
-  }
-`;
-
 export const ProfileImage = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: var(--card-border);
   overflow: hidden;
   cursor: pointer;
+  margin-right: 1vw;
   transition: background-color 0.3s ease;
 
   img {
@@ -294,33 +285,9 @@ export const ProfileImage = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
-`;
-
-export const Logout = styled.div`
-  width: auto;
-  height: 100%;
-  font-size: 1.4rem;
-  font-family: "Inter", sans-serif;
-  font-weight: 1000;
-  font-style: italic;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 2vw;
-  cursor: pointer;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: var(--text-secondary);
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-    margin-right: 1vw;
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5vw;
   }
 `;
 
@@ -340,11 +307,11 @@ export const ThemeToggleButton = styled.button`
   padding: 8px;
   display: flex;
   align-items: center;
+  margin-right: 1vw;
   justify-content: center;
   color: var(--text-primary);
   border-radius: 50%;
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin-right: 1rem;
 
   &:hover {
     background-color: var(--card-border);
@@ -353,8 +320,6 @@ export const ThemeToggleButton = styled.button`
 
   @media (max-width: 768px) {
     padding: 6px;
-    margin-right: 0.5rem;
-    
     svg {
       width: 20px;
       height: 20px;

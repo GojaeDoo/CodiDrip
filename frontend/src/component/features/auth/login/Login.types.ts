@@ -15,6 +15,7 @@ export interface LoginResponse {
   user: {
     user_id: string;
     user_email: string;
+    is_admin?: boolean;
   };
   token: string;
 }

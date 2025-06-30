@@ -14,7 +14,7 @@ model profile {
   profile_height   Int?
   profile_weight   Int?
   profile_image    String?
-  profile_gender   String? @db.VarChar(10)
+  profile_gender   String @db.VarChar(10)
   profile_follow   Int?    @default(0)
   profile_about    String?
   user_id          String  @db.VarChar(50)
@@ -35,7 +35,8 @@ model drip_post {
   post_no           Int                 @id @default(autoincrement())
   user_id           String              @db.VarChar(50)
   post_image        String
-  post_tag          String              @unique @db.VarChar(255)
+  post_tag          String              @db.VarChar(255)
+  style_category    String              @db.VarChar(50)
   post_like         Int?
   drip_post_comment drip_post_comment[]
   drip_post_like    drip_post_like[]
@@ -107,10 +108,38 @@ model users {
   user_password                              String
   user_email                                 String                   @unique @db.VarChar(255)
   user_gender                                String?                  @db.VarChar(10)
+  is_admin                                   Boolean                  @default(false)
   drip_post_comment                          drip_post_comment[]
   drip_post_comment_like                     drip_post_comment_like[]
   drip_post_like                             drip_post_like[]
   drip_post_mark                             drip_post_mark[]
   user_follow_user_follow_followee_idTousers user_follow[]            @relation("user_follow_followee_idTousers")
   user_follow_user_follow_follower_idTousers user_follow[]            @relation("user_follow_follower_idTousers")
+}
+
+// 신고 관련 테이블들
+model drip_post_report {
+  report_id     Int      @id @default(autoincrement())
+  target_type   String   @db.VarChar(10) // 'post' or 'comment'
+  target_id     Int
+  reporter_id   String   @db.VarChar(50)
+  report_reason String   @db.VarChar(50) // '욕설', '광고', '도배', '부적절한 사진', '기타'
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+}
+
+model freeboard_report {
+  report_id     Int      @id @default(autoincrement())
+  target_type   String   @db.VarChar(10) // 'post' or 'comment'
+  target_id     Int
+  reporter_id   String   @db.VarChar(50)
+  report_reason String   @db.VarChar(50) // '욕설', '광고', '도배', '부적절한 사진', '기타'
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+}
+
+model freeboard_comment {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  user_id    String   @db.VarChar(50)
+  content    String   @db.Text
+  created_at DateTime @default(now()) @db.Timestamp(6)
 }

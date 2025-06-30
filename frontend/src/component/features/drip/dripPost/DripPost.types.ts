@@ -4,6 +4,7 @@ export interface DripPostAppProps {
   gender: string;
   isLike?: boolean;
   isSaved?: boolean;
+  selectedStyles?: string[];
 }
 
 export interface DripPostResponse {
@@ -43,6 +44,7 @@ export interface DripPostProps {
   currentImageIndexes: { [key: number]: number };
   currentUserId: string;
   activeMenu: number | null;
+  isAdmin: boolean;
   onClickMoveDetail?: (postNo: number) => void;
   onMenuClick: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
   onHidePost: (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => void;
@@ -89,7 +91,7 @@ export interface DripPostProps {
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => void;
-  onClickMoveUserProfile: (e: React.MouseEvent<HTMLDivElement>, userId: string) => void;
+  onClickMoveUserProfile: (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => void;
   onCloseMenu: () => void;
   activePin: { postNo: number; pinId: number } | null;
   isLiked: boolean;
@@ -150,6 +152,11 @@ export interface DripPostProps {
   isPinMuted: boolean;
   isPinUnmuted: boolean;
   isLoading?: boolean;
+  showReportModal: boolean;
+  reportPostNo: number | null;
+  onOpenReportModal: (postNo: number) => void;
+  onCloseReportModal: () => void;
+  onReportSubmit: (reason: ReportReasonType) => void;
 }
 
 export interface DripPostContainerProps {
@@ -158,6 +165,7 @@ export interface DripPostContainerProps {
   isMyPage?: boolean;
   isLike?: boolean;
   isSaved?: boolean;
+  selectedStyles?: string[];
 }
 
 export interface DripPostPresenterProps {
@@ -165,6 +173,7 @@ export interface DripPostPresenterProps {
   currentImageIndexes: { [key: number]: number };
   currentUserId: string;
   activeMenu: number | null;
+  isAdmin: boolean;
   onPrevImage: (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number,
@@ -189,4 +198,29 @@ export interface DripPostPresenterProps {
     postNo: number
   ) => void;
   isLoading?: boolean;
+  showReportModal: boolean;
+  reportPostNo: number | null;
+  onOpenReportModal: (postNo: number) => void;
+  onCloseReportModal: () => void;
+  onReportSubmit: (reason: ReportReasonType) => void;
+  onClickMoveUserProfile: (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => void;
+}
+
+export type ReportTargetType = 'post' | 'comment';
+export type ReportReasonType = 
+  | '욕설'
+  | '광고'
+  | '도배'
+  | '부적절한 사진'
+  | '기타';
+
+export interface ReportData {
+  targetType: ReportTargetType;
+  targetId: number;
+  reportReason: ReportReasonType;
+}
+
+export interface ReportResponse {
+  success: boolean;
+  message: string;
 }

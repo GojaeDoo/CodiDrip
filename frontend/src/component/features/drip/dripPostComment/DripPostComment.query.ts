@@ -47,3 +47,23 @@ export const unlikeCommentQuery = async (commentId: number, user_id: string) => 
     throw error;
   }
 };
+
+// 드립 댓글 신고 기능
+export const reportCommentQuery = async (commentId: number, reportReason: string) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const response = await axios.post(`http://localhost:3005/api/reports`, {
+    targetType: 'comment',
+    targetId: commentId,
+    reportReason: reportReason
+  }, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  
+  return response.data;
+};

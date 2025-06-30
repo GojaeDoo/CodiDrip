@@ -6,7 +6,7 @@ import MyPageSkeleton from "@/component/commons/skeleton/profile/MypageSkeleton"
 
 import * as S from "./MyPage.styled";
 import { MyPageProps } from "./MyPage.types";
-import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus, Eye } from "lucide-react";
+import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus, Eye, LogOut } from "lucide-react";
 
 export const MyPagePresenter = (props: MyPageProps) => {
   if (props.isMyPageLoading) {
@@ -33,13 +33,13 @@ export const MyPagePresenter = (props: MyPageProps) => {
                 <S.StatNumber>
                   {props.userProfile?.profile_follow || 0}
                 </S.StatNumber>
-                <S.StatLabel>FOLLOW</S.StatLabel>
+                <S.StatLabel>팔로워</S.StatLabel>
               </S.StatItem>
               <S.StatItem>
                 <S.StatNumber>
                   {props.userProfile?.post_count || 0}
                 </S.StatNumber>
-                <S.StatLabel>MY DRIP</S.StatLabel>
+                <S.StatLabel>DRIP</S.StatLabel>
               </S.StatItem>
             </S.ProfileStats>
             <S.ProfileBio>
@@ -49,10 +49,16 @@ export const MyPagePresenter = (props: MyPageProps) => {
               {props.userProfile?.profile_height || 0}cm / {props.userProfile?.profile_weight || 0}kg / {props.userProfile?.profile_gender || "미설정"}
             </S.ProfileDetails>
             {props.isMyPage ? (
-              <S.EditButton onClick={props.onClickMoveProfileEdit}>
-                <Edit size={16} />
-                프로필 수정
-              </S.EditButton>
+              <S.ButtonContainer>
+                <S.EditButton onClick={props.onClickMoveProfileEdit}>
+                  <Edit size={16} />
+                  프로필 수정
+                </S.EditButton>
+                <S.LogoutButton onClick={props.onClickLogout}>
+                  <LogOut size={16} />
+                  로그아웃
+                </S.LogoutButton>
+              </S.ButtonContainer>
             ) : (
               <S.FollowButton onClick={props.onClickFollow} $isFollowing={props.isFollowing || false}>
                 {props.isFollowing ? (

@@ -215,6 +215,65 @@ export const TagSection = styled.div`
   gap: 1.2rem;
 `;
 
+export const StyleCategorySection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+`;
+
+export const StyleCategoryLabel = styled.label`
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  transition: color 0.3s ease;
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
+`;
+
+export const StyleCategorySelect = styled.select`
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--card-border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  
+  &:focus {
+    border-color: var(--accent);
+  }
+  
+  &:required:invalid {
+    color: var(--text-muted);
+  }
+  
+  option {
+    background: var(--card-bg);
+    color: var(--text-primary);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 8px;
+  }
+`;
+
 export const TagInputWrapper = styled.form`
   display: flex;
   align-items: center;

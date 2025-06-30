@@ -4,7 +4,8 @@ import FreeBoardCommentPresenter from "./FreeBoardComment.presentert";
 import { Comment } from "./FreeBoardComment.types";
 import * as S from "./FreeBoardComment.styled";
 import { useSearchParams } from "next/navigation";
-import { getFreeBoardCommentQuery, postFreeBoardCommentQuery, updateFreeBoardCommentQuery, deleteFreeBoardCommentQuery, postFreeBoardReplyQuery, getFreeBoardRepliesQuery } from "./FreeBoardComment.query";
+import { getFreeBoardCommentQuery, postFreeBoardCommentQuery, updateFreeBoardCommentQuery, deleteFreeBoardCommentQuery, postFreeBoardReplyQuery, getFreeBoardRepliesQuery, reportFreeBoardCommentQuery } from "./FreeBoardComment.query";
+import { useAuth } from "@/context/AuthContext";
 
 interface FreeBoardCommentContainerProps {
   withBackground?: boolean;
@@ -16,6 +17,7 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const [comments, setComments] = useState<Comment[]>([]);
   const isLoading = false;
   const [isLogin, setIsLogin] = useState(false);
+  const { isAdmin } = useAuth();
   
   // 모달 관련 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,8 +37,14 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const [showAllComments, setShowAllComments] = useState(false);
   const COMMENTS_PER_PAGE = 5;
 
+  // 신고 관련 상태
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [selectedReportReason, setSelectedReportReason] = useState("");
+  const [reportingCommentId, setReportingCommentId] = useState<string | null>(null);
+
   // 댓글 작성 시 필요한 정보
   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   
@@ -270,6 +278,50 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   
   const hasMoreComments = comments.length > COMMENTS_PER_PAGE;
 
+  // 신고 관련 핸들러들
+  const handleReportClick = (commentId: string) => {
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    setReportingCommentId(commentId);
+    setShowReportModal(true);
+  };
+
+  const handleCloseReportModal = () => {
+    setShowReportModal(false);
+    setSelectedReportReason("");
+    setReportingCommentId(null);
+  };
+
+  const handleReportReasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedReportReason(e.target.value);
+  };
+
+  const handleSubmitReport = async () => {
+    if (!reportingCommentId || !selectedReportReason || !token) {
+      return;
+    }
+
+    try {
+      const data = await reportFreeBoardCommentQuery(reportingCommentId, selectedReportReason);
+
+      if (data.success) {
+        alert("신고가 성공적으로 접수되었습니다.");
+        handleCloseReportModal();
+      } else {
+        alert(data.message || "신고 처리 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("신고 오류:", error);
+      if (error instanceof Error && error.message === '로그인이 필요합니다.') {
+        alert('로그인이 필요합니다.');
+      } else {
+        alert("신고 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   const presenterContent = (
     <FreeBoardCommentPresenter
       comments={displayedComments}
@@ -305,6 +357,13 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
       showAllComments={showAllComments}
       isLogin={isLogin}
       isCommentAuthor={isCommentAuthor}
+      isAdmin={isAdmin}
+      showReportModal={showReportModal}
+      selectedReportReason={selectedReportReason}
+      onReportClick={handleReportClick}
+      onCloseReportModal={handleCloseReportModal}
+      onReportReasonChange={handleReportReasonChange}
+      onSubmitReport={handleSubmitReport}
     />
   );
 

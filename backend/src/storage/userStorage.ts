@@ -98,13 +98,21 @@ export const joinUserDB = async (user: User) => {
 export const findUserByCredentialsDB = async (user_id: string) => {
   try {
     const query = `
-      SELECT user_id, user_password, user_email 
+      SELECT user_id, user_password, user_email, is_admin 
       FROM users 
       WHERE user_id = $1
     `;
     const values = [user_id];
     const result = await pool.query(query, values);
-    return result.rows[0] || null;
+    const user = result.rows[0] || null;
+    
+    console.log("=== findUserByCredentialsDB ===");
+    console.log("조회된 사용자:", user);
+    console.log("is_admin 값:", user?.is_admin);
+    console.log("is_admin 타입:", typeof user?.is_admin);
+    console.log("=== findUserByCredentialsDB 끝 ===");
+    
+    return user;
   } catch (error) {
     console.error("findUserByCredentialsDB error - userStorage");
     throw error;
@@ -269,6 +277,32 @@ export const getFollowingDB = async (userId: string) => {
     return result.rows;
   } catch (error) {
     console.error("getFollowingDB error - userStorage");
+    throw error;
+  }
+};
+
+// 사용자 is_admin 값 확인 함수 추가
+export const checkUserAdminStatus = async (user_id: string) => {
+  try {
+    const query = `
+      SELECT user_id, is_admin 
+      FROM users 
+      WHERE user_id = $1
+    `;
+    const values = [user_id];
+    const result = await pool.query(query, values);
+    const user = result.rows[0] || null;
+    
+    console.log("=== checkUserAdminStatus ===");
+    console.log("사용자 ID:", user_id);
+    console.log("조회된 사용자:", user);
+    console.log("is_admin 값:", user?.is_admin);
+    console.log("is_admin 타입:", typeof user?.is_admin);
+    console.log("=== checkUserAdminStatus 끝 ===");
+    
+    return user;
+  } catch (error) {
+    console.error("checkUserAdminStatus error - userStorage");
     throw error;
   }
 };

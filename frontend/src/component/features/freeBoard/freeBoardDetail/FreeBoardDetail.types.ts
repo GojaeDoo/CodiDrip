@@ -15,4 +15,12 @@ export interface FreeBoardDetailPresenterProps {
   onDelete: () => void;
   formatDate: (dateString: string) => string;
   isLogin: boolean;
+  isAuthor: boolean;
+  isAdmin: boolean;
+  showReportModal: boolean;
+  selectedReportReason: string;
+  onReportClick: () => void;
+  onCloseReportModal: () => void;
+  onReportReasonChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onSubmitReport: () => void;
 }

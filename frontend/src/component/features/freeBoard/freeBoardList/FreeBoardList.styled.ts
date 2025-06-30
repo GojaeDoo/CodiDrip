@@ -228,7 +228,8 @@ export const Cell = styled.div`
 
 export const TitleCell = styled(Cell)`
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
   @media (max-width: 768px) {
     font-size: 1.1rem;
     margin-bottom: 2px;

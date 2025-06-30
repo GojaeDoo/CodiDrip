@@ -57,7 +57,8 @@ export const PostCard = styled.div`
   margin-bottom: 0;
 
   &:hover {
-    transform: translateY(-2px);
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
   }
 
   @media (max-width: 768px) {
@@ -432,5 +433,96 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
     &:hover {
       transform: none;
     }
+  }
+`;
+
+export const ReportModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const ReportModalContent = styled.div`
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+`;
+
+export const ReportModalTitle = styled.h2`
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  transition: color 0.3s ease;
+`;
+
+export const ReportModalText = styled.p`
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+`;
+
+export const ReportReasonSelect = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  option {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+  }
+`;
+
+export const ReportModalButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+export const ReportModalButton = styled.button<{ $primary?: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background-color: ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--card-border)')};
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ $primary }) => ($primary ? 'var(--accent-hover)' : 'var(--card-border)')};
+  }
+
+  &:disabled {
+    background-color: var(--card-border);
+    color: var(--text-secondary);
+    cursor: not-allowed;
   }
 `;

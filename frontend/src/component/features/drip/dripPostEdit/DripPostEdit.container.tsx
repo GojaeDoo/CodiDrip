@@ -11,10 +11,12 @@ export const DripPostEditContainer = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [styleCategory, setStyleCategory] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null!);
   const [editData, setEditData] = useState<{
     post_image: string[];
     post_tag: string[];
+    style_category: string;
   } | null>(null);
   const imageRef = useRef<HTMLImageElement>(null!);
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
@@ -50,10 +52,12 @@ export const DripPostEditContainer = () => {
           if (response) {
             const parsedImages = JSON.parse(response.게시글이미지);
             const parsedTags = JSON.parse(response.태그);
+            const styleCategory = response.스타일카테고리 || "";
 
             setEditData({
               post_image: parsedImages,
               post_tag: parsedTags,
+              style_category: styleCategory,
             });
             // 이미지 URL 변환 적용 (빈 값, undefined, null 방어)
             const imageUrls = parsedImages
@@ -61,6 +65,7 @@ export const DripPostEditContainer = () => {
               .map(getImageUrl);
             setImages(imageUrls);
             setTags(parsedTags);
+            setStyleCategory(styleCategory);
           }
         } catch (error) {
           console.error("Error fetching drip post:", error);
@@ -137,6 +142,10 @@ export const DripPostEditContainer = () => {
     setTags((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleStyleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStyleCategory(e.target.value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
@@ -160,12 +169,14 @@ export const DripPostEditContainer = () => {
           postNo,
           images: processedImages,
           tags,
+          styleCategory,
           userId,
         });
       } else {
         await postDrip({
           images,
           tags,
+          styleCategory,
           userId,
         });
       }
@@ -261,6 +272,8 @@ export const DripPostEditContainer = () => {
       imageRef={imageRef}
       aspectRatio={aspectRatio}
       onImageLoad={handleImageLoad}
+      styleCategory={styleCategory}
+      onStyleCategoryChange={handleStyleCategoryChange}
     />
   );
 };

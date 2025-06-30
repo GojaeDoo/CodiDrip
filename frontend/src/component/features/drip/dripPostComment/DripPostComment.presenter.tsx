@@ -31,7 +31,21 @@ const DripPostComment = (props: DripPostCommentProps) => {
     replyContent,
     onChangeReply,
     onSubmitReply,
+    showReportModal,
+    reportCommentId,
+    onOpenReportModal,
+    onCloseReportModal,
+    onReportSubmit,
   } = props;
+
+  const [reportReason, setReportReason] = React.useState("");
+
+  const handleReportSubmit = () => {
+    if (reportReason && reportCommentId) {
+      onReportSubmit(reportReason as any);
+      setReportReason("");
+    }
+  };
 
   return (
     <S.CommentSection>
@@ -73,25 +87,33 @@ const DripPostComment = (props: DripPostCommentProps) => {
                   }}>
                     <MessageCircle size={16} />
                   </S.ReplyButton>
-                  {myUserId === comment.user_id && (
-                    <S.MenuButtonWrapper>
-                      <button type="button" onClick={() => handleMenuOpen(comment.id)}>
-                        <MoreVertical size={16} color="#aaa"/>
-                      </button>
-                      {activeMenuId === comment.id && (
-                        <S.Menu>
+                  <S.MenuButtonWrapper>
+                    <button type="button" onClick={() => handleMenuOpen(comment.id)}>
+                      <MoreVertical size={16} color="#aaa"/>
+                    </button>
+                    {activeMenuId === comment.id && (
+                      <S.Menu>
+                        {myUserId === comment.user_id && (
                           <S.MenuItem onClick={() => {
                             onEditComment(comment.id);
-                            handleMenuOpen(0);  // 메뉴 닫기
+                            handleMenuOpen(0);
                           }}>수정</S.MenuItem>
+                        )}
+                        {(myUserId === comment.user_id || props.isAdmin) && (
                           <S.MenuItem onClick={() => {
                             onDeleteComment(comment.id);
-                            handleMenuOpen(0);  // 메뉴 닫기
+                            handleMenuOpen(0);
                           }}>삭제</S.MenuItem>
-                        </S.Menu>
-                      )}
-                    </S.MenuButtonWrapper>
-                  )}
+                        )}
+                        {myUserId !== comment.user_id && !props.isAdmin && (
+                          <S.MenuItem onClick={() => {
+                            onOpenReportModal(comment.id);
+                            handleMenuOpen(0);
+                          }}>신고</S.MenuItem>
+                        )}
+                      </S.Menu>
+                    )}
+                  </S.MenuButtonWrapper>
                 </S.CommentMeta>
 
                 {/* 답글 보기/숨기기 버튼 */}
@@ -125,27 +147,35 @@ const DripPostComment = (props: DripPostCommentProps) => {
                               <Heart size={16} fill={reply.liked ? "#ff3b3b" : "none"} color={reply.liked ? "#ff3b3b" : "#aaa"} />
                               {reply.like_count}
                             </S.CommentLikeButton>
-                            {myUserId === reply.user_id && (
-                              <S.MenuButtonWrapper>
-                                <button type="button" onClick={() => handleMenuOpen(reply.id)}>
-                                  <MoreVertical size={16} />
-                                </button>
-                                {activeMenuId === reply.id && (
-                                  <S.Menu>
+                            <S.MenuButtonWrapper>
+                              <button type="button" onClick={() => handleMenuOpen(reply.id)}>
+                                <MoreVertical size={16} />
+                              </button>
+                              {activeMenuId === reply.id && (
+                                <S.Menu>
+                                  {myUserId === reply.user_id && (
                                     <S.MenuItem onClick={() => {
                                       const replyContent = reply.content;
                                       setEditContent(replyContent);
                                       onEditComment(reply.id);
                                       handleMenuOpen(0);
                                     }}>수정</S.MenuItem>
+                                  )}
+                                  {(myUserId === reply.user_id || props.isAdmin) && (
                                     <S.MenuItem onClick={() => {
                                       onDeleteComment(reply.id);
                                       handleMenuOpen(0);
                                     }}>삭제</S.MenuItem>
-                                  </S.Menu>
-                                )}
-                              </S.MenuButtonWrapper>
-                            )}
+                                  )}
+                                  {myUserId !== reply.user_id && !props.isAdmin && (
+                                    <S.MenuItem onClick={() => {
+                                      onOpenReportModal(reply.id);
+                                      handleMenuOpen(0);
+                                    }}>신고</S.MenuItem>
+                                  )}
+                                </S.Menu>
+                              )}
+                            </S.MenuButtonWrapper>
                           </S.CommentMeta>
                         </S.CommentBody>
                       </S.ReplyItem>
@@ -251,6 +281,41 @@ const DripPostComment = (props: DripPostCommentProps) => {
             </S.ModalFooter>
           </S.ModalContent>
         </S.ModalOverlay>
+      )}
+
+      {/* 신고 모달 */}
+      {showReportModal && (
+        <S.ReportModalOverlay onClick={onCloseReportModal}>
+          <S.ReportModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ReportModalTitle>댓글 신고</S.ReportModalTitle>
+            <S.ReportModalText>
+              신고 사유를 선택해주세요. 신고된 댓글은 검토 후 처리됩니다.
+            </S.ReportModalText>
+            <S.ReportReasonSelect
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+            >
+              <option value="">신고 사유를 선택하세요</option>
+              <option value="욕설">욕설</option>
+              <option value="광고">광고</option>
+              <option value="도배">도배</option>
+              <option value="부적절한 사진">부적절한 사진</option>
+              <option value="기타">기타</option>
+            </S.ReportReasonSelect>
+            <S.ReportModalButtonGroup>
+              <S.ReportModalButton onClick={onCloseReportModal}>
+                취소
+              </S.ReportModalButton>
+              <S.ReportModalButton 
+                $primary 
+                onClick={handleReportSubmit}
+                disabled={!reportReason}
+              >
+                신고하기
+              </S.ReportModalButton>
+            </S.ReportModalButtonGroup>
+          </S.ReportModalContent>
+        </S.ReportModalOverlay>
       )}
     </S.CommentSection>
   );

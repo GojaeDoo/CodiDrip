@@ -22,6 +22,8 @@ const DripPostEditPresenter = (
     onTagInputChange,
     onKeyPress,
     onDeleteTag,
+    styleCategory,
+    onStyleCategoryChange,
     onSubmit,
     onUpdate,
     status,
@@ -110,10 +112,29 @@ const DripPostEditPresenter = (
                 ))}
               </S.TagList>
             </S.TagSection>
+            <S.StyleCategorySection>
+              <S.StyleCategoryLabel>스타일 카테고리 *</S.StyleCategoryLabel>
+              <S.StyleCategorySelect
+                value={styleCategory}
+                onChange={onStyleCategoryChange}
+                required
+              >
+                <option value="">스타일을 선택해주세요</option>
+                <option value="일상복">일상복</option>
+                <option value="빈티지">빈티지</option>
+                <option value="스트릿">스트릿</option>
+                <option value="미니멀">미니멀</option>
+                <option value="오피스룩">오피스룩</option>
+                <option value="아메카지">아메카지</option>
+                <option value="캐주얼">캐주얼</option>
+                <option value="포멀">포멀</option>
+                <option value="Y2K">Y2K</option>
+              </S.StyleCategorySelect>
+            </S.StyleCategorySection>
             <S.ButtonGroup>
               <S.SubmitButton
                 onClick={status === true ? onUpdate : onSubmit}
-                disabled={imageSrcList.length === 0}
+                disabled={imageSrcList.length === 0 || !styleCategory}
               >
                 {status === true ? "수정" : "게시"}하기
               </S.SubmitButton>

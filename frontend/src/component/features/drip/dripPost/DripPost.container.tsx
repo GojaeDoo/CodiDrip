@@ -2,17 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
-import { DripPostContainerProps, DripPostType } from "./DripPost.types";
-import { getUserDripPostQuery, deleteDripPostQuery, likeDripPostQuery } from "./DripPost.query";
+import { DripPostContainerProps, DripPostType, ReportReasonType } from "./DripPost.types";
+import { getUserDripPostQuery, deleteDripPostQuery, likeDripPostQuery, createReport } from "./DripPost.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { encodeUserId } from "@/utils/urlEncoder";
+import { useAuth } from "@/context/AuthContext";
 
 export const DripPostContainer = ({
   gender,
   userId,
   isMyPage,
   isLike,
-  isSaved
+  isSaved,
+  selectedStyles
 }: DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
@@ -21,10 +23,20 @@ export const DripPostContainer = ({
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  
+  // 신고 모달 관련 상태
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportPostNo, setReportPostNo] = useState<number | null>(null);
+  
   const router = useRouter();
   const searchParams = useSearchParams();
   const isDripUser = searchParams.get("dripUser") === "true";
+  const { isAdmin } = useAuth();
 
+  console.log("=== DripPost Container ===");
+  console.log("isAdmin:", isAdmin);
+  console.log("isAdmin 타입:", typeof isAdmin);
+  console.log("=== DripPost Container 끝 ===");
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -53,7 +65,8 @@ export const DripPostContainer = ({
           gender !== "all" ? gender : undefined,
           isMyPage,
           isLike,
-          isSaved
+          isSaved,
+          selectedStyles
         );
         setDripPostData(response);
       } catch (error) {
@@ -64,7 +77,7 @@ export const DripPostContainer = ({
     };
   
     fetchDripPosts();
-  }, [userId, gender, isMyPage, currentUserId, isLike, isSaved]);
+  }, [userId, gender, isMyPage, currentUserId, isLike, isSaved, selectedStyles]);
 
   const onPrevImage = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -145,7 +158,6 @@ export const DripPostContainer = ({
     postNo: number
   ) => {
     e.preventDefault();
-    alert(`게시글 ${postNo} 댓글`);
   };
 
   const onMenuClick = (
@@ -162,6 +174,42 @@ export const DripPostContainer = ({
 
   const handleReportPost = async (e: React.MouseEvent, postNo: number) => {
     e.stopPropagation();
+  };
+
+  // 신고 모달 관련 핸들러들
+  const onOpenReportModal = (postNo: number) => {
+    setReportPostNo(postNo);
+    setShowReportModal(true);
+    setActiveMenu(null); // 메뉴 닫기
+  };
+
+  const onCloseReportModal = () => {
+    setShowReportModal(false);
+    setReportPostNo(null);
+  };
+
+  const onReportSubmit = async (reason: ReportReasonType) => {
+    if (!reportPostNo) return;
+    
+    try {
+      const reportData = {
+        targetType: 'post' as const,
+        targetId: reportPostNo,
+        reportReason: reason
+      };
+
+      const response = await createReport(reportData);
+      
+      if (response.success) {
+        alert("신고가 접수되었습니다. 검토 후 처리됩니다.");
+        onCloseReportModal();
+      } else {
+        alert(response.message || "신고 처리 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("신고 처리 중 오류 발생:", error);
+      alert("신고 처리 중 오류가 발생했습니다.");
+    }
   };
 
   const handleLike = async (postId: number) => {
@@ -210,6 +258,7 @@ export const DripPostContainer = ({
       currentImageIndexes={currentImageIndexes}
       currentUserId={currentUserId}
       activeMenu={activeMenu}
+      isAdmin={isAdmin}
       onPrevImage={onPrevImage}
       onNextImage={onNextImage}
       onHidePost={onHidePost}
@@ -221,6 +270,11 @@ export const DripPostContainer = ({
       onClickMoveDetail={onClickMoveDetail}
       onReportPost={handleReportPost}
       onClickMoveUserProfile={onClickMoveUserProfile}
+      showReportModal={showReportModal}
+      reportPostNo={reportPostNo}
+      onOpenReportModal={onOpenReportModal}
+      onCloseReportModal={onCloseReportModal}
+      onReportSubmit={onReportSubmit}
     />
   );
 };

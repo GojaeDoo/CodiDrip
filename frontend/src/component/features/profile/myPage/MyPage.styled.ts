@@ -122,6 +122,8 @@ export const ProfileName = styled.div`
   font-size: 2rem;
   font-weight: bold;
   color: var(--text-primary);
+  font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.02em;
   transition: color 0.3s ease;
 
   @media (max-width: 1024px) {
@@ -140,15 +142,20 @@ export const ProfileName = styled.div`
 export const ProfileBio = styled.div`
   font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
+  font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   transition: color 0.3s ease;
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 480px) {
     font-size: 0.85rem;
+    line-height: 1.4;
   }
 `;
 
@@ -174,6 +181,7 @@ export const StatItem = styled.div`
   gap: 0.5rem;
   color: var(--text-primary);
   font-size: 1rem;
+  font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   transition: color 0.3s ease;
 
   @media (max-width: 768px) {
@@ -202,6 +210,9 @@ export const ProfileDetails = styled.div`
   color: var(--text-secondary);
   font-size: 1rem;
   margin-top: 0.5rem;
+  font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   transition: color 0.3s ease;
 
   @media (max-width: 768px) {
@@ -217,6 +228,7 @@ export const ProfileDetails = styled.div`
 
 export const EditButton = styled.button`
   background: var(--card-border);
+  height: 40px;
   border: none;
   color: var(--text-primary);
   padding: 0.5rem 1rem;
@@ -238,6 +250,54 @@ export const EditButton = styled.button`
     font-size: 0.9rem;
     padding: 0.4rem 0.8rem;
     margin-top: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    margin-top: 0.6rem;
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+  }
+`;
+
+export const LogoutButton = styled.button`
+  background: var(--danger);
+  border: none;
+  height: 40px;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top:1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #d32f2f;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
   }
 
   @media (max-width: 480px) {

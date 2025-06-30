@@ -2,6 +2,7 @@ export interface User {
   user_id: string;
   user_password: string;
   user_email: string;
+  is_admin?: boolean;
 }
 
 export interface IdCheckType {
