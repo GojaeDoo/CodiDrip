@@ -11,6 +11,7 @@ export interface HeaderProps {
   onClickMoveReportList: () => void;
   isLoggedIn: boolean;
   userProfile: Profile | null;
+  isAdmin: boolean;
   onChangeSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEnterSearchInput: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onToggleTheme: () => void;

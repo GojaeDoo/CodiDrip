@@ -151,7 +151,8 @@ export const MyPageContainer = () => {
   return (
     <MyPagePresenter
       userProfile={userProfile}
-      isMyPage={!searchParams.get("status")}
+      isMyPage={true}
+      isOwnProfile={!searchParams.get("status")}
       isFollowing={isFollowing}
       isMyDrip={activeTab === 'myDrip'}
       isLike={activeTab === 'liked'}

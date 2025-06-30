@@ -48,7 +48,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
             <S.ProfileDetails>
               {props.userProfile?.profile_height || 0}cm / {props.userProfile?.profile_weight || 0}kg / {props.userProfile?.profile_gender || "미설정"}
             </S.ProfileDetails>
-            {props.isMyPage ? (
+            {props.isOwnProfile ? (
               <S.ButtonContainer>
                 <S.EditButton onClick={props.onClickMoveProfileEdit}>
                   <Edit size={16} />
@@ -83,13 +83,13 @@ export const MyPagePresenter = (props: MyPageProps) => {
               <Edit size={16} />
               작성한 DRIP
             </S.TabButton>
-            {props.isMyPage && (
+            {props.isOwnProfile && (
             <S.TabButton data-active={props.isLike || false} onClick={props.onClickMoveLikedDrip}>
               <Heart size={16} />
               좋아요한 DRIP
             </S.TabButton>
             )}
-            {props.isMyPage && (
+            {props.isOwnProfile && (
             <S.TabButton data-active={props.isSaved || false} onClick={props.onClickMoveSavedDrip}>
               <Bookmark size={16} />
               저장한 DRIP
@@ -110,7 +110,7 @@ export const MyPagePresenter = (props: MyPageProps) => {
           </S.TabButtons>
 
           <S.ContentArea>
-            {props.isMyPage && (
+            {props.isOwnProfile && (
               <S.AddButton onClick={props.onClickMoveDripPostEdit}>
                 <Plus size={16} />
                 DRIP 추가

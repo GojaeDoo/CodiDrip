@@ -6,7 +6,10 @@ export const DripUserPresenter = (props: DripUserPresenterProps) => {
     <S.Background>
       <S.UserDripWrapper>
         {props.users.map((user) => (
-          <S.UserCard key={user.profile_id}>
+          <S.UserCard 
+            key={user.profile_id}
+            onClick={() => props.onUserCardClick(user.user_id)}
+          >
             <S.ProfileImageWrapper>
               <S.ProfileImage
                 src={`http://localhost:3005/uploads/profiles/${user.profile_image}`}

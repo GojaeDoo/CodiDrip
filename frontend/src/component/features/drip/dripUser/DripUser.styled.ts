@@ -44,9 +44,15 @@ export const UserCard = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {

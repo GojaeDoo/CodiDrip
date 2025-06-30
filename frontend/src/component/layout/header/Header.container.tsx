@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
 import { fetchUserProfile,getSearchResult } from "./Header.query";
+import { checkUserAdminStatus } from "@/component/features/auth/login/Login.query";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { HeaderProps, Profile } from "./Header.types";
@@ -12,6 +13,7 @@ import { SearchResult } from "@/component/features/search/SearchModal.types";
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
   const { isLoggedIn } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -34,8 +36,22 @@ const HeaderContainer = () => {
         }
       };
       loadUserProfile();
+
+      // 관리자 상태 확인
+      const checkAdminStatus = async () => {
+        try {
+          const adminStatus = await checkUserAdminStatus(storedUserId);
+          console.log("adminStatus : ", adminStatus);
+          setIsAdmin(adminStatus?.is_admin || false);
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdmin(false);
+        }
+      };
+      checkAdminStatus();
     } else {
       setUserProfile(null);
+      setIsAdmin(false);
     }
   }, [isLoggedIn]);
 
@@ -113,6 +129,7 @@ const HeaderContainer = () => {
         onClickMoveDrips={onClickMoveDrips}
         isLoggedIn={isLoggedIn}
         userProfile={userProfile}
+        isAdmin={isAdmin}
         onChangeSearchInput={onChangeSearchInput}
         onEnterSearchInput={onEnterSearchInput}
         onClickMoveFreeBoardList={onClickMoveFreeBoardList}

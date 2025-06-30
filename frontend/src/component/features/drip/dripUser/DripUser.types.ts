@@ -19,4 +19,5 @@ export interface DripUserFetchProps {
 
 export interface DripUserPresenterProps {
   users: DripUserFetchProps[];
+  onUserCardClick: (userId: string) => void;
 }

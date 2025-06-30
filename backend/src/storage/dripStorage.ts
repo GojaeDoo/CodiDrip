@@ -56,7 +56,15 @@ export const createDripDB = async (
 
 export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
   try {
-    console.log("getUserDripPost params:", { userId, filterUserId, gender, isLike, isSaved, styles });
+    console.log("=== getUserDripPost Debug ===");
+    console.log("userId:", userId);
+    console.log("filterUserId:", filterUserId);
+    console.log("gender:", gender);
+    console.log("isLike:", isLike);
+    console.log("isSaved:", isSaved);
+    console.log("styles:", styles);
+    console.log("=== getUserDripPost Debug 끝 ===");
+    
     let query = `
       WITH user_likes AS (
         SELECT post_no 
@@ -103,8 +111,9 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
     // 관리자 계정 제외 (일반 사용자만 조회)
     conditions.push("u.is_admin = false");
 
-    // 마이페이지에서만 내 글만 필터 (좋아요/저장 필터가 없을 때만)
+    // 마이페이지에서 특정 사용자의 게시글만 필터 (좋아요/저장 필터가 없을 때만)
     if (filterUserId && !isLike && !isSaved) {
+      console.log("filterUserId 조건 추가:", filterUserId);
       conditions.push("p.user_id = $" + (params.length + 1));
       params.push(filterUserId);
     }
@@ -151,7 +160,8 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
     console.log("Query params:", params);
 
     const result = await pool.query(query, params);
-    console.log("Query result rows:", result.rows);
+    console.log("Query result rows count:", result.rows.length);
+    console.log("First few rows:", result.rows.slice(0, 3));
     return result.rows;
   } catch (error) {
     console.error("Error in getUserDripPost:", error);

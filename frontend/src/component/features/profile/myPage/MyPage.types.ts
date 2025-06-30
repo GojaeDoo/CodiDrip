@@ -26,6 +26,7 @@ export interface MyPageProps {
     post_count: number;
   } | null;
   isMyPage: boolean;
+  isOwnProfile: boolean;
   isFollowing: boolean;
   isMyDrip: boolean;
   isLike: boolean;

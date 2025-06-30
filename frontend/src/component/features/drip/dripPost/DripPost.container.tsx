@@ -52,14 +52,19 @@ export const DripPostContainer = ({
       
       setIsLoading(true);
       try {
-        const targetUserId = isMyPage ? currentUserId : undefined;
-        console.log("Fetching posts with params:", {
-          targetUserId,
-          gender,
-          isMyPage,
-          isLike,
-          isSaved
-        });
+        // 마이페이지에서 다른 사용자의 프로필을 볼 때는 userId(프로필 주인)를 사용
+        // 그 외의 경우는 currentUserId(현재 로그인한 사용자)를 사용
+        const targetUserId = isMyPage ? (userId || currentUserId) : undefined;
+        console.log("=== DripPost Debug Info ===");
+        console.log("isMyPage:", isMyPage);
+        console.log("userId (from props):", userId);
+        console.log("currentUserId:", currentUserId);
+        console.log("targetUserId:", targetUserId);
+        console.log("gender:", gender);
+        console.log("isLike:", isLike);
+        console.log("isSaved:", isSaved);
+        console.log("=== DripPost Debug Info 끝 ===");
+        
         const response = await getUserDripPostQuery(
           targetUserId,
           gender !== "all" ? gender : undefined,
