@@ -1,12 +1,12 @@
 import express, { RequestHandler } from "express";
 import {
-  createDrip,
-  getPostNoDrip,
-  getUserDrip,
-  updateDrip,
+  postCreateDripController,
+  getPostNoDripController,
+  getUserDripController,
+  postUpdateDripController,
   getDripPostCommentController,
   postDripPostCommentController,
-  deleteDrip,
+  deleteDripController,
   getDripPostRepliesController,
   deleteDripPostCommentController,
   updateDripPostCommentController,
@@ -25,22 +25,22 @@ const router = express.Router();
 // Drip 게시글
 
 // Drip 생성
-router.post("/", createDrip as RequestHandler);
+router.post("/", postCreateDripController as RequestHandler);
 
 // 사용자별 Drip 조회
-router.get("/", getUserDrip as RequestHandler);
+router.get("/", getUserDripController as RequestHandler);
 
 // Drip 게시글 좋아요 상태 조회
 router.get("/like-status", getDripPostLikeStatusController as RequestHandler);
 
 // Drip 조회
-router.get("/:postNo", getPostNoDrip as RequestHandler);
+router.get("/:postNo", getPostNoDripController as RequestHandler);
 
 // Drip 수정
-router.put("/:postNo", updateDrip as RequestHandler);
+router.put("/:postNo", postUpdateDripController as RequestHandler);
 
 // Drip 삭제
-router.delete("/:postNo", deleteDrip as RequestHandler);
+router.delete("/:postNo", deleteDripController as RequestHandler);
 
 // Drip 게시글 좋아요
 router.post("/:postNo/like", likeDripPostController as RequestHandler);

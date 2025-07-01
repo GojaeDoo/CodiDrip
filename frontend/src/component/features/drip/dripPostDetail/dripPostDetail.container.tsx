@@ -3,8 +3,8 @@
 import React, { useRef, useState, useCallback, useLayoutEffect, useEffect } from "react";
 import DripPostDetailPresenter from "./DripPostDetail.presenter";
 import { useQuery } from "@tanstack/react-query";
-import { getDripPostDetail, likeDripPostQuery, unlikeDripPostQuery, getDripPostLikeStatus, saveDripPostQuery, getDripPostSaveStatus } from "./DripPostDetail.query";
-import { DripPostDetailProps } from "./DripPostDetail.types";
+import { getDripPostDetail, postLikeDripPostQuery, deleteUnlikeDripPostQuery, getDripPostLikeStatus, postSaveDripPostQuery, getDripPostSaveStatus } from "./DripPostDetail.query";
+import { DripPostDetailPresenterProps, DripPostDetailProps } from "./DripPostDetail.types";
 import { useRouter } from "next/navigation";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
@@ -111,13 +111,13 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     return () => window.removeEventListener("resize", updateRect);
   }, [updateRect, currentImageIndex]);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageLoad:DripPostDetailPresenterProps["onImageLoad"] = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
     updateRect();
   };
 
-  const handleLikeClick = async () => {
+  const handleLikeClick:DripPostDetailPresenterProps["onLikeClick"] = async () => {
     if (!userId) {
       alert("로그인 후 좋아요를 누를 수 있습니다.");
       router.push("/login");
@@ -126,10 +126,10 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
 
     try {
       if (isLiked) {
-        await unlikeDripPostQuery(parseInt(postno), userId);
+        await deleteUnlikeDripPostQuery(parseInt(postno), userId);
         setLikeCount(prev => prev - 1);
       } else {
-        await likeDripPostQuery(parseInt(postno), userId);
+        await postLikeDripPostQuery(parseInt(postno), userId);
         setLikeCount(prev => prev + 1);
       }
       setIsLiked(!isLiked);
@@ -138,11 +138,11 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     }
   };
 
-  const handlePrevImage = () => {
+  const handlePrevImage:DripPostDetailPresenterProps["onPrevImage"] = () => {
     setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : 0));
   };
 
-  const handleNextImage = () => {
+  const handleNextImage:DripPostDetailPresenterProps["onNextImage"] = () => {
     setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
@@ -176,7 +176,7 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
 
   const postTags = JSON.parse(dripPost.태그 || "[]");
 
-  const onCommentClick = () => {
+  const onCommentClick:DripPostDetailPresenterProps["onCommentClick"] = () => {
     if (!userId) {
       alert("로그인 후 댓글을 작성할 수 있습니다.");
       router.push("/login");
@@ -185,14 +185,14 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     window.dispatchEvent(new Event('openCommentModal'));
   };
 
-  const handleClickSave = async () => {
+  const handleClickSave:DripPostDetailPresenterProps["handleClickSave"] = async () => {
     if (!userId) {
       alert("로그인 후 이용해주세요.");
       router.push("/login");
       return;
     }
     try {
-      const response = await saveDripPostQuery(parseInt(postno), userId);
+      const response = await postSaveDripPostQuery(parseInt(postno), userId);
       setIsSaved(response.saved);
     } catch (error) {
       console.error("Error saving post:", error);

@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent } from "react";
 
-export interface PasswordFindResultProps {
+export interface PasswordFindResultPresenterProps {
   onChangeAuthenticationNumber: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;

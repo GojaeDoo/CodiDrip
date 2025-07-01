@@ -1,10 +1,10 @@
 "use client";
 import * as S from "./Drips.styled";
-import { DripsProps } from "./Drips.types";
+import { DripsPresenterProps } from "./Drips.types";
 import { DripPost } from "@/app/dripPost/page";
 import { DripUser } from "@/app/dripUser/page";
 
-const DripsPresenter = (props: DripsProps) => {
+const DripsPresenter = (props: DripsPresenterProps) => {
   const styleCategories = [
     "일상복", "빈티지", "스트릿", "미니멀", "오피스룩", "아메카지", "캐주얼", "포멀", "Y2K"
   ];

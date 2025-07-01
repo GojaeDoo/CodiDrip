@@ -12,7 +12,7 @@ export interface Profile {
   profile_about: string | null;
 }
 
-export interface MyPageProps {
+export interface MyPagePresenterProps {
   userProfile: {
     profile_id: string;
     profile_nickname: string;

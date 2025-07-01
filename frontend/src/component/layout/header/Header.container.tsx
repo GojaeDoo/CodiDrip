@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import HeaderPresenter from "./Header.presenter";
 import { useRouter } from "next/navigation";
-import { fetchUserProfile,getSearchResult } from "./Header.query";
+import { getUserProfileQuery,getSearchResultQuery } from "./Header.query";
 import { checkUserAdminStatus } from "@/component/features/auth/login/Login.query";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
-import { HeaderProps, Profile } from "./Header.types";
+import { HeaderPresenterProps, Profile } from "./Header.types";
 import { SearchModalContainer } from "@/component/features/search/SearchModal.container";
 import { SearchResult } from "@/component/features/search/SearchModal.types";
 
@@ -23,13 +23,11 @@ const HeaderContainer = () => {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-    console.log("storedUserId : ", storedUserId);
     if (storedUserId && isLoggedIn) {
       const loadUserProfile = async () => {
         try {
-          const profile = await fetchUserProfile(storedUserId);
-          console.log("profile : ", profile);
-          setUserProfile(profile);
+          const response = await getUserProfileQuery(storedUserId);
+          setUserProfile(response);
         } catch (error) {
           console.error("Error loading user profile:", error);
           setUserProfile(null);
@@ -41,7 +39,6 @@ const HeaderContainer = () => {
       const checkAdminStatus = async () => {
         try {
           const adminStatus = await checkUserAdminStatus(storedUserId);
-          console.log("adminStatus : ", adminStatus);
           setIsAdmin(adminStatus?.is_admin || false);
         } catch (error) {
           console.error("Error checking admin status:", error);
@@ -55,7 +52,7 @@ const HeaderContainer = () => {
     }
   }, [isLoggedIn]);
 
-  const onClickMoveMyPage: HeaderProps["onClickMoveMyPage"] = () => {
+  const onClickMoveMyPage: HeaderPresenterProps["onClickMoveMyPage"] = () => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       router.push("/myPage");
@@ -65,23 +62,23 @@ const HeaderContainer = () => {
     }
   };
 
-  const onClickMoveLogin: HeaderProps["onClickMoveLogin"] = () => {
+  const onClickMoveLogin: HeaderPresenterProps["onClickMoveLogin"] = () => {
     router.push("/login");
   };
 
-  const onClickMoveJoin: HeaderProps["onClickMoveJoin"] = () => {
+  const onClickMoveJoin: HeaderPresenterProps["onClickMoveJoin"] = () => {
     router.push("/join");
   };
 
-  const onClickMain: HeaderProps["onClickMain"] = () => {
+  const onClickMain: HeaderPresenterProps["onClickMain"] = () => {
     router.push("/drips");
   };
 
-  const onClickMoveDripUser: HeaderProps["onClickMoveDripUser"] = () => {
+  const onClickMoveDripUser: HeaderPresenterProps["onClickMoveDripUser"] = () => {
     router.push("/drips?dripUser=true");
   };
 
-  const onClickMoveDrips:HeaderProps["onClickMoveDrips"] = () => {
+  const onClickMoveDrips:HeaderPresenterProps["onClickMoveDrips"] = () => {
     router.push("/drips");
   };
 
@@ -93,15 +90,14 @@ const HeaderContainer = () => {
     router.push("/reportList");
   }
 
-  const onChangeSearchInput: HeaderProps["onChangeSearchInput"] = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeSearchInput: HeaderPresenterProps["onChangeSearchInput"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
-  const onEnterSearchInput: HeaderProps["onEnterSearchInput"] = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onEnterSearchInput: HeaderPresenterProps["onEnterSearchInput"] = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchInput.trim()) {
       try {
-        const response = await getSearchResult(searchInput);
-        console.log("response : ", response);
+        const response = await getSearchResultQuery(searchInput);
         setSearchResults(response);
         setIsSearchModalOpen(true);
       } catch (error) {

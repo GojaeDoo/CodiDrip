@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FreeBoardListPresenter } from "./FreeBoardList.presenter";
-import { FreeBoardPost } from "./FreeBoardList.types";
+import { FreeBoardListPresenterProps, FreeBoardPost } from "./FreeBoardList.types";
 import { getFreeBoardList, getFreeBoardSearch } from "./FreeBoardList.query";
 import * as S from "./FreeBoardList.styled";
 import FreeBoardListSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardListSkeleton";
@@ -43,7 +43,7 @@ export const FreeBoardListContainer = () => {
   const endIndex = startIndex + POSTS_PER_PAGE;
   const currentPosts = filteredPosts.slice(startIndex, endIndex);
 
-  const formatDate = (dateString: string) => {
+  const formatDate:FreeBoardListPresenterProps["formatDate"] = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', {
       year: 'numeric',
@@ -52,7 +52,7 @@ export const FreeBoardListContainer = () => {
     });
   };
 
-  const renderPagination = () => {
+  const renderPagination:FreeBoardListPresenterProps["renderPagination"] = () => {
     const pages = [];
     const maxVisiblePages = 5;
     
@@ -97,7 +97,7 @@ export const FreeBoardListContainer = () => {
     return pages;
   };
 
-  const handleSearch = async () => {
+  const handleSearch:FreeBoardListPresenterProps["onClickSearch"] = async () => {
     setCurrentPage(1); // 검색 시 첫 페이지로 이동
     
     try {
@@ -117,26 +117,26 @@ export const FreeBoardListContainer = () => {
     }
   };
 
-  const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchInputChange:FreeBoardListPresenterProps["onSearchInputChange"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const onSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onSearchKeyPress:FreeBoardListPresenterProps["onSearchKeyPress"] = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
-  const onPageChange = (page: number) => {
+  const onPageChange:FreeBoardListPresenterProps["onPageChange"] = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const onPostClick = (postId: number) => {
+  const onPostClick:FreeBoardListPresenterProps["onPostClick"] = (postId: number) => {
     router.push(`/freeBoardDetail?id=${postId}`);
   };
 
-  const onWriteClick = () => {
+  const onWriteClick:FreeBoardListPresenterProps["onWriteClick"] = () => {
     router.push("/freeBoardEdit");
   };
 

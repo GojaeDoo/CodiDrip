@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DripPostEditPresenter from "./DripPostEdit.presenter";
-import { fetchDripPostQuery, postDrip, updateDrip } from "./DripPostEdit.query";
+import { getDripPostQuery, postDripQuery, putUpdateDripQuery } from "./DripPostEdit.query";
+import { DripPostEditPresenterProps } from "./DripPostEdit.types";
 
 export const DripPostEditContainer = () => {
   const router = useRouter();
@@ -48,7 +49,7 @@ export const DripPostEditContainer = () => {
     const fetchDripPost = async () => {
       if (status && postNo) {
         try {
-          const response = await fetchDripPostQuery(postNo);
+          const response = await getDripPostQuery(postNo);
           if (response) {
             const parsedImages = JSON.parse(response.게시글이미지);
             const parsedTags = JSON.parse(response.태그);
@@ -76,7 +77,7 @@ export const DripPostEditContainer = () => {
     fetchDripPost();
   }, [status, postNo]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload:DripPostEditPresenterProps["onImageUpload"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
@@ -99,8 +100,6 @@ export const DripPostEditContainer = () => {
 
     Promise.all(promises)
       .then((newImages) => {
-        console.log("Uploaded images:", newImages); // 디버깅용 로그
-        // 기존 이미지와 새로 추가된 이미지를 합치되, 기존 이미지를 먼저 유지
         setImages((prev) => {
           const existingImages = prev.filter((img) =>
             img.startsWith("http://localhost:3005")
@@ -113,7 +112,7 @@ export const DripPostEditContainer = () => {
       });
   };
 
-  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTagInputChange:DripPostEditPresenterProps["onTagInputChange"] = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTagInput(value);
 
@@ -127,7 +126,7 @@ export const DripPostEditContainer = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress:DripPostEditPresenterProps["onKeyPress"] = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const trimmedInput = tagInput.trim();
@@ -138,15 +137,15 @@ export const DripPostEditContainer = () => {
     }
   };
 
-  const handleDeleteTag = (index: number) => {
+  const handleDeleteTag:DripPostEditPresenterProps["onDeleteTag"] = (index: number) => {
     setTags((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleStyleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStyleCategoryChange:DripPostEditPresenterProps["onStyleCategoryChange"] = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStyleCategory(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit:DripPostEditPresenterProps["onSubmit"] = async (e: React.FormEvent) => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
     if (!userId) return;
@@ -165,7 +164,7 @@ export const DripPostEditContainer = () => {
           return img;
         });
 
-        await updateDrip({
+        await putUpdateDripQuery({
           postNo,
           images: processedImages,
           tags,
@@ -173,7 +172,7 @@ export const DripPostEditContainer = () => {
           userId,
         });
       } else {
-        await postDrip({
+        await postDripQuery({
           images,
           tags,
           styleCategory,
@@ -186,15 +185,15 @@ export const DripPostEditContainer = () => {
     }
   };
 
-  const handlePrevImage = () => {
+  const handlePrevImage:DripPostEditPresenterProps["onPrevImage"] = () => {
     setCurrentImageIndex((prev) => Math.max(0, prev - 1));
   };
 
-  const handleNextImage = () => {
+  const handleNextImage:DripPostEditPresenterProps["onNextImage"] = () => {
     setCurrentImageIndex((prev) => Math.min(images.length - 1, prev + 1));
   };
 
-  const handleDeleteImage = (index: number) => {
+  const handleDeleteImage:DripPostEditPresenterProps["onDeleteImage"] = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
     if (currentImageIndex >= images.length - 1) {
       setCurrentImageIndex(Math.max(0, images.length - 2));
@@ -241,7 +240,7 @@ export const DripPostEditContainer = () => {
     return () => window.removeEventListener("resize", updateRect);
   }, [updateRect, currentImageIndex]);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageLoad:DripPostEditPresenterProps["onImageLoad"] = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
     updateRect();

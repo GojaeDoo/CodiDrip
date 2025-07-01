@@ -12,12 +12,6 @@ import { useState } from "react";
 
 export const DripPostPresenter = (props: DripPostPresenterProps) => {
   const [reportReason, setReportReason] = useState<ReportReasonType | "">("");
-
-  console.log("=== DripPost Presenter ===");
-  console.log("isAdmin:", props.isAdmin);
-  console.log("isAdmin 타입:", typeof props.isAdmin);
-  console.log("=== DripPost Presenter 끝 ===");
-
   const handleReportSubmit = () => {
     if (reportReason) {
       props.onReportSubmit(reportReason as ReportReasonType);

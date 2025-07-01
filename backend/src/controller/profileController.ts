@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import {
-  getAllProfiles,
-  getProfileById,
-  getUserProfileById,
+  getAllProfilesService,
+  getProfileService,
+  getUserProfileService,
   getCreateProfileService,
-  getUpdateProfileService,
+  postUpdateProfileService,
   getNicknameCheckService
 } from "../service/profileService";
 import { PrismaClient } from "@prisma/client";
@@ -12,13 +12,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // 모든 프로필 가져오기
-export const getProfiles = async (
+export const getProfilesController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const gender = req.query.gender as string;
-    const profiles = await getAllProfiles(gender);
+    const profiles = await getAllProfilesService(gender);
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ error: "getProfiles 500error - profileController" });
@@ -26,7 +26,7 @@ export const getProfiles = async (
 };
 
 // 특정 프로필 가져오기
-export const getProfile = async (
+export const getProfileController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -40,14 +40,14 @@ export const getProfile = async (
       return;
     }
 
-    const profile = await getProfileById(id);
+    const profile = await getProfileService(id);
     res.json(profile);
   } catch (error) {
     res.status(500).json({ error: "getProfile 500error - profileController" });
   }
 };
 
-export const getUserProfile = async (
+export const getUserProfileController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -59,7 +59,7 @@ export const getUserProfile = async (
         .json({ error: "getUserProfile 400error - profileController" });
       return;
     }
-    const profile = await getUserProfileById(id);
+    const profile = await getUserProfileService(id);
     if (!profile) {
       res.status(404).json({ error: "프로필을 찾을 수 없습니다." });
       return;
@@ -79,16 +79,6 @@ export const getCreateProfileController = async (
 ) => {
   try {
     const { userId, height, weight, gender, nickname, profileImage, profileAbout } = req.body;
-    console.log("프로필 생성 요청 데이터:", {
-      userId,
-      height,
-      weight,
-      gender,
-      nickname,
-      profileImage,
-      profileAbout,
-    });
-
     if (!profileImage) {
       return res.status(400).json({ error: "프로필 이미지가 필요합니다." });
     }
@@ -108,7 +98,7 @@ export const getCreateProfileController = async (
   }
 };
 
-export const getUpdateProfileController = async (
+export const postUpdateProfileController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -116,17 +106,7 @@ export const getUpdateProfileController = async (
   try {
     const { userId } = req.params;
     const { height, weight, gender, nickname, profileImage, profileAbout } = req.body;
-    console.log("프로필 수정 요청 데이터:", {
-      userId,
-      height,
-      weight,
-      gender,
-      nickname,
-      profileImage,
-      profileAbout,
-    });
-
-    const profile = await getUpdateProfileService(
+    const profile = await postUpdateProfileService(
       height,
       weight,
       gender,
@@ -142,7 +122,7 @@ export const getUpdateProfileController = async (
   }
 };
 
-export const getNicknameCheck = async (
+export const getNicknameCheckController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -157,7 +137,6 @@ export const getNicknameCheck = async (
     
     if (profile && userId && profile.user_id === userId) {
       isAvailable = true;
-      console.log("현재 사용자의 닉네임이므로 사용 가능");
     }
     
     res.json({ 

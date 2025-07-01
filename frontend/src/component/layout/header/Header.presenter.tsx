@@ -1,11 +1,11 @@
 "use client"; // 👈 클라이언트 전용으로 지정
 
 import React from "react";
-import { HeaderProps } from "./Header.types";
+import { HeaderPresenterProps } from "./Header.types";
 import * as S from "./Header.styled";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
-const HeaderPresenter = (props: HeaderProps) => {
+const HeaderPresenter = (props: HeaderPresenterProps) => {
   return (
     <S.HeaderContainer>
       <S.LeftSection>

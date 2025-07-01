@@ -10,7 +10,7 @@ export interface Profile {
   profile_about: string | null;
 }
 
-export interface FollowProps {
+export interface FollowPresenterProps {
   followers?: Profile[];
   following?: Profile[];
   activeTab: 'followers' | 'following';

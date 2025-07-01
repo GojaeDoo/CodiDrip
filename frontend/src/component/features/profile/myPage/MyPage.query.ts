@@ -28,7 +28,7 @@ export const getDripPostDetailQuery = async (postNo: number) => {
   }
 };
 
-export const checkFollowStatusQuery = async (followerId: string, followingId: string) => {
+export const getCheckFollowStatusQuery = async (followerId: string, followingId: string) => {
   try {
     const response = await axios.get(
       `http://localhost:3005/api/users/follow/status?followerId=${followerId}&followingId=${followingId}`

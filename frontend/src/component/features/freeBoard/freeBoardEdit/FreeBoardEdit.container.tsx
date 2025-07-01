@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import FreeBoardEditPresenter from "./FreeBoardEdit.presenter";
 import {FreeBoardEditPresenterProps } from "./FreeBoardEdit.types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { postFreeBoardWrite, updateFreeBoardWrite } from "./FreeBoardEdit.query";
+import { postFreeBoardWriteQuery, updateFreeBoardWriteQuery } from "./FreeBoardEdit.query";
 import { getFreeBoardDetailQuery } from "../freeBoardDetail/FreeBoardDetail.query";
 
 export const FreeBoardEditContainer = () => {
@@ -58,11 +58,11 @@ export const FreeBoardEditContainer = () => {
       if (isEditMode && postId) {
         // 수정 모드
         const parsedPostId = parseInt(postId);
-        const response = await updateFreeBoardWrite(parsedPostId, title, content, userId);
+        const response = await updateFreeBoardWriteQuery(parsedPostId, title, content, userId);
         alert("게시글이 성공적으로 수정되었습니다!");
       } else {
         // 새 글 작성 모드
-        const response = await postFreeBoardWrite(title, content, userId);
+        const response = await postFreeBoardWriteQuery(title, content, userId);
         alert("게시글이 성공적으로 등록되었습니다!");
       }
       router.push("/freeBoardList");

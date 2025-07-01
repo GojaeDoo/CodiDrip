@@ -2,8 +2,8 @@
 
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { PasswordFindPresenter } from "./PasswordFind.presenter";
-import { PasswordFindProps } from "./PasswordFind.types";
-import { PasswordFindUser } from "./PasswordFind.query";
+import { PasswordFindPresenterProps } from "./PasswordFind.types";
+import { getPasswordFindUserQuery } from "./PasswordFind.query";
 import { useRouter } from "next/navigation";
 
 export const PasswordFindContainer = () => {
@@ -12,21 +12,21 @@ export const PasswordFindContainer = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
-  const onChangeId: PasswordFindProps["onChangeId"] = (
+  const onChangeId: PasswordFindPresenterProps["onChangeId"] = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setId(event.target.value);
     setError("");
   };
 
-  const onChangeEmail: PasswordFindProps["onChangeEmail"] = (
+  const onChangeEmail: PasswordFindPresenterProps["onChangeEmail"] = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setEmail(event.target.value);
     setError("");
   };
 
-  const handleKeyDown: PasswordFindProps["handleKeyDown"] = (
+  const handleKeyDown: PasswordFindPresenterProps["handleKeyDown"] = (
     event: KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
@@ -34,15 +34,14 @@ export const PasswordFindContainer = () => {
     }
   };
 
-  const onClickFindPassword: PasswordFindProps["onClickFindPassword"] =
+  const onClickFindPassword: PasswordFindPresenterProps["onClickFindPassword"] =
     async () => {
       try {
-        const response = await PasswordFindUser(id, email);
-        console.log(response);
+        const response = await getPasswordFindUserQuery(id, email);
         if (response.findPassword.success === true) {
           router.push(`/passwordFindResult?email=${encodeURIComponent(email)}`);
         } else {
-          setError(response.message);
+          alert(response.findPassword.message);
         }
       } catch (error) {
         console.error("비밀번호 찾기 실패:", error);

@@ -1,8 +1,8 @@
 import * as S from "./IdFind.styled";
 import * as C from "../../../commons/Commons.styled";
-import { IdFindProps } from "./IdFind.types";
+import { IdFindPresenterProps } from "./IdFind.types";
 
-export const IdFindPresenter = (props: IdFindProps) => {
+export const IdFindPresenter = (props: IdFindPresenterProps) => {
   return (
     <>
       <S.Background>

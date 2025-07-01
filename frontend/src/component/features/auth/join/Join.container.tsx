@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import JoinPresenter from "./Join.presenter";
-import { JoinProps } from "./Join.types";
+import { JoinPresenterProps } from "./Join.types";
 import {
-  idOverlappingCheck,
-  userJoin,
-  emailOverlappingCheck,
+  getIdOverlappingCheckQuery,
+  postUserJoinQuery,
+  getEmailOverlappingCheckQuery,
 } from "./Join.query";
 import { useRouter } from "next/navigation";
 
@@ -51,13 +51,13 @@ const JoinContainer = () => {
     );
   };
 
-  const onChangeId: JoinProps["onChangeId"] = (event) => {
+  const onChangeId: JoinPresenterProps["onChangeId"] = (event) => {
     setId(event.target.value);
     setIsIdChecked(false);
     setIsJoinButtonDisabled(true);
   };
 
-  const onChangePassword: JoinProps["onChangePassword"] = (event) => {
+  const onChangePassword: JoinPresenterProps["onChangePassword"] = (event) => {
     const newPassword = event.target.value;
     setPassword(newPassword);
 
@@ -78,7 +78,7 @@ const JoinContainer = () => {
     }
   };
 
-  const onChangeRePassword: JoinProps["onChangeRePassword"] = (event) => {
+  const onChangeRePassword: JoinPresenterProps["onChangeRePassword"] = (event) => {
     const newRePassword = event.target.value;
     setRePassword(newRePassword);
 
@@ -96,13 +96,13 @@ const JoinContainer = () => {
     }
   };
 
-  const onChangeEmail: JoinProps["onChangeEmail"] = (event) => {
+  const onChangeEmail: JoinPresenterProps["onChangeEmail"] = (event) => {
     setEmail(event.target.value);
     setIsEmailChecked(false);
     setIsJoinButtonDisabled(true);
   };
 
-  const selectEmailDomain: JoinProps["selectEmailDomain"] = (event) => {
+  const selectEmailDomain: JoinPresenterProps["selectEmailDomain"] = (event) => {
     const value = event.target.value;
     if (value === "") {
       setIsCustomDomain(true);
@@ -115,7 +115,7 @@ const JoinContainer = () => {
     setIsJoinButtonDisabled(true);
   };
 
-  const onChangeCustomDomain: JoinProps["onChangeCustomDomain"] = (event) => {
+  const onChangeCustomDomain: JoinPresenterProps["onChangeCustomDomain"] = (event) => {
     const value = event.target.value;
     setCustomDomain(value);
     setEmailDomain(value ? "@" + value : "");
@@ -123,7 +123,7 @@ const JoinContainer = () => {
     setIsJoinButtonDisabled(true);
   };
 
-  const onClickEmailOverlapping: JoinProps["onClickEmailOverlapping"] =
+  const onClickEmailOverlapping: JoinPresenterProps["onClickEmailOverlapping"] =
     async () => {
       if (
         !email ||
@@ -136,7 +136,7 @@ const JoinContainer = () => {
       const fullEmail =
         email + (isCustomDomain ? "@" + customDomain : emailDomain);
       try {
-        const response = await emailOverlappingCheck(fullEmail);
+        const response = await getEmailOverlappingCheckQuery(fullEmail);
         if (response.exists === 1) {
           alert("중복된 이메일입니다.");
           setIsEmailChecked(false);
@@ -153,7 +153,7 @@ const JoinContainer = () => {
       }
     };
 
-  const onAllCheckChange: JoinProps["onAllCheckChange"] = (event) => {
+  const onAllCheckChange: JoinPresenterProps["onAllCheckChange"] = (event) => {
     const checked = event.target.checked;
     setIsAllChecked(checked);
     setIsServiceChecked(checked);
@@ -162,21 +162,21 @@ const JoinContainer = () => {
     setIsJoinButtonDisabled(!validateForm());
   };
 
-  const onServiceCheckChange: JoinProps["onServiceCheckChange"] = (event) => {
+  const onServiceCheckChange: JoinPresenterProps["onServiceCheckChange"] = (event) => {
     const checked = event.target.checked;
     setIsServiceChecked(checked);
     setIsAllChecked(checked && isPrivacyChecked && isMarketingChecked);
     setIsJoinButtonDisabled(!validateForm());
   };
 
-  const onPrivacyCheckChange: JoinProps["onPrivacyCheckChange"] = (event) => {
+  const onPrivacyCheckChange: JoinPresenterProps["onPrivacyCheckChange"] = (event) => {
     const checked = event.target.checked;
     setIsPrivacyChecked(checked);
     setIsAllChecked(checked && isServiceChecked && isMarketingChecked);
     setIsJoinButtonDisabled(!validateForm());
   };
 
-  const onMarketingCheckChange: JoinProps["onMarketingCheckChange"] = (
+  const onMarketingCheckChange: JoinPresenterProps["onMarketingCheckChange"] = (
     event
   ) => {
     const checked = event.target.checked;
@@ -185,10 +185,9 @@ const JoinContainer = () => {
     setIsJoinButtonDisabled(!validateForm());
   };
 
-  const onClickIdOverlapping: JoinProps["onClickIdOverlapping"] = async () => {
+  const onClickIdOverlapping: JoinPresenterProps["onClickIdOverlapping"] = async () => {
     try {
-      console.log("id : " + id);
-      const response = await idOverlappingCheck(id);
+      const response = await getIdOverlappingCheckQuery(id);
       if (response.exists == "1") {
         alert("중복된 아이디입니다.");
         setIsIdChecked(false);
@@ -205,7 +204,7 @@ const JoinContainer = () => {
     }
   };
 
-  const onClickJoin: JoinProps["onClickJoin"] = async () => {
+  const onClickJoin: JoinPresenterProps["onClickJoin"] = async () => {
     if (!isIdChecked) {
       alert("아이디 중복확인을 해주세요.");
       return;
@@ -252,11 +251,10 @@ const JoinContainer = () => {
         user_email: fullEmail,
       };
 
-      await userJoin(userData);
+      await postUserJoinQuery(userData);
       alert("회원가입되었습니다.");
       router.push("/login");
     } catch (error) {
-      console.log("회원가입 실패 : " + error);
       alert("회원가입 중 오류가 발생했습니다.");
     }
   };

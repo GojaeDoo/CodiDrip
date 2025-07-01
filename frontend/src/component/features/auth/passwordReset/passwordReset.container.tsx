@@ -2,9 +2,9 @@
 
 import { KeyboardEvent, useState } from "react";
 import { PasswordResetPresenter } from "./passwordReset.presenter";
-import { PasswordResetProps } from "./passwordReset.types";
+import { PasswordResetPresenterProps } from "./passwordReset.types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PasswordResetUser } from "./passwordReset.query";
+import { postPasswordResetUserQuery } from "./passwordReset.query";
 
 export const PasswordResetContainer = () => {
   const router = useRouter();
@@ -16,14 +16,14 @@ export const PasswordResetContainer = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [error, setError] = useState("");
 
-  const onChangePassword: PasswordResetProps["onChangePassword"] = (
+  const onChangePassword: PasswordResetPresenterProps["onChangePassword"] = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPassword(event.target.value);
     setError("");
   };
 
-  const onChangePasswordCheck: PasswordResetProps["onChangePasswordCheck"] = (
+  const onChangePasswordCheck: PasswordResetPresenterProps["onChangePasswordCheck"] = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPasswordCheck(event.target.value);
@@ -36,7 +36,7 @@ export const PasswordResetContainer = () => {
     }
   };
 
-  const onClickResetPassword: PasswordResetProps["onClickResetPassword"] =
+  const onClickResetPassword: PasswordResetPresenterProps["onClickResetPassword"] =
     async () => {
       if (!email) {
         setError("이메일 정보가 없습니다.");
@@ -65,7 +65,7 @@ export const PasswordResetContainer = () => {
       }
 
       try {
-        const response = await PasswordResetUser(email, password);
+        const response = await postPasswordResetUserQuery(email, password);
         if (response.success) {
           router.push("/login");
         } else {

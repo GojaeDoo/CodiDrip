@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import ProfileEditPresenter from "./ProfileEdit.presenter";
 import {
-  ProfileCreate,
+  postProfileCreateQuery,
   getProfileQuery,
-  ProfileUpdate,
-  getNicknameCheck
+  putProfileUpdateQuery,
+  getNicknameCheckQuery,
+  postUploadProfileImageQuery
 } from "./profileEdit.query";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
+import { ProfileEditPresenterProps } from "./ProfileEdit.types";
 
 export const ProfileEditContainer = () => {
   const [height, setHeight] = useState<number | null>(null);
@@ -53,7 +54,6 @@ export const ProfileEditContainer = () => {
   const fetchProfile = async (userId: string) => {
     try {
       const response = await getProfileQuery(userId);
-      console.log("컨테이너에서 받은 프로필 데이터:", response);
       if (response) {
         setHeight(response.profile_height);
         setWeight(response.profile_weight);
@@ -68,11 +68,10 @@ export const ProfileEditContainer = () => {
         
         if (response.profile_image) {
           const imageUrl = `http://localhost:3005/uploads/profiles/${response.profile_image}`;
-          console.log("이미지 URL:", imageUrl);
           setPreviewUrl(imageUrl);
           setUploadedImagePath(response.profile_image);
         } else {
-          console.log("프로필 이미지가 없습니다.");
+
         }
       }
     } catch (error) {
@@ -80,19 +79,19 @@ export const ProfileEditContainer = () => {
     }
   };
 
-  const onChangeHeight = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onChangeHeight:ProfileEditPresenterProps["onChangeHeight"] = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setHeight(Number(event.target.value));
   };
 
-  const onChangeWeight = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onChangeWeight:ProfileEditPresenterProps["onChangeWeight"] = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setWeight(Number(event.target.value));
   };
 
-  const onChangeGender = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onChangeGender:ProfileEditPresenterProps["onChangeGender"] = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setGender(event.target.value);
   };
 
-  const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeNickname:ProfileEditPresenterProps["onChangeNickname"] = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = event.target.value;
     setNickname(newNickname);
     
@@ -106,20 +105,19 @@ export const ProfileEditContainer = () => {
     }
   };
 
-  const onChangeProfileAbout = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onChangeProfileAbout:ProfileEditPresenterProps["onChangeProfileAbout"] = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setProfileAbout(event.target.value);
   };
 
-  const onClickNicknameCheck = async () => {
-    console.log("=== 닉네임 체크 시작 ===");
-    
+  const onClickNicknameCheck:ProfileEditPresenterProps["onClickNicknameCheck"] = async () => {
+
     if (!nickname.trim()) {
       alert("닉네임을 입력해주세요.");
       return;
     }
 
     try {
-      const response = await getNicknameCheck(nickname, userId || undefined);
+      const response = await getNicknameCheckQuery(nickname, userId || undefined);
       
       if (response.isAvailable) {
         setIsNicknameChecked(true);
@@ -138,7 +136,7 @@ export const ProfileEditContainer = () => {
     }
   };
 
-  const onChangeProfileImage = async (
+  const onChangeProfileImage:ProfileEditPresenterProps["onChangeProfileImage"] = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
@@ -147,25 +145,11 @@ export const ProfileEditContainer = () => {
         alert("이미지 크기는 5MB 이하여야 합니다.");
         return;
       }
-
       try {
-        const formData = new FormData();
-        formData.append("profileImage", file);
-
-        const response = await axios.post(
-          "http://localhost:3005/api/profiles/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        if (response.data.imagePath) {
-          setUploadedImagePath(response.data.imagePath);
+        const response = await postUploadProfileImageQuery(file);
+        if (response.imagePath) {
+          setUploadedImagePath(response.imagePath);
           setPreviewUrl(URL.createObjectURL(file));
-          console.log("이미지 업로드 성공:", response.data.imagePath);
         }
       } catch (error) {
         console.error("이미지 업로드 중 오류 발생:", error);
@@ -174,7 +158,7 @@ export const ProfileEditContainer = () => {
     }
   };
 
-  const onClickCreateProfile = async () => {
+  const onClickCreateProfile:ProfileEditPresenterProps["onClickCreateProfile"] = async () => {
     if (!userId) {
       console.error("userId가 없습니다.");
       return;
@@ -203,10 +187,10 @@ export const ProfileEditContainer = () => {
       };
 
       if (isEditMode) {
-        await ProfileUpdate(profileData);
+        await putProfileUpdateQuery(profileData);
         alert("프로필이 수정되었습니다.");
       } else {
-        await ProfileCreate(profileData);
+        await postProfileCreateQuery(profileData);
         alert("프로필이 생성되었습니다.");
       }
       router.push("/myPage");

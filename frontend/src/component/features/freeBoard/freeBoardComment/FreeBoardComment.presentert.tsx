@@ -2,49 +2,8 @@ import React from "react";
 import * as S from "./FreeBoardComment.styled";
 import { FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
 
-export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps> = ({
-  comments = [],
-  isLoading = false,
-  isModalOpen,
-  newComment,
-  editingCommentId,
-  editContent,
-  replyingToCommentId,
-  replyContent,
-  showingRepliesFor,
-  replies,
-  onOpenModal,
-  onCloseModal,
-  onNewCommentChange,
-  onSubmitComment,
-  onEditComment,
-  onSaveEdit,
-  onCancelEdit,
-  onEditContentChange,
-  onDeleteComment,
-  onShowMoreComments,
-  onShowLessComments,
-  onReplyComment,
-  onCancelReply,
-  onReplyContentChange,
-  onSubmitReply,
-  onShowReplies,
-  onHideReplies,
-  formatTimestamp,
-  getInitials,
-  hasMoreComments,
-  showAllComments,
-  isLogin,
-  isCommentAuthor,
-  showReportModal,
-  selectedReportReason,
-  onReportClick,
-  onCloseReportModal,
-  onReportReasonChange,
-  onSubmitReport,
-  isAdmin,
-}) => {
-  if (isLoading) {
+export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps> = (props:FreeBoardCommentPresenterProps) => {
+  if (props.isLoading) {
     return (
       <S.FreeBoardCommentWrapper>
         <S.CommentHeader>
@@ -68,21 +27,21 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
         <S.CommentHeader>
           <div>
             <h2>댓글</h2>
-            <div className="comment-count">{comments.length}개의 댓글</div>
+            <div className="comment-count">{props.comments.length}개의 댓글</div>
           </div>
-          <S.AddCommentButton onClick={onOpenModal}>
+          <S.AddCommentButton onClick={props.onOpenModal}>
             댓글 작성
           </S.AddCommentButton>
         </S.CommentHeader>
 
         <S.CommentList>
-          {comments.length === 0 ? (
+          {props.comments?.length === 0 ? (
             <S.EmptyState>
               <div className="empty-icon">💬</div>
               <p className="empty-text">아직 댓글이 없습니다.<br />첫 번째 댓글을 남겨보세요!</p>
             </S.EmptyState>
           ) : (
-            comments.map((comment) => {
+            props.comments?.map((comment) => {
               return (
                 <S.CommentItem key={comment.id}>
                   <S.CommentHeaderInfo>
@@ -94,39 +53,39 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                           style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
                         />
                       ) : (
-                        getInitials(comment.profile_nickname)
+                        props.getInitials(comment.profile_nickname)
                       )}
                     </S.UserAvatar>
                     <S.UserInfo>
                       <p className="username">{comment.profile_nickname}</p>
-                      <p className="timestamp">{formatTimestamp(comment.created_at)}</p>
+                      <p className="timestamp">{props.formatTimestamp(comment.created_at)}</p>
                     </S.UserInfo>
                     <S.CommentActions>
-                      {isLogin && isCommentAuthor(comment.user_id) && (
-                        <button onClick={() => onEditComment(comment)}>수정</button>
+                      {props.isLogin && props.isCommentAuthor(comment.user_id) && (
+                        <button onClick={() => props.onEditComment(comment)}>수정</button>
                       )}
-                      {isLogin && (isCommentAuthor(comment.user_id) || isAdmin) && (
-                        <button onClick={() => onDeleteComment(comment.id)}>삭제</button>
+                      {props.isLogin && (props.isCommentAuthor(comment.user_id) || props.isAdmin) && (
+                        <button onClick={() => props.onDeleteComment(comment.id)}>삭제</button>
                       )}
-                      {isLogin && !isCommentAuthor(comment.user_id) && !isAdmin && (
-                        <button onClick={() => onReportClick(comment.id)}>신고</button>
+                      {props.isLogin && !props.isCommentAuthor(comment.user_id) && !props.isAdmin && (
+                        <button onClick={() => props.onReportClick(comment.id)}>신고</button>
                       )}
-                      {isLogin && (
-                        <button onClick={() => onReplyComment(comment.id)}>댓글</button>
+                      {props.isLogin && (
+                        <button onClick={() => props.onReplyComment(comment.id)}>댓글</button>
                       )}
                     </S.CommentActions>
                   </S.CommentHeaderInfo>
                   
-                  {editingCommentId === comment.id ? (
+                  {props.editingCommentId === comment.id ? (
                     <S.EditInputWrapper>
                       <S.CommentInput
-                        value={editContent}
-                        onChange={(e) => onEditContentChange(e.target.value)}
+                        value={props.editContent}
+                        onChange={(e) => props.onEditContentChange(e.target.value)}
                         placeholder="댓글을 수정하세요..."
                       />
                       <S.ButtonGroup>
-                        <S.SaveButton onClick={onSaveEdit}>저장</S.SaveButton>
-                        <S.CancelButton onClick={onCancelEdit}>취소</S.CancelButton>
+                        <S.SaveButton onClick={props.onSaveEdit}>저장</S.SaveButton>
+                        <S.CancelButton onClick={props.onCancelEdit}>취소</S.CancelButton>
                       </S.ButtonGroup>
                     </S.EditInputWrapper>
                   ) : (
@@ -134,21 +93,21 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                   )}
 
                   {/* 대댓글 입력 UI */}
-                  {replyingToCommentId === comment.id && (
+                  {props.replyingToCommentId === comment.id && (
                     <S.ReplyInputWrapper>
                       <S.ReplyInput
-                        value={replyContent}
-                        onChange={(e) => onReplyContentChange(e.target.value)}
+                        value={props.replyContent}
+                        onChange={(e) => props.onReplyContentChange(e.target.value)}
                         placeholder="대댓글을 작성하세요..."
                       />
                       <S.ReplyButtonGroup>
                         <S.ReplySubmitButton 
-                          onClick={onSubmitReply}
-                          disabled={!replyContent.trim()}
+                          onClick={props.onSubmitReply}
+                          disabled={!props.replyContent.trim()}
                         >
-                          답글 작성
+                          댓글 작성
                         </S.ReplySubmitButton>
-                        <S.ReplyCancelButton onClick={onCancelReply}>
+                        <S.ReplyCancelButton onClick={props.onCancelReply}>
                           취소
                         </S.ReplyCancelButton>
                       </S.ReplyButtonGroup>
@@ -158,12 +117,12 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                   {/* 대댓글 보기 버튼 */}
                   {comment.reply_count !== undefined && comment.reply_count > 0 && (
                     <S.ReplyWrapper style={{ marginTop: "0.5rem" }}>
-                      {showingRepliesFor === comment.id ? (
-                        <S.ToggleReplyButton onClick={() => onHideReplies(comment.id)}>
+                      {props.showingRepliesFor === comment.id ? (
+                        <S.ToggleReplyButton onClick={() => props.onHideReplies(comment.id)}>
                           ↑ 댓글 숨기기
                         </S.ToggleReplyButton>
                       ) : (
-                        <S.ToggleReplyButton onClick={() => onShowReplies(comment.id)}>
+                        <S.ToggleReplyButton onClick={() => props.onShowReplies(comment.id)}>
                           ↓ 댓글 ({comment.reply_count}개)
                         </S.ToggleReplyButton>
                       )}
@@ -171,9 +130,9 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                   )}
 
                   {/* 대댓글 목록 */}
-                  {showingRepliesFor === comment.id && replies[comment.id] && replies[comment.id].length > 0 && (
+                  {props.showingRepliesFor === comment.id && props.replies[comment.id] && props.replies[comment.id].length > 0 && (
                     <S.ReplyWrapper>
-                      {replies[comment.id].map((reply) => (
+                      {props.replies[comment.id].map((reply) => (
                         <S.ReplyContainer key={reply.id}>
                           <S.ReplyHeader>
                             <S.ReplyAvatar>
@@ -184,7 +143,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                                   style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
                                 />
                               ) : (
-                                getInitials(reply.profile_nickname)
+                                props.getInitials(reply.profile_nickname)
                               )}
                             </S.ReplyAvatar>
                             <span style={{ 
@@ -200,22 +159,22 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                               fontSize: "12px",
                               fontWeight: "500"
                             }}>
-                              {formatTimestamp(reply.created_at)}
+                              {props.formatTimestamp(reply.created_at)}
                             </span>
-                            {isLogin && (
+                            {props.isLogin && (
                               <div style={{ marginLeft: "auto", display: "flex" }}>
-                                {(isCommentAuthor(reply.user_id) || isAdmin) && (
+                                {(props.isCommentAuthor(reply.user_id) || props.isAdmin) && (
                                   <>
-                                    <S.ReplyActionButton onClick={() => onEditComment(reply)}>
+                                    <S.ReplyActionButton onClick={() => props.onEditComment(reply)}>
                                       수정
                                     </S.ReplyActionButton>
-                                    <S.ReplyActionButton onClick={() => onDeleteComment(reply.id)}>
+                                    <S.ReplyActionButton onClick={() => props.onDeleteComment(reply.id)}>
                                       삭제
                                     </S.ReplyActionButton>
                                   </>
                                 )}
-                                {!isCommentAuthor(reply.user_id) && !isAdmin && (
-                                  <S.ReplyActionButton onClick={() => onReportClick(reply.id)}>
+                                {!props.isCommentAuthor(reply.user_id) && !props.isAdmin && (
+                                  <S.ReplyActionButton onClick={() => props.onReportClick(reply.id)}>
                                     신고
                                   </S.ReplyActionButton>
                                 )}
@@ -223,18 +182,18 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                             )}
                           </S.ReplyHeader>
                           
-                          {editingCommentId === reply.id ? (
+                          {props.editingCommentId === reply.id ? (
                             <S.ReplyEditWrapper>
                               <S.ReplyEditInput
-                                value={editContent}
-                                onChange={(e) => onEditContentChange(e.target.value)}
+                                value={props.editContent}
+                                onChange={(e) => props.onEditContentChange(e.target.value)}
                                 placeholder="대댓글을 수정하세요..."
                               />
                               <S.ReplyEditButtonGroup>
-                                <S.ReplyEditSaveButton onClick={onSaveEdit}>
+                                <S.ReplyEditSaveButton onClick={props.onSaveEdit}>
                                   저장
                                 </S.ReplyEditSaveButton>
-                                <S.ReplyEditCancelButton onClick={onCancelEdit}>
+                                <S.ReplyEditCancelButton onClick={props.onCancelEdit}>
                                   취소
                                 </S.ReplyEditCancelButton>
                               </S.ReplyEditButtonGroup>
@@ -255,7 +214,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                   )}
 
                   {/* 대댓글이 없을 때 메시지 */}
-                  {showingRepliesFor === comment.id && (!replies[comment.id] || replies[comment.id].length === 0) && (
+                  {props.showingRepliesFor === comment.id && (!props.replies[comment.id] || props.replies[comment.id].length === 0) && (
                     <S.NoReply>
                       아직 대댓글이 없습니다.
                     </S.NoReply>
@@ -266,44 +225,44 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
           )}
         </S.CommentList>
 
-        {hasMoreComments && (
-          <S.ShowMoreButton onClick={showAllComments ? onShowLessComments : onShowMoreComments}>
-            {showAllComments ? "댓글 접기" : `댓글 더보기`}
+        {props.hasMoreComments && (
+          <S.ShowMoreButton onClick={props.showAllComments ? props.onShowLessComments : props.onShowMoreComments}>
+            {props.showAllComments ? "댓글 접기" : `댓글 더보기`}
           </S.ShowMoreButton>
         )}
       </S.FreeBoardCommentWrapper>
 
-      {isModalOpen && (
-        <S.ModalOverlay onClick={onCloseModal}>
+      {props.isModalOpen && (
+        <S.ModalOverlay onClick={props.onCloseModal}>
           <S.ModalContent onClick={(e) => e.stopPropagation()}>
             <S.ModalHeader>
               <h3>댓글 작성</h3>
-              <button className="close-button" onClick={onCloseModal}>
+              <button className="close-button" onClick={props.onCloseModal}>
                 ×
               </button>
             </S.ModalHeader>
             
             <S.ModalBody>
               <S.CommentInput
-                value={newComment}
-                onChange={(e) => onNewCommentChange(e.target.value)}
+                value={props.newComment}
+                onChange={(e) => props.onNewCommentChange(e.target.value)}
                 placeholder="댓글을 작성하세요..."
                 onKeyPress={(e) => {
                   if (e.key === "Enter" && e.ctrlKey) {
-                    onSubmitComment();
+                    props.onSubmitComment();
                   }
                 }}
               />
             </S.ModalBody>
             
             <S.ModalFooter>
-              <button className="cancel" onClick={onCloseModal}>
+              <button className="cancel" onClick={props.onCloseModal}>
                 취소
               </button>
               <button 
                 className="submit" 
-                onClick={onSubmitComment}
-                disabled={!newComment.trim()}
+                onClick={props.onSubmitComment}
+                disabled={!props.newComment.trim()}
               >
                 댓글 작성
               </button>
@@ -313,16 +272,16 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
       )}
 
       {/* 신고 모달 */}
-      {showReportModal && (
-        <S.ReportModalOverlay onClick={onCloseReportModal}>
+      {props.showReportModal && (
+        <S.ReportModalOverlay onClick={props.onCloseReportModal}>
           <S.ReportModalContent onClick={(e) => e.stopPropagation()}>
             <S.ReportModalTitle>댓글 신고</S.ReportModalTitle>
             <S.ReportModalText>
               신고 사유를 선택해주세요. 신고된 댓글은 검토 후 처리됩니다.
             </S.ReportModalText>
             <S.ReportReasonSelect
-              value={selectedReportReason}
-              onChange={onReportReasonChange}
+              value={props.selectedReportReason}
+              onChange={props.onReportReasonChange}
             >
               <option value="">신고 사유를 선택하세요</option>
               <option value="욕설">욕설</option>
@@ -332,13 +291,13 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
               <option value="기타">기타</option>
             </S.ReportReasonSelect>
             <S.ReportModalButtonGroup>
-              <S.ReportModalButton onClick={onCloseReportModal}>
+              <S.ReportModalButton onClick={props.onCloseReportModal}>
                 취소
               </S.ReportModalButton>
               <S.ReportModalButton 
                 $primary 
-                onClick={onSubmitReport}
-                disabled={!selectedReportReason}
+                onClick={props.onSubmitReport}
+                disabled={!props.selectedReportReason}
               >
                 신고하기
               </S.ReportModalButton>

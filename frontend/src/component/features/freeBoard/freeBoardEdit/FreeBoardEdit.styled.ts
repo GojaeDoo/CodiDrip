@@ -129,7 +129,6 @@ export const CancelButton = styled.button`
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background: var(--accent);
     color: var(--text-primary);
   }
 `;

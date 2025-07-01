@@ -1,8 +1,8 @@
 import * as S from "./Follow.styled";
-import { FollowProps } from "./Follow.types";
+import { FollowPresenterProps } from "./Follow.types";
 import { Users } from "lucide-react";
 
-export const FollowPresenter = (props: FollowProps) => {
+export const FollowPresenter = (props: FollowPresenterProps) => {
     if (props.isLoading) {
         return (
             <S.Background>

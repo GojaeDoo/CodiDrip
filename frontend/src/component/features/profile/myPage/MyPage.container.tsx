@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { MyPagePresenter } from "./MyPage.presenter";
-import { MyPageProps, FreeBoardPost } from "./MyPage.types";
-import { getMyPageProfileQuery, getDripPostDetailQuery, checkFollowStatusQuery, toggleFollowQuery, getUserFreeBoardPostsQuery } from "./MyPage.query";
+import { MyPagePresenterProps, FreeBoardPost } from "./MyPage.types";
+import { getMyPageProfileQuery, getDripPostDetailQuery, getCheckFollowStatusQuery, toggleFollowQuery, getUserFreeBoardPostsQuery } from "./MyPage.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { decodeUserId } from "@/utils/urlEncoder";
 import { useAuth } from "@/context/AuthContext";
@@ -11,7 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 export const MyPageContainer = () => {
   const router = useRouter();
   const { logout } = useAuth();
-  const [userProfile, setUserProfile] = useState<MyPageProps["userProfile"]>(null);
+  const [userProfile, setUserProfile] = useState<MyPagePresenterProps["userProfile"]>(null);
   const [activeTab, setActiveTab] = useState<'myDrip' | 'liked' | 'saved' | 'follower' | 'following' | 'myPost'>('myDrip');
   const [isFollowing, setIsFollowing] = useState(false);
   const [freeBoardPosts, setFreeBoardPosts] = useState<FreeBoardPost[]>([]);
@@ -38,18 +38,16 @@ export const MyPageContainer = () => {
           targetUserId = decodeUserId(encodedUserId || "");
           const profileResponse = await getMyPageProfileQuery(targetUserId);
           setUserProfile(profileResponse);
-          console.log("profileResponse : ", profileResponse);
           
-          const followStatus = await checkFollowStatusQuery(storedUserId, targetUserId);
+          const followStatus = await getCheckFollowStatusQuery(storedUserId, targetUserId);
           setIsFollowing(followStatus);
         } else {
           const profileResponse = await getMyPageProfileQuery(storedUserId);
           setUserProfile(profileResponse);
-          console.log("profileResponse : ", profileResponse);
           setIsFollowing(false); // 내 마이페이지에서는 팔로우 상태 불필요
         }
       } catch (error) {
-        console.log("error : ", error);
+        console.log("MyPageContainer fetchData error : ", error);
       } finally {
         setIsMyPageLoading(false);
       }
@@ -58,7 +56,6 @@ export const MyPageContainer = () => {
     fetchData();
   }, [searchParams]);
 
-  // 자유게시판 게시글 가져오기
   useEffect(() => {
     const fetchFreeBoardPosts = async () => {
       if (activeTab === 'myPost' && userProfile) {
@@ -67,7 +64,7 @@ export const MyPageContainer = () => {
           const posts = await getUserFreeBoardPostsQuery(userProfile.user_id);
           setFreeBoardPosts(posts);
         } catch (error) {
-          console.log("자유게시판 게시글 조회 오류:", error);
+          console.log("MyPageContainer fetchFreeBoardPosts error : ", error);
         } finally {
           setIsFreeBoardLoading(false);
         }
@@ -88,7 +85,7 @@ export const MyPageContainer = () => {
     }
   }, [activeTab]);
 
-  const onClickMoveProfileEdit = () => {
+  const onClickMoveProfileEdit: MyPagePresenterProps["onClickMoveProfileEdit"] = () => {
     const isEditMode = true;
     router.push(`/profileEdit?Status=${isEditMode}`);
   };
@@ -98,7 +95,7 @@ export const MyPageContainer = () => {
     router.push("/login");
   };
 
-  const onClickFollow = async () => {
+  const onClickFollow: MyPagePresenterProps["onClickFollow"] = async () => {
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId || !userProfile) return;
 
@@ -111,31 +108,31 @@ export const MyPageContainer = () => {
     }
   };
 
-  const onClickMoveDripPostEdit = () => {
+  const onClickMoveDripPostEdit: MyPagePresenterProps["onClickMoveDripPostEdit"] = () => {
     router.push("/dripPostEdit");
   };
 
-  const onClickMoveMyDrip = () => {
+  const onClickMoveMyDrip: MyPagePresenterProps["onClickMoveMyDrip"] = () => {
     setActiveTab('myDrip');
   };
 
-  const onClickMoveLikedDrip = () => {
+  const onClickMoveLikedDrip: MyPagePresenterProps["onClickMoveLikedDrip"] = () => {
     setActiveTab('liked');
   };
 
-  const onClickMoveSavedDrip = () => {
+  const onClickMoveSavedDrip: MyPagePresenterProps["onClickMoveSavedDrip"] = () => {
     setActiveTab('saved');
   };
 
-  const onClickMoveFollower = () => {
+  const onClickMoveFollower: MyPagePresenterProps["onClickMoveFollower"] = () => {
     setActiveTab('follower');
   };
 
-  const onClickMoveFollowing = () => {
+  const onClickMoveFollowing: MyPagePresenterProps["onClickMoveFollowing"] = () => {
     setActiveTab('following');
   };
 
-  const onClickMoveMyPost = () => {
+  const onClickMoveMyPost: MyPagePresenterProps["onClickMoveMyPost"] = () => {
     setActiveTab('myPost');
   };
 
@@ -144,7 +141,7 @@ export const MyPageContainer = () => {
     return date.toLocaleDateString('ko-KR');
   };
 
-  const onClickFreeBoardPost = (postId: number) => {
+  const onClickFreeBoardPost: MyPagePresenterProps["onClickFreeBoardPost"] = (postId: number) => {
     router.push(`/freeBoardDetail?id=${postId}`);
   };
 

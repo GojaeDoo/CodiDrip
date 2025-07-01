@@ -13,9 +13,6 @@ export const comparePassword = async (
   hashedPassword: string,
   password: string
 ): Promise<boolean> => {
-  console.log("comparePassword - 해시된 비밀번호:", hashedPassword);
-  console.log("comparePassword - 입력된 비밀번호:", password);
   const result = await bcrypt.compare(password, hashedPassword);
-  console.log("bcrypt.compare 결과:", result);
   return result;
 };

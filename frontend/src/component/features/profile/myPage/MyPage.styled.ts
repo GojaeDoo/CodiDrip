@@ -227,10 +227,10 @@ export const ProfileDetails = styled.div`
 `;
 
 export const EditButton = styled.button`
-  background: var(--card-border);
+  background-color: var(--button-bg);
   height: 40px;
   border: none;
-  color: var(--text-primary);
+  color: var(--button-text);
   padding: 0.5rem 1rem;
   border-radius: 5px;
   font-size: 1rem;
@@ -242,8 +242,9 @@ export const EditButton = styled.button`
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: var(--accent);
-    color: var(--text-primary);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (max-width: 768px) {
@@ -431,9 +432,9 @@ export const ContentArea = styled.div`
 `;
 
 export const AddButton = styled.button`
-  background: var(--card-border);
+  background-color: var(--button-bg);
   border: none;
-  color: var(--text-primary);
+  color: var(--button-text);
   padding: 0.5rem 1rem;
   border-radius: 5px;
   font-size: 1rem;
@@ -445,8 +446,9 @@ export const AddButton = styled.button`
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: var(--accent);
-    color: var(--text-primary);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (max-width: 768px) {

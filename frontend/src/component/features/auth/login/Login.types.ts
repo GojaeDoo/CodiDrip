@@ -1,5 +1,6 @@
 import { Profile } from "@/types/profile";
-export interface LoginProps {
+
+export interface LoginPresenterProps {
   onClickMoveJoin: () => void;
   onClickMoveIdFind: () => void;
   onClickMovePasswordFind: () => void;
@@ -10,21 +11,3 @@ export interface LoginProps {
   profiles: Profile[];
 }
 
-export interface LoginResponse {
-  message: string;
-  user: {
-    user_id: string;
-    user_email: string;
-    is_admin?: boolean;
-  };
-  token: string;
-}
-
-export interface LoginError {
-  response?: {
-    data?: {
-      error: string;
-    };
-  };
-  message: string;
-}

@@ -1,4 +1,4 @@
-export interface IntroProps {
+export interface IntroPresenterProps {
   onClickMoveLogin: () => void;
   onClickMoveDrips: () => void;
   brandName: string;

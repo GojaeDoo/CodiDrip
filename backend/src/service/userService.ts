@@ -1,15 +1,15 @@
 // src/service/userService.ts
 import {
   getUsersFromDB,
-  idOverlappingCheckDB,
-  joinUserDB,
-  emailOverlappingCheckDB,
-  findUserByCredentialsDB,
-  findIdCheckDB,
-  findPasswordCheckDB,
+  getIdOverlappingCheckStorage,
+  postUserJoinStorage,
+  getEmailOverlappingCheckStorage,
+  postLoginUserStorage,
+  getFindIdStorage,
+  getFindPasswordCheckStorage,
   selectUserStorage,
   findUserByEmailDB,
-  updateUserPasswordDB,
+  postUpdatePasswordStorage,
   checkFollowStatusDB,
   toggleFollowDB,
   getFollowersDB,
@@ -54,39 +54,39 @@ export const selectUserService = async ({ user_id }: IdCheckType) => {
   }
 };
 
-export const idOverlappingCheck = async ({ user_id }: IdCheckType) => {
+export const getIdOverlappingCheckService = async ({ user_id }: IdCheckType) => {
   try {
-    const idCheck = await idOverlappingCheckDB(user_id);
+    const idCheck = await getIdOverlappingCheckStorage(user_id);
     return idCheck;
   } catch (error) {
     console.error("idOverlappingCheck error - userService");
   }
 };
 
-export const emailOverlappingCheck = async ({ user_email }: EmailCheckType) => {
+export const getEmailOverlappingCheckService = async ({ user_email }: EmailCheckType) => {
   try {
-    const emailCheck = await emailOverlappingCheckDB(user_email);
+    const emailCheck = await getEmailOverlappingCheckStorage(user_email);
     return emailCheck;
   } catch (error) {
     console.error("emailOverlappingCheck error - userService");
   }
 };
 
-export const findIdCheck = async ({ user_email }: EmailCheckType) => {
+export const getFindIdService = async ({ user_email }: EmailCheckType) => {
   try {
-    const findId = await findIdCheckDB(user_email);
+    const findId = await getFindIdStorage(user_email);
     return findId;
   } catch (error) {
     console.error("findIdCheck error - userService");
   }
 };
 
-export const findPasswordCheck = async ({
+export const getFindPasswordCheckService = async ({
   user_id,
   user_email,
 }: PasswordFindType) => {
   try {
-    const findPassword = await findPasswordCheckDB(user_id, user_email);
+    const findPassword = await getFindPasswordCheckStorage(user_id, user_email);
 
     // DB에서 일치하는 사용자가 있는지 확인
     if (findPassword && findPassword.length > 0) {
@@ -112,18 +112,18 @@ export const findPasswordCheck = async ({
   }
 };
 
-export const createUser = async (user: User) => {
+export const postUserJoinService = async (user: User) => {
   if (!user.user_password) {
     throw new Error("비밀번호 해싱 서비스 에러");
   }
 
   const hashedPassword = await hashPassword(user.user_password);
-  return joinUserDB({ ...user, user_password: hashedPassword });
+  return postUserJoinStorage({ ...user, user_password: hashedPassword });
 };
 
-export const loginUser = async (user_id: string, user_password: string) => {
+export const postLoginUserService = async (user_id: string, user_password: string) => {
   try {
-    const user = await findUserByCredentialsDB(user_id);
+    const user = await postLoginUserStorage(user_id);
     if (!user) {
       throw new Error("아이디가 존재하지 않습니다.");
     }
@@ -138,13 +138,6 @@ export const loginUser = async (user_id: string, user_password: string) => {
 
     // 토큰 생성
     const token = generateToken(user.user_id);
-
-    console.log("=== loginUser 서비스 ===");
-    console.log("반환할 사용자 정보:", user);
-    console.log("is_admin 값:", user.is_admin);
-    console.log("is_admin 타입:", typeof user.is_admin);
-    console.log("=== loginUser 서비스 끝 ===");
-
     return {
       user,
       token,
@@ -156,7 +149,7 @@ export const loginUser = async (user_id: string, user_password: string) => {
 };
 
 // 인증번호 검증 서비스
-export const verifyPasswordCode = async (email: string, code: string) => {
+export const postVerifyPasswordCodeService = async (email: string, code: string) => {
   try {
     const isValid = verifyCode(email, code);
 
@@ -177,7 +170,7 @@ export const verifyPasswordCode = async (email: string, code: string) => {
   }
 };
 
-export const resetPasswordService = async (email: string, password: string) => {
+export const postResetPasswordService = async (email: string, password: string) => {
   try {
     const user = await findUserByEmailDB(email);
     if (!user) {
@@ -185,7 +178,7 @@ export const resetPasswordService = async (email: string, password: string) => {
     }
 
     const hashedPassword = await hashPassword(password);
-    await updateUserPasswordDB(email, hashedPassword);
+    await postUpdatePasswordStorage(email, hashedPassword);
 
     return { success: true, message: "비밀번호가 재설정되었습니다." };
   } catch (error) {

@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const timeDiff = currentTime - lastActivity;
 
       if (timeDiff > TIMEOUT_DURATION) {
-        console.log("타임아웃 발생!");
         logout();
       }
     };
@@ -67,7 +66,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    console.log("로그아웃 실행됨");
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("isAdmin");
@@ -83,12 +81,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const adminStatus = localStorage.getItem("isAdmin") === "true";
-    
-    console.log("=== AuthContext 초기화 ===");
-    console.log("토큰 존재:", !!token);
-    console.log("localStorage isAdmin:", localStorage.getItem("isAdmin"));
-    console.log("adminStatus:", adminStatus);
-    console.log("=== AuthContext 초기화 끝 ===");
     
     setIsLoggedIn(!!token);
     setIsAdmin(adminStatus);
@@ -109,10 +101,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = (token: string, userId: string, isAdmin: boolean = false) => {
-    console.log("=== AuthContext login 함수 ===");
-    console.log("받은 isAdmin:", isAdmin);
-    console.log("받은 isAdmin 타입:", typeof isAdmin);
-    console.log("=== AuthContext login 함수 끝 ===");
     
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);

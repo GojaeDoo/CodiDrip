@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Profile } from "@/types/profile";
+import { Profile } from "../../../layout/header/Header.types";
 
-export const fetchProfiles = async (): Promise<Profile[]> => {
+export const getProfilesQuery = async (): Promise<Profile[]> => {
   try {
     const response = await axios.get("http://localhost:3005/api/profiles");
     const profiles = response.data.map((profile: Profile) => ({

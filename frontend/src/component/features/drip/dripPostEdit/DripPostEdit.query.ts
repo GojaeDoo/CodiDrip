@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PostDripData } from "./DripPostEdit.types";
 
-export const postDrip = async (data: PostDripData) => {
+export const postDripQuery = async (data: PostDripData) => {
   try {
     const response = await axios.post("http://localhost:3005/api/drip", data, {
       headers: {
@@ -12,15 +12,13 @@ export const postDrip = async (data: PostDripData) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("Response headers:", error.response?.headers);
-      console.log("Response data:", error.response?.data);
     }
     console.error("Error posting drip:", error);
     throw error;
   }
 };
 
-export const updateDrip = async (
+export const putUpdateDripQuery = async (
   data: PostDripData & { postNo: string | null }
 ) => {
   try {
@@ -36,16 +34,12 @@ export const updateDrip = async (
     );
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log("Response headers:", error.response?.headers);
-      console.log("Response data:", error.response?.data);
-    }
     console.error("Error updating drip:", error);
     throw error;
   }
 };
 
-export const fetchDripPostQuery = async (postNo: string) => {
+export const getDripPostQuery = async (postNo: string) => {
   if (!postNo) {
     throw new Error("Post number is required");
   }

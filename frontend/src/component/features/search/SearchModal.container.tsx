@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { SearchModalPresenter } from "./SearchModal.presenter";
-import { SearchModalProps } from "./SearchModal.types";
+import { SearchModalPresenterProps, SearchModalProps, SearchResultProps } from "./SearchModal.types";
 import { useRouter } from "next/navigation";
 import { encodeUserId } from "@/utils/urlEncoder";
-
-interface SearchResult {
-  type: 'profile' | 'post';
-  id: number;
-  name: string;
-  image: string;
-  user_id: string;
-}
 
 export const SearchModalContainer = ({ 
   isOpen, 
@@ -31,19 +23,17 @@ export const SearchModalContainer = ({
     }
   };
 
-  const handleResultClick = (result: SearchResult) => {
-    console.log("result : ", result);
+  const onResultClick: SearchModalPresenterProps["onResultClick"] = (result: SearchResultProps) => {
     if (result.type === 'profile') {
       const encodedUserId = encodeUserId(result.user_id);
       router.push(`/myPage?status=true&uid=${encodedUserId}`);
     } else if (result.type === 'post') {
-      // 포스트 상세 페이지로 이동
       router.push(`/dripPostDetail?postNo=${result.id}`);
     }
     onClose();
   };
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
+  const onOverlayClick: SearchModalPresenterProps["onOverlayClick"] = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -58,8 +48,8 @@ export const SearchModalContainer = ({
       isOpen={isOpen}
       profileResults={profileResults}
       postResults={postResults}
-      onResultClick={handleResultClick}
-      onOverlayClick={handleOverlayClick}
+      onResultClick={onResultClick}
+      onOverlayClick={onOverlayClick}
       onClose={onClose}
       getImageUrl={getImageUrl}
     />

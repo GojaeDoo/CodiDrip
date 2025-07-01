@@ -1,16 +1,16 @@
 // src/router/userRouter.ts
 import express from "express";
 import {
-  getIdOverlappingCheck,
+  getIdOverlappingCheckController,
   getUsers,
-  postUserJoin,
-  getEmailOverlappingCheck,
-  loginUserController,
-  getFindId,
-  getFindPassword,
-  verifyPasswordCodeController,
+  postUserJoinController,
+  getEmailOverlappingCheckController,
+  postLoginUserController,
+  getFindIdController,
+  getFindPasswordController,
+  postVerifyPasswordCodeController,
   getSelectUser,
-  postUserResetPassword,
+  postUserResetPasswordController,
   getFollowStatusController,
   postToggleFollowController,
   getFollowersController,
@@ -22,16 +22,16 @@ const router = express.Router();
 
 // 사용자 관련 라우트
 router.get("/", getUsers); // 사용자 목록 가져오기
-router.get("/check-id", getIdOverlappingCheck); // 아이디 중복 체크
-router.get("/check-email", getEmailOverlappingCheck); // 이메일 중복 체크
-router.get("/find-id", getFindId); // 아이디 찾기
-router.get("/find-password", getFindPassword); // 비밀번호 찾기
+router.get("/check-id", getIdOverlappingCheckController); // 아이디 중복 체크
+router.get("/check-email", getEmailOverlappingCheckController); // 이메일 중복 체크
+router.get("/find-id", getFindIdController); // 아이디 찾기
+router.get("/find-password", getFindPasswordController); // 비밀번호 찾기
 router.get("/select_user", getSelectUser); // 사용자 선택
 
-router.post("/login", loginUserController); // 로그인
-router.post("/", postUserJoin); // 사용자 회원가입
-router.post("/verify-password-code", verifyPasswordCodeController); // 비밀번호 코드 검증
-router.post("/reset-password", postUserResetPassword); // 비밀번호 재설정
+router.post("/login", postLoginUserController); // 로그인
+router.post("/", postUserJoinController); // 사용자 회원가입
+router.post("/verify-password-code", postVerifyPasswordCodeController); // 비밀번호 코드 검증
+router.post("/reset-password", postUserResetPasswordController); // 비밀번호 재설정
 
 // 팔로우 관련 라우트
 router.get("/follow/status", getFollowStatusController); // 팔로우 상태 확인

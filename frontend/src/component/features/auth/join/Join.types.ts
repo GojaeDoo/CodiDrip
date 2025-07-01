@@ -1,4 +1,4 @@
-export interface JoinProps {
+export interface JoinPresenterProps {
   onChangeId: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeRePassword: (event: React.ChangeEvent<HTMLInputElement>) => void;

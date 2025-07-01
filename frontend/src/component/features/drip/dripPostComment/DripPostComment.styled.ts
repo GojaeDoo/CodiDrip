@@ -325,18 +325,17 @@ export const ModalButton = styled.button`
     background: var(--card-border);
     color: var(--text-primary);
 
-    &:hover {
-      background: var(--accent);
-    }
   }
 
   &:last-child {
-    background: var(--danger);
-    color: var(--text-primary);
+    background-color: var(--button-bg);
+    color: var(--button-text);
 
     &:hover {
-      background: #ff6666;
-    }
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
+  }
   }
 `;
 

@@ -6,7 +6,7 @@ import path from "path";
 
 const prisma = new PrismaClient();
 
-export const getFindAllProfileDB = async (
+export const getAllProfileStorage = async (
   gender?: string
 ): Promise<Profile[]> => {
   try {
@@ -50,7 +50,7 @@ export const getFindAllProfileDB = async (
   }
 };
 
-export const getFindByIdProfileDB = async (
+export const getProfileStorage = async (
   id: string
 ): Promise<Profile | null> => {
   const result = await pool.query(
@@ -82,7 +82,7 @@ GROUP BY
   return result.rows[0] || null;
 };
 
-export const getUserProfileByIdDB = async (
+export const getUserProfileStorage = async (
   id: string
 ): Promise<Profile | null> => {
   const result = await pool.query(`SELECT * FROM profile WHERE user_id = $1`, [
@@ -91,7 +91,7 @@ export const getUserProfileByIdDB = async (
   return result.rows[0] || null;
 };
 
-export const getCreateProfileDB = async (
+export const getCreateProfileStorage = async (
   height: number,
   weight: number,
   gender: string,
@@ -119,7 +119,6 @@ export const getCreateProfileDB = async (
       RETURNING *;
     `;
     const values = [height, weight, gender, nickname, profileImage, userId, profileAbout];
-    console.log("DB 입력 값:", values);
     const result = await pool.query(query, values);
     return result.rows[0] || null;
   } catch (error) {
@@ -128,7 +127,7 @@ export const getCreateProfileDB = async (
   }
 };
 
-export const updateProfile = async (
+export const postUpdateProfileStorage = async (
   height: number,
   weight: number,
   gender: string,
@@ -138,7 +137,6 @@ export const updateProfile = async (
   profileAbout: string
 ) => {
   try {
-    // 기존 프로필 이미지 조회
     const prevResult = await pool.query(
       `SELECT profile_image FROM profile WHERE user_id = $1`,
       [userId]
@@ -147,7 +145,6 @@ export const updateProfile = async (
     if (prevResult.rows.length > 0) {
       prevImage = prevResult.rows[0].profile_image;
     }
-    // 기존 이미지와 새 이미지가 다르고, 기존 이미지가 존재하면 삭제
     if (
       prevImage &&
       prevImage !== profileImage &&
@@ -159,11 +156,9 @@ export const updateProfile = async (
         "uploads/profiles",
         prevImage.trim()
       );
-      console.log("프로필 이미지 삭제 시도:", filePath);
       fs.promises
         .unlink(filePath)
         .then(() => {
-          console.log("프로필 이미지 파일 삭제 성공:", filePath);
         })
         .catch((err) => {
           console.error("프로필 이미지 파일 삭제 실패:", filePath, err.message);
@@ -191,7 +186,7 @@ export const updateProfile = async (
   }
 };
 
-export const getFindNickNameCheckDB = async (nickname: string) => {
+export const getFindNickNameCheckStorage = async (nickname: string) => {
   
   try {
     const result = await pool.query(`SELECT * FROM profile WHERE profile_nickname = $1`, [nickname]);

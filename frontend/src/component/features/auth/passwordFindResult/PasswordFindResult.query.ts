@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const verifyPasswordCode = async (code: string, email: string) => {
+export const postVerifyPasswordCodeQuery = async (code: string, email: string) => {
   try {
     const response = await axios.post(
       "http://localhost:3005/api/users/verify-password-code",

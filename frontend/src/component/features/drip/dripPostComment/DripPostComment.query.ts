@@ -11,13 +11,11 @@ export const postCommentQuery = async (postno: number, user_id: string, content:
 }
 
 export const getCommentQuery = async (postno: number, user_id: string) => {
-  console.log('Fetching comments:', { postno, user_id });
   const response = await axios.get(`http://localhost:3005/api/drip/${postno}/comments?userId=${user_id}`);
-  console.log('Comments response:', JSON.stringify(response.data, null, 2));
   return response.data;
 }
 
-export const updateCommentQuery = async (commentId: number, content: string) => {
+export const putUpdateCommentQuery = async (commentId: number, content: string) => {
   const response = await axios.put(`http://localhost:3005/api/drip/comments/${commentId}`, {
     content: content
   })
@@ -29,18 +27,14 @@ export const deleteCommentQuery = async (commentId: number) => {
   return response.data;
 }
 
-export const likeCommentQuery = async (commentId: number, user_id: string) => {
-  console.log('Sending like request:', { commentId, user_id });
+export const getLikeCommentQuery = async (commentId: number, user_id: string) => {
   const response = await axios.post(`http://localhost:3005/api/drip/comments/${commentId}/like?userId=${user_id}`);
-  console.log('Like response:', response.data);
   return response.data;
 };
 
-export const unlikeCommentQuery = async (commentId: number, user_id: string) => {
-  console.log('Sending unlike request:', { commentId, user_id });
+export const getUnlikeCommentQuery = async (commentId: number, user_id: string) => {
   try {
     const response = await axios.delete(`http://localhost:3005/api/drip/comments/${commentId}/like?userId=${user_id}`);
-    console.log('Unlike response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Unlike error:', error);

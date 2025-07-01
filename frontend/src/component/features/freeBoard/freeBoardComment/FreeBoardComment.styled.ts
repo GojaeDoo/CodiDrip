@@ -338,12 +338,13 @@ export const ModalFooter = styled.div`
     }
     
     &.submit {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        background-color: var(--button-hover);
+        border-color: var(--button-hover);
+        color: var(--button-text);
       }
       
       &:disabled {
@@ -356,8 +357,8 @@ export const ModalFooter = styled.div`
 `;
 
 export const AddCommentButton = styled.button`
-  background-color: rgba(217, 217, 217, 0.9);
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   padding: 1rem 1rem;
   border-radius: 12px;
@@ -368,8 +369,9 @@ export const AddCommentButton = styled.button`
   margin: 2rem 0;
   
   &:hover {
-    background-color: #262a2d;
-    color: #ffffff;
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 `;
 

@@ -62,9 +62,9 @@ export const DripsSelectBtn = styled.button<{ $isActive?: boolean }>`
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
   &:hover {
-    color: var(--text-primary);
-    background-color: var(--accent);
-    border-color: var(--accent);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 `;
 

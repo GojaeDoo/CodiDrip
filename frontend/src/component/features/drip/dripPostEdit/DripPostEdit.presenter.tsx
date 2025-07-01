@@ -8,29 +8,7 @@ const DripPostEditPresenter = (
     containerRef: React.RefObject<HTMLDivElement>;
   }
 ) => {
-  const {
-    containerRef,
-    imageSrcList,
-    currentImageIndex,
-    fileInputRef,
-    onImageUpload,
-    onPrevImage,
-    onNextImage,
-    onDeleteImage,
-    tags,
-    tagInput,
-    onTagInputChange,
-    onKeyPress,
-    onDeleteTag,
-    styleCategory,
-    onStyleCategoryChange,
-    onSubmit,
-    onUpdate,
-    status,
-    imageRef,
-    aspectRatio,
-    onImageLoad,
-  } = props;
+  
 
   return (
     <S.Background>
@@ -38,28 +16,28 @@ const DripPostEditPresenter = (
         <S.PostContainer>
           {/* 이미지 영역 */}
           <S.ImageSection>
-            <S.ImageWrapper ref={containerRef} $aspectRatio={aspectRatio}>
-              {imageSrcList[currentImageIndex] && (
+            <S.ImageWrapper ref={props.containerRef} $aspectRatio={props.aspectRatio}>
+              {props.imageSrcList[props.currentImageIndex] && (
                 <>
                   <S.MainImage
-                    ref={imageRef}
-                    src={imageSrcList[currentImageIndex]}
+                    ref={props.imageRef}
+                    src={props.imageSrcList[props.currentImageIndex]}
                     alt="Preview"
-                    onLoad={onImageLoad}
+                    onLoad={props.onImageLoad}
                   />
                   <S.DeleteImageButton
-                    onClick={() => onDeleteImage(currentImageIndex)}
+                    onClick={() => props.onDeleteImage(props.currentImageIndex)}
                     type="button"
                   >
                     <X size={24} />
                   </S.DeleteImageButton>
-                  {imageSrcList.length > 1 && (
+                  {props.imageSrcList.length > 1 && (
                     <>
                       <S.ImageNavigation>
-                        <S.NavButton onClick={onPrevImage}>
+                        <S.NavButton onClick={props.onPrevImage}>
                           <ChevronLeft size={24} />
                         </S.NavButton>
-                        <S.NavButton onClick={onNextImage}>
+                        <S.NavButton onClick={props.onNextImage}>
                           <ChevronRight size={24} />
                         </S.NavButton>
                       </S.ImageNavigation>
@@ -73,16 +51,16 @@ const DripPostEditPresenter = (
           {/* 입력/설정 영역 */}
           <S.ContentSection>
             <S.DripPostEditTitle>
-              DRIP {status === true ? "수정" : "작성"}
+              DRIP {props.status === true ? "수정" : "작성"}
             </S.DripPostEditTitle>
-            <S.ImageUploadButton onClick={() => fileInputRef.current?.click()}>
+            <S.ImageUploadButton onClick={() => props.fileInputRef.current?.click()}>
               <ImagePlus size={24} />
               <span>사진 추가</span>
             </S.ImageUploadButton>
             <input
               type="file"
-              ref={fileInputRef}
-              onChange={onImageUpload}
+              ref={props.fileInputRef}
+              onChange={props.onImageUpload}
               accept="image/*"
               multiple
               style={{ display: "none" }}
@@ -92,18 +70,18 @@ const DripPostEditPresenter = (
                 <Hash size={20} />
                 <S.TagInput
                   type="text"
-                  value={tagInput}
-                  onChange={onTagInputChange}
-                  onKeyPress={onKeyPress}
+                  value={props.tagInput}
+                  onChange={props.onTagInputChange}
+                  onKeyPress={props.onKeyPress}
                   placeholder="태그를 입력하세요 (쉼표 또는 엔터로 구분)"
                 />
               </S.TagInputWrapper>
               <S.TagList>
-                {tags.map((tag, index) => (
+                {props.tags.map((tag, index) => (
                   <S.TagItem key={index}>
                     {tag}
                     <S.TagDeleteButton
-                      onClick={() => onDeleteTag(index)}
+                      onClick={() => props.onDeleteTag(index)}
                       type="button"
                     >
                       ×
@@ -115,8 +93,8 @@ const DripPostEditPresenter = (
             <S.StyleCategorySection>
               <S.StyleCategoryLabel>스타일 카테고리 *</S.StyleCategoryLabel>
               <S.StyleCategorySelect
-                value={styleCategory}
-                onChange={onStyleCategoryChange}
+                value={props.styleCategory}
+                onChange={props.onStyleCategoryChange}
                 required
               >
                 <option value="">스타일을 선택해주세요</option>
@@ -133,10 +111,10 @@ const DripPostEditPresenter = (
             </S.StyleCategorySection>
             <S.ButtonGroup>
               <S.SubmitButton
-                onClick={status === true ? onUpdate : onSubmit}
-                disabled={imageSrcList.length === 0 || !styleCategory}
+                onClick={props.status === true ? props.onUpdate : props.onSubmit}
+                disabled={props.imageSrcList.length === 0 || !props.styleCategory}
               >
-                {status === true ? "수정" : "게시"}하기
+                {props.status === true ? "수정" : "게시"}하기
               </S.SubmitButton>
             </S.ButtonGroup>
           </S.ContentSection>

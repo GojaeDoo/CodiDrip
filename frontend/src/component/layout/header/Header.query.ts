@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Profile } from "./Header.types";
 
-export const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
+export const getUserProfileQuery = async (userId: string): Promise<Profile | null> => {
   try {
     const response = await axios.get(
       `http://localhost:3005/api/profiles/${userId}`
@@ -24,7 +24,7 @@ export const fetchUserProfile = async (userId: string): Promise<Profile | null> 
   }
 };
 
-export const getSearchResult = async (keyword: string) => {
+export const getSearchResultQuery = async (keyword: string) => {
   try {
     const response = await axios.get(
       `http://localhost:3005/api/search/search?keyword=${keyword}`

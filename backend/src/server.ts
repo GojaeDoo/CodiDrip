@@ -44,17 +44,17 @@ app.use("/api/reports", reportRouter);
 
 // 서버 실행
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  // console.log(`Server is running on http://localhost:${port}`);
 });
 
 // 서버 종료 시 DB 커넥션 풀 정리
 process.on("SIGINT", async () => {
-  console.log("서버 종료: DB 커넥션 풀 정리 중...");
+  // console.log("서버 종료: DB 커넥션 풀 정리 중...");
   await pool.end();
   process.exit();
 });
 process.on("SIGTERM", async () => {
-  console.log("서버 종료: DB 커넥션 풀 정리 중...");
+  // console.log("서버 종료: DB 커넥션 풀 정리 중...");
   await pool.end();
   process.exit();
 });

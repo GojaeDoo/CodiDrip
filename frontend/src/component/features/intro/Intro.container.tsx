@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import IntroPresenter from "./Intro.presenter";
 import { useAuth } from "@/context/AuthContext";
+import { IntroPresenterProps } from "./Intro.types";
 
 const IntroContainer = () => {
   const router = useRouter();
@@ -15,11 +16,11 @@ const IntroContainer = () => {
     }
   }, [isLoggedIn, router]);
 
-  const onClickMoveLogin = () => {
+  const onClickMoveLogin:IntroPresenterProps["onClickMoveLogin"] = () => {
     router.push("/login");
   };
 
-  const onClickMoveDrips = () => {
+  const onClickMoveDrips:IntroPresenterProps["onClickMoveDrips"] = () => {
     router.push("/drips");
   };
 

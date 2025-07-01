@@ -117,8 +117,8 @@ export const SearchInput = styled.input`
 
 export const SearchButton = styled.button`
   padding: 12px 20px;
-  background-color: var(--accent);
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   outline: none;
   border: none;
   border-radius: 8px;
@@ -126,7 +126,9 @@ export const SearchButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
   @media (max-width: 768px) {
     padding: 8px 12px;
@@ -136,8 +138,8 @@ export const SearchButton = styled.button`
 
 export const WriteButton = styled.button`
   padding: 12px 24px;
-  background-color: var(--accent);
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   outline: none;
   border: none;
   border-radius: 8px;
@@ -145,7 +147,9 @@ export const WriteButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
   @media (max-width: 768px) {
     padding: 8px 12px;

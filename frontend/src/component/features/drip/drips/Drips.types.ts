@@ -1,4 +1,4 @@
-export interface DripsProps {
+export interface DripsPresenterProps {
   onClickSelectAll: () => void;
   onClickSelectMen: () => void;
   onClickSelectWomen: () => void;

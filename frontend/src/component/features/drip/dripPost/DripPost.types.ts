@@ -1,5 +1,5 @@
 export interface DripPostAppProps {
-  userId?: string;  // 필수에서 선택적으로 변경
+  userId?: string; 
   isMyPage?: boolean;
   gender: string;
   isLike?: boolean;

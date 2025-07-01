@@ -27,7 +27,6 @@ export const DripUserContainer = (props: DripUserContainerProps) => {
         const response = await getDripUserFetchQuery(
           gender !== "all" ? gender : undefined
         );
-        console.log(response);
         setUsers(response);
       } catch (error) {
         console.error("Error fetching drip posts:", error);

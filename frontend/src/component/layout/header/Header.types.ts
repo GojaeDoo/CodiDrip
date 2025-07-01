@@ -1,4 +1,4 @@
-export interface HeaderProps {
+export interface HeaderPresenterProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onClickMoveLogin: () => void;

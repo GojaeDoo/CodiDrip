@@ -1,39 +1,39 @@
 import {
-  getFindAllProfileDB,
-  getFindByIdProfileDB,
-  getUserProfileByIdDB,
-  getCreateProfileDB,
-  updateProfile,
-  getFindNickNameCheckDB
+  getAllProfileStorage,
+  getProfileStorage,
+  getUserProfileStorage,
+  getCreateProfileStorage,
+  postUpdateProfileStorage,
+  getFindNickNameCheckStorage
 } from "../storage/profileStorage";
 import { Profile } from "../types/profileTypes";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getAllProfiles = async (gender?: string): Promise<Profile[]> => {
+export const getAllProfilesService = async (gender?: string): Promise<Profile[]> => {
   try {
-    return await getFindAllProfileDB(gender);
+    return await getAllProfileStorage(gender);
   } catch (error) {
     console.error("getAllProfiles error - profileService");
     throw new Error("프로필 목록을 가져오는 중 오류가 발생했습니다.");
   }
 };
 
-export const getProfileById = async (id: string): Promise<Profile | null> => {
+export const getProfileService = async (id: string): Promise<Profile | null> => {
   try {
-    return await getFindByIdProfileDB(id);
+    return await getProfileStorage(id);
   } catch (error) {
     console.error("getProfileById error - profileService");
     throw new Error("프로필을 가져오는 중 오류가 발생했습니다.");
   }
 };
 
-export const getUserProfileById = async (
+export const getUserProfileService = async (
   id: string
 ): Promise<Profile | null> => {
   try {
-    return await getUserProfileByIdDB(id);
+    return await getUserProfileStorage(id);
   } catch (error) {
     console.error("getUserProfileById error - profileService");
     throw new Error("프로필을 가져오는 중 오류가 발생했습니다.");
@@ -50,16 +50,7 @@ export const getCreateProfileService = async (
   profileAbout: string
 ): Promise<Profile | null> => {
   try {
-    console.log("파라미터 확인:", {
-      height,
-      weight,
-      gender,
-      nickname,
-      profileImage,
-      userId,
-      profileAbout,
-    });
-    const result = await getCreateProfileDB(
+    const result = await getCreateProfileStorage(
       height,
       weight,
       gender,
@@ -68,7 +59,6 @@ export const getCreateProfileService = async (
       userId,
       profileAbout
     );
-    console.log("결과:", result);
     return result;
   } catch (error) {
     console.error("createProfile error - profileService:", error);
@@ -76,7 +66,7 @@ export const getCreateProfileService = async (
   }
 };
 
-export const getUpdateProfileService = async (
+export const postUpdateProfileService = async (
   height: number,
   weight: number,
   gender: string,
@@ -86,7 +76,7 @@ export const getUpdateProfileService = async (
   profileAbout: string
 ) => {
   try {
-    const updatedProfile = await updateProfile(
+    const updatedProfile = await postUpdateProfileStorage(
       height,
       weight,
       gender,
@@ -108,7 +98,7 @@ export const getUpdateProfileService = async (
 
 export const getNicknameCheckService = async (nickname: string) => {
   try {
-    return await getFindNickNameCheckDB(nickname);
+    return await getFindNickNameCheckStorage(nickname);
   } catch (error) {
     console.error("getNicknameCheckService error - profileService");
     throw new Error("닉네임 중복확인 중 오류가 발생했습니다.");

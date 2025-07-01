@@ -2,27 +2,22 @@
 
 import React from "react";
 import * as S from "./Intro.styled";
-import { IntroProps } from "./Intro.types";
+import { IntroPresenterProps } from "./Intro.types";
 
-const IntroPresenter = ({
-  onClickMoveLogin,
-  onClickMoveDrips,
-  brandName,
-  scatterDirections,
-}: IntroProps) => {
+const IntroPresenter = (props: IntroPresenterProps) => {
   return (
     <S.IntroWrapper>
       <S.SplashScreen>
         <S.SplashText>Drop It. Flex It. Own It.</S.SplashText>
         <S.BrandName>
-          {brandName.split("").map((letter, index) => (
+          {props.brandName.split("").map((letter, index) => (
             <S.BrandLetter
               key={index}
               delay={index}
               style={
                 {
-                  "--tx": scatterDirections[index].tx,
-                  "--ty": scatterDirections[index].ty,
+                  "--tx": props.scatterDirections[index].tx,
+                  "--ty": props.scatterDirections[index].ty,
                 } as React.CSSProperties
               }
             >
@@ -39,10 +34,10 @@ const IntroPresenter = ({
             스타일을 공유하고 새로운 영감을 얻어보세요.
           </S.Description>
           <S.ButtonWrapper>
-            <S.PrimaryButton onClick={onClickMoveDrips}>
+            <S.PrimaryButton onClick={props.onClickMoveDrips}>
               시작하기
             </S.PrimaryButton>
-            <S.SecondaryButton onClick={onClickMoveLogin}>
+            <S.SecondaryButton onClick={props.onClickMoveLogin}>
               로그인
             </S.SecondaryButton>
           </S.ButtonWrapper>

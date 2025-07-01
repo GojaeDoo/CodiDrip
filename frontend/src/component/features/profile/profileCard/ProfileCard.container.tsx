@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import ProfileCardPresenter from "./ProfileCard.presenter";
-import { Profile } from "../../../../types/profile";
-
-interface ProfileCardContainerProps {
-  genderSelect: string;
-}
+import { Profile } from "../../../layout/header/Header.types";
+import { ProfileCardContainerProps } from "./ProfileCard.types";
+import { getProfilesQuery } from "./ProfileCard.query";
 
 const ProfileCardContainer = ({ genderSelect }: ProfileCardContainerProps) => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -15,11 +13,10 @@ const ProfileCardContainer = ({ genderSelect }: ProfileCardContainerProps) => {
   const [likedProfiles, setLikedProfiles] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const loadProfiles = async () => {
       try {
-        const response = await fetch("http://localhost:3005/api/profiles");
-        const data = await response.json();
-        // genderSelect에 따라 프로필 필터링
+        setIsLoading(true);
+        const data = await getProfilesQuery();
         const filteredProfiles =
           genderSelect === "all"
             ? data
@@ -29,15 +26,16 @@ const ProfileCardContainer = ({ genderSelect }: ProfileCardContainerProps) => {
         setProfiles(filteredProfiles);
       } catch (error) {
         console.error("프로필을 불러오는 중 오류가 발생했습니다:", error);
+        setError(error as Error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProfiles();
+    loadProfiles();
   }, [genderSelect]);
 
-  const handleLike = (id: number) => {
+  const onLike = (id: number) => {
     setLikedProfiles((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -57,7 +55,7 @@ const ProfileCardContainer = ({ genderSelect }: ProfileCardContainerProps) => {
     <ProfileCardPresenter
       profiles={profiles}
       likedProfiles={likedProfiles}
-      onLike={handleLike}
+      onLike={onLike}
     />
   );
 };

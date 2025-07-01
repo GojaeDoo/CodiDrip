@@ -30,7 +30,7 @@ export interface ReportResponse {
   message: string;
 }
 
-export interface DripPostCommentProps {
+export interface DripPostCommentPresenterProps {
   commentList: Comment[];
   onLikeComment: (commentId: number) => void;
   onReplyClick: (commentId: number) => void;
@@ -59,9 +59,11 @@ export interface DripPostCommentProps {
   onSubmitReply: () => void;
   showReportModal: boolean;
   reportCommentId: number | null;
+  reportReason: string;
   onOpenReportModal: (commentId: number) => void;
   onCloseReportModal: () => void;
-  onReportSubmit: (reason: ReportReasonType) => void;
+  onReportSubmit: () => void;
+  onChangeReportReason: (value: string) => void;
 }
 
 export interface DripPostCommentFetchState {

@@ -83,7 +83,7 @@ export const deleteDripPostQuery = async (postNo: number) => {
   }
 };
 
-export const likeDripPostQuery = async (postId: number) => {
+export const postLikeDripPostQuery = async (postId: number) => {
   try {
     const userId = localStorage.getItem("userId");
     if (!userId) {
@@ -102,7 +102,7 @@ export const likeDripPostQuery = async (postId: number) => {
 };
 
 // 신고 API
-export const createReport = async (reportData: ReportData): Promise<ReportResponse> => {
+export const postCreateReportQuery = async (reportData: ReportData): Promise<ReportResponse> => {
   try {
     const token = localStorage.getItem('token');
     if (!token) {

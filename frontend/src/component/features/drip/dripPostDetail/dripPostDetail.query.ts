@@ -5,7 +5,6 @@ export const getDripPostDetail = async (
   postNo: number
 ): Promise<DripPostDetailResponse> => {
   try {
-    console.log("Fetching drip post with postNo:", postNo);
     const userId = localStorage.getItem("userId");
     const response = await axios.get(
       `http://localhost:3005/api/drip/${postNo}`,
@@ -13,7 +12,6 @@ export const getDripPostDetail = async (
         params: { userId }
       }
     );
-    console.log("API Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching drip post:", error);
@@ -23,13 +21,10 @@ export const getDripPostDetail = async (
 
 export const getDripPostLikeStatus = async (postNo: number, userId: string) => {
   try {
-    console.log("Fetching like status for postNo:", postNo, "userId:", userId);
     const response = await axios.get(`http://localhost:3005/api/drip/like-status`, {
       params: { post_no: postNo, user_id: userId }
     });
-    console.log("Like status API response:", response.data);
     if (response.data && typeof response.data.is_liked === 'boolean') {
-      console.log("Returning like status:", response.data.is_liked);
       return response.data.is_liked;
     }
     console.error("Invalid like status response:", response.data);
@@ -40,7 +35,7 @@ export const getDripPostLikeStatus = async (postNo: number, userId: string) => {
   }
 };
 
-export const likeDripPostQuery = async (postNo: number, userId: string) => {
+export const postLikeDripPostQuery = async (postNo: number, userId: string) => {
   try {
     const response = await axios.post(`http://localhost:3005/api/drip/${postNo}/like?userId=${userId}`);
     return response.data;
@@ -50,7 +45,7 @@ export const likeDripPostQuery = async (postNo: number, userId: string) => {
   }
 };
 
-export const unlikeDripPostQuery = async (postNo: number, userId: string) => {
+export const deleteUnlikeDripPostQuery = async (postNo: number, userId: string) => {
   try {
     const response = await axios.delete(`http://localhost:3005/api/drip/${postNo}/like?userId=${userId}`);
     return response.data;
@@ -60,7 +55,7 @@ export const unlikeDripPostQuery = async (postNo: number, userId: string) => {
   }
 };
 
-export const saveDripPostQuery = async (postNo: number, userId: string) => {
+export const postSaveDripPostQuery = async (postNo: number, userId: string) => {
   try {
     const response = await axios.post(`http://localhost:3005/api/drip/${postNo}/save`, {
       userId: userId

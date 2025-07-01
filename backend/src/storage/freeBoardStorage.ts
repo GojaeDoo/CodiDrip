@@ -58,7 +58,6 @@ export const getFreeBoardDetailDB = async (postId: number) => {
 
 export const updateFreeBoardDB = async (postId: number, title: string, content: string, userId: string) => {
     try {
-        console.log("updateFreeBoardDB 호출됨:", { postId, title, content, userId });
         
         // 작성자 확인
         const authorCheck = await pool.query(
@@ -66,7 +65,6 @@ export const updateFreeBoardDB = async (postId: number, title: string, content: 
             [postId]
         );
         
-        console.log("작성자 확인 결과:", authorCheck.rows);
         
         if (authorCheck.rows.length === 0) {
             throw new Error("게시글을 찾을 수 없습니다.");
@@ -81,8 +79,6 @@ export const updateFreeBoardDB = async (postId: number, title: string, content: 
             "UPDATE freeBoard SET title = $1, content = $2 WHERE id = $3 RETURNING *",
             [title, content, postId]
         );
-        
-        console.log("수정 결과:", result.rows);
         
         return result.rows[0];
     } catch (error) {

@@ -142,13 +142,14 @@ export const IdCheckBtn = styled.button`
   outline: none;
   border: 1px solid var(--card-border);
   border-radius: 5px;
-  background-color: var(--card-border);
-  color: var(--text-primary);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    color: var(--text-primary);
-    background-color: var(--accent);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (max-width: 1024px) {
@@ -425,13 +426,14 @@ export const EmailCheckBtn = styled.button`
   font-size: 0.9rem;
   border: 1px solid var(--card-border);
   border-radius: 5px;
-  background-color: var(--card-border);
-  color: var(--text-primary);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    color: var(--text-primary);
-    background-color: var(--accent);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (max-width: 1024px) {

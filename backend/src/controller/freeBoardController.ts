@@ -18,7 +18,7 @@ import {
 
 
 // 자유게시판 게시글 작성
-export const createFreeBoard = async (req: Request, res: Response) => {
+export const postCreateFreeBoardController = async (req: Request, res: Response) => {
     try {
         const { title, content, userId } = req.body;
         const result = await createFreeBoardService(title, content, userId);
@@ -30,7 +30,7 @@ export const createFreeBoard = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 게시글 조회
-export const getFreeBoardList = async (req: Request, res: Response) => {
+export const getFreeBoardListController = async (req: Request, res: Response) => {
     try {
         const result = await getFreeBoardListService();
         res.status(200).json(result);
@@ -41,7 +41,7 @@ export const getFreeBoardList = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 게시글 상세 조회 
-export const getFreeBoardDetail = async (req: Request, res: Response) => {
+export const getFreeBoardDetailController = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
         const result = await getFreeBoardDetailService(postId);
@@ -58,7 +58,7 @@ export const getFreeBoardDetail = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 게시글 수정
-export const updateFreeBoard = async (req: Request, res: Response) => {
+export const postUpdateFreeBoardController = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
         const { title, content, userId } = req.body;
@@ -77,7 +77,7 @@ export const updateFreeBoard = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 게시글 삭제
-export const deleteFreeBoard = async (req: Request, res: Response) => {
+export const deleteFreeBoardController = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
         const result = await deleteFreeBoardService(postId);
@@ -92,7 +92,7 @@ export const deleteFreeBoard = async (req: Request, res: Response) => {
 // 자유게시판 댓글 
 
 // 자유게시판 게시글 작성
-export const postFreeBoardComment = async (req: Request, res: Response) => {
+export const postFreeBoardCommentController = async (req: Request, res: Response) => {
     try {
         const { newComment, userId, id } = req.body;
         const result = await postFreeBoardCommentService(newComment, userId, id);
@@ -104,7 +104,7 @@ export const postFreeBoardComment = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 게시글 댓글 조회
-export const getFreeBoardComment = async (req: Request, res: Response) => {
+export const getFreeBoardCommentController = async (req: Request, res: Response) => {
     try {
         const postId = parseInt(req.params.id);
         const result = await getFreeBoardCommentService(postId);
@@ -116,7 +116,7 @@ export const getFreeBoardComment = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 댓글 수정
-export const updateFreeBoardComment = async (req: Request, res: Response) => {
+export const updateFreeBoardCommentController = async (req: Request, res: Response) => {
     try {
         const commentId = req.params.commentId;
         const { content, userId } = req.body;
@@ -135,7 +135,7 @@ export const updateFreeBoardComment = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 댓글 삭제
-export const deleteFreeBoardComment = async (req: Request, res: Response) => {
+export const deleteFreeBoardCommentController = async (req: Request, res: Response) => {
     try {
         const commentId = req.params.commentId;
         const { userId } = req.body;
@@ -154,7 +154,7 @@ export const deleteFreeBoardComment = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 대댓글 작성
-export const postFreeBoardReply = async (req: Request, res: Response) => {
+export const postFreeBoardReplyController = async (req: Request, res: Response) => {
     try {
         const { newComment, userId, postId, parentId } = req.body;
         const result = await postFreeBoardReplyService(newComment, userId, postId, parentId);
@@ -166,7 +166,7 @@ export const postFreeBoardReply = async (req: Request, res: Response) => {
 }
 
 // 자유게시판 대댓글 조회
-export const getFreeBoardReplies = async (req: Request, res: Response) => {
+export const getFreeBoardRepliesController = async (req: Request, res: Response) => {
     try {
         const commentId = req.params.commentId;
         const result = await getFreeBoardRepliesService(commentId);
@@ -178,7 +178,7 @@ export const getFreeBoardReplies = async (req: Request, res: Response) => {
 }
 
 // 사용자가 작성한 자유게시판 게시글 조회
-export const getUserFreeBoardPosts = async (req: Request, res: Response) => {
+export const getUserFreeBoardPostsController = async (req: Request, res: Response) => {
     try {
         const userId = req.params.userId;
         const result = await getUserFreeBoardPostsService(userId);

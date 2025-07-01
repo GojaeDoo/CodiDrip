@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import FollowPresenter from "./Follow.presenter";
-import { FollowProps, Profile } from "./Follow.types";
+import { FollowPresenterProps, FollowProps, Profile } from "./Follow.types";
 import { getFollowersQuery, getFollowingQuery } from "./Follow.query";
 
 interface FollowContainerProps {
@@ -56,15 +56,13 @@ export const FollowContainer = ({ initialTab = 'followers', targetUserId }: Foll
         setActiveTab(tab);
     };
 
-    const followProps: FollowProps = {
-        followers,
-        following,
-        activeTab,
-        onTabChange: handleTabChange,
-        isLoading
-    };
-
-    return <FollowPresenter {...followProps} />;
+    return <FollowPresenter
+    followers={followers}
+    following={following}
+    activeTab={activeTab}
+    onTabChange={handleTabChange}
+    isLoading={isLoading}
+    />;
 };
 
 export default FollowContainer;

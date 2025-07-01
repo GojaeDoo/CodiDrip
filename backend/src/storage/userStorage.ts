@@ -24,7 +24,7 @@ export const selectUserStorage = async (user_id: string) => {
   }
 };
 
-export const idOverlappingCheckDB = async (user_id: string) => {
+export const getIdOverlappingCheckStorage = async (user_id: string) => {
   try {
     const values = [user_id];
     const result = await pool.query(
@@ -37,7 +37,7 @@ export const idOverlappingCheckDB = async (user_id: string) => {
   }
 };
 
-export const emailOverlappingCheckDB = async (user_email: string) => {
+export const getEmailOverlappingCheckStorage = async (user_email: string) => {
   try {
     const values = [user_email];
     const result = await pool.query(
@@ -50,7 +50,7 @@ export const emailOverlappingCheckDB = async (user_email: string) => {
   }
 };
 
-export const findIdCheckDB = async (user_email: string) => {
+export const getFindIdStorage = async (user_email: string) => {
   try {
     const values = [user_email];
     const result = await pool.query(
@@ -63,7 +63,7 @@ export const findIdCheckDB = async (user_email: string) => {
   }
 };
 
-export const findPasswordCheckDB = async (
+export const getFindPasswordCheckStorage = async (
   user_id: string,
   user_email: string
 ) => {
@@ -79,7 +79,7 @@ export const findPasswordCheckDB = async (
   }
 };
 
-export const joinUserDB = async (user: User) => {
+export const postUserJoinStorage = async (user: User) => {
   try {
     const query = `
       INSERT INTO users (user_id, user_password, user_email)
@@ -95,7 +95,7 @@ export const joinUserDB = async (user: User) => {
   }
 };
 
-export const findUserByCredentialsDB = async (user_id: string) => {
+export const postLoginUserStorage = async (user_id: string) => {
   try {
     const query = `
       SELECT user_id, user_password, user_email, is_admin 
@@ -105,13 +105,6 @@ export const findUserByCredentialsDB = async (user_id: string) => {
     const values = [user_id];
     const result = await pool.query(query, values);
     const user = result.rows[0] || null;
-    
-    console.log("=== findUserByCredentialsDB ===");
-    console.log("조회된 사용자:", user);
-    console.log("is_admin 값:", user?.is_admin);
-    console.log("is_admin 타입:", typeof user?.is_admin);
-    console.log("=== findUserByCredentialsDB 끝 ===");
-    
     return user;
   } catch (error) {
     console.error("findUserByCredentialsDB error - userStorage");
@@ -135,7 +128,7 @@ export const findUserByEmailDB = async (user_email: string) => {
   }
 };
 
-export const updateUserPasswordDB = async (
+export const postUpdatePasswordStorage = async (
   user_email: string,
   user_password: string
 ) => {
@@ -293,12 +286,6 @@ export const checkUserAdminStatus = async (user_id: string) => {
     const result = await pool.query(query, values);
     const user = result.rows[0] || null;
     
-    console.log("=== checkUserAdminStatus ===");
-    console.log("사용자 ID:", user_id);
-    console.log("조회된 사용자:", user);
-    console.log("is_admin 값:", user?.is_admin);
-    console.log("is_admin 타입:", typeof user?.is_admin);
-    console.log("=== checkUserAdminStatus 끝 ===");
     
     return user;
   } catch (error) {

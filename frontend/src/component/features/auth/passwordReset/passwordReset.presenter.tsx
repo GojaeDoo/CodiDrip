@@ -1,8 +1,8 @@
 import * as S from "./passwordReset.styled";
 import * as C from "../../../commons/Commons.styled";
-import { PasswordResetProps } from "./passwordReset.types";
+import { PasswordResetPresenterProps } from "./passwordReset.types";
 
-export const PasswordResetPresenter = (props: PasswordResetProps) => {
+export const PasswordResetPresenter = (props: PasswordResetPresenterProps) => {
   return (
     <>
       <S.Background>

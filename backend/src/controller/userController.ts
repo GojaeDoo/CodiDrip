@@ -8,16 +8,16 @@ import {
 } from "../types/userTypes";
 
 import {
-  createUser,
+  postUserJoinService,
   getAllUsers,
-  idOverlappingCheck,
-  emailOverlappingCheck,
-  findIdCheck,
-  loginUser,
-  findPasswordCheck,
-  verifyPasswordCode,
+  getIdOverlappingCheckService,
+  getEmailOverlappingCheckService,
+  getFindIdService,
+  postLoginUserService,
+  getFindPasswordCheckService,
+  postVerifyPasswordCodeService,
   selectUserService,
-  resetPasswordService,
+  postResetPasswordService,
   checkFollowStatusService,
   toggleFollowService,
   getFollowersService,
@@ -53,7 +53,7 @@ export const getSelectUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getIdOverlappingCheck = async (
+export const getIdOverlappingCheckController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -68,7 +68,7 @@ export const getIdOverlappingCheck = async (
       return;
     }
 
-    const idCheck: any = await idOverlappingCheck({
+    const idCheck: any = await getIdOverlappingCheckService({
       user_id: user_id as string,
     });
 
@@ -82,7 +82,7 @@ export const getIdOverlappingCheck = async (
   }
 };
 
-export const getEmailOverlappingCheck = async (
+export const getEmailOverlappingCheckController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -97,7 +97,7 @@ export const getEmailOverlappingCheck = async (
       return;
     }
 
-    const emailCheck: any = await emailOverlappingCheck({
+    const emailCheck: any = await getEmailOverlappingCheckService({
       user_email: user_email as string,
     });
 
@@ -111,11 +111,11 @@ export const getEmailOverlappingCheck = async (
   }
 };
 
-export const getFindId = async (req: Request, res: Response) => {
+export const getFindIdController = async (req: Request, res: Response) => {
   try {
     const { email } = req.query;
 
-    const findId = await findIdCheck({
+    const findId = await getFindIdService({
       user_email: email as string,
     });
 
@@ -126,11 +126,11 @@ export const getFindId = async (req: Request, res: Response) => {
   }
 };
 
-export const getFindPassword = async (req: Request, res: Response) => {
+export const getFindPasswordController = async (req: Request, res: Response) => {
   try {
     const { id, email } = req.query;
 
-    const findPassword = await findPasswordCheck({
+    const findPassword = await getFindPasswordCheckService({
       user_id: id as string,
       user_email: email as string,
     });
@@ -144,16 +144,15 @@ export const getFindPassword = async (req: Request, res: Response) => {
   }
 };
 
-export const postUserJoin = async (
+export const postUserJoinController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
     const userData: User = req.body;
-    console.log("회원가입 데이터:", userData);
 
-    const result = await createUser(userData);
+    const result = await postUserJoinService(userData);
     res.json(result);
   } catch (error: any) {
     if (error.code === "23505" && error.constraint === "users_user_email_key") {
@@ -165,7 +164,7 @@ export const postUserJoin = async (
   }
 };
 
-export const loginUserController = async (
+export const postLoginUserController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -180,13 +179,7 @@ export const loginUserController = async (
       return;
     }
 
-    const result = await loginUser(user_id, user_password);
-    
-    console.log("=== loginUserController ===");
-    console.log("응답할 사용자 정보:", result.user);
-    console.log("is_admin 값:", result.user.is_admin);
-    console.log("is_admin 타입:", typeof result.user.is_admin);
-    console.log("=== loginUserController 끝 ===");
+    const result = await postLoginUserService(user_id, user_password);
     
     res.status(200).json({
       message: "로그인 성공",
@@ -199,7 +192,7 @@ export const loginUserController = async (
   }
 };
 
-export const verifyPasswordCodeController = async (
+export const postVerifyPasswordCodeController = async (
   req: Request,
   res: Response
 ) => {
@@ -212,7 +205,7 @@ export const verifyPasswordCodeController = async (
       return;
     }
 
-    const result = await verifyPasswordCode(email, code);
+    const result = await postVerifyPasswordCodeService(email, code);
     res.json(result);
   } catch (error) {
     console.error("인증번호 검증 실패:", error);
@@ -222,9 +215,8 @@ export const verifyPasswordCodeController = async (
   }
 };
 
-export const postUserResetPassword = async (req: Request, res: Response) => {
+export const postUserResetPasswordController = async (req: Request, res: Response) => {
   try {
-    console.log("비밀번호 재설정 요청:", req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -234,7 +226,7 @@ export const postUserResetPassword = async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await resetPasswordService(email, password);
+    const result = await postResetPasswordService(email, password);
     res.json(result);
   } catch (error: any) {
     console.error("비밀번호 재설정 실패:", error);

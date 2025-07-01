@@ -181,8 +181,8 @@ export const ProfileEditSelect = styled.select`
 export const FileInputLabel = styled.label`
   display: inline-block;
   padding: 0.7em 1.5em;
-  background: var(--accent);
-  color: var(--text-primary);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border-radius: 7px;
   font-weight: 700;
   cursor: pointer;
@@ -191,8 +191,10 @@ export const FileInputLabel = styled.label`
   text-align: center;
   width: 100%;
 
-  &:hover {
-    background: var(--accent-hover);
+    &:hover {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (min-width: 768px) {
@@ -215,8 +217,8 @@ export const SubmitButton = styled.button`
   width: 100%;
   max-width: 800px;
   height: 50px;
-  background: var(--accent);
-  color: var(--text-primary);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   border-radius: 7px;
   font-size: 1.1rem;
@@ -226,7 +228,9 @@ export const SubmitButton = styled.button`
   margin-top: 2rem;
 
   &:hover {
-    background: var(--accent-hover);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 
   @media (min-width: 768px) {

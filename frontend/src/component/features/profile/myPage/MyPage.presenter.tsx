@@ -2,13 +2,13 @@ import DripPost from "@/app/dripPost/page";
 import Follow from "@/app/follow/page";
 import FollowSkeleton from "@/component/commons/skeleton/follow/FollowSkeleton";
 import FreeBoardSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardSkeleton";
-import MyPageSkeleton from "@/component/commons/skeleton/profile/MypageSkeleton";
+import MyPageSkeleton from "@/component/commons/skeleton/profile/MyPageSkeleton";
 
 import * as S from "./MyPage.styled";
-import { MyPageProps } from "./MyPage.types";
+import { MyPagePresenterProps } from "./MyPage.types";
 import { Plus, Bookmark, Edit, Heart, Users, UserPlus, UserMinus, Eye, LogOut } from "lucide-react";
 
-export const MyPagePresenter = (props: MyPageProps) => {
+export const MyPagePresenter = (props: MyPagePresenterProps) => {
   if (props.isMyPageLoading) {
     return <MyPageSkeleton />;
   }

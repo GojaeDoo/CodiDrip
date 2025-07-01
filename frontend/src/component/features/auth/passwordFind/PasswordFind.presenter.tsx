@@ -1,8 +1,8 @@
 import * as S from "./PasswordFind.styled";
 import * as C from "../../../commons/Commons.styled";
-import { PasswordFindProps } from "./PasswordFind.types";
+import { PasswordFindPresenterProps } from "./PasswordFind.types";
 
-export const PasswordFindPresenter = (props: PasswordFindProps) => {
+export const PasswordFindPresenter = (props: PasswordFindPresenterProps) => {
   return (
     <>
       <S.Background>

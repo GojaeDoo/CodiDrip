@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const userJoin = async (userData: {
+export const postUserJoinQuery = async (userData: {
   user_id: string;
   user_password: string;
   user_email: string;
@@ -22,7 +22,7 @@ export const userJoin = async (userData: {
   }
 };
 
-export const idOverlappingCheck = async (id: string) => {
+export const getIdOverlappingCheckQuery = async (id: string) => {
   try {
     const response = await axios.get(
       "http://localhost:3005/api/users/check-id",
@@ -40,7 +40,7 @@ export const idOverlappingCheck = async (id: string) => {
   }
 };
 
-export const emailOverlappingCheck = async (email: string) => {
+export const getEmailOverlappingCheckQuery = async (email: string) => {
   try {
     const response = await axios.get(
       "http://localhost:3005/api/users/check-email",

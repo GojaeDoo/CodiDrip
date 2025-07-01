@@ -1,4 +1,4 @@
-export interface SearchResult {
+export interface SearchResultProps {
   type: 'profile' | 'post';
   id: number;
   name: string;
@@ -9,14 +9,14 @@ export interface SearchResult {
 export interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  searchResults: SearchResult[];
+  searchResults: SearchResultProps[];
 }
 
 export interface SearchModalPresenterProps {
   isOpen: boolean;
-  profileResults: SearchResult[];
-  postResults: SearchResult[];
-  onResultClick: (result: SearchResult) => void;
+  profileResults: SearchResultProps[];
+  postResults: SearchResultProps[];
+  onResultClick: (result: SearchResultProps) => void;
   onOverlayClick: (e: React.MouseEvent) => void;
   onClose: () => void;
   getImageUrl: (imagePath: string, type: 'profile' | 'post') => string;

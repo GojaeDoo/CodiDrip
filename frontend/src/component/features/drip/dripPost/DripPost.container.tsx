@@ -2,20 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
-import { DripPostContainerProps, DripPostType, ReportReasonType } from "./DripPost.types";
-import { getUserDripPostQuery, deleteDripPostQuery, likeDripPostQuery, createReport } from "./DripPost.query";
+import { DripPostContainerProps, DripPostPresenterProps, DripPostType, ReportReasonType } from "./DripPost.types";
+import { getUserDripPostQuery, deleteDripPostQuery, postLikeDripPostQuery, postCreateReportQuery } from "./DripPost.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { encodeUserId } from "@/utils/urlEncoder";
 import { useAuth } from "@/context/AuthContext";
 
-export const DripPostContainer = ({
-  gender,
-  userId,
-  isMyPage,
-  isLike,
-  isSaved,
-  selectedStyles
-}: DripPostContainerProps) => {
+export const DripPostContainer = (props:DripPostContainerProps) => {
   const [dripPostData, setDripPostData] = useState<DripPostType[] | null>(null);
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
     [key: number]: number;
@@ -24,7 +17,6 @@ export const DripPostContainer = ({
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   
-  // 신고 모달 관련 상태
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportPostNo, setReportPostNo] = useState<number | null>(null);
   
@@ -33,11 +25,6 @@ export const DripPostContainer = ({
   const isDripUser = searchParams.get("dripUser") === "true";
   const { isAdmin } = useAuth();
 
-  console.log("=== DripPost Container ===");
-  console.log("isAdmin:", isAdmin);
-  console.log("isAdmin 타입:", typeof isAdmin);
-  console.log("=== DripPost Container 끝 ===");
-
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
@@ -45,33 +32,20 @@ export const DripPostContainer = ({
     }
   }, []);
   
-  // 두 번째 useEffect - 게시물 가져오기
   useEffect(() => {
     const fetchDripPosts = async () => {
-      if (!currentUserId && isMyPage) return; // 마이페이지인데 currentUserId가 없으면 리턴
+      if (!currentUserId && props.isMyPage) return;
       
       setIsLoading(true);
       try {
-        // 마이페이지에서 다른 사용자의 프로필을 볼 때는 userId(프로필 주인)를 사용
-        // 그 외의 경우는 currentUserId(현재 로그인한 사용자)를 사용
-        const targetUserId = isMyPage ? (userId || currentUserId) : undefined;
-        console.log("=== DripPost Debug Info ===");
-        console.log("isMyPage:", isMyPage);
-        console.log("userId (from props):", userId);
-        console.log("currentUserId:", currentUserId);
-        console.log("targetUserId:", targetUserId);
-        console.log("gender:", gender);
-        console.log("isLike:", isLike);
-        console.log("isSaved:", isSaved);
-        console.log("=== DripPost Debug Info 끝 ===");
-        
+        const targetUserId = props.isMyPage ? (props.userId || currentUserId) : undefined;
         const response = await getUserDripPostQuery(
           targetUserId,
-          gender !== "all" ? gender : undefined,
-          isMyPage,
-          isLike,
-          isSaved,
-          selectedStyles
+          props.gender !== "all" ? props.gender : undefined,
+          props.isMyPage,
+          props.isLike,
+          props.isSaved,
+          props.selectedStyles
         );
         setDripPostData(response);
       } catch (error) {
@@ -82,9 +56,9 @@ export const DripPostContainer = ({
     };
   
     fetchDripPosts();
-  }, [userId, gender, isMyPage, currentUserId, isLike, isSaved, selectedStyles]);
+  }, [props.userId, props.gender, props.isMyPage, currentUserId, props.isLike, props.isSaved, props.selectedStyles]);
 
-  const onPrevImage = (
+  const onPrevImage: DripPostPresenterProps["onPrevImage"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number,
     totalImages: number
@@ -97,7 +71,7 @@ export const DripPostContainer = ({
     });
   };
 
-  const onNextImage = (
+  const onNextImage: DripPostPresenterProps["onNextImage"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number,
     totalImages: number
@@ -110,7 +84,7 @@ export const DripPostContainer = ({
     });
   };
 
-  const onHidePost = (
+  const onHidePost: DripPostPresenterProps["onHidePost"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
@@ -118,7 +92,7 @@ export const DripPostContainer = ({
     alert(`게시글 ${postNo} 숨김`);
   };
 
-  const onEditPost = (
+  const onEditPost: DripPostPresenterProps["onEditPost"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
@@ -127,7 +101,7 @@ export const DripPostContainer = ({
     router.push(`/dripPostEdit?postNo=${postNo}&status=${status}`);
   };
 
-  const onDeletePost = async (
+  const onDeletePost: DripPostPresenterProps["onDeletePost"] = async (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
@@ -142,7 +116,7 @@ export const DripPostContainer = ({
     }
   };
 
-  const onClickMoveUserProfile = (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => {
+  const onClickMoveUserProfile: DripPostPresenterProps["onClickMoveUserProfile"] = (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => {
     e.stopPropagation();
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId === userId) {
@@ -153,19 +127,19 @@ export const DripPostContainer = ({
     }
   }
 
-  const onLikeClick = (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => {
+  const onLikeClick: DripPostPresenterProps["onLikeClick"] = (e: React.MouseEvent<HTMLButtonElement>, postNo: number) => {
     e.preventDefault();
     handleLike(postNo);
   };
 
-  const onCommentClick = (
+  const onCommentClick: DripPostPresenterProps["onCommentClick"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
     e.preventDefault();
   };
 
-  const onMenuClick = (
+  const onMenuClick: DripPostPresenterProps["onMenuClick"] = (
     e: React.MouseEvent<HTMLButtonElement>,
     postNo: number
   ) => {
@@ -173,7 +147,7 @@ export const DripPostContainer = ({
     setActiveMenu(activeMenu === postNo ? null : postNo);
   };
 
-  const onClickMoveDetail = (postNo: number) => {
+  const onClickMoveDetail: DripPostPresenterProps["onClickMoveDetail"] = (postNo: number) => {
     router.push(`/dripPostDetail?postNo=${postNo}`);
   };
 
@@ -182,18 +156,18 @@ export const DripPostContainer = ({
   };
 
   // 신고 모달 관련 핸들러들
-  const onOpenReportModal = (postNo: number) => {
+  const onOpenReportModal: DripPostPresenterProps["onOpenReportModal"] = (postNo: number) => {
     setReportPostNo(postNo);
     setShowReportModal(true);
     setActiveMenu(null); // 메뉴 닫기
   };
 
-  const onCloseReportModal = () => {
+  const onCloseReportModal: DripPostPresenterProps["onCloseReportModal"] = () => {
     setShowReportModal(false);
     setReportPostNo(null);
   };
 
-  const onReportSubmit = async (reason: ReportReasonType) => {
+  const onReportSubmit: DripPostPresenterProps["onReportSubmit"] = async (reason: ReportReasonType) => {
     if (!reportPostNo) return;
     
     try {
@@ -203,7 +177,7 @@ export const DripPostContainer = ({
         reportReason: reason
       };
 
-      const response = await createReport(reportData);
+      const response = await postCreateReportQuery(reportData);
       
       if (response.success) {
         alert("신고가 접수되었습니다. 검토 후 처리됩니다.");
@@ -219,7 +193,7 @@ export const DripPostContainer = ({
 
   const handleLike = async (postId: number) => {
     try {
-      const response = await likeDripPostQuery(postId);
+      const response = await postLikeDripPostQuery(postId);
       if (response.success) {
         setDripPostData(dripPostData?.map(post => {
           if (post.post_no === postId) {

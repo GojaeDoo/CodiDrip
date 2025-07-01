@@ -1,22 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import DripPostComment from "./DripPostComment.presenter";
-import { DripPostCommentContainerProps, Comment, DripPostCommentProps, ReportReasonType } from "./DripPostComment.types";
-import { getCommentQuery, postCommentQuery, updateCommentQuery, deleteCommentQuery, likeCommentQuery, unlikeCommentQuery, reportCommentQuery } from "./DripPostComment.query";
+import { useQuery,  useQueryClient } from "@tanstack/react-query";
+import DripPostCommentPresenter from "./DripPostComment.presenter";
+import { DripPostCommentContainerProps, Comment,  ReportReasonType, DripPostCommentPresenterProps } from "./DripPostComment.types";
+import { getCommentQuery, postCommentQuery, putUpdateCommentQuery, deleteCommentQuery, getLikeCommentQuery, getUnlikeCommentQuery, reportCommentQuery } from "./DripPostComment.query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 export const formatDate = (dateString: string) => dateString.slice(0, 10);
 
 const organizeComments = (comments: Comment[]) => {
   const sorted = [...comments].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-
   const commentMap = new Map<number, Comment & { replies: Comment[] }>();
   const rootComments: (Comment & { replies: Comment[] })[] = [];
-
   sorted.forEach(comment => {
     commentMap.set(comment.id, { ...comment, replies: [] });
   });
@@ -63,6 +60,7 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
   // 신고 관련 상태
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportCommentId, setReportCommentId] = useState<number | null>(null);
+  const [reportReason, setReportReason] = useState("");
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -75,7 +73,6 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     queryKey: ["comments", props.postno],
     queryFn: async () => {
       const userId = localStorage.getItem("userId") ?? "";
-      console.log("userId", userId);
       setUserId(userId);
       const response = await getCommentQuery(props.postno, userId);
       return organizeComments(response);
@@ -94,7 +91,7 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     };
   }, []);
 
-  const handleCommentSubmit = async () => {
+  const handleCommentSubmit:DripPostCommentPresenterProps["onCommentSubmit"] = async () => {
     if (user_id === "") {
       alert("로그인 후 댓글을 작성해주세요.");
       router.push("/login");
@@ -117,11 +114,11 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       }
     };
 
-  const handleMenuOpen = (commentId: number) => {
+  const handleMenuOpen:DripPostCommentPresenterProps["handleMenuOpen"] = (commentId: number) => {
     setActiveMenuId(prev => (prev === commentId ? null : commentId));
   };
 
-  const onEditComment = (commentId: number) => {
+  const onEditComment:DripPostCommentPresenterProps["onEditComment"] = (commentId: number) => {
     const comment = findCommentById(comments || [], commentId);
     if (comment) {
       setEditingCommentId(commentId);
@@ -130,40 +127,40 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     setActiveMenuId(null);
   };
 
-  const onEditCancel = () => {
+  const onEditCancel:DripPostCommentPresenterProps["onEditCancel"] = () => {
     setEditingCommentId(null);
     setEditContent("");
     };
 
-  const onEditSubmit = async () => {
+  const onEditSubmit:DripPostCommentPresenterProps["onEditSubmit"] = async () => {
     if (editingCommentId !== null) {
-      await updateCommentQuery(editingCommentId, editContent);
+      await putUpdateCommentQuery(editingCommentId, editContent);
       setEditingCommentId(null);
       setEditContent("");
       queryClient.invalidateQueries({ queryKey: ["comments", props.postno] });
     }
   };
   
-  const onDeleteComment = async (commentId: number) => {
+  const onDeleteComment:DripPostCommentPresenterProps["onDeleteComment"] = async (commentId: number) => {
     setActiveMenuId(null);
     await deleteCommentQuery(commentId);
     queryClient.invalidateQueries({ queryKey: ["comments", props.postno] });
   };
 
-  const onLikeComment = async (commentId: number) => {
+  const onLikeComment:DripPostCommentPresenterProps["onLikeComment"] = async (commentId: number) => {
     if (!user_id) return;
     const comment = findCommentById(comments || [], commentId);
     if (!comment) return;
 
     if (comment.liked) {
-      await unlikeCommentQuery(commentId, user_id);
+      await getUnlikeCommentQuery(commentId, user_id);
     } else {
-      await likeCommentQuery(commentId, user_id);
+      await getLikeCommentQuery(commentId, user_id);
     }
     queryClient.invalidateQueries({ queryKey: ["comments", props.postno] });
   };
 
-  const onReplyClick = (commentId: number) => {
+  const onReplyClick:DripPostCommentPresenterProps["onReplyClick"] = (commentId: number) => {
     if (!user_id) {
       alert("로그인 후 답글을 작성해주세요.");
       router.push("/login");
@@ -173,11 +170,11 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     setReplyContent("");
   };
 
-  const onChangeReply = (value: string) => {
+  const onChangeReply:DripPostCommentPresenterProps["onChangeReply"] = (value: string) => {
     setReplyContent(value);
   };
 
-  const onSubmitReply = async () => {
+  const onSubmitReply:DripPostCommentPresenterProps["onSubmitReply"] = async () => {
     if (!replyContent.trim() || !user_id || !replyingToId) return;
 
     try {
@@ -191,18 +188,18 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     }
   };
 
-  const toggleReplies = (commentId: number) => {
+  const toggleReplies:DripPostCommentPresenterProps["toggleReplies"] = (commentId: number) => {
     setExpandedReplies(prev => ({
       ...prev,
       [commentId]: !prev[commentId]
     }));
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal:DripPostCommentPresenterProps["onCloseModal"] = () => {
     setIsModalOpen(false);
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal:DripPostCommentPresenterProps["onOpenModal"] = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
       alert("로그인 후 댓글을 작성해주세요.");
@@ -213,21 +210,23 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     };
 
   // 신고 관련 핸들러들
-  const onOpenReportModal = (commentId: number) => {
+  const onOpenReportModal:DripPostCommentPresenterProps["onOpenReportModal"] = (commentId: number) => {
     setReportCommentId(commentId);
     setShowReportModal(true);
+    setReportReason("");
   };
 
-  const onCloseReportModal = () => {
+  const onCloseReportModal:DripPostCommentPresenterProps["onCloseReportModal"] = () => {
     setShowReportModal(false);
     setReportCommentId(null);
+    setReportReason("");
   };
 
-  const onReportSubmit = async (reason: ReportReasonType) => {
-    if (!reportCommentId) return;
+  const onReportSubmit:DripPostCommentPresenterProps["onReportSubmit"] = async () => {
+    if (!reportCommentId || !reportReason) return;
     
     try {
-      const data = await reportCommentQuery(reportCommentId, reason);
+      const data = await reportCommentQuery(reportCommentId, reportReason as ReportReasonType);
       
       if (data.success) {
         alert("신고가 접수되었습니다. 검토 후 처리됩니다.");
@@ -245,10 +244,14 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     }
   };
 
+  const onChangeReportReason:DripPostCommentPresenterProps["onChangeReportReason"] = (value: string) => {
+    setReportReason(value);
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <DripPostComment
+    <DripPostCommentPresenter
       commentList={comments || []}
       onLikeComment={onLikeComment}
       onReplyClick={onReplyClick}
@@ -275,12 +278,14 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
       replyContent={replyContent}
       onChangeReply={onChangeReply}
       onSubmitReply={onSubmitReply}
-      // 신고 관련 props
+
       showReportModal={showReportModal}
       reportCommentId={reportCommentId}
+      reportReason={reportReason}
       onOpenReportModal={onOpenReportModal}
       onCloseReportModal={onCloseReportModal}
       onReportSubmit={onReportSubmit}
+      onChangeReportReason={onChangeReportReason}
     />
   );
 };

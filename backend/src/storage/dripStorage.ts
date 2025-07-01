@@ -26,7 +26,7 @@ export const uploadDripImage = async (
   }
 };
 
-export const createDripDB = async (
+export const postCreateDripStorage = async (
   images: string[],
   tags: string[],
   styleCategory: string,
@@ -54,17 +54,8 @@ export const createDripDB = async (
   }
 };
 
-export const getUserDripPost = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
+export const getUserDripPostStorage = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
   try {
-    console.log("=== getUserDripPost Debug ===");
-    console.log("userId:", userId);
-    console.log("filterUserId:", filterUserId);
-    console.log("gender:", gender);
-    console.log("isLike:", isLike);
-    console.log("isSaved:", isSaved);
-    console.log("styles:", styles);
-    console.log("=== getUserDripPost Debug 끝 ===");
-    
     let query = `
       WITH user_likes AS (
         SELECT post_no 
@@ -113,7 +104,6 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
 
     // 마이페이지에서 특정 사용자의 게시글만 필터 (좋아요/저장 필터가 없을 때만)
     if (filterUserId && !isLike && !isSaved) {
-      console.log("filterUserId 조건 추가:", filterUserId);
       conditions.push("p.user_id = $" + (params.length + 1));
       params.push(filterUserId);
     }
@@ -156,12 +146,8 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
 
     query += " ORDER BY p.post_no DESC";
 
-    console.log("Final SQL query:", query);
-    console.log("Query params:", params);
 
     const result = await pool.query(query, params);
-    console.log("Query result rows count:", result.rows.length);
-    console.log("First few rows:", result.rows.slice(0, 3));
     return result.rows;
   } catch (error) {
     console.error("Error in getUserDripPost:", error);
@@ -169,9 +155,8 @@ export const getUserDripPost = async (userId?: string, filterUserId?: string, ge
   }
 };
 
-export const getPostNoDripPost = async (postNo: number, userId?: string) => {
+export const getPostNoDripPostStorage = async (postNo: number, userId?: string) => {
   try {
-    console.log("Searching for post_no:", postNo, "userId:", userId);
     const result = await pool.query(
       `
       WITH user_likes AS (
@@ -204,7 +189,6 @@ export const getPostNoDripPost = async (postNo: number, userId?: string) => {
     `,
       [postNo, userId]
     );
-    console.log("Query result rows:", result.rows); // 디버깅용 로그
     return result.rows[0];
   } catch (error) {
     console.error("Error in getPostNoDripPost:", error);
@@ -217,7 +201,6 @@ export const getDripPostCommentStorage = async (
   userId?: string
 ) => {
   try {
-    console.log("Getting comments for post:", postNo, "user:", userId);
 
     const result = await pool.query(
       `
@@ -250,7 +233,6 @@ export const getDripPostCommentStorage = async (
       [postNo, userId]
     );
 
-    console.log("Query result:", result.rows);
 
     // 데이터 구조 변환
     const comments = result.rows.map((row) => ({
@@ -266,7 +248,6 @@ export const getDripPostCommentStorage = async (
       liked: Boolean(row.liked),
     }));
 
-    console.log("Processed comments:", comments);
     return comments;
   } catch (error) {
     console.error("Error in getDripPostCommentStorage:", error);
@@ -274,7 +255,7 @@ export const getDripPostCommentStorage = async (
   }
 };
 
-export const updateDripPost = async (
+export const postUpdateDripPostStorage = async (
   postNo: string,
   images: string[],
   tags: string[],
@@ -453,7 +434,6 @@ export const likeDripPostCommentStorage = async (
   try {
     await client.query("BEGIN");
 
-    console.log("Attempting to like comment:", { userId, commentId });
 
     // 먼저 이미 좋아요를 눌렀는지 확인
     const checkResult = await client.query(
@@ -461,11 +441,9 @@ export const likeDripPostCommentStorage = async (
       [userId, commentId]
     );
 
-    console.log("Like check result:", checkResult.rows);
 
     // 이미 좋아요를 눌렀다면 좋아요 취소
     if (checkResult.rows.length > 0) {
-      console.log("User already liked this comment, removing like");
       const unlikeResult = await client.query(
         `DELETE FROM drip_post_comment_like 
          WHERE user_id = $1::TEXT AND comment_id = $2 
@@ -484,7 +462,6 @@ export const likeDripPostCommentStorage = async (
       [userId, commentId]
     );
 
-    console.log("Like added:", result.rows[0]);
 
     await client.query("COMMIT");
     return result.rows[0];
@@ -505,7 +482,6 @@ export const unlikeDripPostCommentStorage = async (
   try {
     await client.query("BEGIN");
 
-    console.log("Attempting to unlike comment:", { userId, commentId });
 
     // 좋아요 취소
     const result = await client.query(
@@ -515,10 +491,7 @@ export const unlikeDripPostCommentStorage = async (
       [userId, commentId]
     );
 
-    console.log("Unlike result:", result.rows);
-
     if (result.rows.length === 0) {
-      console.log("No like found to unlike");
       await client.query("COMMIT");
       return null;
     }

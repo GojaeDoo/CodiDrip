@@ -27,7 +27,6 @@ export const SearchModalPresenter = ({
             <S.NoResults>검색 결과가 없습니다.</S.NoResults>
           ) : (
             <>
-              {/* 프로필 결과 섹션 */}
               {profileResults.length > 0 && (
                 <S.ProfileSection>
                   <S.SectionTitle>사용자 ({profileResults.length})</S.SectionTitle>
@@ -57,7 +56,6 @@ export const SearchModalPresenter = ({
                 </S.ProfileSection>
               )}
 
-              {/* 포스트 결과 섹션 */}
               {postResults.length > 0 && (
                 <S.PostSection>
                   <S.SectionTitle>포스트 ({postResults.length})</S.SectionTitle>

@@ -178,8 +178,8 @@ export const ImageUploadButton = styled.button`
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 0.7rem;
-  background: var(--accent);
-  color: var(--text-primary);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border-radius: 8px;
   border: none;
   font-size: 0.85rem;
@@ -190,8 +190,9 @@ export const ImageUploadButton = styled.button`
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
   &:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px) scale(1.04);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -370,8 +371,8 @@ export const ButtonGroup = styled.div`
 export const SubmitButton = styled.button`
   flex: 1;
   padding: 0.5rem 0;
-  background: linear-gradient(90deg, #10b981 0%, #2563eb 100%);
-  color: #fff;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -381,9 +382,10 @@ export const SubmitButton = styled.button`
   margin-bottom: 0.2rem;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   transition: background 0.2s, transform 0.2s;
-  &:hover:not(:disabled) {
-    background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
-    transform: translateY(-2px) scale(1.04);
+  &:hover {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
   &:disabled {
     background: #31313a;

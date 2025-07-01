@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import IdFindResultPresenter from "./IdFindResult.presenter";
-import { IdFindResultProps } from "./IdFindResult.types";
+import { IdFindResultPresenterProps } from "./IdFindResult.types";
 import { useEffect, useState } from "react";
 
 export const IdFindResultContainer = () => {
@@ -14,9 +14,6 @@ export const IdFindResultContainer = () => {
   const id = searchParams.get("id") ?? "";
   const result = searchParams.get("result") ?? "";
 
-  console.log("id : " + id);
-  console.log("result : " + result);
-
   useEffect(() => {
     if (result === "true") {
       setImageName("/images/idFind/IdFindSuccess-image.png");
@@ -27,7 +24,7 @@ export const IdFindResultContainer = () => {
     }
   }, []);
 
-  const onClickLogin: IdFindResultProps["onClickLogin"] = () => {
+  const onClickLogin: IdFindResultPresenterProps["onClickLogin"] = () => {
     router.push("/login");
   };
 

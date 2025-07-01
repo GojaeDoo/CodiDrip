@@ -3,7 +3,7 @@ import { dripService } from "../service/dripService";
 import { pool } from "../db";
 import { RequestHandler } from "express";
 
-export const createDrip = async (req: Request, res: Response) => {
+export const postCreateDripController = async (req: Request, res: Response) => {
   try {
     const { images, tags, styleCategory, userId } = req.body;
 
@@ -15,7 +15,7 @@ export const createDrip = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "styleCategory is required" });
     }
 
-    const result = await dripService.createDrip(images, tags, styleCategory, userId);
+    const result = await dripService.postCreateDripService(images, tags, styleCategory, userId);
     res.status(201).json(result);
   } catch (error) {
     console.error("createDrip error - dripController:", error);
@@ -23,7 +23,7 @@ export const createDrip = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserDrip = async (req: Request, res: Response) => {
+export const getUserDripController = async (req: Request, res: Response) => {
   try {
     const userId = req.query.userId as string;
     const filterUserId = req.query.filterUserId as string | undefined;
@@ -32,7 +32,7 @@ export const getUserDrip = async (req: Request, res: Response) => {
     const isSaved = req.query.isSaved === 'true';
     const styles = req.query.styles as string | undefined;
     
-    const drips = await dripService.getUserDrip(userId, filterUserId, gender, isLike, isSaved, styles);
+    const drips = await dripService.getUserDripService(userId, filterUserId, gender, isLike, isSaved, styles);
     res.status(200).json(drips);
   } catch (error) {
     console.error("getUserDrip error - dripController:", error);
@@ -40,7 +40,7 @@ export const getUserDrip = async (req: Request, res: Response) => {
   }
 };
 
-export const getPostNoDrip = async (req: Request, res: Response) => {
+export const getPostNoDripController = async (req: Request, res: Response) => {
   try {
     const postNo = parseInt(req.params.postNo, 10);
     const userId = req.query.userId as string;
@@ -49,7 +49,7 @@ export const getPostNoDrip = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "유효하지 않은 게시물 번호입니다." });
     }
-    const drip = await dripService.getPostNoDrip(postNo, userId);
+    const drip = await dripService.getPostNoDripService(postNo, userId);
     res.status(200).json(drip);
   } catch (error) {
     console.error("getPostNoDrip error - dripController:", error);
@@ -57,7 +57,7 @@ export const getPostNoDrip = async (req: Request, res: Response) => {
   }
 };
 
-export const updateDrip = async (req: Request, res: Response) => {
+export const postUpdateDripController = async (req: Request, res: Response) => {
   try {
     const postNo = req.params.postNo;
     const { images, tags, styleCategory, userId } = req.body;
@@ -66,7 +66,7 @@ export const updateDrip = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "필수 정보가 누락되었습니다." });
     }
 
-    const updatedDrip = await dripService.updateDrip(
+    const updatedDrip = await dripService.postUpdateDripService(
       postNo,
       images,
       tags,
@@ -80,10 +80,10 @@ export const updateDrip = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteDrip = async (req: Request, res: Response) => {
+export const deleteDripController = async (req: Request, res: Response) => {
   try {
     const postNo = req.params.postNo;
-    const result = await dripService.deleteDrip(postNo);
+    const result = await dripService.deleteDripService(postNo);
     res.status(200).json(result);
   } catch (error) {
     console.error("deleteDrip error - dripController:", error);
@@ -170,13 +170,7 @@ export const deleteDripPostCommentController = async (req: Request, res: Respons
 export const likeDripPostCommentController = async (req: Request, res: Response) => {
   const { commentId } = req.params;
   const userId = req.query.userId || req.body.userId;
-  console.log('Like Comment Request:', {
-    commentId,
-    userId,
-    body: req.body,
-    query: req.query
-  });
-
+  
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
   }
@@ -193,12 +187,6 @@ export const likeDripPostCommentController = async (req: Request, res: Response)
 export const unlikeDripPostCommentController = async (req: Request, res: Response) => {
   const { commentId } = req.params;
   const userId = req.query.userId || req.body.userId;
-  console.log('Unlike Comment Request:', {
-    commentId,
-    userId,
-    body: req.body,
-    query: req.query
-  });
 
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
@@ -231,12 +219,6 @@ export const likeDripPostController = async (req: Request, res: Response) => {
   try {
     const postNo = parseInt(req.params.postNo, 10);
     const userId = req.query.userId || req.body.userId;
-    console.log('Like Post Request:', {
-      postNo,
-      userId,
-      body: req.body,
-      query: req.query
-    });
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });
@@ -258,12 +240,6 @@ export const unlikeDripPostController = async (req: Request, res: Response) => {
   try {
     const postNo = parseInt(req.params.postNo, 10);
     const userId = req.query.userId || req.body.userId;
-    console.log('Unlike Post Request:', {
-      postNo,
-      userId,
-      body: req.body,
-      query: req.query
-    });
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });
@@ -287,12 +263,10 @@ export const getDripPostLikeStatusController = async (req: Request, res: Respons
     const postNo = parseInt(req.query.post_no as string, 10);
 
     if (!userId || isNaN(postNo)) {
-      console.log("유효하지 않은 파라미터:", { userId, postNo });
       return res.status(400).json({ error: "user_id와 post_no가 필요합니다." });
     }
     
     const isLiked = await dripService.getDripPostLikeStatusService(userId, postNo);
-    console.log("좋아요 상태:", isLiked);
     res.json({ is_liked: isLiked });
   } catch (error) {
     console.error("getDripPostLikeStatusController error:", error);

@@ -1,8 +1,7 @@
 import axios from "axios";
 
-export const PasswordResetUser = async (email: string, password: string) => {
+export const postPasswordResetUserQuery = async (email: string, password: string) => {
   try {
-    console.log("요청 데이터:", { email, password });
     const response = await axios.post(
       `http://localhost:3005/api/users/reset-password`,
       {
@@ -10,10 +9,8 @@ export const PasswordResetUser = async (email: string, password: string) => {
         password,
       }
     );
-    console.log("응답 데이터:", response.data);
     return response.data;
   } catch (error) {
-    console.error("에러 발생:", error);
-    throw error;
+    console.error("비밀번호 재설정 실패:", error);
   }
 };

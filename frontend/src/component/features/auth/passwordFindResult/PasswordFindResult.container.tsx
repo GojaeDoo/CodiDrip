@@ -2,8 +2,8 @@
 
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { PasswordFindResultPresenter } from "./PasswordFindResult.presenter";
-import { PasswordFindResultProps } from "./passwordFindResult.types";
-import { verifyPasswordCode } from "./PasswordFindResult.query";
+import { PasswordFindResultPresenterProps } from "./passwordFindResult.types";
+import { postVerifyPasswordCodeQuery } from "./PasswordFindResult.query";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const PasswordFindResultContainer = () => {
@@ -14,13 +14,13 @@ export const PasswordFindResultContainer = () => {
   const [authenticationNumber, setAuthenticationNumber] = useState("");
   const [error, setError] = useState("");
 
-  const onChangeAuthenticationNumber: PasswordFindResultProps["onChangeAuthenticationNumber"] =
+  const onChangeAuthenticationNumber: PasswordFindResultPresenterProps["onChangeAuthenticationNumber"] =
     (event: ChangeEvent<HTMLInputElement>) => {
       setAuthenticationNumber(event.target.value);
       setError("");
     };
 
-  const handleKeyDown: PasswordFindResultProps["handleKeyDown"] = (
+  const handleKeyDown: PasswordFindResultPresenterProps["handleKeyDown"] = (
     event: KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
@@ -28,14 +28,14 @@ export const PasswordFindResultContainer = () => {
     }
   };
 
-  const onClickSend: PasswordFindResultProps["onClickSend"] = async () => {
+  const onClickSend: PasswordFindResultPresenterProps["onClickSend"] = async () => {
     if (!email) {
       setError("이메일 정보가 없습니다.");
       return;
     }
 
     try {
-      const response = await verifyPasswordCode(authenticationNumber, email);
+      const response = await postVerifyPasswordCodeQuery(authenticationNumber, email);
       if (response.success) {
         router.push(`/passwordReset?email=${encodeURIComponent(email)}`);
       } else {

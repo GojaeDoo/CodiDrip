@@ -1,9 +1,9 @@
 import {
   uploadDripImage,
-  createDripDB,
-  getUserDripPost,
-  getPostNoDripPost,
-  updateDripPost,
+  postCreateDripStorage,
+  getUserDripPostStorage,
+  getPostNoDripPostStorage,
+  postUpdateDripPostStorage,
   deleteDripPostStorage,
   getDripPostCommentStorage,
   postDripPostCommentStorage,
@@ -20,7 +20,7 @@ import {
 } from "../storage/dripStorage";
 
 export const dripService = {
-  createDrip: async (images: string[], tags: string[], styleCategory: string, userId: string) => {
+  postCreateDripService: async (images: string[], tags: string[], styleCategory: string, userId: string) => {
     try {
       const processedImages = await Promise.all(
         images.map(async (image) => {
@@ -38,10 +38,8 @@ export const dripService = {
         })
       );
 
-      console.log("Processed images:", processedImages);
 
-      const result = await createDripDB(processedImages, tags, styleCategory, userId);
-      console.log("Create drip result:", result);
+      const result = await postCreateDripStorage(processedImages, tags, styleCategory, userId);
       return result;
     } catch (error) {
       console.error("createDrip error - dripService:", error);
@@ -49,9 +47,9 @@ export const dripService = {
     }
   },
 
-  getUserDrip: async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
+  getUserDripService: async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
     try {
-      const drips = await getUserDripPost(userId, filterUserId, gender, isLike, isSaved, styles);
+      const drips = await getUserDripPostStorage(userId, filterUserId, gender, isLike, isSaved, styles);
       return drips;
     } catch (error) {
       console.error("getUserDrip error - dripService:", error);
@@ -59,9 +57,9 @@ export const dripService = {
     }
   },
 
-  getPostNoDrip: async (postNo: number, userId?: string) => {
+  getPostNoDripService: async (postNo: number, userId?: string) => {
     try {
-      const drip = await getPostNoDripPost(postNo, userId);
+      const drip = await getPostNoDripPostStorage(postNo, userId);
       return drip;
     } catch (error) {
       console.error("getPostNoDrip error - dripService:", error);
@@ -69,7 +67,7 @@ export const dripService = {
     }
   },
 
-  updateDrip: async (
+  postUpdateDripService: async (
     postNo: string,
     images: string[],
     tags: string[],
@@ -94,14 +92,14 @@ export const dripService = {
         })
       );
 
-      return await updateDripPost(postNo, uploadedImages, tags, styleCategory, userId);
+      return await postUpdateDripPostStorage(postNo, uploadedImages, tags, styleCategory, userId);
     } catch (error) {
       console.error("updateDrip error - dripService:", error);
       throw error;
     }
   },
 
-  deleteDrip: async (postNo: string) => {
+  deleteDripService: async (postNo: string) => {
     try {
       const result = await deleteDripPostStorage(Number(postNo));
       return result;
@@ -195,7 +193,7 @@ export const dripService = {
 
 export const getUserDripPostService = async (userId?: string) => {
   try {
-    return await getUserDripPost(userId);
+    return await getUserDripPostStorage(userId);
   } catch (error) {
     console.error("Error in getUserDripPostService:", error);
     throw error;

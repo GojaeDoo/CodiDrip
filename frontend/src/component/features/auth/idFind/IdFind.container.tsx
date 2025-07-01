@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import IdFindPresenter from "./IdFind.presenter";
-import { IdFindProps } from "./IdFind.types";
-import { IdFindUser } from "./IdFind.query";
+import { IdFindPresenterProps } from "./IdFind.types";
+import { getIdFindUserQuery } from "./IdFind.query";
 import { useRouter } from "next/navigation";
 export const IdFindContainer = () => {
   const [email, setEmail] = useState("");
@@ -11,13 +11,13 @@ export const IdFindContainer = () => {
 
   const router = useRouter();
 
-  const onChangeEmail: IdFindProps["onChangeEmail"] = (
+  const onChangeEmail: IdFindPresenterProps["onChangeEmail"] = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setEmail(event.target.value);
   };
 
-  const handleKeyDown: IdFindProps["handleKeyDown"] = (
+  const handleKeyDown: IdFindPresenterProps["handleKeyDown"] = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
@@ -25,10 +25,9 @@ export const IdFindContainer = () => {
     }
   };
 
-  const onClickIdFind: IdFindProps["onClickIdFind"] = async () => {
+  const onClickIdFind: IdFindPresenterProps["onClickIdFind"] = async () => {
     try {
-      const response = await IdFindUser(email);
-      console.log(response);
+      const response = await getIdFindUserQuery(email);
       if (
         response.findId &&
         response.findId.length > 0 &&

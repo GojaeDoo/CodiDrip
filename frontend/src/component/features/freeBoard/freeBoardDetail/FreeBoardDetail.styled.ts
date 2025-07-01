@@ -214,18 +214,19 @@ export const RightButtons = styled.div`
 
 export const BackButton = styled.button`
   padding: 0.875rem 1.75rem;
-  background: var(--card-border);
+  background-color: var(--button-bg);
   border: none;
   border-radius: 8px;
-  color: var(--text-primary);
+  color: var(--button-text);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background: var(--accent);
-    transform: translateY(-1px);
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text);
   }
 `;
 

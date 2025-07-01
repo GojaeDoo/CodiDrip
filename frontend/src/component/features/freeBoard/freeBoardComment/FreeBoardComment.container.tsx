@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import FreeBoardCommentPresenter from "./FreeBoardComment.presentert";
-import { Comment } from "./FreeBoardComment.types";
+import { Comment, FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
 import * as S from "./FreeBoardComment.styled";
 import { useSearchParams } from "next/navigation";
 import { getFreeBoardCommentQuery, postFreeBoardCommentQuery, updateFreeBoardCommentQuery, deleteFreeBoardCommentQuery, postFreeBoardReplyQuery, getFreeBoardRepliesQuery, reportFreeBoardCommentQuery } from "./FreeBoardComment.query";
@@ -60,23 +60,15 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
     const getFreeBoardComment = async () => {
       try {
         const response = await getFreeBoardCommentQuery(id);
-        console.log("댓글조회 : " + JSON.stringify(response));
-        console.log("댓글 데이터 상세:", response.map((comment: Comment) => ({ 
-          id: comment.id, 
-          user_id: comment.user_id, 
-          content: comment.content,
-          reply_count: comment.reply_count
-        })));
         setComments(response);
       } catch (error) {
-        console.log("댓글 조회 오류 : " + error);
       }
     }
     getFreeBoardComment();
   },[id])
 
   // 유틸리티 함수들
-  const formatTimestamp = (timestamp: string) => {
+  const formatTimestamp:FreeBoardCommentPresenterProps["formatTimestamp"] = (timestamp: string) => {
     if (!timestamp) return "시간 정보 없음";
     
     const date = new Date(timestamp);
@@ -92,59 +84,53 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
     }
   };
 
-  const getInitials = (username: string) => {
+  const getInitials:FreeBoardCommentPresenterProps["getInitials"] = (username: string) => {
     if (!username) return "??";
     return username.slice(0, 2).toUpperCase();
   };
 
-  const isCommentAuthor = (commentUserId: string) => {
+  const isCommentAuthor:FreeBoardCommentPresenterProps["isCommentAuthor"] = (commentUserId: string) => {
     if (!userId) return false;
     return String(userId) === String(commentUserId);
   };
 
   // 모달 관련 핸들러
-  const handleOpenModal = () => {
+  const handleOpenModal:FreeBoardCommentPresenterProps["onOpenModal"] = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal:FreeBoardCommentPresenterProps["onCloseModal"] = () => {
     setIsModalOpen(false);
     setNewComment("");
   };
 
   // 댓글 작성 핸들러
-  const handleNewCommentChange = (value: string) => {
+  const handleNewCommentChange:FreeBoardCommentPresenterProps["onNewCommentChange"] = (value: string) => {
     setNewComment(value);
   };
 
-  const handleSubmitComment = async() => {
+  const handleSubmitComment:FreeBoardCommentPresenterProps["onSubmitComment"] = async() => {
     try {
       const response = await postFreeBoardCommentQuery(newComment, userId, id);
-      console.log(response);
-      
-      // 댓글 작성 성공 후 모달 닫기
       setIsModalOpen(false);
       setNewComment("");
-      
-      // 댓글 리스트 새로고침
       const updatedComments = await getFreeBoardCommentQuery(id);
       setComments(updatedComments);
     } catch (error) {
-      console.log("댓글 작성 오류 : " + error)
     }
   };
 
   // 댓글 수정 핸들러
-  const handleEditComment = (comment: Comment) => {
+  const handleEditComment:FreeBoardCommentPresenterProps["onEditComment"] = (comment: Comment) => {
     setEditingCommentId(comment.id);
     setEditContent(comment.content);
   };
 
-  const handleEditContentChange = (value: string) => {
+  const handleEditContentChange:FreeBoardCommentPresenterProps["onEditContentChange"] = (value: string) => {
     setEditContent(value);
   };
 
-  const handleSaveEdit = async () => {
+  const handleSaveEdit:FreeBoardCommentPresenterProps["onSaveEdit"] = async () => {
     if (editContent.trim() && editingCommentId) {
       try {
         await updateFreeBoardCommentQuery(editingCommentId, editContent.trim(), userId);
@@ -165,18 +151,17 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         setEditingCommentId(null);
         setEditContent("");
       } catch (error) {
-        console.log("댓글 수정 오류 : " + error);
       }
     }
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit:FreeBoardCommentPresenterProps["onCancelEdit"] = () => {
     setEditingCommentId(null);
     setEditContent("");
   };
 
   // 댓글 삭제 핸들러
-  const handleDeleteComment = async (commentId: string) => {
+  const handleDeleteComment:FreeBoardCommentPresenterProps["onDeleteComment"] = async (commentId: string) => {
     try {
       await deleteFreeBoardCommentQuery(commentId, userId);
       
@@ -193,41 +178,37 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         }));
       }
     } catch (error) {
-      console.log("댓글 삭제 오류 : " + error);
+
     }
   };
 
   // 대댓글 관련 핸들러
-  const handleReplyComment = (commentId: string) => {
+  const handleReplyComment:FreeBoardCommentPresenterProps["onReplyComment"] = (commentId: string) => {
     setReplyingToCommentId(commentId);
     setReplyContent("");
   };
 
-  const handleCancelReply = () => {
+  const handleCancelReply:FreeBoardCommentPresenterProps["onCancelReply"] = () => {
     setReplyingToCommentId(null);
     setReplyContent("");
   };
 
-  const handleReplyContentChange = (value: string) => {
+  const handleReplyContentChange:FreeBoardCommentPresenterProps["onReplyContentChange"] = (value: string) => {
     setReplyContent(value);
   };
 
-  const handleSubmitReply = async () => {
+  const handleSubmitReply:FreeBoardCommentPresenterProps["onSubmitReply"] = async () => {
     if (replyContent.trim() && replyingToCommentId) {
       try {
-        console.log("대댓글 작성 시작:", { replyContent, userId, id, replyingToCommentId });
         const response = await postFreeBoardReplyQuery(replyContent.trim(), userId, id, replyingToCommentId);
-        console.log("대댓글 작성 응답:", response);
         
-        // 댓글 리스트 새로고침 (대댓글 개수 포함)
         const updatedComments = await getFreeBoardCommentQuery(id);
-        console.log("업데이트된 댓글 목록:", updatedComments);
+
         setComments(updatedComments);
         
         // 대댓글 목록도 새로고침
         if (showingRepliesFor === replyingToCommentId) {
           const updatedReplies = await getFreeBoardRepliesQuery(replyingToCommentId);
-          console.log("업데이트된 대댓글 목록:", updatedReplies);
           setReplies(prev => ({
             ...prev,
             [replyingToCommentId]: updatedReplies
@@ -237,37 +218,36 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         setReplyingToCommentId(null);
         setReplyContent("");
       } catch (error) {
-        console.log("대댓글 작성 오류 : " + error);
+
       }
     }
   };
 
   // 대댓글 보기 핸들러
-  const handleShowReplies = async (commentId: string) => {
+  const handleShowReplies:FreeBoardCommentPresenterProps["onShowReplies"] = async (commentId: string) => {
     try {
-      console.log("대댓글 조회 시작:", commentId);
+
       const repliesData = await getFreeBoardRepliesQuery(commentId);
-      console.log("조회된 대댓글 데이터:", repliesData);
+
       setReplies(prev => ({
         ...prev,
         [commentId]: repliesData
       }));
       setShowingRepliesFor(commentId);
     } catch (error) {
-      console.log("대댓글 조회 오류 : " + error);
     }
   };
 
-  const handleHideReplies = (commentId: string) => {
+  const handleHideReplies:FreeBoardCommentPresenterProps["onHideReplies"] = (commentId: string) => {
     setShowingRepliesFor(null);
   };
 
   // 더보기 핸들러
-  const handleShowMoreComments = () => {
+  const handleShowMoreComments:FreeBoardCommentPresenterProps["onShowMoreComments"] = () => {
     setShowAllComments(true);
   };
 
-  const handleShowLessComments = () => {
+  const handleShowLessComments:FreeBoardCommentPresenterProps["onShowLessComments"] = () => {
     setShowAllComments(false);
   };
 
@@ -279,7 +259,7 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const hasMoreComments = comments.length > COMMENTS_PER_PAGE;
 
   // 신고 관련 핸들러들
-  const handleReportClick = (commentId: string) => {
+  const handleReportClick:FreeBoardCommentPresenterProps["onReportClick"] = (commentId: string) => {
     if (!token) {
       alert("로그인이 필요합니다.");
       return;
@@ -288,17 +268,17 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
     setShowReportModal(true);
   };
 
-  const handleCloseReportModal = () => {
+  const handleCloseReportModal:FreeBoardCommentPresenterProps["onCloseReportModal"] = () => {
     setShowReportModal(false);
     setSelectedReportReason("");
     setReportingCommentId(null);
   };
 
-  const handleReportReasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleReportReasonChange:FreeBoardCommentPresenterProps["onReportReasonChange"] = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedReportReason(e.target.value);
   };
 
-  const handleSubmitReport = async () => {
+  const handleSubmitReport:FreeBoardCommentPresenterProps["onSubmitReport"] = async () => {
     if (!reportingCommentId || !selectedReportReason || !token) {
       return;
     }

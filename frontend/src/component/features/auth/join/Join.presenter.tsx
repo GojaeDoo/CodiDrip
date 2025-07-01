@@ -1,8 +1,8 @@
 import * as S from "./Join.styled";
 import * as C from "../../../commons/Commons.styled";
-import { JoinProps } from "./Join.types";
+import { JoinPresenterProps } from "./Join.types";
 
-const JoinPresenter = (props: JoinProps) => {
+const JoinPresenter = (props: JoinPresenterProps) => {
   return (
     <>
       <S.Background>

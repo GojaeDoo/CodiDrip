@@ -12,7 +12,6 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    console.log("현재 경로 pathname:", pathname);
     setIsReady(true);
     document.body.style.boxSizing = "border-box";
 

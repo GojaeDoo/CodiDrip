@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import DripsPresenter from "./Drips.presenter";
 import { useSearchParams, useRouter } from "next/navigation";
+import { DripsPresenterProps } from "./Drips.types";
 
 export const DripsContainer = () => {
   const searchParams = useSearchParams();
@@ -13,29 +14,29 @@ export const DripsContainer = () => {
   const [showStyleFilter, setShowStyleFilter] = useState(false);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
-  const onClickSelectAll = () => {
+  const onClickSelectAll:DripsPresenterProps["onClickSelectAll"] = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("gender", "all");
     router.push(`?${params.toString()}`);
   };
 
-  const onClickSelectMen = () => {
+  const onClickSelectMen:DripsPresenterProps["onClickSelectMen"] = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("gender", "male");
     router.push(`?${params.toString()}`);
   };
 
-  const onClickSelectWomen = () => {
+  const onClickSelectWomen:DripsPresenterProps["onClickSelectWomen"] = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("gender", "female");
     router.push(`?${params.toString()}`);
   };
 
-  const onClickSelectStyleCategory = () => {
+  const onClickSelectStyleCategory:DripsPresenterProps["onClickSelectStyleCategory"] = () => {
     setShowStyleFilter(!showStyleFilter);
   };
 
-  const onStyleChange = (style: string) => {
+  const onStyleChange:DripsPresenterProps["onStyleChange"] = (style: string) => {
     setSelectedStyles(prev => {
       if (prev.includes(style)) {
         return prev.filter(s => s !== style);
@@ -45,7 +46,7 @@ export const DripsContainer = () => {
     });
   };
 
-  const onCloseStyleFilter = () => {
+  const onCloseStyleFilter:DripsPresenterProps["onCloseStyleFilter"] = () => {
     setShowStyleFilter(false);
   };
 
