@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import DripPostDetailContainer from "../../../component/features/drip/dripPostDetail/DripPostDetail.container";
 
 const DripPostDetailPage = () => {
   const searchParams = useSearchParams();
@@ -12,10 +11,13 @@ const DripPostDetailPage = () => {
   }
 
   return (
-    <>
-      <DripPostDetailContainer postno={postno} />
-    </>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Drip Post Detail</h1>
+      <p>Post No: {postno}</p>
+      <p>이 페이지는 현재 개발 중입니다.</p>
+      <p>다른 기능들을 먼저 확인해보세요!</p>
+    </div>
   );
 };
 
-export default DripPostDetailPage;
+export default DripPostDetailPage; 
