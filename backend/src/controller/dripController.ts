@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { dripService } from "../service/dripService";
 import { pool } from "../db";
 import { RequestHandler } from "express";
+import { StorageService } from "../service/storageService";
 
 export const postCreateDripController = async (req: Request, res: Response) => {
   try {
@@ -313,5 +314,36 @@ export const getDripPostSaveStatusController = async (req: Request, res: Respons
   } catch (error) {
     console.error("getDripPostSaveStatusController error:", error);
     res.status(500).json({ error: "Failed to get save status" });
+  }
+};
+
+// Drip 이미지 업로드 컨트롤러
+export const uploadDripImageController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "이미지 파일이 필요합니다." });
+    }
+
+    const fileName = `dripImage-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`;
+    const result = await StorageService.uploadDripImage(req.file.buffer, fileName);
+
+    if (result.success && result.url) {
+      res.json({ 
+        success: true, 
+        imageUrl: result.url,
+        fileName: fileName
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        error: result.error || "이미지 업로드에 실패했습니다." 
+      });
+    }
+  } catch (error) {
+    console.error("Drip 이미지 업로드 중 오류 발생:", error);
+    res.status(500).json({ error: "이미지 업로드 중 오류가 발생했습니다." });
   }
 };

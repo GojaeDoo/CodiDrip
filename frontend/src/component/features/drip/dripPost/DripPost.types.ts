@@ -24,7 +24,7 @@ export interface DripPostResponse {
 export interface DripPostType {
   post_no: number;
   user_id: string;
-  profile_image: string;
+  profile_image?: string | null;
   profile_nickname: string;
   profile_height?: number;
   profile_weight?: number;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 export const getMyPageProfileQuery = async (userId: string) => {
   try {
@@ -7,9 +8,7 @@ export const getMyPageProfileQuery = async (userId: string) => {
     );
     const profile = {
       ...response.data,
-      profile_image: response.data.profile_image
-        ? `https://codidrip-backend.onrender.com/uploads/profiles/${response.data.profile_image}`
-        : null,
+      profile_image: getProfileImageUrl(response.data.profile_image),
     };
     return profile;
   } catch (error) {

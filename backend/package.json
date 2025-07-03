@@ -6,6 +6,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.802.0",
     "@prisma/client": "^6.8.2",
+    "@supabase/supabase-js": "^2.50.3",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/nodemailer": "^6.4.17",
@@ -35,6 +36,8 @@
   "scripts": {
     "dev": "ts-node src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "migrate-images": "ts-node src/scripts/migrateImages.ts",
+    "cleanup-images": "ts-node src/scripts/cleanupImages.ts"
   }
 }

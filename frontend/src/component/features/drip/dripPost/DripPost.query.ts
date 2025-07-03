@@ -1,12 +1,14 @@
 import axios from "axios";
 import { DripPostType, DripPostResponse, ReportData, ReportResponse, ReportTargetType } from "./DripPost.types";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   post_no: post.게시글번호,
   post_image: JSON.parse(post.게시글이미지 || "[]"),
   post_tag: JSON.parse(post.태그 || "[]"),
   user_id: post.user_id,
-  profile_image: post.프로필이미지,
+  // 프로필 이미지 URL 처리
+  profile_image: getProfileImageUrl(post.프로필이미지),
   profile_nickname: post.닉네임,
   profile_height: post.키,
   profile_weight: post.몸무게,
@@ -180,5 +182,37 @@ export const checkUserReported = async (targetType: ReportTargetType, targetId: 
   } catch (error) {
     console.error('checkUserReported error:', error);
     return false;
+  }
+};
+
+// Drip 이미지 업로드 쿼리
+export const uploadDripImageQuery = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("dripImage", file);
+
+    const response = await axios.post(
+      "https://codidrip-backend.onrender.com/api/drip/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    // Supabase Storage URL 반환
+    if (response.data.success && response.data.imageUrl) {
+      return {
+        success: true,
+        imageUrl: response.data.imageUrl,
+        fileName: response.data.fileName
+      };
+    } else {
+      throw new Error(response.data.error || "이미지 업로드에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("Drip 이미지 업로드 중 오류 발생:", error);
+    throw error;
   }
 };

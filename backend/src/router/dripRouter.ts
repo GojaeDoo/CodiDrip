@@ -1,4 +1,5 @@
 import express, { RequestHandler } from "express";
+import multer from "multer";
 import {
   postCreateDripController,
   getPostNoDripController,
@@ -17,12 +18,24 @@ import {
   unlikeDripPostController,
   getDripPostLikeStatusController,
   saveDripPostController,
-  getDripPostSaveStatusController
+  getDripPostSaveStatusController,
+  uploadDripImageController
 } from "../controller/dripController";
 
 const router = express.Router();
 
+// Supabase Storage를 사용한 Drip 이미지 업로드
+const upload = multer({
+  storage: multer.memoryStorage(), // 메모리에 저장
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB 제한
+  },
+});
+
 // Drip 게시글
+
+// Drip 이미지 업로드
+router.post("/upload", upload.single("dripImage"), uploadDripImageController as RequestHandler);
 
 // Drip 생성
 router.post("/", postCreateDripController as RequestHandler);

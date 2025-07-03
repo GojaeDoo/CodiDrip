@@ -5,11 +5,10 @@ import {
   getUserProfileController,
   getCreateProfileController,
   postUpdateProfileController,
-  getNicknameCheckController
+  getNicknameCheckController,
+  uploadProfileImageController
 } from "../controller/profileController";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 
 const router = express.Router();
 
@@ -34,41 +33,14 @@ router.put(
   postUpdateProfileController as RequestHandler
 );
 
-// 이미지 업로드
-const uploadDir = path.join(__dirname, "../../uploads/profiles");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const filename =
-      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname);
-    cb(null, filename);
-  },
-});
-
+// Supabase Storage를 사용한 이미지 업로드
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(), // 메모리에 저장
   limits: {
     fileSize: 50 * 1024 * 1024, // 50MB 제한
   },
 });
 
-const uploadHandler: RequestHandler = (req, res) => {
-  if (!req.file) {
-    console.error("파일이 없습니다.");
-    res.status(400).json({ error: "파일이 없습니다." });
-    return;
-  }
-  res.json({ imagePath: req.file.filename });
-};
-
-router.post("/upload", upload.single("profileImage"), uploadHandler);
+router.post("/upload", upload.single("profileImage"), uploadProfileImageController as RequestHandler);
 
 export default router;

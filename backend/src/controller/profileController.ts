@@ -7,6 +7,7 @@ import {
   postUpdateProfileService,
   getNicknameCheckService
 } from "../service/profileService";
+import { StorageService } from "../service/storageService";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -148,3 +149,35 @@ export const getNicknameCheckController = async (
     res.status(500).json({ error: "닉네임 중복확인 중 오류 발생" });
   } 
 }
+
+// 프로필 이미지 업로드 컨트롤러
+export const uploadProfileImageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "이미지 파일이 필요합니다." });
+    }
+
+    const fileName = `profileImage-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`;
+    const result = await StorageService.uploadProfileImage(req.file.buffer, fileName);
+
+    if (result.success && result.url) {
+      res.json({ 
+        success: true, 
+        imageUrl: result.url,
+        fileName: fileName
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        error: result.error || "이미지 업로드에 실패했습니다." 
+      });
+    }
+  } catch (error) {
+    console.error("프로필 이미지 업로드 중 오류 발생:", error);
+    res.status(500).json({ error: "이미지 업로드 중 오류가 발생했습니다." });
+  }
+};

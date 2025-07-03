@@ -71,7 +71,16 @@ export const postUploadProfileImageQuery = async (file: File) => {
       }
     );
 
-    return response.data;
+    // Supabase Storage URL 반환
+    if (response.data.success && response.data.imageUrl) {
+      return {
+        success: true,
+        imageUrl: response.data.imageUrl,
+        fileName: response.data.fileName
+      };
+    } else {
+      throw new Error(response.data.error || "이미지 업로드에 실패했습니다.");
+    }
   } catch (error) {
     console.error("이미지 업로드 중 오류 발생:", error);
     throw error;
