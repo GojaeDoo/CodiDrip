@@ -1,21 +1,21 @@
 import nodemailer from "nodemailer";
 
-// 랜덤 6자리 숫자 생성 함수
+
 export const generateVerificationCode = (): string => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// 이메일 발송 함수
+
 export const sendVerificationEmail = async (
   email: string,
   code: string
 ): Promise<void> => {
-  // 이메일 발송을 위한 transporter 생성
+  
   const transporter = nodemailer.createTransport({
-    service: "gmail", // Gmail 사용
+    service: "gmail", 
     auth: {
-      user: process.env.EMAIL_USER, // Gmail 계정
-      pass: process.env.EMAIL_PASSWORD, // Gmail 앱 비밀번호
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD, 
     },
   });
 
@@ -23,12 +23,12 @@ export const sendVerificationEmail = async (
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "DripDrop 비밀번호 찾기 인증번호",
+    subject: "CODIDRIP 비밀번호 찾기 인증번호",
     text: `인증번호는 ${code} 입니다.`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">DripDrop 비밀번호 찾기</h2>
-        <p>안녕하세요. DripDrop 비밀번호 찾기를 위한 인증번호를 보내드립니다.</p>
+        <h2 style="color: #333;">CODIDRIP 비밀번호 찾기</h2>
+        <p>안녕하세요. CODIDRIP 비밀번호 찾기를 위한 인증번호를 보내드립니다.</p>
         <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0;">
           <h3 style="color: #333; margin: 0;">인증번호</h3>
           <p style="font-size: 24px; font-weight: bold; color: #007bff; margin: 10px 0;">${code}</p>

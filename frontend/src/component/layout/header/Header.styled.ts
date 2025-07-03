@@ -161,7 +161,13 @@ export const MenuLogo = styled.div`
 export const MenuItem = styled.a`
   display: block;
   padding: 10px;
+  padding-left: 3vw;
+  border-bottom: 1px solid var(--card-border);
   text-decoration: none;
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 1000;
+  font-style: italic;
   color: var(--text-primary);
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -171,8 +177,9 @@ export const MenuItem = styled.a`
     color: var(--text-secondary);
   }
   @media (max-width: 768px) {
-    font-size: 1.1rem;
-    padding: 16px 10px;
+    padding-left: 22vw;
+    font-size: 0.8rem;
+    margin: 1vh 0vh;
   }
 `;
 
