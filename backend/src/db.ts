@@ -17,8 +17,7 @@ console.log('  - NODE_ENV:', process.env.NODE_ENV || 'development');
 const connectionConfig = process.env.DATABASE_URL ? {
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false,
-    sslmode: 'require'
+    rejectUnauthorized: false
   }
 } : {
   user: process.env.DB_USER,
@@ -27,8 +26,7 @@ const connectionConfig = process.env.DATABASE_URL ? {
   password: process.env.DB_PASSWORD,
   port: parseInt(process.env.DB_PORT || "6543"),
   ssl: {
-    rejectUnauthorized: false,
-    sslmode: 'require'
+    rejectUnauthorized: false
   }
 };
 
