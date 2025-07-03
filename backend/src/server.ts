@@ -18,7 +18,7 @@ const port = process.env.PORT || 3005;
 // CORS 설정
 app.use(
   cors({
-    origin: "https://codidrip-frontend.onrender.com", // 프론트엔드 URL
+    origin: "https://codidrip.onrender.com", // 프론트엔드 URL
     credentials: true,
   })
 );
