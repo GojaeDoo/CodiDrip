@@ -16,9 +16,9 @@ export const SearchModalContainer = ({
     }
     
     if (type === 'profile') {
-      return `http://localhost:3005/uploads/profiles/${imagePath}`;
+      return `https://codidrip-backend.onrender.com/uploads/profiles/${imagePath}`;
     } else {
-      return `http://localhost:3005/uploads/drip/${imagePath}`;
+      return `https://codidrip-backend.onrender.com/uploads/drip/${imagePath}`;
     }
   };
 

@@ -6,7 +6,7 @@ export const postLoginUserQuery = async (
 ) => {
   try {
     const response = await axios.post(
-      "http://localhost:3005/api/users/login",
+      "https://codidrip-backend.onrender.com/api/users/login",
       {
         user_id: userId,
         user_password: userPassword,
@@ -21,7 +21,7 @@ export const postLoginUserQuery = async (
 export const getProfileCheckQuery = async (id: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/profiles/user/${id}`
+      `https://codidrip-backend.onrender.com/api/profiles/user/${id}`
     );
     return response.data;
   } catch (error: unknown) {
@@ -36,7 +36,7 @@ export const getProfileCheckQuery = async (id: string) => {
 export const checkUserAdminStatus = async (userId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/users/admin-status?userId=${userId}`
+      `https://codidrip-backend.onrender.com/api/users/admin-status?userId=${userId}`
     );
     return response.data;
   } catch (error: unknown) {

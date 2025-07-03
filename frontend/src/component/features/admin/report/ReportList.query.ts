@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AllReport } from './ReportList.types';
 
-const API_BASE_URL = 'http://localhost:3005';
+const API_BASE_URL = 'https://codidrip-backend.onrender.com';
 
 // 모든 신고 목록 조회
 export const fetchAllReports = async (): Promise<AllReport[]> => {

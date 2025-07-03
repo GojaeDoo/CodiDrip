@@ -48,7 +48,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                     <S.UserAvatar>
                       {comment.profile_image ? (
                         <img 
-                          src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
+                          src={`https://codidrip-backend.onrender.com/uploads/profiles/${comment.profile_image}`} 
                           alt={comment.profile_nickname}
                           style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
                         />
@@ -138,7 +138,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                             <S.ReplyAvatar>
                               {reply.profile_image ? (
                                 <img 
-                                  src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
+                                  src={`https://codidrip-backend.onrender.com/uploads/profiles/${reply.profile_image}`} 
                                   alt={reply.profile_nickname}
                                   style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
                                 />

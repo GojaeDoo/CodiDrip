@@ -67,7 +67,7 @@ export const ProfileEditContainer = () => {
         setOriginalNickname(response.profile_nickname);
         
         if (response.profile_image) {
-          const imageUrl = `http://localhost:3005/uploads/profiles/${response.profile_image}`;
+          const imageUrl = `https://codidrip-backend.onrender.com/uploads/profiles/${response.profile_image}`;
           setPreviewUrl(imageUrl);
           setUploadedImagePath(response.profile_image);
         } else {

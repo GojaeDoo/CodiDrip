@@ -1,12 +1,12 @@
 import axios from "axios"
 
 export const getFreeBoardTargetDataQuery = async (postId:number) => {
-    const response = await axios.get(`http://localhost:3005/api/freeBoard/${postId}`);
+    const response = await axios.get(`https://codidrip-backend.onrender.com/api/freeBoard/${postId}`);
     return response.data;
 }
 
 export const postFreeBoardWriteQuery = async (title:string , content:string , userId:string) => {
-    const response = await axios.post("http://localhost:3005/api/freeBoard" , {
+    const response = await axios.post("https://codidrip-backend.onrender.com/api/freeBoard" , {
         title,
         content,
         userId
@@ -15,7 +15,7 @@ export const postFreeBoardWriteQuery = async (title:string , content:string , us
 }
 
 export const updateFreeBoardWriteQuery = async (postId: number, title: string, content: string, userId: string) => {
-    const url = `http://localhost:3005/api/freeBoard/${postId}`;
+    const url = `https://codidrip-backend.onrender.com/api/freeBoard/${postId}`;
     const response = await axios.put(url, {
         title,
         content,

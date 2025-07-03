@@ -37,7 +37,7 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
                 <S.PostHeader>
                   <S.UserProfile>
                   <S.ProfileImage
-                      src={`http://localhost:3005/uploads/profiles/${post.profile_image}`}
+                      src={`https://codidrip-backend.onrender.com/uploads/profiles/${post.profile_image}`}
                       alt="profile"
                       onClick={(e) => props.onClickMoveUserProfile(e, post.post_no , post.user_id)}
                   />
@@ -98,7 +98,7 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
 
                 <S.ImageContainer>
                   <S.PostImage
-                    src={`http://localhost:3005/uploads/drip${
+                    src={`https://codidrip-backend.onrender.com/uploads/drip${
                       post.post_image[post.currentImageIndex]
                     }`}
                     alt="drip post"

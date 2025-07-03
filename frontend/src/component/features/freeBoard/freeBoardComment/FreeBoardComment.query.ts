@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const postFreeBoardCommentQuery = async (newComment: string , userId: string | null , id: string | null) => {
     try {
-        const response = await axios.post(`http://localhost:3005/api/freeBoard/comment`,
+        const response = await axios.post(`https://codidrip-backend.onrender.com/api/freeBoard/comment`,
             {
                 newComment,
                 userId,
@@ -18,7 +18,7 @@ export const postFreeBoardCommentQuery = async (newComment: string , userId: str
 
 export const postFreeBoardReplyQuery = async (newComment: string, userId: string | null, postId: string | null, parentId: string) => {
     try {
-        const response = await axios.post(`http://localhost:3005/api/freeBoard/comment/reply`,
+        const response = await axios.post(`https://codidrip-backend.onrender.com/api/freeBoard/comment/reply`,
             {
                 newComment,
                 userId,
@@ -34,17 +34,17 @@ export const postFreeBoardReplyQuery = async (newComment: string, userId: string
 }
 
 export const getFreeBoardCommentQuery = async (postId: string | null) => {
-    const response = await axios.get(`http://localhost:3005/api/freeBoard/comment/${postId}`);
+    const response = await axios.get(`https://codidrip-backend.onrender.com/api/freeBoard/comment/${postId}`);
     return response.data;
 }
 
 export const getFreeBoardRepliesQuery = async (commentId: string) => {
-    const response = await axios.get(`http://localhost:3005/api/freeBoard/comment/${commentId}/replies`);
+    const response = await axios.get(`https://codidrip-backend.onrender.com/api/freeBoard/comment/${commentId}/replies`);
     return response.data;
 }
 
 export const updateFreeBoardCommentQuery = async (commentId: string, content: string, userId: string | null) => {
-    const response = await axios.put(`http://localhost:3005/api/freeBoard/comment/${commentId}`, {
+    const response = await axios.put(`https://codidrip-backend.onrender.com/api/freeBoard/comment/${commentId}`, {
         content: content,
         userId: userId
     });
@@ -52,7 +52,7 @@ export const updateFreeBoardCommentQuery = async (commentId: string, content: st
 }
 
 export const deleteFreeBoardCommentQuery = async (commentId: string, userId: string | null) => {
-    const response = await axios.delete(`http://localhost:3005/api/freeBoard/comment/${commentId}`, {
+    const response = await axios.delete(`https://codidrip-backend.onrender.com/api/freeBoard/comment/${commentId}`, {
         data: { userId }
     });
     return response.data;
@@ -65,7 +65,7 @@ export const reportFreeBoardCommentQuery = async (commentId: string, reportReaso
         throw new Error('로그인이 필요합니다.');
     }
 
-    const response = await axios.post(`http://localhost:3005/api/reports/freeboard`, {
+    const response = await axios.post(`https://codidrip-backend.onrender.com/api/reports/freeboard`, {
         target_type: 'comment',
         target_id: parseInt(commentId),
         report_reason: reportReason

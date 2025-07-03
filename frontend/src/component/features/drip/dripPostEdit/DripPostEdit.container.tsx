@@ -36,7 +36,7 @@ export const DripPostEditContainer = () => {
     if (img.startsWith("http") || img.startsWith("data:")) return img;
     // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
     const fileName = img.replace(/^\\|\//, "");
-    return `http://localhost:3005/uploads/drip/${fileName}`;
+    return `https://codidrip-backend.onrender.com/uploads/drip/${fileName}`;
   };
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export const DripPostEditContainer = () => {
       .then((newImages) => {
         setImages((prev) => {
           const existingImages = prev.filter((img) =>
-            img.startsWith("http://localhost:3005")
+            img.startsWith("https://codidrip-backend.onrender.com")
           );
           return [...existingImages, ...newImages];
         });
@@ -149,7 +149,7 @@ export const DripPostEditContainer = () => {
         // 수정 시 기존 이미지와 새로 추가된 이미지를 구분하여 처리
         const processedImages = images.map((img) => {
           // 이미 URL 형식인 경우 (기존 이미지)
-          if (img.startsWith("http://localhost:3005")) {
+          if (img.startsWith("https://codidrip-backend.onrender.com")) {
             // URL에서 파일명만 추출하고 앞에 / 추가
             const fileName = img.split("/").pop() || "";
             return `/${fileName}`;

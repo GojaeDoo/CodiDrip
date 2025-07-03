@@ -23,7 +23,7 @@ const DripPostCommentPresenter = (props: DripPostCommentPresenterProps) => {
           props.commentList.map((comment) => (
             <S.CommentItem key={comment.id}>
               <S.UserProfileImage 
-                src={`http://localhost:3005/uploads/profiles/${comment.profile_image}`} 
+                src={`https://codidrip-backend.onrender.com/uploads/profiles/${comment.profile_image}`} 
                 alt={comment.profile_nickname} 
               />
               <S.CommentBody>
@@ -88,7 +88,7 @@ const DripPostCommentPresenter = (props: DripPostCommentPresenterProps) => {
                     {comment.replies.map((reply) => (
                       <S.ReplyItem key={reply.id}>
                         <S.UserProfileImage 
-                          src={`http://localhost:3005/uploads/profiles/${reply.profile_image}`} 
+                          src={`https://codidrip-backend.onrender.com/uploads/profiles/${reply.profile_image}`} 
                           alt={reply.profile_nickname} 
                           $small 
                         />

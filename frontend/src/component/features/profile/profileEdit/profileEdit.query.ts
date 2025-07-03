@@ -5,7 +5,7 @@ import { ProfileData } from "./ProfileEdit.types";
 export const postProfileCreateQuery = async (data: ProfileData) => {
   try {
     const response = await axios.post(
-      "http://localhost:3005/api/profiles/createProfile",
+      "https://codidrip-backend.onrender.com/api/profiles/createProfile",
       data
     );
     return response.data;
@@ -18,7 +18,7 @@ export const postProfileCreateQuery = async (data: ProfileData) => {
 export const putProfileUpdateQuery = async (data: ProfileData) => {
   try {
     const response = await axios.put(
-      `http://localhost:3005/api/profiles/updateProfile/${data.userId}`,
+      `https://codidrip-backend.onrender.com/api/profiles/updateProfile/${data.userId}`,
       data
     );
     return response.data;
@@ -31,7 +31,7 @@ export const putProfileUpdateQuery = async (data: ProfileData) => {
 export const getProfileQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/profiles/${userId}`
+      `https://codidrip-backend.onrender.com/api/profiles/${userId}`
     );
     if (response.data) {
       return response.data;
@@ -45,8 +45,8 @@ export const getProfileQuery = async (userId: string) => {
 
 export const getNicknameCheckQuery = async (nickname: string, userId?: string) => {
   const url = userId 
-    ? `http://localhost:3005/api/profiles/nicknameCheck/${nickname}?userId=${userId}`
-    : `http://localhost:3005/api/profiles/nicknameCheck/${nickname}`;
+    ? `https://codidrip-backend.onrender.com/api/profiles/nicknameCheck/${nickname}?userId=${userId}`
+    : `https://codidrip-backend.onrender.com/api/profiles/nicknameCheck/${nickname}`;
   
   try {
     const response = await axios.get(url);
@@ -62,7 +62,7 @@ export const postUploadProfileImageQuery = async (file: File) => {
     formData.append("profileImage", file);
 
     const response = await axios.post(
-      "http://localhost:3005/api/profiles/upload",
+      "https://codidrip-backend.onrender.com/api/profiles/upload",
       formData,
       {
         headers: {

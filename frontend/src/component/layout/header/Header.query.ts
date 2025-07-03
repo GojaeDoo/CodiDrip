@@ -4,7 +4,7 @@ import { Profile } from "./Header.types";
 export const getUserProfileQuery = async (userId: string): Promise<Profile | null> => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/profiles/${userId}`
+      `https://codidrip-backend.onrender.com/api/profiles/${userId}`
     );
     
     if (!response.data) {
@@ -14,7 +14,7 @@ export const getUserProfileQuery = async (userId: string): Promise<Profile | nul
     const profile = {
       ...response.data,
       profile_image: response.data.profile_image
-        ? `http://localhost:3005/uploads/profiles/${response.data.profile_image}`
+        ? `https://codidrip-backend.onrender.com/uploads/profiles/${response.data.profile_image}`
         : null,
     };
     return profile;
@@ -27,7 +27,7 @@ export const getUserProfileQuery = async (userId: string): Promise<Profile | nul
 export const getSearchResultQuery = async (keyword: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/search/search?keyword=${keyword}`
+      `https://codidrip-backend.onrender.com/api/search/search?keyword=${keyword}`
     );
     return response.data;
   } catch (error) {

@@ -7,7 +7,7 @@ export const postUserJoinQuery = async (userData: {
 }) => {
   try {
     const response = await axios.post(
-      "http://localhost:3005/api/users",
+      "https://codidrip-backend.onrender.com/api/users",
       userData,
       {
         headers: {
@@ -25,7 +25,7 @@ export const postUserJoinQuery = async (userData: {
 export const getIdOverlappingCheckQuery = async (id: string) => {
   try {
     const response = await axios.get(
-      "http://localhost:3005/api/users/check-id",
+      "https://codidrip-backend.onrender.com/api/users/check-id",
       {
         params: { user_id: id },
         headers: {
@@ -43,7 +43,7 @@ export const getIdOverlappingCheckQuery = async (id: string) => {
 export const getEmailOverlappingCheckQuery = async (email: string) => {
   try {
     const response = await axios.get(
-      "http://localhost:3005/api/users/check-email",
+      "https://codidrip-backend.onrender.com/api/users/check-email",
       {
         params: { user_email: email },
         headers: {

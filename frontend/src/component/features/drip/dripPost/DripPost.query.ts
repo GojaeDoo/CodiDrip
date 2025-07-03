@@ -22,7 +22,7 @@ export const getUserSpecificDripPosts = async (
 ): Promise<DripPostType[]> => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/drip?userId=${userId}`
+      `https://codidrip-backend.onrender.com/api/drip?userId=${userId}`
     );
     return response.data.map(transformDripPostData);
   } catch (error) {
@@ -36,8 +36,8 @@ export const getAllDripPosts = async (
 ): Promise<DripPostType[]> => {
   const userId = localStorage.getItem("userId");
   const url = gender
-    ? `http://localhost:3005/api/drip?gender=${gender}&userId=${userId}`
-    : `http://localhost:3005/api/drip?userId=${userId}`; 
+    ? `https://codidrip-backend.onrender.com/api/drip?gender=${gender}&userId=${userId}`
+    : `https://codidrip-backend.onrender.com/api/drip?userId=${userId}`; 
   const response = await axios.get(url);
   return response.data.map(transformDripPostData);
 };
@@ -52,7 +52,7 @@ export const getUserDripPostQuery = async (
   filterUserId?: string
 ): Promise<DripPostType[]> => {
   const loginUserId = localStorage.getItem("userId");
-  let url = `http://localhost:3005/api/drip?userId=${loginUserId}`;
+  let url = `https://codidrip-backend.onrender.com/api/drip?userId=${loginUserId}`;
   
   // 마이페이지에서 특정 사용자의 게시글만 필터링
   if (filterUserId) {
@@ -78,7 +78,7 @@ export const getUserDripPostQuery = async (
 export const deleteDripPostQuery = async (postNo: number) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3005/api/drip/${postNo}`
+      `https://codidrip-backend.onrender.com/api/drip/${postNo}`
     );
     return response.data;
   } catch (error) {
@@ -93,7 +93,7 @@ export const postLikeDripPostQuery = async (postId: number) => {
     if (!userId) {
       throw new Error("User not logged in");
     }
-    const response = await axios.post(`http://localhost:3005/api/drip/${postId}/like?userId=${userId}`);
+    const response = await axios.post(`https://codidrip-backend.onrender.com/api/drip/${postId}/like?userId=${userId}`);
     return {
       success: true,
       liked: response.data.liked,
@@ -113,7 +113,7 @@ export const postCreateReportQuery = async (reportData: ReportData): Promise<Rep
       throw new Error('로그인이 필요합니다.');
     }
 
-    const response = await fetch(`http://localhost:3005/api/reports`, {
+    const response = await fetch(`https://codidrip-backend.onrender.com/api/reports`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ export const postCreateReportQuery = async (reportData: ReportData): Promise<Rep
 export const getReportCount = async (targetType: ReportTargetType, targetId: number): Promise<number> => {
   try {
     const response = await fetch(
-      `http://localhost:3005/api/reports/count?targetType=${targetType}&targetId=${targetId}`
+      `https://codidrip-backend.onrender.com/api/reports/count?targetType=${targetType}&targetId=${targetId}`
     );
 
     const data = await response.json();
@@ -162,7 +162,7 @@ export const checkUserReported = async (targetType: ReportTargetType, targetId: 
     }
 
     const response = await fetch(
-      `http://localhost:3005/api/reports/check?targetType=${targetType}&targetId=${targetId}`,
+      `https://codidrip-backend.onrender.com/api/reports/check?targetType=${targetType}&targetId=${targetId}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`

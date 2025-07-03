@@ -24,7 +24,7 @@ export const FollowPresenter = (props: FollowPresenterProps) => {
                             {currentList.map((user) => (
                                 <S.FollowItem key={user.profile_id}>
                                     <S.FollowProfileImage
-                                        src={`http://localhost:3005/uploads/profiles/${user.profile_image}`}
+                                        src={`https://codidrip-backend.onrender.com/uploads/profiles/${user.profile_image}`}
                                         alt={user.profile_nickname}
                                     />
                                     <S.FollowInfo>

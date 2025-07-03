@@ -3,12 +3,12 @@ import axios from "axios";
 export const getMyPageProfileQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/profiles/${userId}`
+      `https://codidrip-backend.onrender.com/api/profiles/${userId}`
     );
     const profile = {
       ...response.data,
       profile_image: response.data.profile_image
-        ? `http://localhost:3005/uploads/profiles/${response.data.profile_image}`
+        ? `https://codidrip-backend.onrender.com/uploads/profiles/${response.data.profile_image}`
         : null,
     };
     return profile;
@@ -20,7 +20,7 @@ export const getMyPageProfileQuery = async (userId: string) => {
 export const getDripPostDetailQuery = async (postNo: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/drip/${postNo}`
+      `https://codidrip-backend.onrender.com/api/drip/${postNo}`
     );
     return response.data;
   } catch (error) {
@@ -31,7 +31,7 @@ export const getDripPostDetailQuery = async (postNo: number) => {
 export const getCheckFollowStatusQuery = async (followerId: string, followingId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/users/follow/status?followerId=${followerId}&followingId=${followingId}`
+      `https://codidrip-backend.onrender.com/api/users/follow/status?followerId=${followerId}&followingId=${followingId}`
     );
     return response.data.isFollowing;
   } catch (error) {
@@ -43,7 +43,7 @@ export const getCheckFollowStatusQuery = async (followerId: string, followingId:
 export const toggleFollowQuery = async (followerId: string, followingId: string) => {
   try {
     const response = await axios.post(
-      `http://localhost:3005/api/users/follow/toggle`,
+      `https://codidrip-backend.onrender.com/api/users/follow/toggle`,
       { followerId, followingId }
     );
     return response.data;
@@ -56,7 +56,7 @@ export const toggleFollowQuery = async (followerId: string, followingId: string)
 export const getUserFreeBoardPostsQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/freeBoard/user/${userId}`
+      `https://codidrip-backend.onrender.com/api/freeBoard/user/${userId}`
     );
     return response.data;
   } catch (error) {

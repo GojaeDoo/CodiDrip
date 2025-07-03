@@ -147,7 +147,7 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       images = images.map(img =>
         img.startsWith("http")
           ? img
-          : `http://localhost:3005/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
+          : `https://codidrip-backend.onrender.com/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
       );
     } catch (error) {
       console.error("이미지 파싱 에러:", error);
@@ -155,7 +155,7 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       images = images.map(img =>
         img.startsWith("http")
           ? img
-          : `http://localhost:3005/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
+          : `https://codidrip-backend.onrender.com/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
       );
     }
   }

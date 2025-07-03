@@ -42,7 +42,7 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
           <S.ProfileBox>
             <S.UserInfo>
               <S.ProfileImage
-                src={`http://localhost:3005/uploads/profiles/${props.dripPost.프로필이미지}`}
+                src={`https://codidrip-backend.onrender.com/uploads/profiles/${props.dripPost.프로필이미지}`}
                 alt={`${props.dripPost.닉네임 || "사용자"}의 프로필`}
               />
               <div>

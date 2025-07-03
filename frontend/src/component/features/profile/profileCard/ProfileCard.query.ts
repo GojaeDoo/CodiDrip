@@ -3,7 +3,7 @@ import { Profile } from "@/types/profile";
 
 export const getProfilesQuery = async (): Promise<Profile[]> => {
   try {
-    const response = await axios.get("http://localhost:3005/api/profiles");
+    const response = await axios.get("https://codidrip-backend.onrender.com/api/profiles");
     const profiles = response.data.map((profile: {
       id: number;
       nickname: string;
@@ -19,7 +19,7 @@ export const getProfilesQuery = async (): Promise<Profile[]> => {
       profile_height: profile.height,
       profile_weight: profile.weight,
       profile_image: profile.profile_image
-        ? `http://localhost:3005/uploads/profiles/${profile.profile_image}`
+        ? `https://codidrip-backend.onrender.com/uploads/profiles/${profile.profile_image}`
         : "",
       profile_gender: profile.gender,
       profile_follow: 0, // 기본값 설정

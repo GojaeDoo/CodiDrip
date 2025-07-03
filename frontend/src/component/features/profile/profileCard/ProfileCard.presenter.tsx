@@ -15,13 +15,13 @@ const ProfileCardPresenter = (props: ProfileCardPresenterProps) => {
             </S.HeartIcon>
           </S.LikeButton>
           <S.PostImage
-            src={`http://localhost:3005/uploads/profiles/${profile.profile_image}`}
+            src={`https://codidrip-backend.onrender.com/uploads/profiles/${profile.profile_image}`}
             alt={profile.profile_nickname}
           />
           <S.PostInfo>
             <S.ProfileDetailsContainer>
               <S.ProfileImage
-                src={`http://localhost:3005/uploads/profiles/${profile.profile_image}`}
+                src={`https://codidrip-backend.onrender.com/uploads/profiles/${profile.profile_image}`}
                 alt={`${profile.profile_nickname}'s profile`}
               />
               <S.ProfileInfo>

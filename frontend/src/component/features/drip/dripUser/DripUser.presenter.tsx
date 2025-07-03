@@ -12,7 +12,7 @@ export const DripUserPresenter = (props: DripUserPresenterProps) => {
           >
             <S.ProfileImageWrapper>
               <S.ProfileImage
-                src={`http://localhost:3005/uploads/profiles/${user.profile_image}`}
+                src={`https://codidrip-backend.onrender.com/uploads/profiles/${user.profile_image}`}
                 alt={user.profile_nickname}
               />
             </S.ProfileImageWrapper>
