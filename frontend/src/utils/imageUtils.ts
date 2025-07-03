@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './apiConfig';
+
 // 이미지 URL을 Supabase URL로 변환하는 함수
 export const getImageUrl = (imagePath: string | null | undefined): string | null => {
   if (!imagePath) return null;
@@ -9,11 +11,11 @@ export const getImageUrl = (imagePath: string | null | undefined): string | null
   
   // 로컬 경로면 Supabase URL로 변환 (기존 이미지 호환성)
   if (imagePath.includes('profileImage')) {
-    return `https://codidrip-backend.onrender.com/uploads/profiles/${imagePath}`;
+    return `${API_BASE_URL}/uploads/profiles/${imagePath}`;
   }
   
   if (imagePath.includes('dripImage') || imagePath.includes('.jpeg') || imagePath.includes('.jpg')) {
-    return `https://codidrip-backend.onrender.com/uploads/drip/${imagePath}`;
+    return `${API_BASE_URL}/uploads/drip/${imagePath}`;
   }
   
   return imagePath;
@@ -27,7 +29,7 @@ export const getProfileImageUrl = (imagePath: string | null | undefined): string
     return imagePath;
   }
   
-  return `https://codidrip-backend.onrender.com/uploads/profiles/${imagePath}`;
+  return `${API_BASE_URL}/uploads/profiles/${imagePath}`;
 };
 
 // Drip 이미지 URL 처리
@@ -38,5 +40,5 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
     return imagePath;
   }
   
-  return `https://codidrip-backend.onrender.com/uploads/drip/${imagePath}`;
+  return `${API_BASE_URL}/uploads/drip/${imagePath}`;
 }; 

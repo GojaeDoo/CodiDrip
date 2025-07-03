@@ -1,5 +1,6 @@
 import axios from "axios";
 import { DripPostDetailResponse } from "./dripPostDetail.types";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const getDripPostDetail = async (
   postNo: number
@@ -7,7 +8,7 @@ export const getDripPostDetail = async (
   try {
     const userId = localStorage.getItem("userId");
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/drip/${postNo}`,
+      `${API_ENDPOINTS.DRIP}/${postNo}`,
       {
         params: { userId }
       }
@@ -21,7 +22,7 @@ export const getDripPostDetail = async (
 
 export const getDripPostLikeStatus = async (postNo: number, userId: string) => {
   try {
-    const response = await axios.get(`https://codidrip-backend.onrender.com/api/drip/like-status`, {
+    const response = await axios.get(`${API_ENDPOINTS.DRIP}/like-status`, {
       params: { post_no: postNo, user_id: userId }
     });
     if (response.data && typeof response.data.is_liked === 'boolean') {
@@ -37,7 +38,7 @@ export const getDripPostLikeStatus = async (postNo: number, userId: string) => {
 
 export const postLikeDripPostQuery = async (postNo: number, userId: string) => {
   try {
-    const response = await axios.post(`https://codidrip-backend.onrender.com/api/drip/${postNo}/like?userId=${userId}`);
+    const response = await axios.post(`${API_ENDPOINTS.DRIP}/${postNo}/like?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error("게시글 좋아요 실패:", error);
@@ -47,7 +48,7 @@ export const postLikeDripPostQuery = async (postNo: number, userId: string) => {
 
 export const deleteUnlikeDripPostQuery = async (postNo: number, userId: string) => {
   try {
-    const response = await axios.delete(`https://codidrip-backend.onrender.com/api/drip/${postNo}/like?userId=${userId}`);
+    const response = await axios.delete(`${API_ENDPOINTS.DRIP}/${postNo}/like?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error("게시글 좋아요 취소 실패:", error);
@@ -57,7 +58,7 @@ export const deleteUnlikeDripPostQuery = async (postNo: number, userId: string) 
 
 export const postSaveDripPostQuery = async (postNo: number, userId: string) => {
   try {
-    const response = await axios.post(`https://codidrip-backend.onrender.com/api/drip/${postNo}/save`, {
+    const response = await axios.post(`${API_ENDPOINTS.DRIP}/${postNo}/save`, {
       userId: userId
     });
     return response.data;
@@ -69,7 +70,7 @@ export const postSaveDripPostQuery = async (postNo: number, userId: string) => {
 
 export const getDripPostSaveStatus = async (postNo: number, userId: string) => {
   try {
-    const response = await axios.get(`https://codidrip-backend.onrender.com/api/drip/${postNo}/save-status`, {
+    const response = await axios.get(`${API_ENDPOINTS.DRIP}/${postNo}/save-status`, {
       params: { userId }
     });
     return response.data.saved;

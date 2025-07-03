@@ -16,13 +16,13 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3005;
 
-// CORS 설정
-app.use(
-  cors({
-    origin: "https://codidrip.onrender.com", // 프론트엔드 URL
-    credentials: true,
-  })
-);
+// CORS 설정 - 모든 origin 허용 (개발 중)
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
 // 파일 업로드를 위한 크기 제한 설정
 app.use(express.json({ limit: "50mb" }));

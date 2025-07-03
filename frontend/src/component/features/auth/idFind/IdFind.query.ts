@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const getIdFindUserQuery = async (email: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/users/find-id?email=${encodeURIComponent(email)}`
+      `${API_ENDPOINTS.FIND_ID}?email=${encodeURIComponent(email)}`
     );
     return response.data;
   } catch (error) {

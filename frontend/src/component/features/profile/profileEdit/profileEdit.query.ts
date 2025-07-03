@@ -1,11 +1,11 @@
 import axios from "axios";
 import { ProfileData } from "./ProfileEdit.types";
-
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postProfileCreateQuery = async (data: ProfileData) => {
   try {
     const response = await axios.post(
-      "https://codidrip-backend.onrender.com/api/profiles/createProfile",
+      API_ENDPOINTS.PROFILE_CREATE,
       data
     );
     return response.data;
@@ -18,7 +18,7 @@ export const postProfileCreateQuery = async (data: ProfileData) => {
 export const putProfileUpdateQuery = async (data: ProfileData) => {
   try {
     const response = await axios.put(
-      `https://codidrip-backend.onrender.com/api/profiles/updateProfile/${data.userId}`,
+      `${API_ENDPOINTS.PROFILES}/updateProfile/${data.userId}`,
       data
     );
     return response.data;
@@ -31,7 +31,7 @@ export const putProfileUpdateQuery = async (data: ProfileData) => {
 export const getProfileQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/profiles/${userId}`
+      `${API_ENDPOINTS.PROFILES}/${userId}`
     );
     if (response.data) {
       return response.data;
@@ -45,8 +45,8 @@ export const getProfileQuery = async (userId: string) => {
 
 export const getNicknameCheckQuery = async (nickname: string, userId?: string) => {
   const url = userId 
-    ? `https://codidrip-backend.onrender.com/api/profiles/nicknameCheck/${nickname}?userId=${userId}`
-    : `https://codidrip-backend.onrender.com/api/profiles/nicknameCheck/${nickname}`;
+    ? `${API_ENDPOINTS.PROFILES}/nicknameCheck/${nickname}?userId=${userId}`
+    : `${API_ENDPOINTS.PROFILES}/nicknameCheck/${nickname}`;
   
   try {
     const response = await axios.get(url);
@@ -62,7 +62,7 @@ export const postUploadProfileImageQuery = async (file: File) => {
     formData.append("profileImage", file);
 
     const response = await axios.post(
-      "https://codidrip-backend.onrender.com/api/profiles/upload",
+      API_ENDPOINTS.PROFILE_UPLOAD,
       formData,
       {
         headers: {

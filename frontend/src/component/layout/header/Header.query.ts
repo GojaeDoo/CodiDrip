@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Profile } from "./Header.types";
 import { getProfileImageUrl } from "@/utils/imageUtils";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const getUserProfileQuery = async (userId: string): Promise<Profile | null> => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/profiles/${userId}`
+      `${API_ENDPOINTS.PROFILES}/${userId}`
     );
     
     if (!response.data) {
@@ -26,7 +27,7 @@ export const getUserProfileQuery = async (userId: string): Promise<Profile | nul
 export const getSearchResultQuery = async (keyword: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/search/search?keyword=${keyword}`
+      `${API_ENDPOINTS.SEARCH}?keyword=${keyword}`
     );
     return response.data;
   } catch (error) {

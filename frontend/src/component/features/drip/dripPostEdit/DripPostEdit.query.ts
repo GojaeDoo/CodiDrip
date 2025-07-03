@@ -1,9 +1,10 @@
 import axios from "axios";
 import { PostDripData } from "./DripPostEdit.types";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postDripQuery = async (data: PostDripData) => {
   try {
-    const response = await axios.post("https://codidrip-backend.onrender.com/api/drip", data, {
+    const response = await axios.post(API_ENDPOINTS.DRIP, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -23,7 +24,7 @@ export const putUpdateDripQuery = async (
 ) => {
   try {
     const response = await axios.put(
-      `https://codidrip-backend.onrender.com/api/drip/${data.postNo}`,
+      `${API_ENDPOINTS.DRIP}/${data.postNo}`,
       data,
       {
         headers: {
@@ -43,6 +44,6 @@ export const getDripPostQuery = async (postNo: string) => {
   if (!postNo) {
     throw new Error("Post number is required");
   }
-  const response = await axios.get(`https://codidrip-backend.onrender.com/api/drip/${postNo}`);
+  const response = await axios.get(`${API_ENDPOINTS.DRIP}/${postNo}`);
   return response.data;
 };

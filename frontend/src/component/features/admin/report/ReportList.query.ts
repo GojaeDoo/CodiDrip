@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { AllReport } from './ReportList.types';
-
-const API_BASE_URL = 'https://codidrip-backend.onrender.com';
+import { API_ENDPOINTS } from '@/utils/apiConfig';
 
 // 모든 신고 목록 조회
 export const fetchAllReports = async (): Promise<AllReport[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/reports/admin`, {
+    const response = await axios.get(API_ENDPOINTS.REPORTS_ADMIN, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -28,7 +27,7 @@ export const fetchAllReports = async (): Promise<AllReport[]> => {
 // Drip 신고 목록 조회
 export const fetchDripReports = async (): Promise<AllReport[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/reports/admin/drip`, {
+    const response = await axios.get(API_ENDPOINTS.REPORTS_ADMIN_DRIP, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -50,7 +49,7 @@ export const fetchDripReports = async (): Promise<AllReport[]> => {
 // 자유게시판 신고 목록 조회
 export const fetchFreeBoardReports = async (): Promise<AllReport[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/reports/admin/freeboard`, {
+    const response = await axios.get(`${API_ENDPOINTS.REPORTS_ADMIN}/freeboard`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -76,7 +75,7 @@ export const processReport = async (
   boardType: 'drip' | 'freeboard'
 ): Promise<{ success: boolean; message: string }> => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/reports/admin/${reportId}/process`, {
+    const response = await axios.post(`${API_ENDPOINTS.REPORTS_ADMIN}/${reportId}/process`, {
       action,
       boardType
     }, {
@@ -105,7 +104,7 @@ export const fetchReportedContent = async (
   boardType: 'drip' | 'freeboard'
 ): Promise<unknown> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/reports/admin/content`, {
+    const response = await axios.get(`${API_ENDPOINTS.REPORTS_ADMIN}/content`, {
       params: {
         targetId,
         targetType,

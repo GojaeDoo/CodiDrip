@@ -51,7 +51,7 @@ export class StorageService {
         
         return { 
           success: true, 
-          url: `https://codidrip-backend.onrender.com/uploads/profiles/${fileName}`,
+          url: `${process.env.BACKEND_URL || 'https://codidrip-7fmm.onrender.com'}/uploads/profiles/${fileName}`,
           fallback: true 
         };
       } catch (fallbackError) {
@@ -101,7 +101,7 @@ export class StorageService {
         
         return { 
           success: true, 
-          url: `https://codidrip-backend.onrender.com/uploads/drip/${fileName}`,
+          url: `${process.env.BACKEND_URL || 'https://codidrip-7fmm.onrender.com'}/uploads/drip/${fileName}`,
           fallback: true 
         };
       } catch (fallbackError) {

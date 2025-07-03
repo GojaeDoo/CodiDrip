@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postPasswordResetUserQuery = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `https://codidrip-backend.onrender.com/api/users/reset-password`,
+      API_ENDPOINTS.RESET_PASSWORD,
       {
         email,
         password,

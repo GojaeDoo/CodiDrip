@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postLoginUserQuery = async (
   userId: string,
@@ -6,7 +7,7 @@ export const postLoginUserQuery = async (
 ) => {
   try {
     const response = await axios.post(
-      "https://codidrip-backend.onrender.com/api/users/login",
+      API_ENDPOINTS.LOGIN,
       {
         user_id: userId,
         user_password: userPassword,
@@ -21,7 +22,7 @@ export const postLoginUserQuery = async (
 export const getProfileCheckQuery = async (id: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/profiles/user/${id}`
+      `${API_ENDPOINTS.PROFILES}/user/${id}`
     );
     return response.data;
   } catch (error: unknown) {
@@ -37,7 +38,7 @@ export const getProfileCheckQuery = async (id: string) => {
 export const checkUserAdminStatus = async (userId: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/users/admin-status?userId=${userId}`
+      `${API_ENDPOINTS.ADMIN_STATUS}?userId=${userId}`
     );
     return response.data;
   } catch (error: unknown) {

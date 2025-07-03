@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postVerifyPasswordCodeQuery = async (code: string, email: string) => {
   try {
     const response = await axios.post(
-      "https://codidrip-backend.onrender.com/api/users/verify-password-code",
+      `${API_ENDPOINTS.JOIN}/verify-password-code`,
       {
         code,
         email,

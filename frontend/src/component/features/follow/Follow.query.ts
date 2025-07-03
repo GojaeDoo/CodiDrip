@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const getFollowersQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/users/followers?userId=${userId}`
+      `${API_ENDPOINTS.JOIN}/followers?userId=${userId}`
     );
     return response.data;
   } catch (error) {
@@ -15,7 +16,7 @@ export const getFollowersQuery = async (userId: string) => {
 export const getFollowingQuery = async (userId: string) => {
   try {
     const response = await axios.get(
-      `https://codidrip-backend.onrender.com/api/users/following?userId=${userId}`
+      `${API_ENDPOINTS.JOIN}/following?userId=${userId}`
     );
     return response.data;
   } catch (error) {

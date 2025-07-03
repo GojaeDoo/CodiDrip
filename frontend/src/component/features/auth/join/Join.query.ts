@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const postUserJoinQuery = async (userData: {
   user_id: string;
@@ -7,7 +8,7 @@ export const postUserJoinQuery = async (userData: {
 }) => {
   try {
     const response = await axios.post(
-      "https://codidrip-backend.onrender.com/api/users",
+      API_ENDPOINTS.JOIN,
       userData,
       {
         headers: {
@@ -25,7 +26,7 @@ export const postUserJoinQuery = async (userData: {
 export const getIdOverlappingCheckQuery = async (id: string) => {
   try {
     const response = await axios.get(
-      "https://codidrip-backend.onrender.com/api/users/check-id",
+      `${API_ENDPOINTS.JOIN}/check-id`,
       {
         params: { user_id: id },
         headers: {
@@ -43,7 +44,7 @@ export const getIdOverlappingCheckQuery = async (id: string) => {
 export const getEmailOverlappingCheckQuery = async (email: string) => {
   try {
     const response = await axios.get(
-      "https://codidrip-backend.onrender.com/api/users/check-email",
+      `${API_ENDPOINTS.JOIN}/check-email`,
       {
         params: { user_email: email },
         headers: {

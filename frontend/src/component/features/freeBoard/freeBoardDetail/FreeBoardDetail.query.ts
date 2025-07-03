@@ -1,12 +1,13 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/utils/apiConfig";
 
 export const getFreeBoardDetailQuery = async (id: number) => {
-  const response = await axios.get(`https://codidrip-backend.onrender.com/api/freeboard/${id}`);
+  const response = await axios.get(`${API_ENDPOINTS.FREEBOARD}/${id}`);
   return response.data;
 };
 
 export const deleteFreeBoardWriteQuery = async (id: number) => {
-  const response = await axios.delete(`https://codidrip-backend.onrender.com/api/freeboard/${id}`);
+  const response = await axios.delete(`${API_ENDPOINTS.FREEBOARD}/${id}`);
   return response.data;
 };
 
@@ -17,7 +18,7 @@ export const reportFreeBoardPostQuery = async (postId: number, reportReason: str
     throw new Error('로그인이 필요합니다.');
   }
 
-  const response = await axios.post(`https://codidrip-backend.onrender.com/api/reports/freeboard`, {
+  const response = await axios.post(`${API_ENDPOINTS.REPORTS}/freeboard`, {
     target_type: 'post',
     target_id: postId,
     report_reason: reportReason
