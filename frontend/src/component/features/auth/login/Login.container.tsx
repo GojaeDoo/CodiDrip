@@ -58,12 +58,20 @@ const LoginContainer = () => {
       const currentUserId = response.user.user_id;
       const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true"; 
       login(response.token, currentUserId, isAdmin);
-      const responseProfile = await getProfileCheckQuery(currentUserId);
-      router.push("/drips");
-      if (responseProfile) {
+      
+      try {
+        const responseProfile = await getProfileCheckQuery(currentUserId);
+        if (responseProfile) {
+          console.log("프로필이 존재합니다. 메인 페이지로 이동합니다.");
+          router.push("/drips");
+        } else {
+          console.log("프로필이 존재하지 않습니다. 프로필 생성 페이지로 이동합니다.");
+          router.push("/profileEdit");
+        }
+      } catch (profileError) {
+        console.error("프로필 확인 중 에러:", profileError);
+        // 프로필 확인 실패해도 로그인은 성공했으므로 메인 페이지로 이동
         router.push("/drips");
-      } else {
-        router.push("/profileEdit");
       }
     } catch (error) {
       console.error("로그인 에러:", error);
