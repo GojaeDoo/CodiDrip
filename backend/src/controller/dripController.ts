@@ -3,6 +3,7 @@ import { dripService } from "../service/dripService";
 import { pool } from "../db";
 import { RequestHandler } from "express";
 import { StorageService } from "../service/storageService";
+import { supabase } from "../supabase";
 
 export const postCreateDripController = async (req: Request, res: Response) => {
   try {
@@ -34,7 +35,52 @@ export const getUserDripController = async (req: Request, res: Response) => {
     const styles = req.query.styles as string | undefined;
     
     const drips = await dripService.getUserDripService(userId, filterUserId, gender, isLike, isSaved, styles);
-    res.status(200).json(drips);
+    
+    // Supabase Storage에서 실제 이미지 URL 가져오기
+    if (supabase) {
+      const { data: dripImages } = await supabase.storage
+        .from('drips')
+        .list('', { limit: 100 });
+      
+      const imageMap = new Map();
+      if (dripImages) {
+        for (const file of dripImages) {
+          const { data: urlData } = supabase.storage
+            .from('drips')
+            .getPublicUrl(file.name);
+          imageMap.set(file.name, urlData.publicUrl);
+        }
+      }
+      
+      // Drip 데이터에 실제 이미지 URL 적용
+      const dripsWithImages = drips.map((drip: any) => {
+        if (drip.게시글이미지) {
+          try {
+            const images = JSON.parse(drip.게시글이미지);
+            const updatedImages = images.map((img: string) => {
+              if (img && !img.startsWith('http')) {
+                // 파일명만 추출
+                const fileName = img.replace(/^.*[\\\/]/, '');
+                const actualUrl = imageMap.get(fileName);
+                if (actualUrl) {
+                  return actualUrl;
+                }
+              }
+              return img;
+            });
+            return { ...drip, 게시글이미지: JSON.stringify(updatedImages) };
+          } catch (error) {
+            console.error('이미지 파싱 오류:', error);
+            return drip;
+          }
+        }
+        return drip;
+      });
+      
+      res.status(200).json(dripsWithImages);
+    } else {
+      res.status(200).json(drips);
+    }
   } catch (error) {
     console.error("getUserDrip error - dripController:", error);
     res.status(500).json({ error: "getUserDrip 500error - dripController" });

@@ -9,6 +9,7 @@ import {
 } from "../service/profileService";
 import { StorageService } from "../service/storageService";
 import { PrismaClient } from "@prisma/client";
+import { supabase } from "../supabase";
 
 const prisma = new PrismaClient();
 
@@ -20,8 +21,42 @@ export const getProfilesController = async (
   try {
     const gender = req.query.gender as string;
     const profiles = await getAllProfilesService(gender);
-    res.json(profiles);
+    
+    // Supabase Storage에서 실제 이미지 URL 가져오기
+    if (supabase) {
+      const { data: profileImages } = await supabase.storage
+        .from('profiles')
+        .list('', { limit: 100 });
+      
+      const imageMap = new Map();
+      if (profileImages) {
+        for (const file of profileImages) {
+          const { data: urlData } = supabase.storage
+            .from('profiles')
+            .getPublicUrl(file.name);
+          imageMap.set(file.name, urlData.publicUrl);
+        }
+      }
+      
+      // 프로필 데이터에 실제 이미지 URL 적용
+      const profilesWithImages = profiles.map((profile: any) => {
+        if (profile.profile_image) {
+          // 파일명만 추출
+          const fileName = profile.profile_image.replace(/^.*[\\\/]/, '');
+          const actualUrl = imageMap.get(fileName);
+          if (actualUrl) {
+            return { ...profile, profile_image: actualUrl };
+          }
+        }
+        return profile;
+      });
+      
+      res.json(profilesWithImages);
+    } else {
+      res.json(profiles);
+    }
   } catch (error) {
+    console.error("프로필 조회 중 오류:", error);
     res.status(500).json({ error: "getProfiles 500error - profileController" });
   }
 };
