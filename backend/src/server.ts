@@ -43,23 +43,28 @@ app.use("/api/reports", reportRouter);
 app.listen(port, async () => {
   console.log(`🚀 서버가 포트 ${port}에서 실행 중입니다.`);
   
-  // 데이터베이스 연결 테스트
-  console.log('🗄️  데이터베이스 연결 테스트 중...');
-  const dbConnected = await testDatabaseConnection();
-  
-  // Supabase 연결 테스트
-  console.log('🔗 Supabase Storage 연결 테스트 중...');
-  const supabaseConnected = await testSupabaseConnection();
-  
-  if (dbConnected && supabaseConnected) {
-    console.log('✅ 모든 서비스가 정상적으로 시작되었습니다.');
-  } else {
-    if (!dbConnected) {
-      console.log('❌ 데이터베이스 연결에 문제가 있습니다.');
+  try {
+    // 데이터베이스 연결 테스트
+    console.log('🗄️  데이터베이스 연결 테스트 중...');
+    const dbConnected = await testDatabaseConnection();
+    
+    // Supabase 연결 테스트
+    console.log('🔗 Supabase Storage 연결 테스트 중...');
+    const supabaseConnected = await testSupabaseConnection();
+    
+    if (dbConnected && supabaseConnected) {
+      console.log('✅ 모든 서비스가 정상적으로 시작되었습니다.');
+    } else {
+      if (!dbConnected) {
+        console.log('❌ 데이터베이스 연결에 문제가 있습니다.');
+      }
+      if (!supabaseConnected) {
+        console.log('⚠️  Supabase Storage 연결에 문제가 있습니다. 이미지 업로드가 작동하지 않을 수 있습니다.');
+      }
     }
-    if (!supabaseConnected) {
-      console.log('⚠️  Supabase Storage 연결에 문제가 있습니다. 이미지 업로드가 작동하지 않을 수 있습니다.');
-    }
+  } catch (error) {
+    console.error('❌ 서버 시작 중 오류 발생:', error);
+    console.log('⚠️  서버는 시작되었지만 일부 서비스에 문제가 있을 수 있습니다.');
   }
 });
 

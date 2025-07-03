@@ -7,13 +7,18 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Supabase 환경변수가 설정되지 않았습니다.');
   console.error('SUPABASE_URL:', supabaseUrl ? '✅ 설정됨' : '❌ 누락');
   console.error('SUPABASE_ANON_KEY:', supabaseKey ? '✅ 설정됨' : '❌ 누락');
-  throw new Error('Missing Supabase environment variables');
+  console.log('⚠️  Supabase Storage 기능이 비활성화됩니다. 로컬 저장소만 사용됩니다.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 // Supabase 연결 테스트
 export const testSupabaseConnection = async () => {
+  if (!supabase) {
+    console.log('⚠️  Supabase 클라이언트가 초기화되지 않았습니다.');
+    return false;
+  }
+  
   try {
     const { data, error } = await supabase.storage.listBuckets();
     if (error) {

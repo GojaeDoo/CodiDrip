@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.802.0",
     "@prisma/client": "^6.8.2",
@@ -35,7 +38,7 @@
   },
   "scripts": {
     "dev": "ts-node src/server.ts",
-    "build": "yarn install && tsc",
+    "build": "tsc",
     "start": "node dist/server.js",
     "migrate-images": "ts-node src/scripts/migrateImages.ts",
     "cleanup-images": "ts-node src/scripts/cleanupImages.ts"
