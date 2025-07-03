@@ -1,5 +1,5 @@
 // API 기본 URL 설정
-export const API_BASE_URL = 'https://codidrip-7fmm.onrender.com';
+export const API_BASE_URL = 'https://codidrip-rp6z.onrender.com';
 
 // API 엔드포인트들
 export const API_ENDPOINTS = {
