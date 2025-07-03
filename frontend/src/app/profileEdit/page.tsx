@@ -1,6 +1,6 @@
 import ProfileEditContainer from "@/component/features/profile/profileEdit/ProfileEdit.container";
 
-export const ProfileEdit = () => {
+const ProfileEdit = () => {
   return (
     <>
       <ProfileEditContainer />

@@ -1,10 +1,15 @@
-import DripPostCommentContainer from "@/component/features/drip/dripPostComment/DripPostComment.container";
-import { DripPostCommentProps } from "@/component/features/drip/dripPostComment/DripPostComment.types";
+"use client";
 
-export const DripPostComment = (props: DripPostCommentProps) => {
+import { useSearchParams } from "next/navigation";
+import DripPostCommentContainer from "@/component/features/drip/dripPostComment/DripPostComment.container";
+
+const DripPostComment = () => {
+  const searchParams = useSearchParams();
+  const postno = parseInt(searchParams.get("postno") || "0", 10);
+
   return (
     <>
-      <DripPostCommentContainer postno={props.postno} />
+      <DripPostCommentContainer postno={postno} />
     </>
   );
 };

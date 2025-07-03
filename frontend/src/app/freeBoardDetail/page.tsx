@@ -1,6 +1,6 @@
 import FreeBoardDetailContainer from "@/component/features/freeBoard/freeBoardDetail/FreeBoardDetail.container"
 
-export const FreeBoardDetail = () => {
+const FreeBoardDetail = () => {
     return (
         <>
             <FreeBoardDetailContainer />

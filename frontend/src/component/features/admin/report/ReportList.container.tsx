@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { ReportListPresenter } from './ReportList.presenter';
 import { 
@@ -10,30 +10,6 @@ import {
   processReport 
 } from './ReportList.query';
 import { AllReport, ReportListState, TabCounts } from './ReportList.types';
-
-// 유틸리티 함수들
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString('ko-KR');
-};
-
-const getReasonColor = (reason: string) => {
-  switch (reason) {
-    case '욕설': return '#ff4757';
-    case '광고': return '#ffa502';
-    case '도배': return '#2ed573';
-    case '부적절한 사진': return '#ff6348';
-    case '기타': return '#747d8c';
-    default: return '#747d8c';
-  }
-};
-
-const getBoardTypeLabel = (boardType: 'drip' | 'freeboard') => {
-  return boardType === 'drip' ? 'Drip' : '자유게시판';
-};
-
-const getTargetTypeLabel = (targetType: 'post' | 'comment') => {
-  return targetType === 'post' ? '게시글' : '댓글';
-};
 
 export const ReportListContainer = () => {
   const router = useRouter();
@@ -71,7 +47,7 @@ export const ReportListContainer = () => {
   const [allReports, setAllReports] = useState<AllReport[]>([]);
 
   // 신고 목록 로드
-  const loadReports = async () => {
+  const loadReports = useCallback(async () => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
@@ -95,14 +71,14 @@ export const ReportListContainer = () => {
         reports, 
         loading: false 
       }));
-    } catch (error) {
+    } catch {
       setState(prev => ({ 
         ...prev, 
-        error: error instanceof Error ? error.message : '신고 목록을 불러오는데 실패했습니다.',
+        error: '신고 목록을 불러오는데 실패했습니다.',
         loading: false 
       }));
     }
-  };
+  }, [state.selectedTab]);
 
   // 탭 변경
   const handleTabChange = (tab: 'all' | 'drip' | 'freeboard') => {
@@ -130,7 +106,7 @@ export const ReportListContainer = () => {
       } else {
         alert(result.message);
       }
-    } catch (error) {
+    } catch {
       alert('신고 처리 중 오류가 발생했습니다.');
     }
   };
@@ -157,7 +133,7 @@ export const ReportListContainer = () => {
   // 초기 로드
   useEffect(() => {
     loadReports();
-  }, [state.selectedTab]);
+  }, [loadReports]);
 
   const tabCounts = getTabCounts();
 

@@ -1,4 +1,4 @@
-import { Profile } from "../../../layout/header/Header.types";
+import { Profile } from "@/types/profile";
 
 export interface ProfileCardPresenterProps {
   profiles: Profile[];

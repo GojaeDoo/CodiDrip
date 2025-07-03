@@ -27,7 +27,7 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
         <S.CommentHeader>
           <div>
             <h2>댓글</h2>
-            <div className="comment-count">{props.comments.length}개의 댓글</div>
+            <div className="comment-count">{props.comments?.length || 0}개의 댓글</div>
           </div>
           <S.AddCommentButton onClick={props.onOpenModal}>
             댓글 작성

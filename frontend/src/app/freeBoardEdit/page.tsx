@@ -1,6 +1,6 @@
 import FreeBoardEditContainer from "@/component/features/freeBoard/freeBoardEdit/FreeBoardEdit.container";
 
-export const FreeBoardEdit =() => {
+const FreeBoardEdit =() => {
   return <FreeBoardEditContainer />;
 }
 

@@ -5,9 +5,9 @@ import IdFindPresenter from "./IdFind.presenter";
 import { IdFindPresenterProps } from "./IdFind.types";
 import { getIdFindUserQuery } from "./IdFind.query";
 import { useRouter } from "next/navigation";
+
 export const IdFindContainer = () => {
   const [email, setEmail] = useState("");
-  const [findId, setFindId] = useState("");
 
   const router = useRouter();
 
@@ -35,7 +35,6 @@ export const IdFindContainer = () => {
       ) {
         const userId = response.findId[0].user_id;
         const result = true;
-        setFindId(userId);
         router.push(`/idFindResult?id=${userId}&result=${result}`);
       } else {
         const result = false;

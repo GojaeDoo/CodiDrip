@@ -1,5 +1,5 @@
 import * as S from "./ReportList.styled";
-import { AllReport, ReportListPresenterProps } from "./ReportList.types";
+import { ReportListPresenterProps } from "./ReportList.types";
 
 export const ReportListPresenter = ({
   reports,

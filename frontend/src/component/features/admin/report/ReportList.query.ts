@@ -103,7 +103,7 @@ export const fetchReportedContent = async (
   targetId: number,
   targetType: 'post' | 'comment',
   boardType: 'drip' | 'freeboard'
-): Promise<any> => {
+): Promise<unknown> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/api/reports/admin/content`, {
       params: {

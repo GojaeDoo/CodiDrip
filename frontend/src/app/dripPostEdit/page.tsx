@@ -1,6 +1,6 @@
 import DripPostEditContainer from "@/component/features/drip/dripPostEdit/DripPostEdit.container";
 
-export const DripPostEdit = () => {
+const DripPostEdit = () => {
   return (
     <>
       <DripPostEditContainer />

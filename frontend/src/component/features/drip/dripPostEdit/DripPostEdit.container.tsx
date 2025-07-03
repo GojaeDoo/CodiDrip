@@ -21,12 +21,6 @@ export const DripPostEditContainer = () => {
   } | null>(null);
   const imageRef = useRef<HTMLImageElement>(null!);
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
-  const [imgInfo, setImgInfo] = useState({
-    width: 1,
-    height: 1,
-    left: 0,
-    top: 0,
-  });
   const wrapperRef = useRef<HTMLDivElement>(null!);
 
   const searchParams = useSearchParams();
@@ -62,7 +56,7 @@ export const DripPostEditContainer = () => {
             });
             // 이미지 URL 변환 적용 (빈 값, undefined, null 방어)
             const imageUrls = parsedImages
-              .filter((img) => !!img && img !== "undefined" && img !== "null")
+              .filter((img: string) => !!img && img !== "undefined" && img !== "null")
               .map(getImageUrl);
             setImages(imageUrls);
             setTags(parsedTags);
@@ -212,25 +206,19 @@ export const DripPostEditContainer = () => {
       const containerHeight = container.height;
       const imgAspect = naturalWidth / naturalHeight;
       const containerAspect = containerWidth / containerHeight;
-      let displayWidth = containerWidth;
-      let displayHeight = containerHeight;
-      let offsetLeft = 0;
-      let offsetTop = 0;
+
+      // let displayWidth: number;
+      // let displayHeight: number;
+
       if (imgAspect > containerAspect) {
-        displayWidth = containerWidth;
-        displayHeight = containerWidth / imgAspect;
-        offsetTop = (containerHeight - displayHeight) / 2;
+        // displayWidth = containerWidth;
+        // displayHeight = containerWidth / imgAspect;
+        // offsetTop = (containerHeight - displayHeight) / 2;
       } else {
-        displayHeight = containerHeight;
-        displayWidth = containerHeight * imgAspect;
-        offsetLeft = (containerWidth - displayWidth) / 2;
+        // displayHeight = containerHeight;
+        // displayWidth = containerHeight * imgAspect;
+        // offsetLeft = (containerWidth - displayWidth) / 2;
       }
-      setImgInfo({
-        width: displayWidth,
-        height: displayHeight,
-        left: offsetLeft,
-        top: offsetTop,
-      });
     }
   }, [imageRef]);
 

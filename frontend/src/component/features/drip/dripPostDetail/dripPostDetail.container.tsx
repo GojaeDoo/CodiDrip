@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [imgInfo, setImgInfo] = useState({ width: 1, height: 1, left: 0, top: 0 });
   const [aspectRatio, setAspectRatio] = useState("3 / 4");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -81,27 +80,18 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       const imgAspect = naturalWidth / naturalHeight;
       const containerAspect = containerWidth / containerHeight;
 
-      let displayWidth = containerWidth;
-      let displayHeight = containerHeight;
-      let offsetLeft = 0;
-      let offsetTop = 0;
+      // let displayWidth: number;
+      // let displayHeight: number;
 
       if (imgAspect > containerAspect) {
-        displayWidth = containerWidth;
-        displayHeight = containerWidth / imgAspect;
-        offsetTop = (containerHeight - displayHeight) / 2;
+        // displayWidth = containerWidth;
+        // displayHeight = containerWidth / imgAspect;
+        // offsetTop = (containerHeight - displayHeight) / 2;
       } else {
-        displayHeight = containerHeight;
-        displayWidth = containerHeight * imgAspect;
-        offsetLeft = (containerWidth - displayWidth) / 2;
+        // displayHeight = containerHeight;
+        // displayWidth = containerHeight * imgAspect;
+        // offsetLeft = (containerWidth - displayWidth) / 2;
       }
-
-      setImgInfo({
-        width: displayWidth,
-        height: displayHeight,
-        left: offsetLeft,
-        top: offsetTop,
-      });
     }
   }, []);
 

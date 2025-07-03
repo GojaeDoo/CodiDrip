@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useQuery,  useQueryClient } from "@tanstack/react-query";
 import DripPostCommentPresenter from "./DripPostComment.presenter";
 import { DripPostCommentContainerProps, Comment,  ReportReasonType, DripPostCommentPresenterProps } from "./DripPostComment.types";
@@ -79,6 +79,16 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     },
   });
 
+  const handleOpenModal:DripPostCommentPresenterProps["onOpenModal"] = useCallback(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("로그인 후 댓글을 작성해주세요.");
+      router.push("/login");
+      return;
+    }
+    setIsModalOpen(true);
+  }, [router]);
+
   useEffect(() => {
     const handleOpenCommentModal = () => {
       handleOpenModal();
@@ -89,7 +99,7 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     return () => {
       window.removeEventListener('openCommentModal', handleOpenCommentModal);
     };
-  }, []);
+  }, [handleOpenModal]);
 
   const handleCommentSubmit:DripPostCommentPresenterProps["onCommentSubmit"] = async () => {
     if (user_id === "") {
@@ -198,16 +208,6 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
   const handleCloseModal:DripPostCommentPresenterProps["onCloseModal"] = () => {
     setIsModalOpen(false);
   };
-
-  const handleOpenModal:DripPostCommentPresenterProps["onOpenModal"] = () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      alert("로그인 후 댓글을 작성해주세요.");
-      router.push("/login");
-      return;
-        }
-    setIsModalOpen(true);
-    };
 
   // 신고 관련 핸들러들
   const onOpenReportModal:DripPostCommentPresenterProps["onOpenReportModal"] = (commentId: number) => {

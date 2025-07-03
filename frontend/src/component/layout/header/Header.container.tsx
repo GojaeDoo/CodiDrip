@@ -8,8 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { HeaderPresenterProps, Profile } from "./Header.types";
 import { SearchModalContainer } from "@/component/features/search/SearchModal.container";
-import { SearchResult } from "@/component/features/search/SearchModal.types";
-
+import { SearchResultProps } from "@/component/features/search/SearchModal.types";
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
@@ -18,7 +17,7 @@ const HeaderContainer = () => {
   const { isLoggedIn } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultProps[]>([]);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
 
   useEffect(() => {

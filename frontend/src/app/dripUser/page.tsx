@@ -1,10 +1,15 @@
-import DripUserContainer from "@/component/features/drip/dripUser/DripUser.container";
-import { DripUserProps } from "@/component/features/drip/dripUser/DripUser.types";
+"use client";
 
-export const DripUser = (props: DripUserProps) => {
+import { useSearchParams } from "next/navigation";
+import DripUserContainer from "@/component/features/drip/dripUser/DripUser.container";
+
+const DripUser = () => {
+  const searchParams = useSearchParams();
+  const gender = searchParams.get("gender") ?? "all";
+
   return (
     <>
-      <DripUserContainer gender={props.gender} />
+      <DripUserContainer gender={gender} />
     </>
   );
 };

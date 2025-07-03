@@ -77,7 +77,7 @@ export const FreeBoardDetailContainer = () => {
 
   const onDelete:FreeBoardDetailPresenterProps["onDelete"] = async () => {
     if (post && window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-      const response = await deleteFreeBoardWriteQuery(post.id);
+      await deleteFreeBoardWriteQuery(post.id);
       alert("게시글이 삭제되었습니다.");
       router.push("/freeBoardList");
     }
@@ -115,13 +115,9 @@ export const FreeBoardDetailContainer = () => {
       } else {
         alert(data.message || "신고 처리 중 오류가 발생했습니다.");
       }
-    } catch (error) {
-      console.error("신고 오류:", error);
-      if (error instanceof Error && error.message === '로그인이 필요합니다.') {
-        alert('로그인이 필요합니다.');
-      } else {
-        alert("신고 처리 중 오류가 발생했습니다.");
-      }
+    } catch {
+      console.error("신고 오류");
+      alert("신고 처리 중 오류가 발생했습니다.");
     }
   };
 

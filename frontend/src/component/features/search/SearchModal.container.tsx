@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { SearchModalPresenter } from "./SearchModal.presenter";
 import { SearchModalPresenterProps, SearchModalProps, SearchResultProps } from "./SearchModal.types";
 import { useRouter } from "next/navigation";

@@ -1,5 +1,5 @@
-import DripPost from "@/app/dripPost/page";
-import Follow from "@/app/follow/page";
+import { DripPostContainer } from "@/component/features/drip/dripPost/DripPost.container";
+import Follow from "@/component/features/follow/Follow.container";
 import FollowSkeleton from "@/component/commons/skeleton/follow/FollowSkeleton";
 import FreeBoardSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardSkeleton";
 import MyPageSkeleton from "@/component/commons/skeleton/profile/MyPageSkeleton";
@@ -119,12 +119,13 @@ export const MyPagePresenter = (props: MyPagePresenterProps) => {
             <S.ContentCard>
               <S.CardContent>
                 {(props.isMyDrip || props.isLike || props.isSaved) && (
-                  <DripPost
+                  <DripPostContainer
                     gender={props.userProfile?.profile_gender || ""}
                     isMyPage={props.isMyPage || false}
                     userId={props.userProfile?.user_id || ""}
                     isLike={props.isLike}
                     isSaved={props.isSaved}
+                    selectedStyles={[]}
                   />
                 )}
                 {(props.isFollower || props.isFollowingTab) && props.userProfile?.user_id && (

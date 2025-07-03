@@ -2,7 +2,7 @@
 
 import { MyPageContainer } from "../../component/features/profile/myPage/MyPage.container";
 
-export const MyPage = () => {
+const MyPage = () => {
   return <MyPageContainer />;
 };
 

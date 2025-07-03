@@ -1,5 +1,5 @@
 import axios from "axios";
-import { DripPostType, DripPostResponse } from "./DripPost.types";
+import { DripPostType, DripPostResponse, ReportData, ReportResponse, ReportTargetType } from "./DripPost.types";
 
 const transformDripPostData = (post: DripPostResponse): DripPostType => ({
   post_no: post.게시글번호,
@@ -48,13 +48,17 @@ export const getUserDripPostQuery = async (
   isMyPage?: boolean,   
   isLike?: boolean,     
   isSaved?: boolean,
-  selectedStyles?: string[]
+  selectedStyles?: string[],
+  filterUserId?: string
 ): Promise<DripPostType[]> => {
   const loginUserId = localStorage.getItem("userId");
   let url = `http://localhost:3005/api/drip?userId=${loginUserId}`;
-  if (isMyPage && userId) {
-    url += `&filterUserId=${userId}`;
+  
+  // 마이페이지에서 특정 사용자의 게시글만 필터링
+  if (filterUserId) {
+    url += `&filterUserId=${filterUserId}`;
   }
+  
   if (gender) {
     url += `&gender=${gender}`;
   }

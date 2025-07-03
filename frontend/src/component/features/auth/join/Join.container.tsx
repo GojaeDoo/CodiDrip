@@ -146,11 +146,11 @@ const JoinContainer = () => {
           setIsEmailChecked(true);
           setIsJoinButtonDisabled(!validateForm());
         }
-      } catch (error) {
-        console.error("이메일 중복 확인 실패:", error);
-        setIsEmailChecked(false);
-        setIsJoinButtonDisabled(true);
-      }
+          } catch {
+      console.error("이메일 중복 확인 실패");
+      setIsEmailChecked(false);
+      setIsJoinButtonDisabled(true);
+    }
     };
 
   const onAllCheckChange: JoinPresenterProps["onAllCheckChange"] = (event) => {
@@ -197,8 +197,8 @@ const JoinContainer = () => {
         setIsIdChecked(true);
         setIsJoinButtonDisabled(!validateForm());
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
+      console.error("아이디 중복 확인 실패");
       setIsIdChecked(false);
       setIsJoinButtonDisabled(true);
     }
@@ -254,7 +254,7 @@ const JoinContainer = () => {
       await postUserJoinQuery(userData);
       alert("회원가입되었습니다.");
       router.push("/login");
-    } catch (error) {
+    } catch {
       alert("회원가입 중 오류가 발생했습니다.");
     }
   };

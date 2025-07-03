@@ -1,6 +1,6 @@
 import FreeBoardCommentContainer from "@/component/features/freeBoard/freeBoardComment/FreeBoardComment.container";
 
-export const FreeBoardComment = () => {
+const FreeBoardComment = () => {
     return (
         <>
         <FreeBoardCommentContainer />

@@ -1,6 +1,6 @@
 import PasswordFindResultContainer from "@/component/features/auth/passwordFindResult/PasswordFindResult.container";
 
-export const PasswordFindResult = () => {
+const PasswordFindResult = () => {
   return (
     <>
       <PasswordFindResultContainer />

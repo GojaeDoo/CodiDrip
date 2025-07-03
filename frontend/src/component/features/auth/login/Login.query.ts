@@ -13,8 +13,8 @@ export const postLoginUserQuery = async (
       }
     );
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.error || error.message);
+  } catch (error: unknown) {
+    throw new Error(error instanceof Error ? error.message : error as string);
   }
 };
 
@@ -24,8 +24,8 @@ export const getProfileCheckQuery = async (id: string) => {
       `http://localhost:3005/api/profiles/user/${id}`
     );
     return response.data;
-  } catch (error: any) {
-    if (error.response?.status === 404) {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Not Found") {
       return null;
     }
     throw error;
@@ -39,7 +39,7 @@ export const checkUserAdminStatus = async (userId: string) => {
       `http://localhost:3005/api/users/admin-status?userId=${userId}`
     );
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("관리자 상태 확인 실패:", error);
     throw error;
   }

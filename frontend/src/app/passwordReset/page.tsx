@@ -1,6 +1,6 @@
 import PasswordResetContainer from "@/component/features/auth/passwordReset/passwordReset.container";
 
-export const PasswordReset = () => {
+const PasswordReset = () => {
   return (
     <>
       <PasswordResetContainer />

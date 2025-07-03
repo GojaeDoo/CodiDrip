@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { DripPostPresenter } from "./DripPost.presenter";
 import { DripPostContainerProps, DripPostPresenterProps, DripPostType, ReportReasonType } from "./DripPost.types";
 import { getUserDripPostQuery, deleteDripPostQuery, postLikeDripPostQuery, postCreateReportQuery } from "./DripPost.query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { encodeUserId } from "@/utils/urlEncoder";
 import { useAuth } from "@/context/AuthContext";
 
@@ -20,9 +20,7 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportPostNo, setReportPostNo] = useState<number | null>(null);
   
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isDripUser = searchParams.get("dripUser") === "true";
+    const router = useRouter();
   const { isAdmin } = useAuth();
 
   useEffect(() => {
@@ -38,14 +36,14 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
       
       setIsLoading(true);
       try {
-        const targetUserId = props.isMyPage ? (props.userId || currentUserId) : undefined;
         const response = await getUserDripPostQuery(
-          targetUserId,
+          currentUserId,  // 로그인한 사용자 ID
           props.gender !== "all" ? props.gender : undefined,
           props.isMyPage,
           props.isLike,
           props.isSaved,
-          props.selectedStyles
+          props.selectedStyles,
+          props.isMyPage ? props.userId : undefined  // 마이페이지에서 특정 사용자 필터링
         );
         setDripPostData(response);
       } catch (error) {
@@ -85,11 +83,10 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
   };
 
   const onHidePost: DripPostPresenterProps["onHidePost"] = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    postNo: number
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    alert(`게시글 ${postNo} 숨김`);
+    alert("게시글 숨김");
   };
 
   const onEditPost: DripPostPresenterProps["onEditPost"] = (
@@ -133,8 +130,7 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
   };
 
   const onCommentClick: DripPostPresenterProps["onCommentClick"] = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    postNo: number
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
   };
@@ -149,10 +145,6 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
 
   const onClickMoveDetail: DripPostPresenterProps["onClickMoveDetail"] = (postNo: number) => {
     router.push(`/dripPostDetail?postNo=${postNo}`);
-  };
-
-  const handleReportPost = async (e: React.MouseEvent, postNo: number) => {
-    e.stopPropagation();
   };
 
   // 신고 모달 관련 핸들러들
@@ -247,7 +239,6 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
       onCommentClick={onCommentClick}
       onMenuClick={onMenuClick}
       onClickMoveDetail={onClickMoveDetail}
-      onReportPost={handleReportPost}
       onClickMoveUserProfile={onClickMoveUserProfile}
       showReportModal={showReportModal}
       reportPostNo={reportPostNo}

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import ProfileCardPresenter from "./ProfileCard.presenter";
-import { Profile } from "../../../layout/header/Header.types";
+import { Profile } from "@/types/profile";
 import { ProfileCardContainerProps } from "./ProfileCard.types";
 import { getProfilesQuery } from "./ProfileCard.query";
 
@@ -21,7 +21,7 @@ const ProfileCardContainer = ({ genderSelect }: ProfileCardContainerProps) => {
           genderSelect === "all"
             ? data
             : data.filter(
-                (profile: Profile) => profile.gender === genderSelect
+                (profile: Profile) => profile.profile_gender === genderSelect
               );
         setProfiles(filteredProfiles);
       } catch (error) {

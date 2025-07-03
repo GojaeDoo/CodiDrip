@@ -1,8 +1,8 @@
 "use client";
 import * as S from "./Drips.styled";
 import { DripsPresenterProps } from "./Drips.types";
-import { DripPost } from "@/app/dripPost/page";
-import { DripUser } from "@/app/dripUser/page";
+import DripPost from "@/component/features/drip/dripPost/DripPost.container";
+import DripUser from "@/component/features/drip/dripUser/DripUser.container";
 
 const DripsPresenter = (props: DripsPresenterProps) => {
   const styleCategories = [

@@ -1,12 +1,12 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import ProfileCardContainer from "@/component/features/profile/profileCard/ProfileCard.container";
 
-interface ProfileCardProps {
-  genderSelect: string;
-}
+const ProfileCardPage = () => {
+  const searchParams = useSearchParams();
+  const genderSelect = searchParams.get("genderSelect") || "";
 
-const ProfileCardPage = ({ genderSelect }: ProfileCardProps) => {
   return <ProfileCardContainer genderSelect={genderSelect} />;
 };
 

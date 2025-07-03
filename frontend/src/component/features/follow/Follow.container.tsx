@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import FollowPresenter from "./Follow.presenter";
-import { FollowPresenterProps, FollowProps, Profile } from "./Follow.types";
 import { getFollowersQuery, getFollowingQuery } from "./Follow.query";
+import { Profile } from "@/types/profile";
 
 interface FollowContainerProps {
     initialTab?: 'followers' | 'following';

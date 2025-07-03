@@ -58,11 +58,11 @@ export const FreeBoardEditContainer = () => {
       if (isEditMode && postId) {
         // 수정 모드
         const parsedPostId = parseInt(postId);
-        const response = await updateFreeBoardWriteQuery(parsedPostId, title, content, userId);
+        await updateFreeBoardWriteQuery(parsedPostId, title, content, userId);
         alert("게시글이 성공적으로 수정되었습니다!");
       } else {
         // 새 글 작성 모드
-        const response = await postFreeBoardWriteQuery(title, content, userId);
+        await postFreeBoardWriteQuery(title, content, userId);
         alert("게시글이 성공적으로 등록되었습니다!");
       }
       router.push("/freeBoardList");

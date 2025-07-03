@@ -50,6 +50,4 @@ export interface ReportListPresenterProps {
   onRefresh: () => void;
 }
 
-export interface ReportListProps {
-  // 필요한 props가 있다면 여기에 추가
-}
+export type ReportListProps = Record<string, never>;

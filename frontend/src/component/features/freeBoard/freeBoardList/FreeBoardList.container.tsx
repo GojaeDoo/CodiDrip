@@ -11,7 +11,6 @@ import FreeBoardListSkeleton from "@/component/commons/skeleton/freeboard/FreeBo
 const POSTS_PER_PAGE = 10;
 
 export const FreeBoardListContainer = () => {
-  const [posts, setPosts] = useState<FreeBoardPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<FreeBoardPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,11 +23,9 @@ export const FreeBoardListContainer = () => {
       try {
         setLoading(true);
         const data = await getFreeBoardList();
-        setPosts(data);
         setFilteredPosts(data);
       } catch (error) {
         console.error("자유게시판 목록 조회 오류:", error);
-        setPosts([]);
         setFilteredPosts([]);
       } finally {
         setLoading(false);
@@ -104,7 +101,6 @@ export const FreeBoardListContainer = () => {
       if (searchQuery.trim() === "") {
         // 검색어가 없으면 전체 목록 가져오기
         const data = await getFreeBoardList();
-        setPosts(data);
         setFilteredPosts(data);
       } else {
         // 검색어가 있으면 검색 API 호출

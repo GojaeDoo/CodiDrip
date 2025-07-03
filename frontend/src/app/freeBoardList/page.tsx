@@ -1,6 +1,6 @@
 import FreeBoardListContainer from "@/component/features/freeBoard/freeBoardList/FreeBoardList.container"
 
-export const FreeBoardList = () => {
+const FreeBoardList = () => {
 
     return(
         <>

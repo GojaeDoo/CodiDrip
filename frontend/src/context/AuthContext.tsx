@@ -4,8 +4,8 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useCallback,
 } from "react";
-import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -19,10 +19,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const timeoutCheckRef = useRef<NodeJS.Timeout>();
+  const timeoutCheckRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const TIMEOUT_DURATION = 3600000;
 
-  const startTimeoutCheck = () => {
+  const startTimeoutCheck = useCallback(() => {
     // 이미 실행 중인 체크를 정리
     if (timeoutCheckRef.current) {
       clearInterval(timeoutCheckRef.current);
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         clearInterval(timeoutCheckRef.current);
       }
     };
-  };
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         clearInterval(timeoutCheckRef.current);
       }
     };
-  }, []);
+  }, [startTimeoutCheck]);
 
   const login = (token: string, userId: string, isAdmin: boolean = false) => {
     

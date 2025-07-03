@@ -1,9 +1,9 @@
-import IdFindResult from "@/component/features/auth/idFindResult/IdFindResult.container";
+import IdFindResultContainer from "@/component/features/auth/idFindResult/IdFindResult.container";
 
-export const IdFindSuccess = () => {
+const IdFindResult = () => {
   return (
     <>
-      <IdFindResult />
+      <IdFindResultContainer />
     </>
   );
 };

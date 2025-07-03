@@ -1,14 +1,30 @@
 import axios from "axios";
-import { Profile } from "../../../layout/header/Header.types";
+import { Profile } from "@/types/profile";
 
 export const getProfilesQuery = async (): Promise<Profile[]> => {
   try {
     const response = await axios.get("http://localhost:3005/api/profiles");
-    const profiles = response.data.map((profile: Profile) => ({
-      ...profile,
+    const profiles = response.data.map((profile: {
+      id: number;
+      nickname: string;
+      height: number;
+      weight: number;
+      profile_image: string | null;
+      gender: string;
+      user_id: string;
+      profile_about: string | null;
+    }) => ({
+      profile_id: profile.id,
+      profile_nickname: profile.nickname,
+      profile_height: profile.height,
+      profile_weight: profile.weight,
       profile_image: profile.profile_image
         ? `http://localhost:3005/uploads/profiles/${profile.profile_image}`
-        : null,
+        : "",
+      profile_gender: profile.gender,
+      profile_follow: 0, // 기본값 설정
+      user_id: profile.user_id,
+      profile_about: profile.profile_about || "",
     }));
     return profiles;
   } catch (error) {

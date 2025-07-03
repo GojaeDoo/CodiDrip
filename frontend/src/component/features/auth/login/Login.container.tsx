@@ -10,7 +10,6 @@ import { useAuth } from "@/context/AuthContext";
 const LoginContainer = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [id, setId] = useState("");
   const router = useRouter();
   const { login } = useAuth();
 
@@ -49,7 +48,6 @@ const LoginContainer = () => {
       const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true"; 
       login(response.token, currentUserId, isAdmin);
       const responseProfile = await getProfileCheckQuery(currentUserId);
-      setId(currentUserId);
       router.push("/drips");
       if (responseProfile) {
         router.push("/drips");

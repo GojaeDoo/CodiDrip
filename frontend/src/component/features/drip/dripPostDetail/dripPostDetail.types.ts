@@ -1,4 +1,4 @@
-import { RefObject, SyntheticEvent } from "react";
+import { SyntheticEvent } from "react";
 
 export interface Comment {
   profile_image: string;
@@ -34,25 +34,26 @@ export interface DripPostDetailProps {
 }
 
 export interface DripPostDetailPresenterProps {
-  containerRef: React.RefObject<HTMLDivElement>;
-  imageRef: React.RefObject<HTMLImageElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  imageRef: React.RefObject<HTMLImageElement | null>;
   aspectRatio: string;
   onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
-  dripPost: any;
+  dripPost: DripPostDetailResponse;
   images: string[];
   currentImageIndex: number;
   onPrevImage: () => void;
   onNextImage: () => void;
-  getImageUrl: (imagePath: string) => string;
+  getImageUrl?: (imagePath: string) => string;
   postTags: string[];
   postno: string;
   isLiked: boolean;
   onLikeClick: () => void;
   onCommentClick: () => void;
-  newComment: string;
-  setNewComment: (content: string) => void;
-  onCommentSubmit: () => void;
+  newComment?: string;
+  setNewComment?: (content: string) => void;
+  onCommentSubmit?: () => void;
   likeCount: number;
   commentCount: number;
   handleClickSave: () => void;
+  isSaved: boolean;
 }

@@ -1,6 +1,6 @@
 import PasswordFindContainer from "@/component/features/auth/passwordFind/PasswordFind.container";
 
-export const PasswordFind = () => {
+const PasswordFind = () => {
   return <PasswordFindContainer />;
 };
 

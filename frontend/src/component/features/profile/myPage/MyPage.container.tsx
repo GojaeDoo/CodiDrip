@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { MyPagePresenter } from "./MyPage.presenter";
 import { MyPagePresenterProps, FreeBoardPost } from "./MyPage.types";
-import { getMyPageProfileQuery, getDripPostDetailQuery, getCheckFollowStatusQuery, toggleFollowQuery, getUserFreeBoardPostsQuery } from "./MyPage.query";
+import { getMyPageProfileQuery, getCheckFollowStatusQuery, toggleFollowQuery, getUserFreeBoardPostsQuery } from "./MyPage.query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { decodeUserId } from "@/utils/urlEncoder";
 import { useAuth } from "@/context/AuthContext";
@@ -34,8 +34,7 @@ export const MyPageContainer = () => {
       setIsMyPageLoading(true);
       try {
         if (queryStringStatus === "true") {
-          let targetUserId: string;
-          targetUserId = decodeUserId(encodedUserId || "");
+          const targetUserId = decodeUserId(encodedUserId || "");
           const profileResponse = await getMyPageProfileQuery(targetUserId);
           setUserProfile(profileResponse);
           

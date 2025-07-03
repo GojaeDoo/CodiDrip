@@ -61,7 +61,8 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
       try {
         const response = await getFreeBoardCommentQuery(id);
         setComments(response);
-      } catch (error) {
+      } catch {
+        console.error("댓글 조회 실패");
       }
     }
     getFreeBoardComment();
@@ -111,12 +112,13 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
 
   const handleSubmitComment:FreeBoardCommentPresenterProps["onSubmitComment"] = async() => {
     try {
-      const response = await postFreeBoardCommentQuery(newComment, userId, id);
+      await postFreeBoardCommentQuery(newComment, userId, id);
       setIsModalOpen(false);
       setNewComment("");
       const updatedComments = await getFreeBoardCommentQuery(id);
       setComments(updatedComments);
-    } catch (error) {
+    } catch {
+      console.error("댓글 작성 실패");
     }
   };
 
@@ -150,7 +152,8 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         
         setEditingCommentId(null);
         setEditContent("");
-      } catch (error) {
+      } catch {
+        console.error("댓글 수정 실패");
       }
     }
   };
@@ -177,8 +180,8 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
           [showingRepliesFor]: updatedReplies
         }));
       }
-    } catch (error) {
-
+    } catch {
+      console.error("댓글 삭제 실패");
     }
   };
 
@@ -200,7 +203,7 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const handleSubmitReply:FreeBoardCommentPresenterProps["onSubmitReply"] = async () => {
     if (replyContent.trim() && replyingToCommentId) {
       try {
-        const response = await postFreeBoardReplyQuery(replyContent.trim(), userId, id, replyingToCommentId);
+        await postFreeBoardReplyQuery(replyContent.trim(), userId, id, replyingToCommentId);
         
         const updatedComments = await getFreeBoardCommentQuery(id);
 
@@ -217,8 +220,8 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         
         setReplyingToCommentId(null);
         setReplyContent("");
-      } catch (error) {
-
+      } catch {
+        console.error("대댓글 작성 실패");
       }
     }
   };
@@ -234,11 +237,12 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
         [commentId]: repliesData
       }));
       setShowingRepliesFor(commentId);
-    } catch (error) {
+    } catch {
+      console.error("대댓글 조회 실패");
     }
   };
 
-  const handleHideReplies:FreeBoardCommentPresenterProps["onHideReplies"] = (commentId: string) => {
+  const handleHideReplies:FreeBoardCommentPresenterProps["onHideReplies"] = () => {
     setShowingRepliesFor(null);
   };
 
@@ -292,13 +296,9 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
       } else {
         alert(data.message || "신고 처리 중 오류가 발생했습니다.");
       }
-    } catch (error) {
-      console.error("신고 오류:", error);
-      if (error instanceof Error && error.message === '로그인이 필요합니다.') {
-        alert('로그인이 필요합니다.');
-      } else {
-        alert("신고 처리 중 오류가 발생했습니다.");
-      }
+    } catch {
+      console.error("신고 오류");
+      alert("신고 처리 중 오류가 발생했습니다.");
     }
   };
 
