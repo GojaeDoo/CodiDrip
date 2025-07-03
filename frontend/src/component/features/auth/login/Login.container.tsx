@@ -42,9 +42,6 @@ const LoginContainer = () => {
   };
 
   const onClickLogin: LoginPresenterProps["onClickLogin"] = async () => {
-    console.log("로그인 버튼 클릭됨");
-    console.log("입력된 userId:", userId);
-    console.log("입력된 userPassword:", userPassword);
     
     if (!userId || !userPassword) {
       alert("아이디와 비밀번호를 모두 입력해주세요.");
@@ -52,9 +49,7 @@ const LoginContainer = () => {
     }
     
     try {
-      console.log("API 호출 시작...");
       const response = await postLoginUserQuery(userId, userPassword);
-      console.log("API 응답:", response);
       const currentUserId = response.user.user_id;
       const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true"; 
       login(response.token, currentUserId, isAdmin);
@@ -65,7 +60,6 @@ const LoginContainer = () => {
           console.log("프로필이 존재합니다. 메인 페이지로 이동합니다.");
           router.push("/drips");
         } else {
-          console.log("프로필이 존재하지 않습니다. 프로필 생성 페이지로 이동합니다.");
           router.push("/profileEdit");
         }
       } catch (profileError) {

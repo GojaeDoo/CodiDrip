@@ -27,7 +27,6 @@ export const getProfileCheckQuery = async (id: string) => {
   } catch (error: unknown) {
     // axios 에러 객체에서 status 확인
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      console.log("프로필이 존재하지 않습니다. 프로필 생성 페이지로 이동합니다.");
       return null;
     }
     throw error;
