@@ -102,6 +102,9 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
                       post.post_image[post.currentImageIndex]
                     }`}
                     alt="drip post"
+                    onError={(e) => {
+                      e.currentTarget.src = "/images/profile/default-profile.png";
+                    }}
                   />
                   {post.post_image.length > 1 && (
                     <>

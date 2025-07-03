@@ -18,6 +18,9 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
                     src={props.images[props.currentImageIndex]}
                     alt={`Post image ${props.currentImageIndex + 1}`}
                     onLoad={props.onImageLoad}
+                    onError={(e) => {
+                      e.currentTarget.src = "/images/profile/default-profile.png";
+                    }}
                   />
                   {props.images.length > 1 && (
                     <>

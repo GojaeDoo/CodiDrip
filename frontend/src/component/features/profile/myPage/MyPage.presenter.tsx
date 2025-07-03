@@ -22,6 +22,9 @@ export const MyPagePresenter = (props: MyPagePresenterProps) => {
               "/images/profile/default-profile.png"
             }
             alt="프로필 이미지"
+            onError={(e) => {
+              e.currentTarget.src = "/images/profile/default-profile.png";
+            }}
           />
           <S.ProfileBar></S.ProfileBar>
           <S.ProfileInfo>
