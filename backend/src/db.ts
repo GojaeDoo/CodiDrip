@@ -10,35 +10,41 @@ console.log('  - DB_USER:', process.env.DB_USER ? '✅ 설정됨' : '❌ 누락'
 console.log('  - DB_HOST:', process.env.DB_HOST ? '✅ 설정됨' : '❌ 누락');
 console.log('  - DB_DATABASE:', process.env.DB_DATABASE ? '✅ 설정됨' : '❌ 누락');
 console.log('  - DB_PASSWORD:', process.env.DB_PASSWORD ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_PORT:', process.env.DB_PORT || '6543 (기본값)');
+console.log('  - DB_PORT:', process.env.DB_PORT || '5432 (기본값)');
 console.log('  - NODE_ENV:', process.env.NODE_ENV || 'development');
 
+// DATABASE_URL에서 직접 연결 URL 생성
+let connectionString = process.env.DATABASE_URL;
+if (connectionString && connectionString.includes('pooler.supabase.com')) {
+  // pooler URL을 직접 연결 URL로 변환
+  connectionString = connectionString
+    .replace('pooler.supabase.com', 'supabase.com')
+    .replace(':6543', ':5432');
+  console.log('🔄 Pooler URL을 직접 연결 URL로 변환:', connectionString.replace(/:[^:@]*@/, ':***@'));
+}
+
 // DATABASE_URL이 있으면 사용, 없으면 개별 환경변수 사용
-const connectionConfig = process.env.DATABASE_URL ? {
-  connectionString: process.env.DATABASE_URL.replace(':6543', ':5432'), // 직접 연결 포트 사용
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: false,
-    ca: undefined,
-    key: undefined,
-    cert: undefined
-  } : false
+const connectionConfig = connectionString ? {
+  connectionString: connectionString,
+  ssl: {
+    rejectUnauthorized: false
+  }
 } : {
   user: process.env.DB_USER,
-  host: process.env.DB_HOST,
+  host: process.env.DB_HOST?.replace('pooler.supabase.com', 'supabase.com'), // pooler 제거
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "5432"), // 직접 연결 포트
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: false,
-    ca: undefined,
-    key: undefined,
-    cert: undefined
-  } : false
+  port: parseInt(process.env.DB_PORT || "5432"),
+  ssl: {
+    rejectUnauthorized: false
+  }
 };
 
 console.log('🔧 연결 설정:', {
   ...connectionConfig,
-  password: connectionConfig.password ? '[HIDDEN]' : undefined
+  password: connectionConfig.password ? '[HIDDEN]' : undefined,
+  connectionString: connectionConfig.connectionString ? 
+    connectionConfig.connectionString.replace(/:[^:@]*@/, ':***@') : undefined
 });
 
 export const pool = new Pool({
@@ -53,7 +59,7 @@ export const testDatabaseConnection = async () => {
   try {
     console.log('🔍 데이터베이스 연결 시도 중...');
     console.log('  - 호스트:', process.env.DB_HOST || 'DATABASE_URL 사용');
-    console.log('  - 포트:', process.env.DB_PORT || '6543');
+    console.log('  - 포트:', process.env.DB_PORT || '5432');
     
     const client = await pool.connect();
     console.log('✅ 데이터베이스 클라이언트 연결 성공');
@@ -78,6 +84,8 @@ export const testDatabaseConnection = async () => {
       console.error('💡 해결방법: 사용자명과 비밀번호가 올바른지 확인하세요.');
     } else if (error.code === '3D000') {
       console.error('💡 해결방법: 데이터베이스명이 올바른지 확인하세요.');
+    } else if (error.code === 'SELF_SIGNED_CERT_IN_CHAIN') {
+      console.error('💡 해결방법: SSL 인증서 문제입니다. 직접 연결 URL을 사용하세요.');
     }
     
     return false;
