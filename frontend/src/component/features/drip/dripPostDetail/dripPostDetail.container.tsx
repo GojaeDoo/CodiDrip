@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useLayoutEffect, useEffect } from "react";
-import DripPostDetailPresenter from "./DripPostDetail.presenter";
+import DripPostDetailPresenter from "./dripPostDetail.presenter";
 import { useQuery } from "@tanstack/react-query";
-import { getDripPostDetail, postLikeDripPostQuery, deleteUnlikeDripPostQuery, getDripPostLikeStatus, postSaveDripPostQuery, getDripPostSaveStatus } from "./DripPostDetail.query";
-import { DripPostDetailPresenterProps, DripPostDetailProps } from "./DripPostDetail.types";
+import { getDripPostDetail, postLikeDripPostQuery, deleteUnlikeDripPostQuery, getDripPostLikeStatus, postSaveDripPostQuery, getDripPostSaveStatus } from "./dripPostDetail.query";
+import { DripPostDetailPresenterProps, DripPostDetailProps } from "./dripPostDetail.types";
 import { useRouter } from "next/navigation";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
