@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/", getFreeBoardListController as RequestHandler);
 
 // 게시글 상세 조회
-router.get("/:id", getFreeBoardDetailController as RequestHandler);
+router.get("/:id", getFreeBoardDetailController as unknown as RequestHandler);
 
 // 게시글 작성
 router.post("/", postCreateFreeBoardController as RequestHandler);

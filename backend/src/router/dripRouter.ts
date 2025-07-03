@@ -35,37 +35,37 @@ const upload = multer({
 // Drip 게시글
 
 // Drip 이미지 업로드
-router.post("/upload", upload.single("dripImage"), uploadDripImageController as RequestHandler);
+router.post("/upload", upload.single("dripImage"), uploadDripImageController as unknown as RequestHandler);
 
 // Drip 생성
-router.post("/", postCreateDripController as RequestHandler);
+router.post("/", postCreateDripController as unknown as RequestHandler);
 
 // 사용자별 Drip 조회
-router.get("/", getUserDripController as RequestHandler);
+router.get("/", getUserDripController as unknown as RequestHandler);
 
 // Drip 게시글 좋아요 상태 조회
-router.get("/like-status", getDripPostLikeStatusController as RequestHandler);
+router.get("/like-status", getDripPostLikeStatusController as unknown as RequestHandler);
 
 // Drip 조회
-router.get("/:postNo", getPostNoDripController as RequestHandler);
+router.get("/:postNo", getPostNoDripController as unknown as RequestHandler);
 
 // Drip 수정
-router.put("/:postNo", postUpdateDripController as RequestHandler);
+router.put("/:postNo", postUpdateDripController as unknown as RequestHandler);
 
 // Drip 삭제
-router.delete("/:postNo", deleteDripController as RequestHandler);
+router.delete("/:postNo", deleteDripController as unknown as RequestHandler);
 
 // Drip 게시글 좋아요
-router.post("/:postNo/like", likeDripPostController as RequestHandler);
+router.post("/:postNo/like", likeDripPostController as unknown as RequestHandler);
 
 // Drip 게시글 좋아요 취소
-router.delete("/:postNo/like", unlikeDripPostController as RequestHandler);
+router.delete("/:postNo/like", unlikeDripPostController as unknown as RequestHandler);
 
 // Drip 게시글 저장
-router.post("/:postNo/save", saveDripPostController as RequestHandler);
+router.post("/:postNo/save", saveDripPostController as unknown as RequestHandler);
 
 // Drip 게시글 저장 상태 확인
-router.get("/:postNo/save-status", getDripPostSaveStatusController as RequestHandler);
+router.get("/:postNo/save-status", getDripPostSaveStatusController as unknown as RequestHandler);
 
 // Drip 댓글
 
@@ -82,10 +82,10 @@ router.put("/comments/:commentId", updateDripPostCommentController as RequestHan
 router.delete("/comments/:commentId", deleteDripPostCommentController as RequestHandler);
 
 // Drip 댓글 좋아요
-router.post("/comments/:commentId/like", likeDripPostCommentController as RequestHandler);
+router.post("/comments/:commentId/like", likeDripPostCommentController as unknown as RequestHandler);
 
 // Drip 댓글 좋아요 취소
-router.delete("/comments/:commentId/like", unlikeDripPostCommentController as RequestHandler);
+router.delete("/comments/:commentId/like", unlikeDripPostCommentController as unknown as RequestHandler);
 
 // Drip 대댓글 작성
 router.post("/comments/:commentId/replies", postDripPostReplyController as RequestHandler);

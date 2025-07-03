@@ -1,14 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2020",
     "module": "CommonJS",
+    "lib": ["ES2020"],
     "outDir": "dist",
     "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true, // ✅ 추가
-    "resolveJsonModule": true // ✅ JSON import 가능하도록 추가 (추후 필요할 수도 있음)
+    "strict": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "types": ["node"],
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
-
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

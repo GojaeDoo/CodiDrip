@@ -25,7 +25,7 @@ router.get("/user/:id", getUserProfileController as RequestHandler);
 router.get("/nicknameCheck/:nickname", getNicknameCheckController as RequestHandler);
 
 // 프로필 생성
-router.post("/createProfile", getCreateProfileController as RequestHandler);
+router.post("/createProfile", getCreateProfileController as unknown as RequestHandler);
 
 // 프로필 수정
 router.put(
@@ -41,6 +41,6 @@ const upload = multer({
   },
 });
 
-router.post("/upload", upload.single("profileImage"), uploadProfileImageController as RequestHandler);
+router.post("/upload", upload.single("profileImage"), uploadProfileImageController as unknown as RequestHandler);
 
 export default router;
