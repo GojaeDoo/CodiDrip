@@ -16,13 +16,43 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3005;
 
-// CORS 설정 - 모든 origin 허용 (개발 중)
+// CORS 설정 - 프론트엔드 도메인 허용
+const allowedOrigins = [
+  'https://codidrip.onrender.com',
+  'http://localhost:3000',
+  'http://localhost:3001'
+];
+
 app.use(cors({
-  origin: true,
+  origin: function (origin, callback) {
+    // origin이 없는 경우 (서버 간 요청 등) 허용
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('🚫 CORS 차단된 origin:', origin);
+      callback(new Error('CORS 정책에 의해 차단됨'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers'
+  ],
+  exposedHeaders: ['Content-Length', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
+
+// OPTIONS 요청 처리
+app.options('*', cors());
 
 // 파일 업로드를 위한 크기 제한 설정
 app.use(express.json({ limit: "50mb" }));
