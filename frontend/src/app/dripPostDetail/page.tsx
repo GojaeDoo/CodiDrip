@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import DripPostDetailContainer from "@/component/features/drip/dripPostDetail/DripPostDetail.container";
 
 const DripPostDetailPage = () => {
   const searchParams = useSearchParams();
@@ -12,9 +11,11 @@ const DripPostDetailPage = () => {
   }
 
   return (
-    <>
-      <DripPostDetailContainer postno={postno} />
-    </>
+    <div>
+      <h1>Drip Post Detail</h1>
+      <p>Post No: {postno}</p>
+      <p>이 페이지는 현재 개발 중입니다.</p>
+    </div>
   );
 };
 
