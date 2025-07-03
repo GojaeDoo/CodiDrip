@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
+    "types": ["node"],
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noImplicitThis": false,
