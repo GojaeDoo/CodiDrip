@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import DripPostDetailContainer from "../../../src/component/features/drip/dripPostDetail/DripPostDetail.container";
+import DripPostDetailContainer from "../../component/features/drip/dripPostDetail/DripPostDetail.container";
 
 const DripPostDetailPage = () => {
   const searchParams = useSearchParams();
