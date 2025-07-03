@@ -1,5 +1,5 @@
 import axios from "axios";
-import { DripPostDetailResponse } from "./DripPostDetail.types";
+import { DripPostDetailResponse } from "./dripPostDetail.types";
 
 export const getDripPostDetail = async (
   postNo: number
