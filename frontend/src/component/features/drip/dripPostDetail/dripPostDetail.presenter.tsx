@@ -1,7 +1,7 @@
 import React from "react";
-import * as S from "./DripPostDetail.styled";
+import * as S from "./dripPostDetail.styled";
 import { ChevronLeft, ChevronRight, Heart, MessageCircle, Bookmark } from "lucide-react";
-import { DripPostDetailPresenterProps } from "./DripPostDetail.types";
+import { DripPostDetailPresenterProps } from "./dripPostDetail.types";
 import DripPostCommentContainer from "../dripPostComment/DripPostComment.container";
 
 const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
