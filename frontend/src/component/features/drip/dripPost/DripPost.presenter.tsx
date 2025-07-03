@@ -98,7 +98,7 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
 
                 <S.ImageContainer>
                   <S.PostImage
-                    src={`https://codidrip-backend.onrender.com/uploads/drip${
+                    src={`https://codidrip-7fmm.onrender.com/uploads/drip${
                       post.post_image[post.currentImageIndex]
                     }`}
                     alt="drip post"

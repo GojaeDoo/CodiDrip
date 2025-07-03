@@ -28,6 +28,39 @@ app.use(cors({
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+// uploads 폴더 생성 확인
+const fs = require('fs');
+const uploadsDir = path.join(process.cwd(), 'uploads');
+const profilesDir = path.join(uploadsDir, 'profiles');
+const dripDir = path.join(uploadsDir, 'drip');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('📁 uploads 폴더 생성됨');
+}
+if (!fs.existsSync(profilesDir)) {
+  fs.mkdirSync(profilesDir, { recursive: true });
+  console.log('📁 profiles 폴더 생성됨');
+}
+if (!fs.existsSync(dripDir)) {
+  fs.mkdirSync(dripDir, { recursive: true });
+  console.log('📁 drip 폴더 생성됨');
+}
+
+// 기본 이미지 파일 복사 (없는 경우)
+const defaultProfilePath = path.join(profilesDir, 'default-profile.png');
+if (!fs.existsSync(defaultProfilePath)) {
+  try {
+    const sourcePath = path.join(__dirname, '../../frontend/public/images/profile/default-profile.png');
+    if (fs.existsSync(sourcePath)) {
+      fs.copyFileSync(sourcePath, defaultProfilePath);
+      console.log('📄 기본 프로필 이미지 복사됨');
+    }
+  } catch (error) {
+    console.log('⚠️  기본 이미지 복사 실패:', error.message);
+  }
+}
+
 // 폴백용 정적 파일 서빙 (Supabase 실패 시 로컬 이미지 제공)
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 

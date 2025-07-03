@@ -40,10 +40,10 @@ export class StorageService {
 
   // 프로필 이미지 업로드
   static async uploadProfileImage(file: Buffer, fileName: string): Promise<UploadResult> {
-    // Supabase가 설정되지 않은 경우 바로 로컬 저장소 사용
+    // Supabase가 설정되지 않은 경우 에러 반환 (Render 파일 시스템 문제로 인해)
     if (!supabase) {
-      console.log('⚠️  Supabase가 설정되지 않아 로컬 저장소를 사용합니다.');
-      return this.uploadToLocalStorage(file, fileName, 'profiles');
+      console.error('❌ Supabase가 설정되지 않았습니다. 이미지 업로드가 불가능합니다.');
+      return { success: false, error: 'Supabase Storage가 설정되지 않았습니다.' };
     }
 
     try {
@@ -75,10 +75,10 @@ export class StorageService {
 
   // Drip 이미지 업로드
   static async uploadDripImage(file: Buffer, fileName: string): Promise<UploadResult> {
-    // Supabase가 설정되지 않은 경우 바로 로컬 저장소 사용
+    // Supabase가 설정되지 않은 경우 에러 반환 (Render 파일 시스템 문제로 인해)
     if (!supabase) {
-      console.log('⚠️  Supabase가 설정되지 않아 로컬 저장소를 사용합니다.');
-      return this.uploadToLocalStorage(file, fileName, 'drip');
+      console.error('❌ Supabase가 설정되지 않았습니다. 이미지 업로드가 불가능합니다.');
+      return { success: false, error: 'Supabase Storage가 설정되지 않았습니다.' };
     }
 
     try {

@@ -26,7 +26,7 @@ export const getImageUrl = (imagePath: string | null | undefined): string | null
 
 // 프로필 이미지 URL 처리
 export const getProfileImageUrl = (imagePath: string | null | undefined): string | null => {
-  if (!imagePath) return null;
+  if (!imagePath) return "/images/profile/default-profile.png";
   
   if (imagePath.startsWith('http')) {
     return imagePath;
@@ -39,7 +39,7 @@ export const getProfileImageUrl = (imagePath: string | null | undefined): string
 
 // Drip 이미지 URL 처리
 export const getDripImageUrl = (imagePath: string | null | undefined): string | null => {
-  if (!imagePath) return null;
+  if (!imagePath) return "/images/profile/default-profile.png";
   
   if (imagePath.startsWith('http')) {
     return imagePath;
