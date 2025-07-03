@@ -1,0 +1,163 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFindNickNameCheckStorage = exports.postUpdateProfileStorage = exports.getCreateProfileStorage = exports.getUserProfileStorage = exports.getProfileStorage = exports.getAllProfileStorage = void 0;
+const db_1 = require("../db");
+const client_1 = require("@prisma/client");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const prisma = new client_1.PrismaClient();
+const getAllProfileStorage = async (gender) => {
+    try {
+        let query = `
+      SELECT 
+        p.profile_id,
+        p.profile_nickname,
+        p.profile_height,
+        p.profile_weight,
+        p.profile_image,
+        p.profile_gender,
+        p.profile_follow,
+        p.user_id,
+        p.profile_about
+      FROM profile p
+      JOIN users u ON p.user_id = u.user_id
+    `;
+        const params = [];
+        const conditions = [];
+        // 관리자 계정 제외 (일반 사용자만 조회)
+        conditions.push("u.is_admin = false");
+        if (gender) {
+            conditions.push("p.profile_gender = $" + (params.length + 1));
+            params.push(gender);
+        }
+        if (conditions.length > 0) {
+            query += " WHERE " + conditions.join(" AND ");
+        }
+        query += " ORDER BY p.profile_id DESC";
+        const result = await db_1.pool.query(query, params);
+        return result.rows;
+    }
+    catch (error) {
+        console.error("Error in getFindAllProfileDB:", error);
+        throw error;
+    }
+};
+exports.getAllProfileStorage = getAllProfileStorage;
+const getProfileStorage = async (id) => {
+    const result = await db_1.pool.query(`SELECT 
+  p.profile_id,
+  p.profile_nickname,
+  p.profile_image,
+  p.user_id,
+  p.profile_about,
+  p.profile_height,
+  p.profile_weight,
+  p.profile_gender,
+  COUNT(DISTINCT uf.follower_id) AS profile_follow,
+  (SELECT COUNT(*) FROM drip_post WHERE user_id = p.user_id) AS post_count
+FROM profile p
+LEFT JOIN user_follow uf ON uf.followee_id = p.user_id
+WHERE p.user_id = $1
+GROUP BY 
+  p.profile_id,
+  p.profile_nickname,
+  p.profile_image,
+  p.user_id,
+  p.profile_about,
+  p.profile_height,
+  p.profile_weight,
+  p.profile_gender;`, [id]);
+    return result.rows[0] || null;
+};
+exports.getProfileStorage = getProfileStorage;
+const getUserProfileStorage = async (id) => {
+    const result = await db_1.pool.query(`SELECT * FROM profile WHERE user_id = $1`, [
+        id,
+    ]);
+    return result.rows[0] || null;
+};
+exports.getUserProfileStorage = getUserProfileStorage;
+const getCreateProfileStorage = async (height, weight, gender, nickname, profileImage, userId, profileAbout) => {
+    try {
+        if (!profileImage) {
+            throw new Error("프로필 이미지가 필요합니다.");
+        }
+        const query = `
+      INSERT INTO profile (
+        profile_height, 
+        profile_weight, 
+        profile_gender, 
+        profile_nickname, 
+        profile_image, 
+        user_id,
+        profile_about
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *;
+    `;
+        const values = [height, weight, gender, nickname, profileImage, userId, profileAbout];
+        const result = await db_1.pool.query(query, values);
+        return result.rows[0] || null;
+    }
+    catch (error) {
+        console.error("createProfile error - profileStorage:", error);
+        throw error;
+    }
+};
+exports.getCreateProfileStorage = getCreateProfileStorage;
+const postUpdateProfileStorage = async (height, weight, gender, nickname, profileImage, userId, profileAbout) => {
+    try {
+        const prevResult = await db_1.pool.query(`SELECT profile_image FROM profile WHERE user_id = $1`, [userId]);
+        let prevImage = null;
+        if (prevResult.rows.length > 0) {
+            prevImage = prevResult.rows[0].profile_image;
+        }
+        if (prevImage &&
+            prevImage !== profileImage &&
+            typeof prevImage === "string" &&
+            !prevImage.startsWith("data:")) {
+            const filePath = path_1.default.join(process.cwd(), "uploads/profiles", prevImage.trim());
+            fs_1.default.promises
+                .unlink(filePath)
+                .then(() => {
+            })
+                .catch((err) => {
+                console.error("프로필 이미지 파일 삭제 실패:", filePath, err.message);
+            });
+        }
+        const query = `
+      UPDATE profile 
+      SET 
+        profile_height = $1,
+        profile_weight = $2,
+        profile_gender = $3,
+        profile_nickname = $4,
+        profile_image = $5,
+        profile_about = $6
+      WHERE user_id = $7
+      RETURNING *;
+    `;
+        const values = [height, weight, gender, nickname, profileImage, profileAbout, userId];
+        const result = await db_1.pool.query(query, values);
+        return result.rows[0];
+    }
+    catch (error) {
+        console.error("프로필 수정 중 오류 발생:", error);
+        throw error;
+    }
+};
+exports.postUpdateProfileStorage = postUpdateProfileStorage;
+const getFindNickNameCheckStorage = async (nickname) => {
+    try {
+        const result = await db_1.pool.query(`SELECT * FROM profile WHERE profile_nickname = $1`, [nickname]);
+        return result.rows[0] || null;
+    }
+    catch (error) {
+        console.error("getFindNickNameCheckDB error - profileStorage");
+        throw error;
+    }
+};
+exports.getFindNickNameCheckStorage = getFindNickNameCheckStorage;
