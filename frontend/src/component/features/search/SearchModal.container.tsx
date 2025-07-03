@@ -2,6 +2,7 @@ import { SearchModalPresenter } from "./SearchModal.presenter";
 import { SearchModalPresenterProps, SearchModalProps, SearchResultProps } from "./SearchModal.types";
 import { useRouter } from "next/navigation";
 import { encodeUserId } from "@/utils/urlEncoder";
+import { getProfileImageUrl, getDripImageUrl } from "@/utils/imageUtils";
 
 export const SearchModalContainer = ({ 
   isOpen, 
@@ -16,9 +17,9 @@ export const SearchModalContainer = ({
     }
     
     if (type === 'profile') {
-      return `https://codidrip-backend.onrender.com/uploads/profiles/${imagePath}`;
+      return getProfileImageUrl(imagePath) || "/images/profile/default-profile.png";
     } else {
-      return `https://codidrip-backend.onrender.com/uploads/drip/${imagePath}`;
+      return getDripImageUrl(imagePath) || "/images/profile/default-profile.png";
     }
   };
 

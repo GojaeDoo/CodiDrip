@@ -67,7 +67,10 @@ export const ProfileEditContainer = () => {
         setOriginalNickname(response.profile_nickname);
         
         if (response.profile_image) {
-          const imageUrl = `https://codidrip-backend.onrender.com/uploads/profiles/${response.profile_image}`;
+          // Supabase URL이거나 로컬 경로인지 확인
+          const imageUrl = response.profile_image.startsWith('http') 
+            ? response.profile_image 
+            : `https://codidrip-backend.onrender.com/uploads/profiles/${response.profile_image}`;
           setPreviewUrl(imageUrl);
           setUploadedImagePath(response.profile_image);
         } else {
@@ -147,9 +150,9 @@ export const ProfileEditContainer = () => {
       }
       try {
         const response = await postUploadProfileImageQuery(file);
-        if (response.imagePath) {
-          setUploadedImagePath(response.imagePath);
-          setPreviewUrl(URL.createObjectURL(file));
+        if (response.success && response.imageUrl) {
+          setUploadedImagePath(response.imageUrl);
+          setPreviewUrl(response.imageUrl);
         }
       } catch (error) {
         console.error("이미지 업로드 중 오류 발생:", error);
