@@ -175,7 +175,7 @@ export const postLoginUserController = async (
     if (!user_id || !user_password) {
       res
         .status(400)
-        .json({ error: "loginUserController 400error - userController" });
+        .json({ error: "아이디와 비밀번호를 모두 입력해주세요." });
       return;
     }
 

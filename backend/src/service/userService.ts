@@ -125,7 +125,7 @@ export const postLoginUserService = async (user_id: string, user_password: strin
   try {
     const user = await postLoginUserStorage(user_id);
     if (!user) {
-      throw new Error("아이디가 존재하지 않습니다.");
+      throw new Error("아이디가 존재하지 않습니다. 다시 확인해주세요.");
     }
 
     const isPasswordValid = await comparePassword(
@@ -133,7 +133,7 @@ export const postLoginUserService = async (user_id: string, user_password: strin
       user_password
     );
     if (!isPasswordValid) {
-      throw new Error("비밀번호가 일치하지 않습니다.");
+      throw new Error("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
     }
 
     // 토큰 생성

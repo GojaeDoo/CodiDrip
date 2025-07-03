@@ -42,8 +42,19 @@ const LoginContainer = () => {
   };
 
   const onClickLogin: LoginPresenterProps["onClickLogin"] = async () => {
+    console.log("로그인 버튼 클릭됨");
+    console.log("입력된 userId:", userId);
+    console.log("입력된 userPassword:", userPassword);
+    
+    if (!userId || !userPassword) {
+      alert("아이디와 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+    
     try {
+      console.log("API 호출 시작...");
       const response = await postLoginUserQuery(userId, userPassword);
+      console.log("API 응답:", response);
       const currentUserId = response.user.user_id;
       const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true"; 
       login(response.token, currentUserId, isAdmin);
@@ -55,8 +66,13 @@ const LoginContainer = () => {
         router.push("/profileEdit");
       }
     } catch (error) {
+      console.error("로그인 에러:", error);
       if (error instanceof Error) {
+        // 401 에러(아이디/비밀번호 불일치) 또는 기타 에러 메시지 표시
         alert(error.message);
+      } else {
+        // 예상치 못한 에러의 경우
+        alert("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
