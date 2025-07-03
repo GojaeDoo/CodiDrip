@@ -24,6 +24,16 @@ const nextConfig: NextConfig = {
         port: '3005',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'codidrip-backend.onrender.com',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'codidrip-7fmm.onrender.com',
+        pathname: '/uploads/**',
+      },
     ],
   },
 };

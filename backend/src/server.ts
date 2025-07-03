@@ -29,7 +29,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // 폴백용 정적 파일 서빙 (Supabase 실패 시 로컬 이미지 제공)
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // 라우터 설정
 app.use("/api/users", userRouter);

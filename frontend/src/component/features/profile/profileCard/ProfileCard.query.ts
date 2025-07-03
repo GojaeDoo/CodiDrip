@@ -20,7 +20,7 @@ export const getProfilesQuery = async (): Promise<Profile[]> => {
       profile_height: profile.height,
       profile_weight: profile.weight,
       profile_image: profile.profile_image
-        ? `${API_BASE_URL}/uploads/profiles/${profile.profile_image}`
+        ? `${API_BASE_URL}/uploads/profiles/${profile.profile_image.replace(/^\\|\//, '')}`
         : "",
       profile_gender: profile.gender,
       profile_follow: 0, // 기본값 설정

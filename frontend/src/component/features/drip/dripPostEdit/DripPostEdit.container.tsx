@@ -36,7 +36,7 @@ export const DripPostEditContainer = () => {
     if (img.startsWith("http") || img.startsWith("data:")) return img;
     // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
     const fileName = img.replace(/^\\|\//, "");
-    return `https://codidrip-backend.onrender.com/uploads/drip/${fileName}`;
+    return `https://codidrip-7fmm.onrender.com/uploads/drip/${fileName}`;
   };
 
   useEffect(() => {
