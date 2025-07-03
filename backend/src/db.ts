@@ -16,11 +16,9 @@ console.log('  - NODE_ENV:', process.env.NODE_ENV || 'development');
 // DATABASE_URL에서 직접 연결 URL 생성
 let connectionString = process.env.DATABASE_URL;
 if (connectionString && connectionString.includes('pooler.supabase.com')) {
-  // pooler URL을 직접 연결 URL로 변환
-  connectionString = connectionString
-    .replace('pooler.supabase.com', 'supabase.com')
-    .replace(':6543', ':5432');
-  console.log('🔄 Pooler URL을 직접 연결 URL로 변환:', connectionString.replace(/:[^:@]*@/, ':***@'));
+  // pooler URL을 그대로 사용하되 SSL 설정만 수정
+  connectionString = connectionString.replace('?sslmode=require', '');
+  console.log('🔄 Pooler URL 사용 (SSL 설정 수정):', connectionString.replace(/:[^:@]*@/, ':***@'));
 }
 
 // DATABASE_URL이 있으면 사용, 없으면 개별 환경변수 사용
@@ -31,10 +29,10 @@ const connectionConfig = connectionString ? {
   }
 } : {
   user: process.env.DB_USER,
-  host: process.env.DB_HOST?.replace('pooler.supabase.com', 'supabase.com'), // pooler 제거
+  host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "5432"),
+  port: parseInt(process.env.DB_PORT || "6543"), // pooler 포트로 되돌림
   ssl: {
     rejectUnauthorized: false
   }
