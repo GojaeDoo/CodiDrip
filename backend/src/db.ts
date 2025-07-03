@@ -15,19 +15,25 @@ console.log('  - NODE_ENV:', process.env.NODE_ENV || 'development');
 
 // DATABASE_URL이 있으면 사용, 없으면 개별 환경변수 사용
 const connectionConfig = process.env.DATABASE_URL ? {
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  connectionString: process.env.DATABASE_URL.replace(':6543', ':5432'), // 직접 연결 포트 사용
+  ssl: process.env.NODE_ENV === 'production' ? {
+    rejectUnauthorized: false,
+    ca: undefined,
+    key: undefined,
+    cert: undefined
+  } : false
 } : {
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "6543"),
-  ssl: {
-    rejectUnauthorized: false
-  }
+  port: parseInt(process.env.DB_PORT || "5432"), // 직접 연결 포트
+  ssl: process.env.NODE_ENV === 'production' ? {
+    rejectUnauthorized: false,
+    ca: undefined,
+    key: undefined,
+    cert: undefined
+  } : false
 };
 
 console.log('🔧 연결 설정:', {
