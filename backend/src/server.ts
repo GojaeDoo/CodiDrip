@@ -20,7 +20,8 @@ const port = process.env.PORT || 3005;
 const allowedOrigins = [
   'https://codidrip.onrender.com',
   'http://localhost:3000',
-  'http://localhost:3001'
+  'http://localhost:3001',
+  'http://localhost:3002',
 ];
 
 app.use(cors({
