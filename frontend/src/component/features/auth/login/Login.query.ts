@@ -15,7 +15,7 @@ export const postLoginUserQuery = async (
     );
     return response.data;
   } catch (error: unknown) {
-    throw new Error(error instanceof Error ? error.message : error as string);
+    return null;
   }
 };
 

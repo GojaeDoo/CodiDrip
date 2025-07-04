@@ -50,6 +50,10 @@ const LoginContainer = () => {
     
     try {
       const response = await postLoginUserQuery(userId, userPassword);
+      if (!response) {
+        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+        return;
+      }
       const currentUserId = response.user.user_id;
       const isAdmin = response.user.is_admin === true || response.user.is_admin === 1 || response.user.is_admin === "true"; 
       login(response.token, currentUserId, isAdmin);

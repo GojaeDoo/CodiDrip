@@ -93,7 +93,6 @@ export const UserAvatar = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -821,8 +820,8 @@ export const ReportModalButton = styled.button<{ $primary?: boolean }>`
 `;
 
 export const ProfileImage = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
 `;

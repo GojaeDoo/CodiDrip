@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import FreeBoardCommentPresenter from "./FreeBoardComment.presentert";
 import { Comment, FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
 import * as S from "./FreeBoardComment.styled";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getFreeBoardCommentQuery, postFreeBoardCommentQuery, updateFreeBoardCommentQuery, deleteFreeBoardCommentQuery, postFreeBoardReplyQuery, getFreeBoardRepliesQuery, reportFreeBoardCommentQuery } from "./FreeBoardComment.query";
 import { useAuth } from "@/context/AuthContext";
 
@@ -18,6 +18,7 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const isLoading = false;
   const [isLogin, setIsLogin] = useState(false);
   const { isAdmin } = useAuth();
+  const router = useRouter();
   
   // 모달 관련 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,6 +98,11 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
 
   // 모달 관련 핸들러
   const handleOpenModal:FreeBoardCommentPresenterProps["onOpenModal"] = () => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -266,6 +272,7 @@ export const FreeBoardCommentContainer: React.FC<FreeBoardCommentContainerProps>
   const handleReportClick:FreeBoardCommentPresenterProps["onReportClick"] = (commentId: string) => {
     if (!token) {
       alert("로그인이 필요합니다.");
+      router.push("/login");
       return;
     }
     setReportingCommentId(commentId);
