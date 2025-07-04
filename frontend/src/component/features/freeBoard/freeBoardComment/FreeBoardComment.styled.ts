@@ -819,3 +819,10 @@ export const ReportModalButton = styled.button<{ $primary?: boolean }>`
     cursor: not-allowed;
   }
 `;
+
+export const ProfileImage = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
