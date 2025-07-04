@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
         hostname: 'codidrip-7fmm.onrender.com',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'caqmlnxqlyaqajzbhdmo.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
     ],
   },
 };

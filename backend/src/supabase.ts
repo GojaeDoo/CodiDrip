@@ -4,16 +4,21 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error(' Supabase 환경변수가 안됨');
+// 환경 확인
+const isDevelopment = process.env.NODE_ENV === 'development';
+const isLocal = !supabaseUrl || !supabaseAnonKey;
+
+if (isLocal) {
+  console.log('로컬 환경: Supabase 클라이언트 비활성화');
 }
 
-
 // 일반 사용을 위한 클라이언트 (anon key 사용)
-export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+export const supabase = (isLocal || isDevelopment) ? null : 
+  (supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null);
 
 // 관리자 권한을 위한 클라이언트 (service role key 사용)
-export const supabaseAdmin = supabaseUrl && supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : null;
+export const supabaseAdmin = (isLocal || isDevelopment) ? null :
+  (supabaseUrl && supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : null);
 
 // Supabase 연결 테스트
 export const testSupabaseConnection = async () => {
