@@ -54,7 +54,7 @@ export const MyPageContainer = () => {
     };
    
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   useEffect(() => {
     const fetchFreeBoardPosts = async () => {

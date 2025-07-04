@@ -5,6 +5,7 @@ import { HeaderPresenterProps } from "./Header.types";
 import * as S from "./Header.styled";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { getProfileImageUrl } from "@/utils/imageUtils";
+import Image from "next/image";
 
 const HeaderPresenter = (props: HeaderPresenterProps) => {
   return (
@@ -34,11 +35,13 @@ const HeaderPresenter = (props: HeaderPresenterProps) => {
           <S.ButtonContainer>
             <S.ProfileImage>
               {props.userProfile?.profile_image && (
-                <img
-                  src={getProfileImageUrl(props.userProfile.profile_image) || undefined}
+                <Image
+                  src={getProfileImageUrl(props.userProfile.profile_image) || "/images/profile/default-profile.png"}
                   alt="profile"
+                  width={40}
+                  height={40}
                   onClick={props.onClickMoveMyPage}
-                  style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+                  style={{ borderRadius: "50%", objectFit: "cover", cursor: "pointer" }}
                 />
               )}
             </S.ProfileImage>

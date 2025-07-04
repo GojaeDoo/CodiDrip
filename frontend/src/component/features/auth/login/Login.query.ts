@@ -14,7 +14,7 @@ export const postLoginUserQuery = async (
       }
     );
     return response.data;
-  } catch (error: unknown) {
+  } catch {
     return null;
   }
 };
