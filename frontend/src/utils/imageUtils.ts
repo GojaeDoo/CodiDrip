@@ -64,12 +64,6 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
   // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
   const fileName = imagePath.replace(/^\\|\//, '');
   
-  // 배포 환경에서는 Supabase Storage URL 사용
-  // 로컬 환경에서는 백엔드 uploads 경로 사용
-  const isProduction = typeof window !== 'undefined' && 
-    !window.location.hostname.includes('localhost') && 
-    !window.location.hostname.includes('127.0.0.1');
-  
   // 임시로 모든 환경에서 백엔드 URL 사용 (Supabase Storage 문제 해결 전까지)
   const backendUrl = `${API_BASE_URL}/uploads/drip/${fileName}`;
   console.log('백엔드 URL 사용:', backendUrl);
