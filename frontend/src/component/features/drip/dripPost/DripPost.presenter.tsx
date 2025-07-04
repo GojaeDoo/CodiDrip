@@ -110,9 +110,7 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
 
                 <S.ImageContainer>
                   <S.PostImage
-                    src={`https://codidrip-7fmm.onrender.com/uploads/drip${
-                      post.post_image[post.currentImageIndex]
-                    }`}
+                    src={getDripImageUrl(post.post_image[post.currentImageIndex]) || "/images/profile/default-profile.png"}
                     alt="drip post"
                     onError={(e) => {
                       e.currentTarget.src = "/images/profile/default-profile.png";

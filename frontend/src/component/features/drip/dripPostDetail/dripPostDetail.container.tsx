@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDripPostDetail, postLikeDripPostQuery, deleteUnlikeDripPostQuery, getDripPostLikeStatus, postSaveDripPostQuery, getDripPostSaveStatus } from "./dripPostDetail.query";
 import { DripPostDetailPresenterProps, DripPostDetailProps } from "./dripPostDetail.types";
 import { useRouter } from "next/navigation";
+import { getDripImageUrl } from "@/utils/imageUtils";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -144,19 +145,11 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
       } else {
         images = [dripPost.게시글이미지];
       }
-      images = images.map(img =>
-        img.startsWith("http")
-          ? img
-          : `https://codidrip-7fmm.onrender.com/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
-      );
+      images = images.map(img => getDripImageUrl(img) || img);
     } catch (error) {
       console.error("이미지 파싱 에러:", error);
       images = [dripPost.게시글이미지];
-      images = images.map(img =>
-        img.startsWith("http")
-          ? img
-          : `https://codidrip-7fmm.onrender.com/uploads/drip/${img.replace(/^[\\\/]+/, "")}`
-      );
+      images = images.map(img => getDripImageUrl(img) || img);
     }
   }
 

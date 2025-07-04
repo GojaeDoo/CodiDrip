@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import DripPostEditPresenter from "./DripPostEdit.presenter";
 import { getDripPostQuery, postDripQuery, putUpdateDripQuery } from "./DripPostEdit.query";
 import { DripPostEditPresenterProps } from "./DripPostEdit.types";
+import { getDripImageUrl } from "@/utils/imageUtils";
 
 export const DripPostEditContainer = () => {
   const router = useRouter();
@@ -34,9 +35,7 @@ export const DripPostEditContainer = () => {
   const getImageUrl = (img: string) => {
     if (!img || img === "undefined" || img === "null") return "";
     if (img.startsWith("http") || img.startsWith("data:")) return img;
-    // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
-    const fileName = img.replace(/^\\|\//, "");
-    return `https://codidrip-7fmm.onrender.com/uploads/drip/${fileName}`;
+    return getDripImageUrl(img) || img;
   };
 
   useEffect(() => {
