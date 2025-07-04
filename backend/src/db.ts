@@ -28,7 +28,7 @@ const connectionConfig = connectionString ? {
   }
 };
 
-console.log('🔧 연결 설정:', {
+console.log('연결 설정:', {
   ...connectionConfig,
   password: connectionConfig.password ? '[HIDDEN]' : undefined,
   connectionString: connectionConfig.connectionString ? 
@@ -45,23 +45,15 @@ export const pool = new Pool({
 // 데이터베이스 연결 테스트 함수
 export const testDatabaseConnection = async () => {
   try {
-    console.log('🔍 데이터베이스 연결 시도 중...');
-    console.log('  - 호스트:', process.env.DB_HOST || 'DATABASE_URL 사용');
-    console.log('  - 포트:', process.env.DB_PORT || '5432');
     
-    const client = await pool.connect();
-    console.log('✅ 데이터베이스 클라이언트 연결 성공');
-    
+    const client = await pool.connect();;
     const result = await client.query('SELECT NOW() as current_time, version() as db_version');
     client.release();
     
-    console.log('✅ 데이터베이스 쿼리 성공:', result.rows[0]);
     return true;
   } catch (error) {
-    console.error('❌ 데이터베이스 연결 실패:', error);
-    console.error('  - 에러 코드:', error.code);
-    console.error('  - 에러 메시지:', error.message);
-    console.error('  - 에러 스택:', error.stack);
+    console.error('데이터베이스 연결 실패:', error);
+
     
     // 구체적인 에러 타입별 안내
     if (error.code === 'ECONNREFUSED') {

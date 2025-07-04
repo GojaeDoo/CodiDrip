@@ -1,5 +1,4 @@
 import {
-  uploadDripImage,
   postCreateDripStorage,
   getUserDripPostStorage,
   getPostNoDripPostStorage,
@@ -18,6 +17,7 @@ import {
   saveDripPostStorage,
   getDripPostSaveStatusStorage
 } from "../storage/dripStorage";
+import { StorageService } from "./storageService";
 
 export const dripService = {
   postCreateDripService: async (images: string[], tags: string[], styleCategory: string, userId: string) => {
@@ -32,12 +32,23 @@ export const dripService = {
             const contentType = matches[1];
             const base64Data = matches[2];
             const buffer = Buffer.from(base64Data, "base64");
-            return await uploadDripImage(buffer, contentType);
+            
+            // StorageService를 사용하여 Supabase Storage에 업로드
+            const fileName = `dripImage-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`;
+            const uploadResult = await StorageService.uploadDripImage(buffer, fileName);
+            
+            if (uploadResult.success && uploadResult.url) {
+              // Supabase URL에서 파일명만 추출하여 저장
+              const urlParts = uploadResult.url.split('/');
+              const fileNameFromUrl = urlParts[urlParts.length - 1];
+              return `/${fileNameFromUrl}`;
+            } else {
+              throw new Error("이미지 업로드 실패");
+            }
           }
           return image;
         })
       );
-
 
       const result = await postCreateDripStorage(processedImages, tags, styleCategory, userId);
       return result;
@@ -86,7 +97,19 @@ export const dripService = {
             const contentType = matches[1];
             const base64Data = matches[2];
             const buffer = Buffer.from(base64Data, "base64");
-            return await uploadDripImage(buffer, contentType);
+            
+            // StorageService를 사용하여 Supabase Storage에 업로드
+            const fileName = `dripImage-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`;
+            const uploadResult = await StorageService.uploadDripImage(buffer, fileName);
+            
+            if (uploadResult.success && uploadResult.url) {
+              // Supabase URL에서 파일명만 추출하여 저장
+              const urlParts = uploadResult.url.split('/');
+              const fileNameFromUrl = urlParts[urlParts.length - 1];
+              return `/${fileNameFromUrl}`;
+            } else {
+              throw new Error("이미지 업로드 실패");
+            }
           }
           return image; // 이미 서버에 있는 이미지는 그대로 사용
         })
