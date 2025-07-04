@@ -28,7 +28,6 @@ async function cleanupUnusedProfileImages() {
       return;
     }
     if (!files) {
-      console.log("Supabase Storage에 파일이 없습니다.");
       return;
     }
 
@@ -38,12 +37,9 @@ async function cleanupUnusedProfileImages() {
         const { error: delError } = await supabase.storage.from("profiles").remove([file.name]);
         if (delError) {
           console.error("임시 이미지 삭제 실패:", file.name, delError.message);
-        } else {
-          console.log("임시 이미지 삭제 성공:", file.name);
         }
       }
     }
-    console.log(" 불필요한 프로필 이미지 정리 완료");
   } catch (err) {
     console.error("cleanupUnusedProfileImages 스크립트 오류:", err);
   } finally {

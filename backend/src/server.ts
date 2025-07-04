@@ -26,13 +26,11 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // origin이 없는 경우 (서버 간 요청 등) 허용
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log('CORS 차단된 origin:', origin);
       callback(new Error('CORS 정책에 의해 차단됨'));
     }
   },
@@ -67,15 +65,12 @@ const dripDir = path.join(uploadsDir, 'drip');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log(' uploads 폴더 생성됨');
 }
 if (!fs.existsSync(profilesDir)) {
   fs.mkdirSync(profilesDir, { recursive: true });
-  console.log(' profiles 폴더 생성됨');
 }
 if (!fs.existsSync(dripDir)) {
   fs.mkdirSync(dripDir, { recursive: true });
-  console.log(' drip 폴더 생성됨');
 }
 
 // 기본 이미지 파일 복사 (없는 경우)
@@ -85,7 +80,6 @@ if (!fs.existsSync(defaultProfilePath)) {
     const sourcePath = path.join(__dirname, '../../frontend/public/images/profile/default-profile.png');
     if (fs.existsSync(sourcePath)) {
       fs.copyFileSync(sourcePath, defaultProfilePath);
-      console.log(' 기본 프로필 이미지 복사됨');
     }
   } catch (error) {
     console.log('  기본 이미지 복사 실패:', error.message);
@@ -110,27 +104,13 @@ app.use("/api/reports", reportRouter);
 
 // 서버 실행
 app.listen(port, async () => {
-  console.log(` 서버가 포트 ${port}에서 실행 중입니다.`);
   
   try {
     // 데이터베이스 연결 테스트
-    console.log('  데이터베이스 연결 테스트 중...');
     const dbConnected = await testDatabaseConnection();
     
     // Supabase 연결 테스트
-    console.log(' Supabase Storage 연결 테스트 중...');
     const supabaseConnected = await testSupabaseConnection();
-    
-    if (dbConnected && supabaseConnected) {
-      console.log(' 모든 서비스가 정상적으로 시작');
-    } else {
-      if (!dbConnected) {
-        console.log(' 데이터베이스 연결 문제');
-      }
-      if (!supabaseConnected) {
-        console.log('  Supabase Storage 연결 문제');
-      }
-    }
   } catch (error) {
     console.error(' 서버 시작 중 오류 발생:', error);
   }
@@ -138,12 +118,10 @@ app.listen(port, async () => {
 
 // 서버 종료 시 DB 커넥션 풀 정리
 process.on("SIGINT", async () => {
-  // console.log("서버 종료: DB 커넥션 풀 정리 중...");
   await pool.end();
   process.exit();
 });
 process.on("SIGTERM", async () => {
-  // console.log("서버 종료: DB 커넥션 풀 정리 중...");
   await pool.end();
   process.exit();
 });

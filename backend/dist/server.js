@@ -37,25 +37,14 @@ app.use("/api/freeBoard", freeBoardRouter_1.default);
 app.use("/api/reports", reportRouter_1.default);
 // 서버 실행
 app.listen(port, async () => {
-    console.log(`서버가 포트 ${port}에서 실행`);
-    // Supabase 연결 테스트
-    console.log('Supabase Storage 연결 테스트...');
     const isConnected = await (0, supabase_1.testSupabaseConnection)();
-    if (isConnected) {
-        console.log('모든 서비스가 정상적으로 시작');
-    }
-    else {
-        console.log('Supabase Storage 연결에 문제가 있음');
-    }
 });
 // 서버 종료 시 DB 커넥션 풀 정리
 process.on("SIGINT", async () => {
-    // console.log("서버 종료: DB 커넥션 풀 정리 중...");
     await db_1.pool.end();
     process.exit();
 });
 process.on("SIGTERM", async () => {
-    // console.log("서버 종료: DB 커넥션 풀 정리 중...");
     await db_1.pool.end();
     process.exit();
 });

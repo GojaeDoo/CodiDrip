@@ -61,7 +61,6 @@ const LoginContainer = () => {
       try {
         const responseProfile = await getProfileCheckQuery(currentUserId);
         if (responseProfile) {
-          console.log("프로필이 존재합니다. 메인 페이지로 이동합니다.");
           router.push("/drips");
         } else {
           router.push("/profileEdit");

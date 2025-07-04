@@ -7,17 +7,14 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 async function cleanupImages() {
     try {
-        console.log('기존 로컬 이미지 정리...');
         // 프로필 이미지 정리
         const profilesDir = path_1.default.join(__dirname, '../../uploads/profiles');
         if (fs_1.default.existsSync(profilesDir)) {
             const profileFiles = fs_1.default.readdirSync(profilesDir);
-            console.log(`프로필 이미지 ${profileFiles.length}개 발견`);
             for (const file of profileFiles) {
                 if (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')) {
                     const filePath = path_1.default.join(profilesDir, file);
                     fs_1.default.unlinkSync(filePath);
-                    console.log(`프로필 이미지 삭제: ${file}`);
                 }
             }
         }
@@ -25,16 +22,13 @@ async function cleanupImages() {
         const dripsDir = path_1.default.join(__dirname, '../../uploads/drip');
         if (fs_1.default.existsSync(dripsDir)) {
             const dripFiles = fs_1.default.readdirSync(dripsDir);
-            console.log(`Drip 이미지 ${dripFiles.length}개 발견`);
             for (const file of dripFiles) {
                 if (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')) {
                     const filePath = path_1.default.join(dripsDir, file);
                     fs_1.default.unlinkSync(filePath);
-                    console.log(`Drip 이미지 삭제: ${file}`);
                 }
             }
         }
-        console.log('기존 로컬 이미지 정리 완료');
     }
     catch (error) {
         console.error('이미지 정리 중 오류 발생:', error);

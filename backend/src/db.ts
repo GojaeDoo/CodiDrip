@@ -8,7 +8,6 @@ let connectionString = process.env.DATABASE_URL;
 if (connectionString && connectionString.includes('pooler.supabase.com')) {
   // pooler URL을 그대로 사용하되 SSL 설정만 수정
   connectionString = connectionString.replace('?sslmode=require', '');
-  console.log(' Pooler URL 사용 (SSL 설정 수정):', connectionString.replace(/:[^:@]*@/, ':***@'));
 }
 
 // DATABASE_URL이 있으면 사용, 없으면 개별 환경변수 사용
@@ -27,13 +26,6 @@ const connectionConfig = connectionString ? {
     rejectUnauthorized: false
   }
 };
-
-console.log('연결 설정:', {
-  ...connectionConfig,
-  password: connectionConfig.password ? '[HIDDEN]' : undefined,
-  connectionString: connectionConfig.connectionString ? 
-    connectionConfig.connectionString.replace(/:[^:@]*@/, ':***@') : undefined
-});
 
 export const pool = new Pool({
   ...connectionConfig,

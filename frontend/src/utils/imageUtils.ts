@@ -73,12 +73,10 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
   if (isProduction) {
     // Supabase Storage URL
     const supabaseUrl = `https://caqmlnxqlyaqajzbhdmo.supabase.co/storage/v1/object/public/drips/${fileName}`;
-    console.log('배포 환경 URL:', supabaseUrl);
     return supabaseUrl;
   } else {
     // 로컬 백엔드 URL
     const localUrl = `${API_BASE_URL}/uploads/drip/${fileName}`;
-    console.log('로컬 환경 URL:', localUrl);
     return localUrl;
   }
 }; 

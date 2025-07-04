@@ -268,7 +268,6 @@ export const postUpdateDripPostStorage = async (
           const fileName = img.replace(/^\/+/, '');
           try {
             await StorageService.deleteDripImage(fileName);
-            console.log(`수정 시 이미지 삭제 완료: ${fileName}`);
           } catch (error) {
             console.error(`수정 시 이미지 삭제 실패: ${fileName}`, error);
           }
@@ -341,7 +340,6 @@ export const deleteDripPostStorage = async (postNo: number) => {
             if (imagePath && imagePath.startsWith('/')) {
               const fileName = imagePath.replace(/^\/+/, '');
               await StorageService.deleteDripImage(fileName);
-              console.log(`이미지 삭제 완료: ${fileName}`);
             }
           }
         } catch (error) {

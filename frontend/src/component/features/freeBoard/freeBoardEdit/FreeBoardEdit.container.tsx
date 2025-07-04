@@ -68,7 +68,6 @@ export const FreeBoardEditContainer = () => {
       }
       router.push("/freeBoardList");
     } catch (error) {
-      console.log("자유게시판 작성/수정 오류 : " + error);
       alert("작업에 실패했습니다. 다시 시도해주세요.");
     }
   }

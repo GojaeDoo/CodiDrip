@@ -12,7 +12,6 @@ export const postFreeBoardCommentQuery = async (newComment: string , userId: str
         )
         return response.data;
     } catch (error) {
-        console.log("댓글 작성 오류 Query : " + error);
         throw error; 
     }
 }

@@ -373,21 +373,8 @@ export const uploadDripImageController = async (
       return res.status(400).json({ error: "이미지 파일이 필요합니다." });
     }
 
-    console.log(' Drip 이미지 업로드 시작:', {
-      fileSize: req.file.size,
-      mimetype: req.file.mimetype,
-      originalname: req.file.originalname
-    });
-
     const fileName = `dripImage-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`;
     const result = await StorageService.uploadDripImage(req.file.buffer, fileName);
-
-    console.log(' Drip 이미지 업로드 결과:', {
-      success: result.success,
-      url: result.url,
-      error: result.error,
-      fallback: result.fallback
-    });
 
     if (result.success && result.url) {
       res.json({ 

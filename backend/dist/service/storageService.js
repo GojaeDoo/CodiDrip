@@ -24,7 +24,6 @@ class StorageService {
         }
         catch (error) {
             console.error('Profile image upload error:', error);
-            console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
             // 로컬 저장소로 폴백
             try {
                 const fs = require('fs');
@@ -68,7 +67,6 @@ class StorageService {
         }
         catch (error) {
             console.error('Drip image upload error:', error);
-            console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
             // 로컬 저장소로 폴백
             try {
                 const fs = require('fs');
