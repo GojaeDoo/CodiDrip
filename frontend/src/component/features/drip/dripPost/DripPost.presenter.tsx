@@ -115,7 +115,7 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
                     onError={(e) => {
                       e.currentTarget.src = "/images/profile/default-profile.png";
                     }}
-                    onLoad={(e) => {
+                    onLoad={() => {
                     }}
                   />
                   {post.post_image.length > 1 && (
