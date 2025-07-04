@@ -15,7 +15,7 @@ async function cleanupImages() {
         if (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')) {
           const filePath = path.join(profilesDir, file);
           fs.unlinkSync(filePath);
-          console.log(`✅ 프로필 이미지 삭제: ${file}`);
+          console.log(` 프로필 이미지 삭제: ${file}`);
         }
       }
     }
@@ -30,13 +30,13 @@ async function cleanupImages() {
         if (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')) {
           const filePath = path.join(dripsDir, file);
           fs.unlinkSync(filePath);
-          console.log(`✅ Drip 이미지 삭제: ${file}`);
+          console.log(` Drip 이미지 삭제: ${file}`);
         }
       }
     }
 
     console.log('기존 로컬 이미지 정리가 완료되었습니다.');
-    console.log('⚠️  주의: 이 작업은 되돌릴 수 없습니다. 마이그레이션이 완료된 후에만 실행하세요.');
+    console.log('  주의: 이 작업은 되돌릴 수 없습니다. 마이그레이션이 완료된 후에만 실행하세요.');
   } catch (error) {
     console.error('이미지 정리 중 오류 발생:', error);
   }

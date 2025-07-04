@@ -3,22 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// 환경변수 로깅 (비밀번호는 마스킹)
-console.log('🔧 데이터베이스 연결 설정:');
-console.log('  - DATABASE_URL:', process.env.DATABASE_URL ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_USER:', process.env.DB_USER ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_HOST:', process.env.DB_HOST ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_DATABASE:', process.env.DB_DATABASE ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_PASSWORD:', process.env.DB_PASSWORD ? '✅ 설정됨' : '❌ 누락');
-console.log('  - DB_PORT:', process.env.DB_PORT || '5432 (기본값)');
-console.log('  - NODE_ENV:', process.env.NODE_ENV || 'development');
-
 // DATABASE_URL에서 직접 연결 URL 생성
 let connectionString = process.env.DATABASE_URL;
 if (connectionString && connectionString.includes('pooler.supabase.com')) {
   // pooler URL을 그대로 사용하되 SSL 설정만 수정
   connectionString = connectionString.replace('?sslmode=require', '');
-  console.log('🔄 Pooler URL 사용 (SSL 설정 수정):', connectionString.replace(/:[^:@]*@/, ':***@'));
+  console.log(' Pooler URL 사용 (SSL 설정 수정):', connectionString.replace(/:[^:@]*@/, ':***@'));
 }
 
 // DATABASE_URL이 있으면 사용, 없으면 개별 환경변수 사용

@@ -42,7 +42,7 @@ export class StorageService {
   static async uploadProfileImage(file: Buffer, fileName: string): Promise<UploadResult> {
     // Supabase가 설정되지 않은 경우 로컬 저장소로 폴백
     if (!supabase) {
-      console.log('⚠️  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
+      console.log('  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
       return this.uploadToLocalStorage(file, fileName, 'profiles');
     }
 
@@ -57,7 +57,7 @@ export class StorageService {
 
       if (error) {
         console.error('Profile image upload error:', error);
-        console.log('🔄 Supabase 업로드 실패, 로컬 저장소로 폴백...');
+        console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
         return this.uploadToLocalStorage(file, fileName, 'profiles');
       }
 
@@ -68,7 +68,7 @@ export class StorageService {
       return { success: true, url: urlData.publicUrl };
     } catch (error) {
       console.error('Profile image upload error:', error);
-      console.log('🔄 Supabase 업로드 실패, 로컬 저장소로 폴백...');
+      console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
       return this.uploadToLocalStorage(file, fileName, 'profiles');
     }
   }
@@ -77,7 +77,7 @@ export class StorageService {
   static async uploadDripImage(file: Buffer, fileName: string): Promise<UploadResult> {
     // Supabase가 설정되지 않은 경우 로컬 저장소로 폴백
     if (!supabase) {
-      console.log('⚠️  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
+      console.log('  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
       return this.uploadToLocalStorage(file, fileName, 'drip');
     }
 
@@ -92,7 +92,7 @@ export class StorageService {
 
       if (error) {
         console.error('Drip image upload error:', error);
-        console.log('🔄 Supabase 업로드 실패, 로컬 저장소로 폴백...');
+        console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
         return this.uploadToLocalStorage(file, fileName, 'drip');
       }
 
@@ -103,7 +103,7 @@ export class StorageService {
       return { success: true, url: urlData.publicUrl };
     } catch (error) {
       console.error('Drip image upload error:', error);
-      console.log('🔄 Supabase 업로드 실패, 로컬 저장소로 폴백...');
+      console.log(' Supabase 업로드 실패, 로컬 저장소로 폴백...');
       return this.uploadToLocalStorage(file, fileName, 'drip');
     }
   }
@@ -111,7 +111,7 @@ export class StorageService {
   // 이미지 삭제
   static async deleteImage(bucket: string, fileName: string): Promise<boolean> {
     if (!supabase) {
-      console.log('⚠️  Supabase가 설정되지 않아 로컬 파일 삭제를 시도합니다.');
+      console.log('Supabase가 설정되지 않아 로컬 파일 삭제를 시도합니다.');
       try {
         const fs = require('fs');
         const path = require('path');
@@ -120,10 +120,10 @@ export class StorageService {
         
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
-          console.log(`✅ 로컬 파일 삭제 성공: ${fileName}`);
+          console.log(`로컬 파일 삭제 성공: ${fileName}`);
           return true;
         } else {
-          console.log(`⚠️  로컬 파일이 존재하지 않음: ${fileName}`);
+          console.log(`로컬 파일이 존재하지 않음: ${fileName}`);
           return true; // 파일이 없어도 삭제 성공으로 처리
         }
       } catch (error) {

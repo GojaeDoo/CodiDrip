@@ -284,8 +284,20 @@ export const postUpdateDripPostStorage = async (
         typeof img === "string" &&
         !img.startsWith("data:")
     );
-    // 파일 시스템에서 삭제
+    // Supabase Storage에서 삭제
     for (const img of imagesToDelete) {
+      if (img.startsWith("http") && img.includes("supabase.co")) {
+        const fileName = img.split("/").pop();
+        if (fileName) {
+          const { error } = await require("../supabase").supabase.storage.from("drips").remove([fileName]);
+          if (error) {
+            console.error("Supabase Drip 이미지 삭제 실패:", fileName, error.message);
+          } else {
+            console.log("Supabase Drip 이미지 삭제 성공:", fileName);
+          }
+        }
+      }
+      // 기존 로컬 파일 삭제 코드도 유지
       const filePath = path.join(
         process.cwd(),
         "uploads/drip",
@@ -293,7 +305,6 @@ export const postUpdateDripPostStorage = async (
       );
       fs.promises.unlink(filePath).catch((err) => {
         // 파일이 없거나 삭제 실패해도 무시
-        console.error("이미지 파일 삭제 실패:", filePath, err.message);
       });
     }
 

@@ -19,8 +19,8 @@ const testSupabaseConnection = async () => {
             console.error('❌ Supabase Storage 연결 실패:', error.message);
             return false;
         }
-        console.log('✅ Supabase Storage 연결 성공');
-        console.log('📦 사용 가능한 버킷:', data.map(bucket => bucket.name));
+        console.log('Supabase Storage 연결 성공');
+        console.log('사용 가능한 버킷:', data.map(bucket => bucket.name));
         return true;
     }
     catch (error) {

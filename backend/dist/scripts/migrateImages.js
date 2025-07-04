@@ -8,7 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 async function migrateImages() {
     try {
-        console.log('이미지 마이그레이션을 시작합니다...');
+        console.log('이미지 마이그레이션을 시작...');
         // 프로필 이미지 마이그레이션
         const profilesDir = path_1.default.join(__dirname, '../../uploads/profiles');
         if (fs_1.default.existsSync(profilesDir)) {
@@ -21,10 +21,10 @@ async function migrateImages() {
                     console.log(`프로필 이미지 업로드 중: ${file}`);
                     const result = await storageService_1.StorageService.uploadProfileImage(fileBuffer, file);
                     if (result.success) {
-                        console.log(`✅ 프로필 이미지 업로드 성공: ${file} -> ${result.url}`);
+                        console.log(` 프로필 이미지 업로드 성공: ${file} -> ${result.url}`);
                     }
                     else {
-                        console.log(`❌ 프로필 이미지 업로드 실패: ${file} - ${result.error}`);
+                        console.log(` 프로필 이미지 업로드 실패: ${file} - ${result.error}`);
                     }
                 }
             }
@@ -41,15 +41,15 @@ async function migrateImages() {
                     console.log(`Drip 이미지 업로드 중: ${file}`);
                     const result = await storageService_1.StorageService.uploadDripImage(fileBuffer, file);
                     if (result.success) {
-                        console.log(`✅ Drip 이미지 업로드 성공: ${file} -> ${result.url}`);
+                        console.log(` Drip 이미지 업로드 성공: ${file} -> ${result.url}`);
                     }
                     else {
-                        console.log(`❌ Drip 이미지 업로드 실패: ${file} - ${result.error}`);
+                        console.log(` Drip 이미지 업로드 실패: ${file} - ${result.error}`);
                     }
                 }
             }
         }
-        console.log('이미지 마이그레이션이 완료되었습니다.');
+        console.log('이미지 마이그레이션이 완료.');
     }
     catch (error) {
         console.error('이미지 마이그레이션 중 오류 발생:', error);

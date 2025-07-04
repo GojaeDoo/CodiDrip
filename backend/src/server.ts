@@ -32,7 +32,7 @@ app.use(cors({
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log('🚫 CORS 차단된 origin:', origin);
+      console.log('CORS 차단된 origin:', origin);
       callback(new Error('CORS 정책에 의해 차단됨'));
     }
   },
@@ -67,15 +67,15 @@ const dripDir = path.join(uploadsDir, 'drip');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('📁 uploads 폴더 생성됨');
+  console.log(' uploads 폴더 생성됨');
 }
 if (!fs.existsSync(profilesDir)) {
   fs.mkdirSync(profilesDir, { recursive: true });
-  console.log('📁 profiles 폴더 생성됨');
+  console.log(' profiles 폴더 생성됨');
 }
 if (!fs.existsSync(dripDir)) {
   fs.mkdirSync(dripDir, { recursive: true });
-  console.log('📁 drip 폴더 생성됨');
+  console.log(' drip 폴더 생성됨');
 }
 
 // 기본 이미지 파일 복사 (없는 경우)
@@ -85,10 +85,10 @@ if (!fs.existsSync(defaultProfilePath)) {
     const sourcePath = path.join(__dirname, '../../frontend/public/images/profile/default-profile.png');
     if (fs.existsSync(sourcePath)) {
       fs.copyFileSync(sourcePath, defaultProfilePath);
-      console.log('📄 기본 프로필 이미지 복사됨');
+      console.log(' 기본 프로필 이미지 복사됨');
     }
   } catch (error) {
-    console.log('⚠️  기본 이미지 복사 실패:', error.message);
+    console.log('  기본 이미지 복사 실패:', error.message);
   }
 }
 
@@ -110,30 +110,29 @@ app.use("/api/reports", reportRouter);
 
 // 서버 실행
 app.listen(port, async () => {
-  console.log(`🚀 서버가 포트 ${port}에서 실행 중입니다.`);
+  console.log(` 서버가 포트 ${port}에서 실행 중입니다.`);
   
   try {
     // 데이터베이스 연결 테스트
-    console.log('🗄️  데이터베이스 연결 테스트 중...');
+    console.log('  데이터베이스 연결 테스트 중...');
     const dbConnected = await testDatabaseConnection();
     
     // Supabase 연결 테스트
-    console.log('🔗 Supabase Storage 연결 테스트 중...');
+    console.log(' Supabase Storage 연결 테스트 중...');
     const supabaseConnected = await testSupabaseConnection();
     
     if (dbConnected && supabaseConnected) {
-      console.log('✅ 모든 서비스가 정상적으로 시작되었습니다.');
+      console.log(' 모든 서비스가 정상적으로 시작');
     } else {
       if (!dbConnected) {
-        console.log('❌ 데이터베이스 연결에 문제가 있습니다.');
+        console.log(' 데이터베이스 연결 문제');
       }
       if (!supabaseConnected) {
-        console.log('⚠️  Supabase Storage 연결에 문제가 있습니다. 이미지 업로드가 작동하지 않을 수 있습니다.');
+        console.log('  Supabase Storage 연결 문제');
       }
     }
   } catch (error) {
-    console.error('❌ 서버 시작 중 오류 발생:', error);
-    console.log('⚠️  서버는 시작되었지만 일부 서비스에 문제가 있을 수 있습니다.');
+    console.error(' 서버 시작 중 오류 발생:', error);
   }
 });
 
