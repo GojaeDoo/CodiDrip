@@ -32,10 +32,16 @@ const HeaderPresenter = (props: HeaderPresenterProps) => {
         </S.ThemeToggleButton>
         {props.isLoggedIn ? (
           <S.ButtonContainer>
-            <S.ProfileImage
-              src={getProfileImageUrl(props.userProfile.profile_image) || undefined}
-              alt="profile"
-            />
+            <S.ProfileImage>
+              {props.userProfile?.profile_image && (
+                <img
+                  src={getProfileImageUrl(props.userProfile.profile_image) || undefined}
+                  alt="profile"
+                  onClick={props.onClickMoveMyPage}
+                  style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+                />
+              )}
+            </S.ProfileImage>
           </S.ButtonContainer>
         ) : (
           <S.Login_JoinContainer>
