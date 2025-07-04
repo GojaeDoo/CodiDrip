@@ -1,30 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
 import { pool } from "../db";
-import fs from "fs";
-import path from "path";
-
-const uploadDir = path.join(process.cwd(), "uploads/drip");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-export const uploadDripImage = async (
-  buffer: Buffer,
-  contentType: string
-): Promise<string> => {
-  try {
-    const extension = contentType.split("/")[1] || "jpg";
-    const filename = `${uuidv4()}.${extension}`;
-    const filepath = path.join(uploadDir, filename);
-
-    await fs.promises.writeFile(filepath, buffer);
-
-    return `/${filename}`;
-  } catch (error) {
-    console.error("uploadDripImage error - dripStorage:", error);
-    throw error;
-  }
-};
 
 export const postCreateDripStorage = async (
   images: string[],
@@ -284,28 +258,22 @@ export const postUpdateDripPostStorage = async (
         typeof img === "string" &&
         !img.startsWith("data:")
     );
-    // Supabase Storage에서 삭제
-    for (const img of imagesToDelete) {
-      if (img.startsWith("http") && img.includes("supabase.co")) {
-        const fileName = img.split("/").pop();
-        if (fileName) {
-          const { error } = await require("../supabase").supabase.storage.from("drips").remove([fileName]);
-          if (error) {
-            console.error("Supabase Drip 이미지 삭제 실패:", fileName, error.message);
-          } else {
-            console.log("Supabase Drip 이미지 삭제 성공:", fileName);
+    
+    // StorageService를 사용하여 이미지 삭제
+    if (imagesToDelete.length > 0) {
+      const { StorageService } = require('../service/storageService');
+      
+      for (const img of imagesToDelete) {
+        if (img && img.startsWith('/')) {
+          const fileName = img.replace(/^\/+/, '');
+          try {
+            await StorageService.deleteDripImage(fileName);
+            console.log(`수정 시 이미지 삭제 완료: ${fileName}`);
+          } catch (error) {
+            console.error(`수정 시 이미지 삭제 실패: ${fileName}`, error);
           }
         }
       }
-      // 기존 로컬 파일 삭제 코드도 유지
-      const filePath = path.join(
-        process.cwd(),
-        "uploads/drip",
-        img.replace(/^\//, "")
-      );
-      fs.promises.unlink(filePath).catch((err) => {
-        // 파일이 없거나 삭제 실패해도 무시
-      });
     }
 
     // DB 업데이트
@@ -333,7 +301,13 @@ export const deleteDripPostStorage = async (postNo: number) => {
   try {
     await client.query("BEGIN");
 
-    // 1. 먼저 댓글의 좋아요들을 삭제
+    // 1. 먼저 게시글의 이미지 정보를 가져옴
+    const postResult = await client.query(
+      `SELECT post_image FROM drip_post WHERE post_no = $1`,
+      [postNo]
+    );
+
+    // 2. 댓글의 좋아요들을 삭제
     await client.query(
       `DELETE FROM drip_post_comment_like 
        WHERE comment_id IN (
@@ -342,18 +316,40 @@ export const deleteDripPostStorage = async (postNo: number) => {
       [postNo]
     );
 
-    // 2. 그 다음 댓글들을 삭제
+    // 3. 댓글들을 삭제
     await client.query(`DELETE FROM drip_post_comment WHERE post_id = $1`, [
       postNo,
     ]);
 
-    // 3. 마지막으로 게시글 삭제
+    // 4. 게시글 삭제
     const result = await client.query(
       `DELETE FROM drip_post WHERE post_no = $1 RETURNING *`,
       [postNo]
     );
 
     await client.query("COMMIT");
+
+    // 5. 이미지 파일들을 Storage에서 삭제
+    if (postResult.rows.length > 0) {
+      const post = postResult.rows[0];
+      if (post.post_image) {
+        try {
+          const images = JSON.parse(post.post_image);
+          const { StorageService } = require('../service/storageService');
+          
+          for (const imagePath of images) {
+            if (imagePath && imagePath.startsWith('/')) {
+              const fileName = imagePath.replace(/^\/+/, '');
+              await StorageService.deleteDripImage(fileName);
+              console.log(`이미지 삭제 완료: ${fileName}`);
+            }
+          }
+        } catch (error) {
+          console.error('이미지 삭제 중 오류:', error);
+        }
+      }
+    }
+
     return result.rows[0];
   } catch (error) {
     await client.query("ROLLBACK");
