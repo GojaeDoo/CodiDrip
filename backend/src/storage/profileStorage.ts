@@ -151,6 +151,24 @@ export const postUpdateProfileStorage = async (
       typeof prevImage === "string" &&
       !prevImage.startsWith("data:")
     ) {
+      // Supabase Storage에서 삭제
+      if (prevImage.startsWith("http") && prevImage.includes("supabase.co")) {
+        try {
+          // public url에서 파일명 추출
+          const fileName = prevImage.split("/").pop();
+          if (fileName) {
+            const { error } = await require("../supabase").supabase.storage.from("profiles").remove([fileName]);
+            if (error) {
+              console.error("Supabase 이미지 삭제 실패:", fileName, error.message);
+            } else {
+              console.log("Supabase 이미지 삭제 성공:", fileName);
+            }
+          }
+        } catch (err) {
+          console.error("Supabase 이미지 삭제 중 예외:", err);
+        }
+      }
+      // 로컬 파일 삭제
       const filePath = path.join(
         process.cwd(),
         "uploads/profiles",
@@ -161,7 +179,7 @@ export const postUpdateProfileStorage = async (
         .then(() => {
         })
         .catch((err) => {
-          console.error("프로필 이미지 파일 삭제 실패:", filePath, err.message);
+          // 로컬 파일이 없을 수도 있으니 에러 무시
         });
     }
 
