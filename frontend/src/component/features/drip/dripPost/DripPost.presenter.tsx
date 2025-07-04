@@ -113,7 +113,11 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
                     src={getDripImageUrl(post.post_image[post.currentImageIndex]) || "/images/profile/default-profile.png"}
                     alt="drip post"
                     onError={(e) => {
+                      console.error("이미지 로드 실패:", post.post_image[post.currentImageIndex]);
                       e.currentTarget.src = "/images/profile/default-profile.png";
+                    }}
+                    onLoad={() => {
+                      console.log("이미지 로드 성공:", post.post_image[post.currentImageIndex]);
                     }}
                   />
                   {post.post_image.length > 1 && (

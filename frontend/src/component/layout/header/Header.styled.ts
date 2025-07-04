@@ -284,12 +284,9 @@ export const ProfileImage = styled.div`
   cursor: pointer;
   margin-right: 1vw;
   transition: background-color 0.3s ease;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
     width: 40px;

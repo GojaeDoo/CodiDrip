@@ -38,9 +38,9 @@ const HeaderPresenter = (props: HeaderPresenterProps) => {
                 <Image
                   src={getProfileImageUrl(props.userProfile.profile_image) || "/images/profile/default-profile.png"}
                   alt="profile"
-                  width={40}
-                  height={40}
                   onClick={props.onClickMoveMyPage}
+                  width={60}
+                  height={60}
                   style={{ borderRadius: "50%", objectFit: "cover", cursor: "pointer" }}
                 />
               )}
