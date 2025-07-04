@@ -70,15 +70,8 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
     !window.location.hostname.includes('localhost') && 
     !window.location.hostname.includes('127.0.0.1');
   
-  if (isProduction) {
-    // Supabase Storage URL
-    const supabaseUrl = `https://caqmlnxqlyaqajzbhdmo.supabase.co/storage/v1/object/public/drips/${fileName}`;
-    console.log('배포 환경 URL:', supabaseUrl);
-    return supabaseUrl;
-  } else {
-    // 로컬 백엔드 URL
-    const localUrl = `${API_BASE_URL}/uploads/drip/${fileName}`;
-    console.log('로컬 환경 URL:', localUrl);
-    return localUrl;
-  }
+  // 임시로 모든 환경에서 백엔드 URL 사용 (Supabase Storage 문제 해결 전까지)
+  const backendUrl = `${API_BASE_URL}/uploads/drip/${fileName}`;
+  console.log('백엔드 URL 사용:', backendUrl);
+  return backendUrl;
 }; 
