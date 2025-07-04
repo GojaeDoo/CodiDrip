@@ -29,9 +29,13 @@ export const getProfileImageUrl = (imagePath: string | null | undefined): string
   if (!imagePath) return "/images/profile/default-profile.png";
   
   if (imagePath.startsWith('http')) {
+    // Supabase URL이면 그대로 사용
+    if (imagePath.includes('supabase.co')) {
+      return imagePath;
+    }
     // 잘못된 백엔드 URL을 올바른 URL로 변환
     if (imagePath.includes('codidrip-backend.onrender.com')) {
-      return imagePath.replace('codidrip-backend.onrender.com', 'codidrip-7fmm.onrender.com');
+      return imagePath.replace('codidrip-backend.onrender.com', 'codidrip-rp6z.onrender.com');
     }
     return imagePath;
   }
@@ -46,9 +50,13 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
   if (!imagePath) return "/images/profile/default-profile.png";
   
   if (imagePath.startsWith('http')) {
+    // Supabase URL이면 그대로 사용
+    if (imagePath.includes('supabase.co')) {
+      return imagePath;
+    }
     // 잘못된 백엔드 URL을 올바른 URL로 변환
     if (imagePath.includes('codidrip-backend.onrender.com')) {
-      return imagePath.replace('codidrip-backend.onrender.com', 'codidrip-7fmm.onrender.com');
+      return imagePath.replace('codidrip-backend.onrender.com', 'codidrip-rp6z.onrender.com');
     }
     return imagePath;
   }

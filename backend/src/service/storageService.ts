@@ -25,8 +25,8 @@ export class StorageService {
       const filePath = path.join(uploadDir, fileName);
       fs.writeFileSync(filePath, file);
       
-      // Render 환경에서는 절대 URL 사용
-      const baseUrl = process.env.BACKEND_URL || 'https://codidrip-backend.onrender.com';
+      // Render 환경에서는 올바른 URL 사용
+      const baseUrl = process.env.BACKEND_URL || 'https://codidrip-rp6z.onrender.com';
       return { 
         success: true, 
         url: `${baseUrl}/uploads/${folder}/${fileName}`,
@@ -40,10 +40,10 @@ export class StorageService {
 
   // 프로필 이미지 업로드
   static async uploadProfileImage(file: Buffer, fileName: string): Promise<UploadResult> {
-    // Supabase가 설정되지 않은 경우 에러 반환 (Render 파일 시스템 문제로 인해)
+    // Supabase가 설정되지 않은 경우 로컬 저장소로 폴백
     if (!supabase) {
-      console.error('❌ Supabase가 설정되지 않았습니다. 이미지 업로드가 불가능합니다.');
-      return { success: false, error: 'Supabase Storage가 설정되지 않았습니다.' };
+      console.log('⚠️  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
+      return this.uploadToLocalStorage(file, fileName, 'profiles');
     }
 
     try {
@@ -75,10 +75,10 @@ export class StorageService {
 
   // Drip 이미지 업로드
   static async uploadDripImage(file: Buffer, fileName: string): Promise<UploadResult> {
-    // Supabase가 설정되지 않은 경우 에러 반환 (Render 파일 시스템 문제로 인해)
+    // Supabase가 설정되지 않은 경우 로컬 저장소로 폴백
     if (!supabase) {
-      console.error('❌ Supabase가 설정되지 않았습니다. 이미지 업로드가 불가능합니다.');
-      return { success: false, error: 'Supabase Storage가 설정되지 않았습니다.' };
+      console.log('⚠️  Supabase가 설정되지 않았습니다. 로컬 저장소로 폴백합니다.');
+      return this.uploadToLocalStorage(file, fileName, 'drip');
     }
 
     try {

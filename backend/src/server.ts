@@ -92,7 +92,12 @@ if (!fs.existsSync(defaultProfilePath)) {
 }
 
 // 폴백용 정적 파일 서빙 (Supabase 실패 시 로컬 이미지 제공)
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
+  setHeaders: (res, path) => {
+    res.set('Cache-Control', 'public, max-age=31536000'); // 1년 캐시
+    res.set('Access-Control-Allow-Origin', '*');
+  }
+}));
 
 // 라우터 설정
 app.use("/api/users", userRouter);

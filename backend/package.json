@@ -41,6 +41,9 @@
     "build": "yarn install && tsc",
     "start": "node dist/server.js",
     "migrate-images": "ts-node src/scripts/migrateImages.ts",
-    "cleanup-images": "ts-node src/scripts/cleanupImages.ts"
+    "cleanup-images": "ts-node src/scripts/cleanupImages.ts",
+    "migrate-images-prod": "node dist/scripts/migrateImages.js",
+    "check-buckets": "ts-node src/scripts/checkBuckets.ts",
+    "check-buckets-prod": "node dist/scripts/checkBuckets.js"
   }
 }
