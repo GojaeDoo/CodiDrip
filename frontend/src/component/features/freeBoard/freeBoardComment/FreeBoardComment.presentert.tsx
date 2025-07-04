@@ -1,6 +1,7 @@
 import React from "react";
 import * as S from "./FreeBoardComment.styled";
 import { FreeBoardCommentPresenterProps } from "./FreeBoardComment.types";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps> = (props:FreeBoardCommentPresenterProps) => {
   if (props.isLoading) {
@@ -46,15 +47,10 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                 <S.CommentItem key={comment.id}>
                   <S.CommentHeaderInfo>
                     <S.UserAvatar>
-                      {comment.profile_image ? (
-                        <img 
-                          src={`https://codidrip-backend.onrender.com/uploads/profiles/${comment.profile_image}`} 
-                          alt={comment.profile_nickname}
-                          style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
-                        />
-                      ) : (
-                        props.getInitials(comment.profile_nickname)
-                      )}
+                      <S.ProfileImage
+                        src={getProfileImageUrl(comment.profile_image) || undefined}
+                        alt="profile"
+                      />
                     </S.UserAvatar>
                     <S.UserInfo>
                       <p className="username">{comment.profile_nickname}</p>
@@ -136,15 +132,10 @@ export const FreeBoardCommentPresenter: React.FC<FreeBoardCommentPresenterProps>
                         <S.ReplyContainer key={reply.id}>
                           <S.ReplyHeader>
                             <S.ReplyAvatar>
-                              {reply.profile_image ? (
-                                <img 
-                                  src={`https://codidrip-backend.onrender.com/uploads/profiles/${reply.profile_image}`} 
-                                  alt={reply.profile_nickname}
-                                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
-                                />
-                              ) : (
-                                props.getInitials(reply.profile_nickname)
-                              )}
+                              <S.ProfileImage
+                                src={getProfileImageUrl(reply.profile_image) || undefined}
+                                alt="profile"
+                              />
                             </S.ReplyAvatar>
                             <span style={{ 
                               fontWeight: "600", 

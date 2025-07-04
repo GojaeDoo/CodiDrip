@@ -3,6 +3,7 @@ import * as S from "./DripPostComment.styled";
 import { Heart, MessageCircle, MoreVertical } from "lucide-react";
 import { DripPostCommentPresenterProps } from "./DripPostComment.types";
 import { formatDate } from "./DripPostComment.container";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 const DripPostCommentPresenter = (props: DripPostCommentPresenterProps) => {
 
@@ -23,7 +24,7 @@ const DripPostCommentPresenter = (props: DripPostCommentPresenterProps) => {
           props.commentList.map((comment) => (
             <S.CommentItem key={comment.id}>
               <S.UserProfileImage 
-                src={`https://codidrip-backend.onrender.com/uploads/profiles/${comment.profile_image}`} 
+                src={getProfileImageUrl(comment.profile_image) || undefined} 
                 alt={comment.profile_nickname} 
               />
               <S.CommentBody>
@@ -88,7 +89,7 @@ const DripPostCommentPresenter = (props: DripPostCommentPresenterProps) => {
                     {comment.replies.map((reply) => (
                       <S.ReplyItem key={reply.id}>
                         <S.UserProfileImage 
-                          src={`https://codidrip-backend.onrender.com/uploads/profiles/${reply.profile_image}`} 
+                          src={getProfileImageUrl(reply.profile_image) || undefined} 
                           alt={reply.profile_nickname} 
                           $small 
                         />

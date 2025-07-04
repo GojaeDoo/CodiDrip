@@ -3,6 +3,7 @@ import Follow from "@/component/features/follow/Follow.container";
 import FollowSkeleton from "@/component/commons/skeleton/follow/FollowSkeleton";
 import FreeBoardSkeleton from "@/component/commons/skeleton/freeboard/FreeBoardSkeleton";
 import MyPageSkeleton from "@/component/commons/skeleton/profile/MyPageSkeleton";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 import * as S from "./MyPage.styled";
 import { MyPagePresenterProps } from "./MyPage.types";
@@ -17,10 +18,7 @@ export const MyPagePresenter = (props: MyPagePresenterProps) => {
       <S.MyPageWrapper>
         <S.ProfileSection>
           <S.ProfileImage
-            src={
-              props.userProfile?.profile_image ||
-              "/images/profile/default-profile.png"
-            }
+            src={getProfileImageUrl(props.userProfile?.profile_image) || undefined}
             alt="프로필 이미지"
             onError={(e) => {
               e.currentTarget.src = "/images/profile/default-profile.png";

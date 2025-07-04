@@ -3,6 +3,7 @@ import * as S from "./dripPostDetail.styled";
 import { ChevronLeft, ChevronRight, Heart, MessageCircle, Bookmark } from "lucide-react";
 import { DripPostDetailPresenterProps } from "./dripPostDetail.types";
 import DripPostCommentContainer from "../dripPostComment/DripPostComment.container";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
   return (
@@ -45,8 +46,8 @@ const DripPostDetailPresenter = (props: DripPostDetailPresenterProps) => {
           <S.ProfileBox>
             <S.UserInfo>
               <S.ProfileImage
-                src={`https://codidrip-backend.onrender.com/uploads/profiles/${props.dripPost.프로필이미지}`}
-                alt={`${props.dripPost.닉네임 || "사용자"}의 프로필`}
+                src={getProfileImageUrl(props.dripPost.프로필이미지) || undefined}
+                alt="profile"
               />
               <div>
                 <S.UserName>{props.dripPost.닉네임 || "사용자"}</S.UserName>

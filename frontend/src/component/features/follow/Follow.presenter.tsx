@@ -1,5 +1,6 @@
 import * as S from "./Follow.styled";
 import { FollowPresenterProps } from "./Follow.types";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 export const FollowPresenter = (props: FollowPresenterProps) => {
     if (props.isLoading) {
@@ -24,7 +25,7 @@ export const FollowPresenter = (props: FollowPresenterProps) => {
                             {currentList.map((user) => (
                                 <S.FollowItem key={user.profile_id}>
                                     <S.FollowProfileImage
-                                        src={`https://codidrip-backend.onrender.com/uploads/profiles/${user.profile_image}`}
+                                        src={getProfileImageUrl(user.profile_image) || undefined}
                                         alt={user.profile_nickname}
                                     />
                                     <S.FollowInfo>

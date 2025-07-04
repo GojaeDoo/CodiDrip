@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import DripPostSkeleton from "../../../commons/skeleton/drip/DripPostSkeleton";
 import { useState } from "react";
+import { getDripImageUrl } from "@/utils/imageUtils";
 
 export const DripPostPresenter = (props: DripPostPresenterProps) => {
   const [reportReason, setReportReason] = useState<ReportReasonType | "">("");
@@ -36,11 +37,22 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
               >
                 <S.PostHeader>
                   <S.UserProfile>
-                  <S.ProfileImage
-                      src={`https://codidrip-backend.onrender.com/uploads/profiles/${post.profile_image}`}
-                      alt="profile"
-                      onClick={(e) => props.onClickMoveUserProfile(e, post.post_no , post.user_id)}
-                  />
+                    {Array.isArray(post.profile_image) && post.profile_image.length > 0 ? (
+                      post.profile_image.map((img: string, idx: number) => (
+                        <S.ProfileImage
+                          key={idx}
+                          src={getDripImageUrl(img) || undefined}
+                          alt={`drip-image-${idx}`}
+                          onClick={(e) => props.onClickMoveUserProfile(e, post.post_no , post.user_id)}
+                        />
+                      ))
+                    ) : (
+                      <S.ProfileImage
+                        src={getDripImageUrl(post.profile_image) || undefined}
+                        alt="drip-image"
+                        onClick={(e) => props.onClickMoveUserProfile(e, post.post_no , post.user_id)}
+                      />
+                    )}
                     <S.UserInfo>
                       <S.Username>{post.profile_nickname}</S.Username>
                       {post.profile_height && post.profile_weight && (

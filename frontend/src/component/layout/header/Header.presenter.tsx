@@ -4,6 +4,7 @@ import React from "react";
 import { HeaderPresenterProps } from "./Header.types";
 import * as S from "./Header.styled";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 const HeaderPresenter = (props: HeaderPresenterProps) => {
   return (
@@ -31,15 +32,10 @@ const HeaderPresenter = (props: HeaderPresenterProps) => {
         </S.ThemeToggleButton>
         {props.isLoggedIn ? (
           <S.ButtonContainer>
-            <S.ProfileImage>
-              {props.userProfile?.profile_image ? (
-                <img
-                  src={props.userProfile.profile_image}
-                  alt="Profile"
-                  onClick={props.onClickMoveMyPage}
-                />
-              ) : null}
-            </S.ProfileImage>
+            <S.ProfileImage
+              src={getProfileImageUrl(props.userProfile.profile_image) || undefined}
+              alt="profile"
+            />
           </S.ButtonContainer>
         ) : (
           <S.Login_JoinContainer>

@@ -1,5 +1,6 @@
 import * as S from "./DripUser.styled";
 import { DripUserPresenterProps } from "./DripUser.types";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 export const DripUserPresenter = (props: DripUserPresenterProps) => {
   return (
@@ -12,7 +13,7 @@ export const DripUserPresenter = (props: DripUserPresenterProps) => {
           >
             <S.ProfileImageWrapper>
               <S.ProfileImage
-                src={`https://codidrip-backend.onrender.com/uploads/profiles/${user.profile_image}`}
+                src={getProfileImageUrl(user.profile_image) || undefined}
                 alt={user.profile_nickname}
               />
             </S.ProfileImageWrapper>

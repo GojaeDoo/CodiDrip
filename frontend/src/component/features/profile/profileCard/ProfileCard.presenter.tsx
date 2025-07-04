@@ -3,6 +3,7 @@
 import { Heart } from "lucide-react";
 import * as S from "./ProfileCard.styled";
 import { ProfileCardPresenterProps } from "./ProfileCard.types";
+import { getProfileImageUrl } from "@/utils/imageUtils";
 
 const ProfileCardPresenter = (props: ProfileCardPresenterProps) => {
   return (
@@ -21,7 +22,7 @@ const ProfileCardPresenter = (props: ProfileCardPresenterProps) => {
           <S.PostInfo>
             <S.ProfileDetailsContainer>
               <S.ProfileImage
-                src={`https://codidrip-backend.onrender.com/uploads/profiles/${profile.profile_image}`}
+                src={getProfileImageUrl(profile.profile_image) || undefined}
                 alt={`${profile.profile_nickname}'s profile`}
               />
               <S.ProfileInfo>
