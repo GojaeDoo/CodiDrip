@@ -63,5 +63,16 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
   
   // 파일명만 추출 (앞에 /가 있든 없든 무조건 제거)
   const fileName = imagePath.replace(/^\\|\//, '');
-  return `${API_BASE_URL}/uploads/drip/${fileName}`;
+  
+  // 배포 환경에서는 Supabase Storage URL 사용
+  // 로컬 환경에서는 백엔드 uploads 경로 사용
+  const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+  
+  if (isProduction) {
+    // Supabase Storage URL
+    return `https://caqmlnxqlyaqajzbhdmo.supabase.co/storage/v1/object/public/drips/${fileName}`;
+  } else {
+    // 로컬 백엔드 URL
+    return `${API_BASE_URL}/uploads/drip/${fileName}`;
+  }
 }; 
