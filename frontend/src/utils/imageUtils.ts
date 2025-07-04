@@ -66,13 +66,19 @@ export const getDripImageUrl = (imagePath: string | null | undefined): string | 
   
   // 배포 환경에서는 Supabase Storage URL 사용
   // 로컬 환경에서는 백엔드 uploads 경로 사용
-  const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+  const isProduction = typeof window !== 'undefined' && 
+    !window.location.hostname.includes('localhost') && 
+    !window.location.hostname.includes('127.0.0.1');
   
   if (isProduction) {
     // Supabase Storage URL
-    return `https://caqmlnxqlyaqajzbhdmo.supabase.co/storage/v1/object/public/drips/${fileName}`;
+    const supabaseUrl = `https://caqmlnxqlyaqajzbhdmo.supabase.co/storage/v1/object/public/drips/${fileName}`;
+    console.log('배포 환경 URL:', supabaseUrl);
+    return supabaseUrl;
   } else {
     // 로컬 백엔드 URL
-    return `${API_BASE_URL}/uploads/drip/${fileName}`;
+    const localUrl = `${API_BASE_URL}/uploads/drip/${fileName}`;
+    console.log('로컬 환경 URL:', localUrl);
+    return localUrl;
   }
 }; 
