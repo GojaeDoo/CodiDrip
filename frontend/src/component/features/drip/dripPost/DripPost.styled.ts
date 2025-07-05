@@ -91,6 +91,7 @@ export const UserProfile = styled.div`
 
   @media (max-width: 768px) {
     gap: 6px;
+
   }
 `;
 
@@ -107,8 +108,8 @@ export const ProfileImage = styled.img`
   }
 
   @media (max-width: 768px) {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
 
     &:hover {
       transform: none;

@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import FollowPresenter from "./Follow.presenter";
 import { getFollowersQuery, getFollowingQuery } from "./Follow.query";
 import { Profile } from "@/types/profile";
+import FollowSkeleton from "@/component/commons/skeleton/follow/FollowSkeleton";
+import * as S from "./Follow.styled";
 
 interface FollowContainerProps {
     initialTab?: 'followers' | 'following';
@@ -56,12 +58,24 @@ export const FollowContainer = ({ initialTab = 'followers', targetUserId }: Foll
         setActiveTab(tab);
     };
 
+    if (isLoading) {
+        return (
+            <S.Background>
+                <S.FollowWrapper>
+                    <FollowSkeleton count={6} />
+                </S.FollowWrapper>
+            </S.Background>
+        );
+    }
+
+    const currentList = activeTab === 'followers' ? followers : following;
+    const listTitle = activeTab === 'followers' ? '팔로워' : '팔로잉';
+
     return <FollowPresenter
-    followers={followers}
-    following={following}
-    activeTab={activeTab}
-    onTabChange={handleTabChange}
-    isLoading={isLoading}
+        currentList={currentList}
+        listTitle={listTitle}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
     />;
 };
 

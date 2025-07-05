@@ -15,11 +15,12 @@ const DripPostSkeleton = () => {
         <S.SkeletonAction />
         <S.SkeletonAction />
       </S.SkeletonActions>
-      <S.SkeletonTags>
-        <S.SkeletonTag />
-        <S.SkeletonTag />
-        <S.SkeletonTag />
-      </S.SkeletonTags>
+      <S.SkeletonPostInfo>
+        <S.SkeletonTags>
+          <S.SkeletonTag />
+          <S.SkeletonTag />
+        </S.SkeletonTags>
+      </S.SkeletonPostInfo>
     </S.SkeletonWrapper>
   );
 };

@@ -62,7 +62,7 @@ export const Logo = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
 `;
 

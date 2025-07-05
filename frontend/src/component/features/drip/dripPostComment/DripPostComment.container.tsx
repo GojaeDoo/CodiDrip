@@ -7,6 +7,7 @@ import { DripPostCommentContainerProps, Comment,  ReportReasonType, DripPostComm
 import { getCommentQuery, postCommentQuery, putUpdateCommentQuery, deleteCommentQuery, getLikeCommentQuery, getUnlikeCommentQuery, reportCommentQuery } from "./DripPostComment.query";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import DripPostCommentSkeleton from "@/component/commons/skeleton/drip/DripPostCommentSkeleton";
 
 export const formatDate = (dateString: string) => dateString.slice(0, 10);
 
@@ -248,7 +249,9 @@ export const DripPostCommentContainer = (props: DripPostCommentContainerProps) =
     setReportReason(value);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <DripPostCommentSkeleton />;
+  }
 
   return (
     <DripPostCommentPresenter

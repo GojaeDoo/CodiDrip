@@ -7,6 +7,7 @@ import { getDripPostDetail, postLikeDripPostQuery, deleteUnlikeDripPostQuery, ge
 import { DripPostDetailPresenterProps, DripPostDetailProps } from "./dripPostDetail.types";
 import { useRouter } from "next/navigation";
 import { getDripImageUrl } from "@/utils/imageUtils";
+import DripPostDetailSkeleton from "@/component/commons/skeleton/drip/DripPostDetailSkeleton";
 
 const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -153,7 +154,7 @@ const DripPostDetailContainer = ({ postno }: DripPostDetailProps) => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <DripPostDetailSkeleton />;
   if (error) return <div>Error loading post</div>;
   if (!dripPost) return <div>No post found</div>;
 

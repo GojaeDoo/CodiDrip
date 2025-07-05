@@ -6,6 +6,7 @@ import { LoginPresenterProps } from "./Login.types";
 import { useState } from "react";
 import { postLoginUserQuery, getProfileCheckQuery } from "./Login.query";
 import { useAuth } from "@/context/AuthContext";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 const LoginContainer = () => {
   const [userId, setUserId] = useState("");
@@ -83,7 +84,7 @@ const LoginContainer = () => {
   };
 
   return (
-    <>
+    <ProtectedAuthRoute>
       <LoginPresenter
         onClickMoveJoin={onClickMoveJoin}
         onClickMoveIdFind={onClickMoveIdFind}
@@ -94,7 +95,7 @@ const LoginContainer = () => {
         onClickLogin={onClickLogin}
         profiles={[]}
       />
-    </>
+    </ProtectedAuthRoute>
   );
 };
 

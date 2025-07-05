@@ -2,15 +2,16 @@ import styled from "styled-components";
 
 export const SkeletonWrapper = styled.div`
   width: 280px;
-  height: 350px;
+  max-height: 420px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 10px;
   animation: pulse 1.5s infinite;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
 
   @keyframes pulse {
     0% {
@@ -31,67 +32,132 @@ export const SkeletonWrapper = styled.div`
 `;
 
 export const SkeletonHeader = styled.div`
-  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 6px 8px;
+  }
 `;
 
 export const SkeletonProfileImage = styled.div`
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--skeleton-start);
-  transition: background-color 0.3s ease;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  margin-right: 10px;
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+  }
 `;
 
 export const SkeletonUserInfo = styled.div`
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `;
 
 export const SkeletonUsername = styled.div`
-  width: 120px;
-  height: 18px;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  width: 80px;
+  height: 12px;
   background: var(--skeleton-start);
   border-radius: 4px;
-  margin-bottom: 6px;
   transition: background-color 0.3s ease;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+    width: 70px;
+    height: 11px;
+  }
 `;
 
 export const SkeletonUserStats = styled.div`
-  width: 100px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--card-border);
+  padding: 2px 6px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 60px;
   height: 16px;
   background: var(--skeleton-start);
-  border-radius: 4px;
+  border-radius: 12px;
   transition: background-color 0.3s ease;
 `;
 
 export const SkeletonImage = styled.div`
+  position: relative;
   width: 100%;
-  aspect-ratio: 1;
-  background: var(--skeleton-start);
+  aspect-ratio: 4/3;
+  background: var(--card-border);
+  overflow: hidden;
   transition: background-color 0.3s ease;
 `;
 
 export const SkeletonActions = styled.div`
-  padding: 16px;
+  padding: 6px 12px;
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    gap: 6px;
+  }
 `;
 
 export const SkeletonAction = styled.div`
-  width: 24px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
+  width: 50px;
   height: 24px;
   background: var(--skeleton-start);
   border-radius: 4px;
   transition: background-color 0.3s ease;
 `;
 
+export const SkeletonPostInfo = styled.div`
+  padding: 8px 12px;
+  background: var(--card-bg);
+  transition: background-color 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 6px 8px;
+  }
+`;
+
 export const SkeletonTags = styled.div`
-  padding: 0 16px 16px;
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+
+  @media (max-width: 768px) {
+    gap: 3px;
+    margin-top: 3px;
+  }
 `;
 
 export const SkeletonTag = styled.div`

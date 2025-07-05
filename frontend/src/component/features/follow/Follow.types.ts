@@ -11,11 +11,10 @@ export interface Profile {
 }
 
 export interface FollowPresenterProps {
-  followers?: Profile[];
-  following?: Profile[];
+  currentList: Profile[];
+  listTitle: string;
   activeTab: 'followers' | 'following';
   onTabChange: (tab: 'followers' | 'following') => void;
-  isLoading?: boolean;
 }
 
 export interface FollowPageProps {

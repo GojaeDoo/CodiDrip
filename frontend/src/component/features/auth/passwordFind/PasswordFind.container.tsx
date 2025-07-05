@@ -5,6 +5,7 @@ import { PasswordFindPresenter } from "./PasswordFind.presenter";
 import { PasswordFindPresenterProps } from "./PasswordFind.types";
 import { getPasswordFindUserQuery } from "./PasswordFind.query";
 import { useRouter } from "next/navigation";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 export const PasswordFindContainer = () => {
   const router = useRouter();
@@ -50,7 +51,7 @@ export const PasswordFindContainer = () => {
     };
 
   return (
-    <>
+    <ProtectedAuthRoute>
       <PasswordFindPresenter
         onChangeId={onChangeId}
         onChangeEmail={onChangeEmail}
@@ -58,7 +59,7 @@ export const PasswordFindContainer = () => {
         onClickFindPassword={onClickFindPassword}
         error={error}
       />
-    </>
+    </ProtectedAuthRoute>
   );
 };
 

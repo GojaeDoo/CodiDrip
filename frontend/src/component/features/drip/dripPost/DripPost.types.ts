@@ -204,6 +204,9 @@ export interface DripPostPresenterProps {
   onCloseReportModal: () => void;
   onReportSubmit: (reason: ReportReasonType) => void;
   onClickMoveUserProfile: (e: React.MouseEvent<HTMLDivElement>, postNo: number, userId: string) => void;
+  reportReason: ReportReasonType | "";
+  setReportReason: (reason: ReportReasonType | "") => void;
+  handleReportSubmit: () => void;
 }
 
 export type ReportTargetType = 'post' | 'comment';

@@ -7,17 +7,10 @@ import {
   MessageCircle,
   MoreVertical,
 } from "lucide-react";
-import DripPostSkeleton from "../../../commons/skeleton/drip/DripPostSkeleton";
-import { useState } from "react";
+import DripPostSkeleton from "@/component/commons/skeleton/drip/DripPostSkeleton";
 import { getDripImageUrl } from "@/utils/imageUtils";
 
 export const DripPostPresenter = (props: DripPostPresenterProps) => {
-  const [reportReason, setReportReason] = useState<ReportReasonType | "">("");
-  const handleReportSubmit = () => {
-    if (reportReason) {
-      props.onReportSubmit(reportReason as ReportReasonType);
-    }
-  };
 
   return (
     <>
@@ -199,8 +192,8 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
               신고 사유를 선택해주세요. 신고된 게시글은 검토 후 처리됩니다.
             </S.ReportModalText>
             <S.ReportReasonSelect
-              value={reportReason}
-              onChange={(e) => setReportReason(e.target.value as ReportReasonType)}
+              value={props.reportReason}
+              onChange={(e) => props.setReportReason(e.target.value as ReportReasonType | "")}
             >
               <option value="">신고 사유를 선택하세요</option>
               <option value="욕설">욕설</option>
@@ -215,8 +208,8 @@ export const DripPostPresenter = (props: DripPostPresenterProps) => {
               </S.ReportModalButton>
               <S.ReportModalButton 
                 $primary 
-                onClick={handleReportSubmit}
-                disabled={!reportReason}
+                onClick={props.handleReportSubmit}
+                disabled={!props.reportReason}
               >
                 신고하기
               </S.ReportModalButton>

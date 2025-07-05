@@ -19,6 +19,7 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
   
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportPostNo, setReportPostNo] = useState<number | null>(null);
+  const [reportReason, setReportReason] = useState<ReportReasonType | "">("");
   
     const router = useRouter();
   const { isAdmin } = useAuth();
@@ -157,6 +158,13 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
   const onCloseReportModal: DripPostPresenterProps["onCloseReportModal"] = () => {
     setShowReportModal(false);
     setReportPostNo(null);
+    setReportReason("");
+  };
+
+  const handleReportSubmit = () => {
+    if (reportReason) {
+      onReportSubmit(reportReason as ReportReasonType);
+    }
   };
 
   const onReportSubmit: DripPostPresenterProps["onReportSubmit"] = async (reason: ReportReasonType) => {
@@ -245,6 +253,9 @@ export const DripPostContainer = (props:DripPostContainerProps) => {
       onOpenReportModal={onOpenReportModal}
       onCloseReportModal={onCloseReportModal}
       onReportSubmit={onReportSubmit}
+      reportReason={reportReason}
+      setReportReason={setReportReason}
+      handleReportSubmit={handleReportSubmit}
     />
   );
 };

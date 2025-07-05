@@ -3,26 +3,12 @@ import { FollowPresenterProps } from "./Follow.types";
 import { getProfileImageUrl } from "@/utils/imageUtils";
 
 export const FollowPresenter = (props: FollowPresenterProps) => {
-    if (props.isLoading) {
-        return (
-            <S.Background>
-                <S.FollowWrapper>
-                    <S.LoadingMessage>로딩 중...</S.LoadingMessage>
-                </S.FollowWrapper>
-            </S.Background>
-        );
-    }
-
-    const currentList = props.activeTab === 'followers' ? props.followers : props.following;
-    const listTitle = props.activeTab === 'followers' ? '팔로워' : '팔로잉';
-
     return (
         <S.Background>
             <S.FollowWrapper>
-                
-                    {currentList && currentList.length > 0 ? (
-                        <S.FollowList>
-                            {currentList.map((user) => (
+                {props.currentList && props.currentList.length > 0 ? (
+                    <S.FollowList>
+                        {props.currentList.map((user) => (
                                 <S.FollowItem key={user.profile_id}>
                                     <S.FollowProfileImage
                                         src={getProfileImageUrl(user.profile_image) || undefined}
@@ -42,10 +28,9 @@ export const FollowPresenter = (props: FollowPresenterProps) => {
                         </S.FollowList>
                     ) : (
                         <S.EmptyMessage>
-                            {listTitle}가 없습니다.
+                            {props.listTitle}가 없습니다.
                         </S.EmptyMessage>
                     )}
-               
             </S.FollowWrapper>
         </S.Background>
     );

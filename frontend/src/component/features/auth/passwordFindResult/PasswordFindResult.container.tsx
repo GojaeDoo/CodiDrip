@@ -5,6 +5,7 @@ import { PasswordFindResultPresenter } from "./PasswordFindResult.presenter";
 import { PasswordFindResultPresenterProps } from "./passwordFindResult.types";
 import { postVerifyPasswordCodeQuery } from "./PasswordFindResult.query";
 import { useRouter, useSearchParams } from "next/navigation";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 export const PasswordFindResultContainer = () => {
   const router = useRouter();
@@ -48,14 +49,14 @@ export const PasswordFindResultContainer = () => {
   };
 
   return (
-    <>
+    <ProtectedAuthRoute>
       <PasswordFindResultPresenter
         onChangeAuthenticationNumber={onChangeAuthenticationNumber}
         handleKeyDown={handleKeyDown}
         onClickSend={onClickSend}
         error={error}
       />
-    </>
+    </ProtectedAuthRoute>
   );
 };
 

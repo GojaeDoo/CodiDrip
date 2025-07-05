@@ -5,6 +5,7 @@ import IdFindPresenter from "./IdFind.presenter";
 import { IdFindPresenterProps } from "./IdFind.types";
 import { getIdFindUserQuery } from "./IdFind.query";
 import { useRouter } from "next/navigation";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 export const IdFindContainer = () => {
   const [email, setEmail] = useState("");
@@ -46,11 +47,13 @@ export const IdFindContainer = () => {
   };
 
   return (
-    <IdFindPresenter
-      onChangeEmail={onChangeEmail}
-      onClickIdFind={onClickIdFind}
-      handleKeyDown={handleKeyDown}
-    />
+    <ProtectedAuthRoute>
+      <IdFindPresenter
+        onChangeEmail={onChangeEmail}
+        onClickIdFind={onClickIdFind}
+        handleKeyDown={handleKeyDown}
+      />
+    </ProtectedAuthRoute>
   );
 };
 

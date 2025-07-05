@@ -9,6 +9,7 @@ import {
   getEmailOverlappingCheckQuery,
 } from "./Join.query";
 import { useRouter } from "next/navigation";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 const JoinContainer = () => {
   const router = useRouter();
@@ -260,31 +261,33 @@ const JoinContainer = () => {
   };
 
   return (
-    <JoinPresenter
-      onChangeId={onChangeId}
-      onChangePassword={onChangePassword}
-      onChangeRePassword={onChangeRePassword}
-      onChangeEmail={onChangeEmail}
-      selectEmailDomain={selectEmailDomain}
-      onClickJoin={onClickJoin}
-      onClickIdOverlapping={onClickIdOverlapping}
-      onClickEmailOverlapping={onClickEmailOverlapping}
-      isIdChecked={isIdChecked}
-      isEmailChecked={isEmailChecked}
-      isJoinButtonDisabled={isJoinButtonDisabled}
-      setPasswordTrue={passwordTrue}
-      isAllChecked={isAllChecked}
-      isServiceChecked={isServiceChecked}
-      isPrivacyChecked={isPrivacyChecked}
-      isMarketingChecked={isMarketingChecked}
-      onAllCheckChange={onAllCheckChange}
-      onServiceCheckChange={onServiceCheckChange}
-      onPrivacyCheckChange={onPrivacyCheckChange}
-      onMarketingCheckChange={onMarketingCheckChange}
-      isCustomDomain={isCustomDomain}
-      onChangeCustomDomain={onChangeCustomDomain}
-      customDomain={customDomain}
-    />
+    <ProtectedAuthRoute>
+      <JoinPresenter
+        onChangeId={onChangeId}
+        onChangePassword={onChangePassword}
+        onChangeRePassword={onChangeRePassword}
+        onChangeEmail={onChangeEmail}
+        selectEmailDomain={selectEmailDomain}
+        onClickJoin={onClickJoin}
+        onClickIdOverlapping={onClickIdOverlapping}
+        onClickEmailOverlapping={onClickEmailOverlapping}
+        isIdChecked={isIdChecked}
+        isEmailChecked={isEmailChecked}
+        isJoinButtonDisabled={isJoinButtonDisabled}
+        setPasswordTrue={passwordTrue}
+        isAllChecked={isAllChecked}
+        isServiceChecked={isServiceChecked}
+        isPrivacyChecked={isPrivacyChecked}
+        isMarketingChecked={isMarketingChecked}
+        onAllCheckChange={onAllCheckChange}
+        onServiceCheckChange={onServiceCheckChange}
+        onPrivacyCheckChange={onPrivacyCheckChange}
+        onMarketingCheckChange={onMarketingCheckChange}
+        isCustomDomain={isCustomDomain}
+        onChangeCustomDomain={onChangeCustomDomain}
+        customDomain={customDomain}
+      />
+    </ProtectedAuthRoute>
   );
 };
 

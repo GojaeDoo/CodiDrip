@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import IdFindResultPresenter from "./IdFindResult.presenter";
 import { IdFindResultPresenterProps } from "./IdFindResult.types";
 import { useEffect, useState } from "react";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 export const IdFindResultContainer = () => {
   const [imageName, setImageName] = useState<string | null>(null);
@@ -29,12 +30,14 @@ export const IdFindResultContainer = () => {
   };
 
   return (
-    <IdFindResultPresenter
-      onClickLogin={onClickLogin}
-      id={id}
-      imageName={imageName}
-      text={text}
-    />
+    <ProtectedAuthRoute>
+      <IdFindResultPresenter
+        onClickLogin={onClickLogin}
+        id={id}
+        imageName={imageName}
+        text={text}
+      />
+    </ProtectedAuthRoute>
   );
 };
 

@@ -5,6 +5,7 @@ import { PasswordResetPresenter } from "./passwordReset.presenter";
 import { PasswordResetPresenterProps } from "./passwordReset.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { postPasswordResetUserQuery } from "./passwordReset.query";
+import ProtectedAuthRoute from "@/component/commons/ProtectedAuthRoute";
 
 export const PasswordResetContainer = () => {
   const router = useRouter();
@@ -78,7 +79,7 @@ export const PasswordResetContainer = () => {
     };
 
   return (
-    <>
+    <ProtectedAuthRoute>
       <PasswordResetPresenter
         onChangePassword={onChangePassword}
         onChangePasswordCheck={onChangePasswordCheck}
@@ -86,7 +87,7 @@ export const PasswordResetContainer = () => {
         onClickResetPassword={onClickResetPassword}
         error={error}
       />
-    </>
+    </ProtectedAuthRoute>
   );
 };
 

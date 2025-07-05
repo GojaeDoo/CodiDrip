@@ -23,6 +23,7 @@ const MyPageSkeleton: React.FC = () => {
           <S.SkeletonTab />
           <S.SkeletonTab />
           <S.SkeletonTab />
+          <S.SkeletonTab />
         </S.SkeletonTabButtons>
         <S.SkeletonCard />
         <S.SkeletonCard />
