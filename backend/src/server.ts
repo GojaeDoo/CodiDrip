@@ -18,7 +18,8 @@ const port = process.env.PORT || 3005;
 
 // CORS 설정 - 프론트엔드 도메인 허용
 const allowedOrigins = [
-  'https://codidrip.onrender.com',
+  'https://codidrip.onrender.com', // Render에 올린 프론트 주소
+  'https://codi-drip-frontend.vercel.app', // Vercel 배포 주소 추가
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
