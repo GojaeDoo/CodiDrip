@@ -34,50 +34,57 @@ export const getUserDripController = async (req: Request, res: Response) => {
     const isSaved = req.query.isSaved === 'true';
     const styles = req.query.styles as string | undefined;
     
-    const drips = await dripService.getUserDripService(userId, filterUserId, gender, isLike, isSaved, styles);
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const drips = await dripService.getUserDripService(userId, filterUserId, gender, isLike, isSaved, styles, page, limit);
     
-    // Supabase Storage에서 실제 이미지 URL 가져오기
+    // Supabase Storage에서 실제 이미지 URL 가져오기 (캐싱 적용)
     if (supabase) {
-      const { data: dripImages } = await supabase.storage
-        .from('drips')
-        .list('', { limit: 100 });
-      
-      const imageMap = new Map();
-      if (dripImages) {
-        for (const file of dripImages) {
-          const { data: urlData } = supabase.storage
-            .from('drips')
-            .getPublicUrl(file.name);
-          imageMap.set(file.name, urlData.publicUrl);
+      try {
+        // 이미지 목록을 한 번만 가져와서 캐싱
+        const { data: dripImages } = await supabase.storage
+          .from('drips')
+          .list('', { limit: 1000 }); // limit을 늘려서 더 많은 이미지 처리
+        
+        const imageMap = new Map();
+        if (dripImages) {
+          // 이미지 URL을 한 번에 생성하여 Map에 저장
+          dripImages.forEach(file => {
+            const { data: urlData } = supabase.storage
+              .from('drips')
+              .getPublicUrl(file.name);
+            imageMap.set(file.name, urlData.publicUrl);
+          });
         }
-      }
-      
-      // Drip 데이터에 실제 이미지 URL 적용
-      const dripsWithImages = drips.map((drip: any) => {
-        if (drip.게시글이미지) {
-          try {
-            const images = JSON.parse(drip.게시글이미지);
-            const updatedImages = images.map((img: string) => {
-              if (img && !img.startsWith('http')) {
-                // 파일명만 추출
-                const fileName = img.replace(/^.*[\\\/]/, '');
-                const actualUrl = imageMap.get(fileName);
-                if (actualUrl) {
-                  return actualUrl;
+        
+        // Drip 데이터에 실제 이미지 URL 적용 (배치 처리)
+        const dripsWithImages = drips.map((drip: any) => {
+          if (drip.게시글이미지) {
+            try {
+              const images = JSON.parse(drip.게시글이미지);
+              const updatedImages = images.map((img: string) => {
+                if (img && !img.startsWith('http')) {
+                  // 파일명만 추출 (정규식 최적화)
+                  const fileName = img.split(/[\\\/]/).pop();
+                  return imageMap.get(fileName) || img;
                 }
-              }
-              return img;
-            });
-            return { ...drip, 게시글이미지: JSON.stringify(updatedImages) };
-          } catch (error) {
-            console.error('이미지 파싱 오류:', error);
-            return drip;
+                return img;
+              });
+              return { ...drip, 게시글이미지: JSON.stringify(updatedImages) };
+            } catch (error) {
+              console.error('이미지 파싱 오류:', error);
+              return drip;
+            }
           }
-        }
-        return drip;
-      });
-      
-      res.status(200).json(dripsWithImages);
+          return drip;
+        });
+        
+        res.status(200).json(dripsWithImages);
+      } catch (storageError) {
+        console.error('Supabase Storage 처리 중 오류:', storageError);
+        // Storage 오류 시 원본 데이터 반환
+        res.status(200).json(drips);
+      }
     } else {
       res.status(200).json(drips);
     }

@@ -28,7 +28,7 @@ export const postCreateDripStorage = async (
   }
 };
 
-export const getUserDripPostStorage = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string) => {
+export const getUserDripPostStorage = async (userId?: string, filterUserId?: string, gender?: string, isLike?: boolean, isSaved?: boolean, styles?: string, page: number = 1, limit: number = 20) => {
   try {
     let query = `
       WITH user_likes AS (
@@ -40,6 +40,16 @@ export const getUserDripPostStorage = async (userId?: string, filterUserId?: str
         SELECT post_no 
         FROM drip_post_mark 
         WHERE user_id = $1::TEXT
+      ),
+      comment_counts AS (
+        SELECT post_id, COUNT(*) as comment_count
+        FROM drip_post_comment 
+        GROUP BY post_id
+      ),
+      like_counts AS (
+        SELECT post_no, COUNT(*) as like_count
+        FROM drip_post_like 
+        GROUP BY post_no
       )
       SELECT 
         p.post_no AS "게시글번호",
@@ -51,8 +61,8 @@ export const getUserDripPostStorage = async (userId?: string, filterUserId?: str
         pr.profile_nickname AS "닉네임",
         pr.profile_height AS "키",
         pr.profile_weight AS "몸무게",
-        (SELECT COUNT(*) FROM drip_post_comment WHERE post_id = p.post_no) AS "댓글 개수",
-        (SELECT COUNT(*) FROM drip_post_like WHERE post_no = p.post_no) AS "좋아요 개수",
+        COALESCE(cc.comment_count, 0) AS "댓글 개수",
+        COALESCE(lc.like_count, 0) AS "좋아요 개수",
         CASE 
           WHEN $1 IS NULL THEN false
           ELSE EXISTS (
@@ -68,9 +78,11 @@ export const getUserDripPostStorage = async (userId?: string, filterUserId?: str
       FROM drip_post p
       JOIN profile pr ON p.user_id = pr.user_id
       JOIN users u ON pr.user_id = u.user_id
+      LEFT JOIN comment_counts cc ON p.post_no = cc.post_id
+      LEFT JOIN like_counts lc ON p.post_no = lc.post_no
     `;
 
-    const params: (string | undefined)[] = [userId];
+    const params: (string | undefined | number)[] = [userId];
     const conditions: string[] = [];
 
     // 관리자 계정 제외 (일반 사용자만 조회)
@@ -120,6 +132,10 @@ export const getUserDripPostStorage = async (userId?: string, filterUserId?: str
 
     query += " ORDER BY p.post_no DESC";
 
+    // 페이지네이션 추가
+    const offset = (page - 1) * limit;
+    query += ` LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
+    params.push(limit, offset);
 
     const result = await pool.query(query, params);
     return result.rows;
