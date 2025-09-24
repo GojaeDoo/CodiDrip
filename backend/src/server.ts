@@ -16,11 +16,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3005;
 
-// CORS 설정 - 프론트엔드 도메인 허용
 const allowedOrigins = [
-  'https://codidrip.onrender.com',
+  'https://codidrip-rp6z.onrender.com',
   'https://codi-drip-frontend.vercel.app',
-  'https://codi-drip-frontend-git-choi-gojaedoos-projects.vercel.app',
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
