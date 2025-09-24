@@ -2,9 +2,9 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: false, // 강제 리렌더링 방지
+  reactStrictMode: false,
   compiler: {
-    styledComponents: true, // styled-components 활성화
+    styledComponents: true, 
   },
   webpack: (config) => {
     config.resolve.alias = {
@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'codidrip-7fmm.onrender.com',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'codidrip-rp6z.onrender.com',
         pathname: '/uploads/**',
       },
       {
